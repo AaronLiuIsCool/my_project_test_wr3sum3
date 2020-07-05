@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    #url: jdbc:mysql://localhost:3306/kuaidaoresume_account?useUnicode=true&characterEncoding=utf-8
+    #username: root
+    #password: mysqlroot
+    url: jdbc:mysql://kuaidaoresume-account.cm27uwrvuert.ca-central-1.rds.amazonaws.com:3306/kuaidaoresume-account?useUnicode=true&characterEncoding=utf-8
+    username: root
+    password: mysqlroot
+  jpa:
+    show-sql: true
+server:
+  port: 8081
+kuaidaoresume:
+  email-service-endpoint: http://localhost:8088
+  #bot-service-endpoint: http://localhost:8087
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

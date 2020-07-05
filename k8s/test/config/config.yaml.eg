@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: common-config
+data:
+  SPRING_PROFILES_ACTIVE: test
+  SERVER_PORT: "80"
+  ACCOUNT_SERVICE_ENDPOINT: http://account-service
+  BOT_SERVICE_ENDPOINT: http://bot-service
+  SMS_SERVICE_ENDPOINT: http://sms-service
+  SENTRY_DSN: https://80aaf4ae889b414f9fe72e3904cd5246@sentry.io/1380198
+  SIGNING_SECRET: your_signing_secret
+  RECAPTCHA_PUBLIC: test-recaptcha-public
+  RECAPTCHA_PRIVATE: test-recaptcha-private
+  ACCOUNT_DATASOURCE_URL: jdbc:mysql://mysql-svc/kuaidaoresume_account?useUnicode=true&characterEncoding=utf-8
+  ACCOUNT_DATASOURCE_USERNAME: root
+  ACCOUNT_DATASOURCE_PASSWORD: mysqlroot

@@ -1,0 +1,45 @@
+HELP.md
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**
+!**/src/test/**
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+
+### Mac ###
+.DS_Store
+
+### Spring Dev Credentials ###
+config/*.yml
+
+### VS Code ###
+.vscode/
+
+### Docker Test Credentials ###
+.env
+
+### K8s Credentials
+k8s/test/config/config.yaml
+k8s/prod/config/config.yaml
+k8s/uat/config/config.yaml
