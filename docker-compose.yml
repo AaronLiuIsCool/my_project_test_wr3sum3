@@ -1,0 +1,25 @@
+version: '3.7'
+
+services:
+  account-service:
+    build: ./account-svc
+    image: kuaidaoresume/account-svc
+    ports: # should covert to reverse proxy @Aaron TODO
+      - "8333:80"
+    environment:
+      - SPRING_PROFILES_ACTIVE
+      - SERVER_PORT
+      - SIGNING_SECRET
+      #- SENTRY_DSN
+      #- BOT_SERVICE_ENDPOINT
+      - ACCOUNT_DATASOURCE_URL
+      - ACCOUNT_DATASOURCE_USERNAME
+      - ACCOUNT_DATASOURCE_PASSWORD
+    networks:
+      - internal_access
+      - external_access # db access
+
+networks:
+  internal_access:
+    internal: true
+  external_access:
