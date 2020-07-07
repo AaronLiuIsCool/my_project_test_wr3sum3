@@ -88,7 +88,10 @@ More details please go to ask Aaron Liu.
 
 ## Spring health check
 Health check
-http://localhost:8081/actuator
+http://localhost:8081/actuator if you run spring boot without docker compose.
+
+Health check
+http://localhost:8333/actuator if you run docker-compose up.
 
 ## Docker cli
 Run Dockers as below
