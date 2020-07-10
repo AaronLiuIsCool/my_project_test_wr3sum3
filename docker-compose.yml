@@ -5,7 +5,7 @@ services:
     build: ./account-svc
     image: kuaidaoresume/account-svc
     ports: # should covert to reverse proxy @Aaron TODO
-      - "8333:80"
+      - "8333:8081"
     environment:
       - SPRING_PROFILES_ACTIVE
       - SERVER_PORT
