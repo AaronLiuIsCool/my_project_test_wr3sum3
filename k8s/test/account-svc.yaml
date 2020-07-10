@@ -1,20 +1,23 @@
 # https://matthewpalmer.net/kubernetes-app-developer/articles/kubernetes-apiversion-definition-guide.html
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: account-svc-deployment
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: account-svc
   template:
     metadata:
       labels:
         app: account-svc
-        env: uat
+        env: test
     spec:
       containers:
         - name: account-svc
           image: kuaidaoresume/account-svc
-          #imagePullPolicy: Never
+          imagePullPolicy: Never
           ports:
             - name: http-port
               containerPort: 80
@@ -34,3 +37,5 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 80
+      nodePort: 30001 #remove when reverse proxy development done
+  type: NodePort #remove when reverse proxy development done

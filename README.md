@@ -102,4 +102,14 @@ Clean up
 ```docker-compose down```
 
 ## K8S
-TBD Aaron will fill it out.
+Run test local (as account-svc example) initial your services yaml
+1. Go to k8s/test folder
+Run ```kubectl apply -f config```
+2. Go to k8s/ folder
+Run ```kubectl apply -f test```
+3. Go to localhost:30001
+
+Run uat (It's on AWS EKS CA central region)
+TBD
+Run Prod
+TBD

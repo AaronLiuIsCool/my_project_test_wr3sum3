@@ -1,5 +1,5 @@
 # https://matthewpalmer.net/kubernetes-app-developer/articles/kubernetes-apiversion-definition-guide.html
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: account-svc-deployment
@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
         - name: account-svc
-          image: aaronliu/account-svc
+          image: kuaidaoresume/account-svc
           ports:
             - name: http-port
               containerPort: 80
