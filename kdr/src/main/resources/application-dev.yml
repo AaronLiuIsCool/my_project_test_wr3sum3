@@ -1,0 +1,33 @@
+server:
+  port: 80
+
+kdr:
+  enable_programmatic_mapping: false
+  tracing:
+    enabled: false
+  mappings:
+    -
+      name: kdr_route
+      host: kdr.kuaidaoresume-v2.local
+      destinations: httpbin.org
+    -
+      name: account_route
+      host: account.kuaidaoresume-v2.local
+      destinations: localhost:8081
+    -
+      name: whoami_route
+      host: whoami.kuaidaoresume-v2.local
+      destinations: localhost:8084
+      timeout:
+        connect: 10000
+        read: 10000
+    -
+      name: superpowers_route
+      host: superpowers.kuaidaoresume-v2.local
+      destinations: localhost:8085
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

@@ -26,6 +26,7 @@
 		<module>common-lib</module>
 		<module>account-svc</module>
 		<module>account-api</module>
+    <module>kdr</module>
 	</modules>
 
 	<dependencyManagement>

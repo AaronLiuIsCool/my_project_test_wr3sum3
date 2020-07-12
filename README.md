@@ -86,20 +86,31 @@ Thanks for your contributions.
 
 More details please go to ask Aaron Liu.
 
-## Spring health check
-Health check
-http://localhost:8081/actuator if you run spring boot without docker compose.
-
-Health check
-http://localhost:8333/actuator if you run docker-compose up.
-
 ## Docker cli
+Build all docker images locally
+```docker-compose build```
 Run Dockers as below
 ```docker-compose up```
-Check docker container services
+Check docker container services running for all.
 ```docker-compose ps```
 Clean up
 ```docker-compose down```
+
+## Using SwitchsHost to point services to local ips account as below
+```
+127.0.0.1 account.kuaidaoresume-v2.local
+127.0.0.1 kdr.kuaidaoresume-v2.local
+```
+
+## Spring health check
+Gateway health check
+```http://kdr.kuaidaoresume-v2.local/health```
+Each services' itself swagger ui (account services as example.)
+```account.kuaidaoresume-v2.local/swagger-ui.html```
+For actuator
+```account.kuaidaoresume-v2.local/actuator``
+
+Also, you can run ```mvn spring-boot:run``` for each specific micro-service.
 
 ## K8S
 Run test local (as account-svc example) initial your services yaml
