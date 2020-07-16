@@ -38,7 +38,7 @@ public class BasicInfoDtoTest {
         profiles.add(Profile.builder()
                 .id(id)
                 .type(Profile.ProfileType.LINKEDIN)
-                .profileUrl(profileUrl)
+                .url(profileUrl)
                 .build()
         );
 
@@ -90,6 +90,6 @@ public class BasicInfoDtoTest {
         assertThat(basicInfo.getCountry(), is(country));
         assertThat(basicInfo.getProvince(), is(province));
         assertThat(basicInfo.getCity(), is(city));
-        assertThat(basicInfo.getProfiles().get(0), is(Profile.builder().type(PROFILE_TYPE).profileUrl(profileUrl).build()));
+        assertThat(basicInfo.getProfiles().get(0), is(Profile.builder().type(PROFILE_TYPE).url(profileUrl).build()));
     }
 }

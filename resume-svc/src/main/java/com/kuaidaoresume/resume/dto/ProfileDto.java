@@ -1,5 +1,7 @@
 package com.kuaidaoresume.resume.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,6 +15,8 @@ import static com.kuaidaoresume.resume.model.Profile.ProfileType;
 @AllArgsConstructor
 @RequiredArgsConstructor
 @Builder
+@JsonInclude(value = JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ProfileDto {
     @NotNull
     private ProfileType type;

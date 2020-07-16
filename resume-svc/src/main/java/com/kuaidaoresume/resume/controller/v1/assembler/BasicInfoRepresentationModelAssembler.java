@@ -16,7 +16,7 @@ public class BasicInfoRepresentationModelAssembler implements SimpleRepresentati
     @Override
     public void addLinks(EntityModel<BasicInfoDto> resource) {
         String resumeId = resource.getContent().getResumeId();
-        resource.add(linkTo(methodOn(ResumeController.class).findBasicInfo(resumeId)).withRel("resume"));
+        resource.add(linkTo(methodOn(ResumeController.class).findBasicInfo(resumeId)).withRel("resumes"));
     }
 
     @Override

@@ -23,7 +23,7 @@ public class Profile {
     private long id;
     @NotNull
     @URL
-    private String profileUrl;
+    private String url;
     @NotNull
     @Enumerated(EnumType.STRING)
     private ProfileType type;
