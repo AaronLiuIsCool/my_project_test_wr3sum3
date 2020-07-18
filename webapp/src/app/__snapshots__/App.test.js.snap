@@ -58,12 +58,87 @@ exports[`renders App 1`] = `
       TODO: Preview on right
     </div>
   </div>
-  <div>
-    <br />
-    <br />
-    <br />
-    Below is the example code
-  </div>
+  <br />
+  <br />
+  <br />
+  <p>
+    Below is the example Bootstrap Component Wrapper
+  </p>
+  <button
+    className="btn btn-primary"
+    disabled={false}
+    type="button"
+  >
+    Primary
+  </button>
+   
+  <button
+    className="btn btn-secondary"
+    disabled={false}
+    type="button"
+  >
+    Secondary
+  </button>
+   
+  <button
+    className="btn btn-success"
+    disabled={false}
+    type="button"
+  >
+    Success
+  </button>
+   
+  <button
+    className="btn btn-warning"
+    disabled={false}
+    type="button"
+  >
+    Warning
+  </button>
+   
+  <button
+    className="btn btn-danger"
+    disabled={false}
+    type="button"
+  >
+    Danger
+  </button>
+  <button
+    className="btn btn-info"
+    disabled={false}
+    type="button"
+  >
+    Info
+  </button>
+   
+  <button
+    className="btn btn-light"
+    disabled={false}
+    type="button"
+  >
+    Light
+  </button>
+  <button
+    className="btn btn-dark"
+    disabled={false}
+    type="button"
+  >
+    Dark
+  </button>
+   
+  <button
+    className="btn btn-link"
+    disabled={false}
+    type="button"
+  >
+    Link
+  </button>
+  <br />
+  <br />
+  <br />
+  <p>
+    Below is the example code with Redux and Hooks
+  </p>
   <div>
     <div
       className="row"
