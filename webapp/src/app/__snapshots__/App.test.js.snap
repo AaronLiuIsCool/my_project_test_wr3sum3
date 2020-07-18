@@ -1,0 +1,221 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders App 1`] = `
+<div
+  className="App"
+>
+  <div>
+    <div>
+      智能创建
+    </div>
+    <div>
+      Navigation on the left
+    </div>
+    <div>
+      <p>
+        基本信息
+      </p>
+      <p>
+        教育背景
+      </p>
+      <div>
+        <div
+          className="experienceContainer"
+        >
+          <p>
+            Kuaidao
+          </p>
+          <p>
+            Intern
+          </p>
+        </div>
+        <div
+          className="experienceContainer"
+        >
+          <p>
+            Kuaidao
+          </p>
+          <p>
+            Software Engineer
+          </p>
+        </div>
+      </div>
+      <p>
+        项目经历
+      </p>
+      <p>
+        其他经历
+      </p>
+      <p>
+        技能证书
+      </p>
+    </div>
+    <div>
+      Preview on right
+    </div>
+  </div>
+  <div>
+    <br />
+    <br />
+    <br />
+    Below is the example code
+  </div>
+  <div>
+    <div
+      className="row"
+    >
+      <button
+        aria-label="Increment value"
+        className="button"
+        onClick={[Function]}
+      >
+        +
+      </button>
+      <span
+        className="value"
+      >
+        0
+      </span>
+      <button
+        aria-label="Decrement value"
+        className="button"
+        onClick={[Function]}
+      >
+        -
+      </button>
+    </div>
+    <div
+      className="row"
+    >
+      <input
+        aria-label="Set increment amount"
+        className="textbox"
+        onChange={[Function]}
+        value="2"
+      />
+      <button
+        className="button"
+        onClick={[Function]}
+      >
+        Add Amount
+      </button>
+      <button
+        className="asyncButton"
+        onClick={[Function]}
+      >
+        Add Async
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`renders learn react link 1`] = `
+<div
+  className="App"
+>
+  <div>
+    <div>
+      智能创建
+    </div>
+    <div>
+      Navigation on the left
+    </div>
+    <div>
+      <p>
+        基本信息
+      </p>
+      <p>
+        教育背景
+      </p>
+      <div>
+        <div
+          className="experienceContainer"
+        >
+          <p>
+            Kuaidao
+          </p>
+          <p>
+            Intern
+          </p>
+        </div>
+        <div
+          className="experienceContainer"
+        >
+          <p>
+            Kuaidao
+          </p>
+          <p>
+            Software Engineer
+          </p>
+        </div>
+      </div>
+      <p>
+        项目经历
+      </p>
+      <p>
+        其他经历
+      </p>
+      <p>
+        技能证书
+      </p>
+    </div>
+    <div>
+      Preview on right
+    </div>
+  </div>
+  <div>
+    <br />
+    <br />
+    <br />
+    Below is the example code
+  </div>
+  <div>
+    <div
+      className="row"
+    >
+      <button
+        aria-label="Increment value"
+        className="button"
+        onClick={[Function]}
+      >
+        +
+      </button>
+      <span
+        className="value"
+      >
+        0
+      </span>
+      <button
+        aria-label="Decrement value"
+        className="button"
+        onClick={[Function]}
+      >
+        -
+      </button>
+    </div>
+    <div
+      className="row"
+    >
+      <input
+        aria-label="Set increment amount"
+        className="textbox"
+        onChange={[Function]}
+        value="2"
+      />
+      <button
+        className="button"
+        onClick={[Function]}
+      >
+        Add Amount
+      </button>
+      <button
+        className="asyncButton"
+        onClick={[Function]}
+      >
+        Add Async
+      </button>
+    </div>
+  </div>
+</div>
+`;

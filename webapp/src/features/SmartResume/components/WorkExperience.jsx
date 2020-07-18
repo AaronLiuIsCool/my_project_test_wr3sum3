@@ -25,6 +25,7 @@ const WorkExperience = () => {
         <div>
             {employers.map(employer =>
                 <Experience
+                    key={`${employer.name}-${employer.title}`}
                     name={employer.name}
                     title={employer.title}
                 />
