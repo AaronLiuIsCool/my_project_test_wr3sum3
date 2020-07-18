@@ -1,7 +1,20 @@
 import React from 'react';
 
-const LeftNav = () => (
-    <div>Navigation on the left</div>
-);
+import { useI8n } from 'shell/i18n';
+
+const LeftNav = () => {
+    const messages = useI8n();
+    return (
+        <div>
+            TODO: Navigation on the left
+            <p>{messages.basicInfo}</p>
+            <p>{messages.education}</p>
+            <p>{messages.workXp}</p>
+            <p>{messages.projectXp}</p>
+            <p>{messages.otherXp}</p>
+            <p>{messages.certifications}</p>
+        </div>
+    );
+}
 
 export default LeftNav;

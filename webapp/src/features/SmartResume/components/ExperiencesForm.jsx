@@ -4,12 +4,12 @@ import WorkExperience from './WorkExperience';
 
 const ExperiencesForm = () => (
     <div>
-        <p>基本信息</p>
-        <p>教育背景</p>
+        <p>TODO: 基本信息</p>
+        <p>TODO: 教育背景</p>
         <WorkExperience />
-        <p>项目经历</p>
-        <p>其他经历</p>
-        <p>技能证书</p>
+        <p>TODO: 项目经历</p>
+        <p>TODO: 其他经历</p>
+        <p>TODO: 技能证书</p>
     </div>
 );
 

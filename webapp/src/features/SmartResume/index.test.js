@@ -1,17 +1,11 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { configureStore } from '@reduxjs/toolkit';
 import renderer from 'react-test-renderer';
 
-import resumeReducer from './slicers/resumeSlicer';
+import store from 'app/store';
 
-import SmartResume from './SmartResume';
+import SmartResume from './index';
 
-const store = configureStore({
-  reducer: {
-    resume: resumeReducer
-  },
-});
 
 test('renders SmartResume', () => {
   const smartResume = renderer.create(

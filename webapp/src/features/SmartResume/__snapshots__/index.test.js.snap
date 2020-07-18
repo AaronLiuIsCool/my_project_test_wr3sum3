@@ -1,0 +1,58 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders SmartResume 1`] = `
+<div>
+  <div />
+  <div>
+    TODO: Navigation on the left
+    <p />
+    <p />
+    <p />
+    <p />
+    <p />
+    <p />
+  </div>
+  <div>
+    <p>
+      TODO: 基本信息
+    </p>
+    <p>
+      TODO: 教育背景
+    </p>
+    <div>
+      <div
+        className="experienceContainer"
+      >
+        <p>
+          Kuaidao
+        </p>
+        <p>
+          Intern
+        </p>
+      </div>
+      <div
+        className="experienceContainer"
+      >
+        <p>
+          Kuaidao
+        </p>
+        <p>
+          Software Engineer
+        </p>
+      </div>
+    </div>
+    <p>
+      TODO: 项目经历
+    </p>
+    <p>
+      TODO: 其他经历
+    </p>
+    <p>
+      TODO: 技能证书
+    </p>
+  </div>
+  <div>
+    TODO: Preview on right
+  </div>
+</div>
+`;
