@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import org.hibernate.validator.constraints.URL;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -16,27 +15,16 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @Builder
 @Entity
-public class Profile {
+public class Award {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
     @NotNull
-    @URL
-    private String url;
-
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    private ProfileType type;
-
+    private String name;
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "basic_info_id")
+    @JoinColumn(name = "education_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private BasicInfo basicInfo;
-
-    public enum ProfileType {
-        LINKEDIN, GITHUB, OTHER
-    }
+    private Education education;
 }

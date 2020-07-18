@@ -2,8 +2,8 @@ package com.kuaidaoresume.resume.dto;
 
 import com.kuaidaoresume.resume.model.BasicInfo;
 import com.kuaidaoresume.resume.model.Profile;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ public class BasicInfoDtoTest {
 
     private ModelMapper modelMapper;
 
-    @Before
+    @BeforeEach
     public void setup() {
         modelMapper = new ModelMapper();
     }
@@ -90,6 +90,6 @@ public class BasicInfoDtoTest {
         assertThat(basicInfo.getCountry(), is(country));
         assertThat(basicInfo.getProvince(), is(province));
         assertThat(basicInfo.getCity(), is(city));
-        assertThat(basicInfo.getProfiles().get(0), is(Profile.builder().type(PROFILE_TYPE).url(profileUrl).build()));
+        assertThat(basicInfo.getProfiles().size(), is(1));
     }
 }

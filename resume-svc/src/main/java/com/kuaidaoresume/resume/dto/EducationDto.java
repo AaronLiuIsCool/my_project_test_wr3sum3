@@ -7,7 +7,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -17,18 +16,21 @@ import java.util.List;
 @Builder
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class BasicInfoDto {
-    @NotNull
-    private String fullName;
-    private String alias;
+public class EducationDto {
+
     private String country;
-    private String province;
     @NotNull
     private String city;
     @NotNull
-    @Email
-    private String email;
+    private String institution;
     @NotNull
-    private String phoneNumber;
-    private List<ProfileDto> profiles;
+    private String major;
+    @NotNull
+    private String degree;
+    @NotNull
+    private String startDate;
+    @NotNull
+    private String endDate;
+    private String gpa;
+    private List<AwardDto> awards;
 }
