@@ -1,0 +1,107 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders App 1`] = `
+<div>
+  <div>
+    智能创建
+  </div>
+  <div>
+    Navigation on the left
+  </div>
+  <div>
+    <p>
+      基本信息
+    </p>
+    <p>
+      教育背景
+    </p>
+    <div>
+      <div
+        className="experienceContainer"
+      >
+        <p>
+          Kuaidao
+        </p>
+        <p>
+          Intern
+        </p>
+      </div>
+      <div
+        className="experienceContainer"
+      >
+        <p>
+          Kuaidao
+        </p>
+        <p>
+          Software Engineer
+        </p>
+      </div>
+    </div>
+    <p>
+      项目经历
+    </p>
+    <p>
+      其他经历
+    </p>
+    <p>
+      技能证书
+    </p>
+  </div>
+  <div>
+    Preview on right
+  </div>
+</div>
+`;
+
+exports[`renders SmartResume 1`] = `
+<div>
+  <div>
+    智能创建
+  </div>
+  <div>
+    Navigation on the left
+  </div>
+  <div>
+    <p>
+      基本信息
+    </p>
+    <p>
+      教育背景
+    </p>
+    <div>
+      <div
+        className="experienceContainer"
+      >
+        <p>
+          Kuaidao
+        </p>
+        <p>
+          Intern
+        </p>
+      </div>
+      <div
+        className="experienceContainer"
+      >
+        <p>
+          Kuaidao
+        </p>
+        <p>
+          Software Engineer
+        </p>
+      </div>
+    </div>
+    <p>
+      项目经历
+    </p>
+    <p>
+      其他经历
+    </p>
+    <p>
+      技能证书
+    </p>
+  </div>
+  <div>
+    Preview on right
+  </div>
+</div>
+`;
