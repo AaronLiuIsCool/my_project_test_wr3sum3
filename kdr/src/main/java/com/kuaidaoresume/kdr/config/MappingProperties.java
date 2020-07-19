@@ -1,5 +1,7 @@
 package com.kuaidaoresume.kdr.config;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.ArrayList;
@@ -9,6 +11,8 @@ import java.util.Map;
 
 import static org.apache.commons.lang3.builder.ToStringStyle.NO_CLASS_NAME_STYLE;
 
+@Getter
+@Setter
 public class MappingProperties {
   /**
    * Name of the mapping
@@ -27,51 +31,10 @@ public class MappingProperties {
    */
   private TimeoutProperties timeout = new TimeoutProperties();
 
-
   /**
    * Custom properties placeholder.
    */
   private Map<String, Object> customConfiguration = new HashMap<>();
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public String getHost() {
-    return host;
-  }
-
-  public void setHost(String host) {
-    this.host = host;
-  }
-
-  public List<String> getDestinations() {
-    return destinations;
-  }
-
-  public void setDestinations(List<String> destinations) {
-    this.destinations = destinations;
-  }
-
-  public TimeoutProperties getTimeout() {
-    return timeout;
-  }
-
-  public void setTimeout(TimeoutProperties timeout) {
-    this.timeout = timeout;
-  }
-
-  public Map<String, Object> getCustomConfiguration() {
-    return customConfiguration;
-  }
-
-  public void setCustomConfiguration(Map<String, Object> customConfiguration) {
-    this.customConfiguration = customConfiguration;
-  }
 
   public MappingProperties copy() {
     MappingProperties clone = new MappingProperties();
