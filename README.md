@@ -78,6 +78,9 @@ As an example TAIL-123 is your local feature/issue branch.
 ```
 git push origin TAIL-123
 ```
+
+Note: `webapp` has prepush hooks enabled to run unit tests. Please make sure you run `yarn` in `webapp` to have the dependencies install. If you have not made any changes to `webapp`, please run `git push origin TAIL-123 --no-verify`
+
 ### Step 4. Start a Pull Request Review.
 a. Github create a how to pull request in Github UI https://help.github.com/en/desktop/contributing-to-projects/creating-a-pull-request
 Target to upsteam remote. In this case is https://github.com/AaronLiuIsCool/kuaidao-svc.git develop branch.
@@ -88,12 +91,9 @@ Thanks for your contributions.
 
 More details please go to ask Aaron Liu.
 
-## Spring health check
-Health check
-http://localhost:8081/actuator if you run spring boot without docker compose.
+## KDR-svc backend
 
-Health check
-http://localhost:8333/actuator if you run docker-compose up.
+To get the services running locally, you need to build the application first. Please run `mvn install`. Then follow the steps below
 
 ## Docker cli
 Run Dockers as below
@@ -102,6 +102,18 @@ Check docker container services
 ```docker-compose ps```
 Clean up
 ```docker-compose down```
+
+## Spring health check
+Health check
+http://localhost:8081/actuator if you run spring boot without docker compose.
+
+Health check
+http://localhost:8333/actuator if you run docker-compose up.
+
+## Availiable services urls
+
+#### localhost
+TODO
 
 ## K8S
 Run test local (as account-svc example) initial your services yaml
