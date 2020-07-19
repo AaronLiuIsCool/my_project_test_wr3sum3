@@ -1,5 +1,5 @@
 
-# KuaiDaoResume(KDR-svc)
+# KuaiDaoResume
 Kuaidao resume source control Mono-repo.
 
 ## System Requirements
@@ -9,6 +9,8 @@ Kuaidao resume source control Mono-repo.
 * Swagger 2.x
 * Docker engine/cli v19.03.8 or up
 * Kubernetes v1.16.5 or up
+* Node v10.21.0 (lts/dubnium)
+* Yarn v1.22.4 or above
 
 ## First time setup
 We are using git fork-process development.
@@ -113,3 +115,10 @@ Run uat (It's on AWS EKS CA central region)
 TBD
 Run Prod
 TBD
+
+## Web UI
+1. `cd webapp`
+2. `yarn`
+3. For develop build use `yarn start`
+
+Please see [guidelines for webapp](webapp/README.md) for more details
