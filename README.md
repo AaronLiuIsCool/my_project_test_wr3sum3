@@ -1,5 +1,5 @@
 
-# KuaiDaoResume(KDR-svc)
+# KuaiDaoResume
 Kuaidao resume source control Mono-repo.
 
 ## System Requirements
@@ -9,6 +9,8 @@ Kuaidao resume source control Mono-repo.
 * Swagger 2.x
 * Docker engine/cli v19.03.8 or up
 * Kubernetes v1.16.5 or up
+* Node v10.21.0 (lts/dubnium)
+* Yarn v1.22.4 or above
 
 ## First time setup
 We are using git fork-process development.
@@ -76,6 +78,9 @@ As an example TAIL-123 is your local feature/issue branch.
 ```
 git push origin TAIL-123
 ```
+
+Note: `webapp` has prepush hooks enabled to run unit tests. Please make sure you run `yarn` in `webapp` to have the dependencies install. If you have not made any changes to `webapp`, please run `git push origin TAIL-123 --no-verify`
+
 ### Step 4. Start a Pull Request Review.
 a. Github create a how to pull request in Github UI https://help.github.com/en/desktop/contributing-to-projects/creating-a-pull-request
 Target to upsteam remote. In this case is https://github.com/AaronLiuIsCool/kuaidao-svc.git develop branch.
@@ -86,20 +91,35 @@ Thanks for your contributions.
 
 More details please go to ask Aaron Liu.
 
-## Spring health check
-Health check
-http://localhost:8081/actuator if you run spring boot without docker compose.
+## KDR-svc backend
 
-Health check
-http://localhost:8333/actuator if you run docker-compose up.
+To get the services running locally, you need to build the application first. Please run `mvn install`. Then follow the steps below
 
 ## Docker cli
+Build all docker images locally
+```docker-compose build```
 Run Dockers as below
 ```docker-compose up```
-Check docker container services
+Check docker container services running for all.
 ```docker-compose ps```
 Clean up
 ```docker-compose down```
+
+## Using SwitchsHost to point services to local ips account as below
+```
+127.0.0.1 account.kuaidaoresume-v2.local
+127.0.0.1 kdr.kuaidaoresume-v2.local
+```
+
+## Spring health check
+Gateway health check
+```http://kdr.kuaidaoresume-v2.local/health```
+Each services' itself swagger ui (account services as example.)
+```account.kuaidaoresume-v2.local/swagger-ui.html```
+For actuator
+```account.kuaidaoresume-v2.local/actuator``
+
+Also, you can run ```mvn spring-boot:run``` for each specific micro-service.
 
 ## K8S
 Run test local (as account-svc example) initial your services yaml
@@ -113,3 +133,10 @@ Run uat (It's on AWS EKS CA central region)
 TBD
 Run Prod
 TBD
+
+## Web UI
+1. `cd webapp`
+2. `yarn`
+3. For develop build use `yarn start`
+
+Please see [guidelines for webapp](webapp/README.md) for more details

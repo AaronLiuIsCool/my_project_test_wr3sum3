@@ -31,5 +31,4 @@ public class BasicInfoDto {
     @NotNull
     private String phoneNumber;
     private List<ProfileDto> profiles;
-    private String resumeId;
 }

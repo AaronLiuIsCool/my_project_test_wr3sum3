@@ -41,13 +41,13 @@ public class AccountController {
 
     @GetMapping(path = "/get")
     @Authorize(value = {
-            AuthConstant.AUTHORIZATION_WWW_SERVICE,
+            //AuthConstant.AUTHORIZATION_WWW_SERVICE,
             AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
             //AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
             //AuthConstant.AUTHORIZATION_BOT_SERVICE,
-            AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
-            AuthConstant.AUTHORIZATION_SUPPORT_USER,
-            AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
+            //AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
+            //AuthConstant.AUTHORIZATION_SUPPORT_USER,
+            //AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
     })
     public GenericAccountResponse getAccount(@RequestParam @NotBlank String userId) {
         //this.validateAuthenticatedUser(userId);

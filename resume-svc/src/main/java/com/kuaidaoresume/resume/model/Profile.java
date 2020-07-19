@@ -21,12 +21,15 @@ public class Profile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
     @NotNull
     @URL
     private String url;
+
     @NotNull
     @Enumerated(EnumType.STRING)
     private ProfileType type;
+
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "basic_info_id")
