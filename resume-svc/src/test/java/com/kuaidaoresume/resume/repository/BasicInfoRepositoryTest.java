@@ -10,7 +10,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.TestPropertySource;
@@ -73,7 +72,7 @@ public class BasicInfoRepositoryTest {
 
     @Test
     public void whenSaved_thenFindByResumeId() {
-        BasicInfo savedBasicInfo = basicInfoRepository.findByResumeId(resumeId);
+        BasicInfo savedBasicInfo = basicInfoRepository.findByResumeId(resumeId).get();
         assertNotNull(savedBasicInfo);
     }
 

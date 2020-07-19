@@ -26,7 +26,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class BasicInfoController {
 
     @Autowired
-    private ResumeService resumeService;
+    private final ResumeService resumeService;
     @Autowired
     private final BasicInfoRepresentationModelAssembler basicInfoAssembler;
     @Autowired
@@ -41,9 +41,9 @@ public class BasicInfoController {
         AuthConstant.AUTHORIZATION_SUPPORT_USER,
         AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
     })
-    @GetMapping("/basicInfos/{id}")
+    @GetMapping("/basic-infos/{id}")
     public ResponseEntity<EntityModel<PersistedBasicInfoDto>> findById(@PathVariable Long id) {
-        return resumeService.findBasicInfoById(id)
+        return resumeService.findById(id, BasicInfo.class)
             .map(basicInfo -> modelMapper.map(basicInfo, PersistedBasicInfoDto.class))
             .map(basicInfoAssembler::toModel)
             .map(ResponseEntity::ok)
@@ -59,9 +59,9 @@ public class BasicInfoController {
         AuthConstant.AUTHORIZATION_SUPPORT_USER,
         AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
     })
-    @GetMapping("/resumes/{resumeId}/basicInfo")
+    @GetMapping("/resumes/{resumeId}/basic-info")
     public ResponseEntity<EntityModel<PersistedBasicInfoDto>> findByResumeId(@PathVariable String resumeId) {
-        return resumeService.findBasicInfoByResumeId(resumeId)
+        return resumeService.findByResumeId(resumeId, BasicInfo.class)
             .map(basicInfo -> modelMapper.map(basicInfo, PersistedBasicInfoDto.class))
             .map(basicInfoAssembler::toModel)
             .map(entityModel -> {
@@ -81,7 +81,7 @@ public class BasicInfoController {
         AuthConstant.AUTHORIZATION_SUPPORT_USER,
         AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
     })
-    @PostMapping("/resumes/{resumeId}/basicInfo")
+    @PostMapping("/resumes/{resumeId}/basic-info")
     public ResponseEntity<EntityModel<PersistedBasicInfoDto>> create(
         @PathVariable
         String resumeId,
@@ -105,7 +105,7 @@ public class BasicInfoController {
         AuthConstant.AUTHORIZATION_SUPPORT_USER,
         AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
     })
-    @PutMapping("/resumes/{resumeId}/basicInfo")
+    @PutMapping("/resumes/{resumeId}/basic-info")
     public ResponseEntity<EntityModel<PersistedBasicInfoDto>> save(
             @PathVariable
             String resumeId,

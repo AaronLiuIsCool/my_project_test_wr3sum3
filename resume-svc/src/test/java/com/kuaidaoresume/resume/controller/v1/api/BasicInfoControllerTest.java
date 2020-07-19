@@ -41,7 +41,7 @@ public class BasicInfoControllerTest {
 
     private static final String RESUME_ID = "aUUID";
     private static final String FULL_NAME = "fullName";
-    private static final long BASIC_INFO_ID = 1L;
+    private static final Long BASIC_INFO_ID = 1L;
     private static final String ALIAS = "alias";
     private static final String COUNTRY = "Canada";
     private static final String PROVINCE = "province";
@@ -115,9 +115,9 @@ public class BasicInfoControllerTest {
 
     @Test
     public void whenFindById_thenReturn200() throws Exception {
-        given(resumeService.findBasicInfoById(BASIC_INFO_ID)).willReturn(Optional.of(basicInfo));
+        given(resumeService.findById(BASIC_INFO_ID, BasicInfo.class)).willReturn(Optional.of(basicInfo));
 
-        mvc.perform(get("/v1/basicInfos/{id}", BASIC_INFO_ID).accept(MediaTypes.HAL_JSON_VALUE))
+        mvc.perform(get("/v1/basic-infos/{id}", BASIC_INFO_ID).accept(MediaTypes.HAL_JSON_VALUE))
             .andDo(print())
             .andExpect(status().isOk())
             .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaTypes.HAL_JSON_VALUE))
@@ -136,9 +136,9 @@ public class BasicInfoControllerTest {
 
     @Test
     public void whenFindByResumeId_thenReturn200() throws Exception {
-        given(resumeService.findBasicInfoByResumeId(RESUME_ID)).willReturn(Optional.of(basicInfo));
+        given(resumeService.findByResumeId(RESUME_ID, BasicInfo.class)).willReturn(Optional.of(basicInfo));
 
-        mvc.perform(get("/v1/resumes/{resumeId}/basicInfo", RESUME_ID).accept(MediaTypes.HAL_JSON_VALUE))
+        mvc.perform(get("/v1/resumes/{resumeId}/basic-info", RESUME_ID).accept(MediaTypes.HAL_JSON_VALUE))
             .andDo(print())
             .andExpect(status().isOk())
             .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaTypes.HAL_JSON_VALUE))
@@ -151,7 +151,7 @@ public class BasicInfoControllerTest {
             .andExpect(jsonPath("$.phoneNumber", is(PHONE_NUMBER)))
             .andExpect(jsonPath("$.profiles[0].type", is(PROFILE_TYPE.name())))
             .andExpect(jsonPath("$.profiles[0].url", is(PROFILE_URL)))
-            .andExpect(jsonPath("$._links.self.href", is(String.format("http://localhost/v1/resumes/%s/basicInfo", RESUME_ID))))
+            .andExpect(jsonPath("$._links.self.href", is(String.format("http://localhost/v1/resumes/%s/basic-info", RESUME_ID))))
             .andReturn();
     }
 
@@ -159,7 +159,7 @@ public class BasicInfoControllerTest {
     public void whenCreate_thenReturn201() throws Exception {
         given(resumeService.saveBasicInfo(eq(RESUME_ID), any(BasicInfo.class))).willReturn(basicInfo);
 
-        mvc.perform(post("/v1/resumes/{resumeId}/basicInfo", RESUME_ID)
+        mvc.perform(post("/v1/resumes/{resumeId}/basic-info", RESUME_ID)
             .content(objectMapper.writeValueAsString(basicInfoDto))
             .contentType(MediaType.APPLICATION_JSON))
             .andDo(print())
@@ -172,7 +172,7 @@ public class BasicInfoControllerTest {
     public void whenSave_thenReturn202() throws Exception {
         given(resumeService.saveBasicInfo(eq(RESUME_ID), any(BasicInfo.class))).willReturn(basicInfo);
 
-        mvc.perform(put("/v1/resumes/{resumeId}/basicInfo", RESUME_ID)
+        mvc.perform(put("/v1/resumes/{resumeId}/basic-info", RESUME_ID)
             .content(objectMapper.writeValueAsString(persistedBasicInfoDto))
             .contentType(MediaType.APPLICATION_JSON))
             .andDo(print())

@@ -4,27 +4,30 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.sql.Date;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
-public class Award {
+public class Certificate implements ResumeContainable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @NotNull
     private String name;
-    @NotNull
+
+    private Date issueDate;
+
+    private Date expirationDate;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "education_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private Education education;
+    @JoinColumn(name = "resume_id", nullable = false)
+    private Resume resume;
 }

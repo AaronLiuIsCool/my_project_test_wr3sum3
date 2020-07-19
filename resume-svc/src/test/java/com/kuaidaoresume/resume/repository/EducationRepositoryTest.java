@@ -19,8 +19,7 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.List;
-import java.util.TimeZone;
+import java.util.Collection;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -38,7 +37,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @Import(ResumeApplicationTestConfig.class)
 public class EducationRepositoryTest {
 
-    public static final Date NOW = Date.valueOf(LocalDate.now());
+    private static final Date NOW = Date.valueOf(LocalDate.now());
     private Resume resume;
     private Education education;
     private Award award;
@@ -71,7 +70,7 @@ public class EducationRepositoryTest {
 
     @Test
     public void whenSaved_thenFindByResumeId() {
-        List<Education> educations = educationRepository.findAllByResumeId(resume.getId());
+        Collection<Education> educations = educationRepository.findAllByResumeId(resume.getId());
         assertThat(educations.size(), is(1));
         assertTrue(awardRepository.findAll().iterator().hasNext());
     }
@@ -131,7 +130,7 @@ public class EducationRepositoryTest {
 
     @Test
     public void whenSaved_thenDelete() {
-        long id = education.getId();
+        Long id = education.getId();
         educationRepository.deleteById(id);
         assertFalse(educationRepository.findById(id).isPresent());
         assertNull(awardRepository.findByEducationId(id));
