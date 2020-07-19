@@ -1,0 +1,2 @@
+logging:
+  config: /etc/kuaidaoresume/logback-spring.xml

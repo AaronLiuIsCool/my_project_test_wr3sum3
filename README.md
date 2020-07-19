@@ -1,5 +1,5 @@
 
-# KuaiDaoResume(KDR-svc)
+# KuaiDaoResume
 Kuaidao resume source control Mono-repo.
 
 ## System Requirements
@@ -9,6 +9,8 @@ Kuaidao resume source control Mono-repo.
 * Swagger 2.x
 * Docker engine/cli v19.03.8 or up
 * Kubernetes v1.16.5 or up
+* Node v10.21.0 (lts/dubnium)
+* Yarn v1.22.4 or above
 
 ## First time setup
 We are using git fork-process development.
@@ -76,6 +78,9 @@ As an example TAIL-123 is your local feature/issue branch.
 ```
 git push origin TAIL-123
 ```
+
+Note: `webapp` has prepush hooks enabled to run unit tests. Please make sure you run `yarn` in `webapp` to have the dependencies install. If you have not made any changes to `webapp`, please run `git push origin TAIL-123 --no-verify`
+
 ### Step 4. Start a Pull Request Review.
 a. Github create a how to pull request in Github UI https://help.github.com/en/desktop/contributing-to-projects/creating-a-pull-request
 Target to upsteam remote. In this case is https://github.com/AaronLiuIsCool/kuaidao-svc.git develop branch.
@@ -85,6 +90,10 @@ c. Once pull request approved, solve potential conflicts and merge it.
 Thanks for your contributions.
 
 More details please go to ask Aaron Liu.
+
+## KDR-svc backend
+
+To get the services running locally, you need to build the application first. Please run `mvn install`. Then follow the steps below
 
 ## Docker cli
 Build all docker images locally
@@ -124,3 +133,10 @@ Run uat (It's on AWS EKS CA central region)
 TBD
 Run Prod
 TBD
+
+## Web UI
+1. `cd webapp`
+2. `yarn`
+3. For develop build use `yarn start`
+
+Please see [guidelines for webapp](webapp/README.md) for more details
