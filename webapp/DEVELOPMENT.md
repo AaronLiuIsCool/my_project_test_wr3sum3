@@ -27,3 +27,9 @@ Please see [code](src/components/KButton.jsx) as an example.
 Always use internationalization files for user facing strings. This will help us easily update and translate our strings across the application.
 
 Please see [code](src/features/SmartResume/i18n/zh.json) as an example.
+
+## Unit tests
+
+We want to have 100% unit tests coverage for important business logics, for UI related we are using Jest Snapshots.
+
+Please note with code spitting, the top level might get a the fallback loading component. In this case, we want to test the snapshots at feature level without the code spitting lazy load.
