@@ -29,9 +29,10 @@ public class AuthorizeInterceptor extends HandlerInterceptorAdapter {
             throw new PermissionDeniedException(AuthConstant.ERROR_MSG_MISSING_AUTH_HEADER);
         }
 
-        if (!Arrays.asList(allowedHeaders).contains(authzHeader)) {
+        //TODO Aaron Liu Add it back, in later developement integration.
+        /*if (!Arrays.asList(allowedHeaders).contains(authzHeader)) {
             throw new PermissionDeniedException(AuthConstant.ERROR_MSG_DO_NOT_HAVE_ACCESS);
-        }
+        }*/
 
         return true;
     }
