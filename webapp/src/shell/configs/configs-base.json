@@ -1,0 +1,4 @@
+{
+  "env": "preprod",
+  "services-accounts-baseUrl": "account.kuaidaoresume-v2.local"
+}
