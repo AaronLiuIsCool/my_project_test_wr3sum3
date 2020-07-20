@@ -1,6 +1,6 @@
 package com.kuaidaoresume.resume.repository;
 
-import com.kuaidaoresume.resume.config.ResumeApplicationTestConfig;
+import com.kuaidaoresume.resume.config.JpaTestConfig;
 import com.kuaidaoresume.resume.model.BasicInfo;
 import com.kuaidaoresume.resume.model.Profile;
 import com.kuaidaoresume.resume.model.Resume;
@@ -32,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @TestExecutionListeners({
     DependencyInjectionTestExecutionListener.class
 })
-@Import(ResumeApplicationTestConfig.class)
+@Import(JpaTestConfig.class)
 public class BasicInfoRepositoryTest {
 
     private Resume resume;

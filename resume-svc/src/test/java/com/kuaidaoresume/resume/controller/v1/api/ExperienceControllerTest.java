@@ -1,6 +1,7 @@
 package com.kuaidaoresume.resume.controller.v1.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kuaidaoresume.resume.config.ResumeApplicationTestConfig;
 import com.kuaidaoresume.resume.controller.v1.assembler.WorkExperienceRepresentationModelAssembler;
 import com.kuaidaoresume.resume.dto.ExperienceDto;
 import com.kuaidaoresume.resume.dto.PersistedWorkExperienceDto;
@@ -14,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
-import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -38,7 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(WorkExperienceController.class)
-@Import({ WorkExperienceRepresentationModelAssembler.class })
+@Import({ WorkExperienceRepresentationModelAssembler.class, ResumeApplicationTestConfig.class })
 public class ExperienceControllerTest {
 
     private static final String RESUME_ID = "aUUID";
@@ -104,10 +104,10 @@ public class ExperienceControllerTest {
     public void whenFindById_thenReturn200() throws Exception {
         given(resumeService.findById(WORK_EXPERIENCE_ID, WorkExperience.class)).willReturn(Optional.of(workExperience));
 
-        mvc.perform(get("/v1/work-experiences/{id}", WORK_EXPERIENCE_ID).accept(MediaTypes.HAL_JSON_VALUE))
+        mvc.perform(get("/v1/work-experiences/{id}", WORK_EXPERIENCE_ID).accept(MediaType.APPLICATION_JSON))
             .andDo(print())
             .andExpect(status().isOk())
-            .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaTypes.HAL_JSON_VALUE))
+            .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString()))
             .andExpect(jsonPath("$.role", is(ROLE)))
             .andExpect(jsonPath("$.organization", is(ORGANIZATION)))
             .andExpect(jsonPath("$.city", is(CITY)))
@@ -115,25 +115,27 @@ public class ExperienceControllerTest {
             .andExpect(jsonPath("$.startDate", is(START_DATE_TEXT)))
             .andExpect(jsonPath("$.endDate", is(END_DATE_TEXT)))
             .andExpect(jsonPath("$.description", is(DESCRIPTION)))
-            .andExpect(jsonPath("$._links.self.href", is(String.format("http://localhost/v1/work-experiences/%s", WORK_EXPERIENCE_ID))))
+            .andExpect(jsonPath("$.links[0].rel", is("self")))
+            .andExpect(jsonPath("$.links[0].href", is(String.format("http://localhost/v1/work-experiences/%s", WORK_EXPERIENCE_ID))))
             .andReturn();
     }
 
     @Test
     public void whenFindAllByResumeId_thenReturn200() throws Exception {
         given(resumeService.findAllByResumeId(RESUME_ID, WorkExperience.class)).willReturn(Arrays.asList(workExperience));
-        mvc.perform(get("/v1/resumes/{resumeId}/work-experiences", RESUME_ID).accept(MediaTypes.HAL_JSON_VALUE))
+        mvc.perform(get("/v1/resumes/{resumeId}/work-experiences", RESUME_ID).accept(MediaType.APPLICATION_JSON))
             .andDo(print())
             .andExpect(status().isOk())
-            .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaTypes.HAL_JSON_VALUE))
-            .andExpect(jsonPath("$._embedded.work-experiences[0].role", is(ROLE)))
-            .andExpect(jsonPath("$._embedded.work-experiences[0].organization", is(ORGANIZATION)))
-            .andExpect(jsonPath("$._embedded.work-experiences[0].country", is(COUNTRY)))
-            .andExpect(jsonPath("$._embedded.work-experiences[0].city", is(CITY)))
-            .andExpect(jsonPath("$._embedded.work-experiences[0].startDate", is(START_DATE_TEXT)))
-            .andExpect(jsonPath("$._embedded.work-experiences[0].endDate", is(END_DATE_TEXT)))
-            .andExpect(jsonPath("$._embedded.work-experiences[0].description", is(DESCRIPTION)))
-            .andExpect(jsonPath("$._links.self.href", is(String.format("http://localhost/v1/resumes/%s/work-experiences", RESUME_ID))))
+            .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString()))
+            .andExpect(jsonPath("$.content[0].role", is(ROLE)))
+            .andExpect(jsonPath("$.content[0].organization", is(ORGANIZATION)))
+            .andExpect(jsonPath("$.content[0].country", is(COUNTRY)))
+            .andExpect(jsonPath("$.content[0].city", is(CITY)))
+            .andExpect(jsonPath("$.content[0].startDate", is(START_DATE_TEXT)))
+            .andExpect(jsonPath("$.content[0].endDate", is(END_DATE_TEXT)))
+            .andExpect(jsonPath("$.content[0].description", is(DESCRIPTION)))
+            .andExpect(jsonPath("$.links[0].rel", is("self")))
+            .andExpect(jsonPath("$.links[0].href", is(String.format("http://localhost/v1/resumes/%s/work-experiences", RESUME_ID))))
             .andReturn();
     }
 
@@ -146,7 +148,7 @@ public class ExperienceControllerTest {
             .contentType(MediaType.APPLICATION_JSON))
             .andDo(print())
             .andExpect(status().isCreated())
-            .andExpect(content().contentType(MediaTypes.HAL_JSON_VALUE))
+            .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString()))
             .andReturn();
     }
 

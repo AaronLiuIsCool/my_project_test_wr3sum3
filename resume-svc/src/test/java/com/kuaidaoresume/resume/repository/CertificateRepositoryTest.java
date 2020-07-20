@@ -1,6 +1,6 @@
 package com.kuaidaoresume.resume.repository;
 
-import com.kuaidaoresume.resume.config.ResumeApplicationTestConfig;
+import com.kuaidaoresume.resume.config.JpaTestConfig;
 import com.kuaidaoresume.resume.model.Certificate;
 import com.kuaidaoresume.resume.model.Resume;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,7 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 @TestExecutionListeners({
     DependencyInjectionTestExecutionListener.class
 })
-@Import(ResumeApplicationTestConfig.class)
+@Import(JpaTestConfig.class)
 public class CertificateRepositoryTest {
 
     private static final Date NOW = Date.valueOf(LocalDate.now());

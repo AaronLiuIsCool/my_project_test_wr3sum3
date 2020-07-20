@@ -1,6 +1,7 @@
 package com.kuaidaoresume.resume.controller.v1.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kuaidaoresume.resume.config.ResumeApplicationTestConfig;
 import com.kuaidaoresume.resume.controller.v1.assembler.CertificateRepresentationModelAssembler;
 import com.kuaidaoresume.resume.dto.CertificateDto;
 import com.kuaidaoresume.resume.dto.PersistedCertificateDto;
@@ -14,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
-import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -37,7 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(CertificateController.class)
-@Import({ CertificateRepresentationModelAssembler.class })
+@Import({ CertificateRepresentationModelAssembler.class, ResumeApplicationTestConfig.class })
 public class CertificateControllerTest {
 
     private static final String RESUME_ID = "aUUID";
@@ -91,28 +91,31 @@ public class CertificateControllerTest {
     public void whenFindById_thenReturn200() throws Exception {
         given(resumeService.findById(CERTIFICATE_ID, Certificate.class)).willReturn(Optional.of(certificate));
 
-        mvc.perform(get("/v1/certificates/{id}", CERTIFICATE_ID).accept(MediaTypes.HAL_JSON_VALUE))
+        mvc.perform(get("/v1/certificates/{id}", CERTIFICATE_ID).accept(MediaType.APPLICATION_JSON))
             .andDo(print())
             .andExpect(status().isOk())
-            .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaTypes.HAL_JSON_VALUE))
+            .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString()))
             .andExpect(jsonPath("$.name", is(NAME)))
             .andExpect(jsonPath("$.issueDate", is(ISSUE_DATE_TEXT)))
             .andExpect(jsonPath("$.expirationDate", is(EXPIRATION_DATE_TEXT)))
-            .andExpect(jsonPath("$._links.self.href", is(String.format("http://localhost/v1/certificates/%s", CERTIFICATE_ID))))
+            .andExpect(jsonPath("$.links[0].rel", is("self")))
+            .andExpect(jsonPath("$.links[0].href", is(String.format("http://localhost/v1/certificates/%s", CERTIFICATE_ID))))
             .andReturn();
     }
 
     @Test
     public void whenFindAllByResumeId_thenReturn200() throws Exception {
         given(resumeService.findAllByResumeId(RESUME_ID, Certificate.class)).willReturn(Arrays.asList(certificate));
-        mvc.perform(get("/v1/resumes/{resumeId}/certificates", RESUME_ID).accept(MediaTypes.HAL_JSON_VALUE))
+        mvc.perform(get("/v1/resumes/{resumeId}/certificates", RESUME_ID).accept(MediaType.APPLICATION_JSON))
             .andDo(print())
             .andExpect(status().isOk())
-            .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaTypes.HAL_JSON_VALUE))
-            .andExpect(jsonPath("$._embedded.certificates[0].name", is(NAME)))
-            .andExpect(jsonPath("$._embedded.certificates[0].issueDate", is(ISSUE_DATE_TEXT)))
-            .andExpect(jsonPath("$._embedded.certificates[0].expirationDate", is(EXPIRATION_DATE_TEXT)))
-            .andExpect(jsonPath("$._links.self.href", is(String.format("http://localhost/v1/resumes/%s/certificates", RESUME_ID))))
+            .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString()))
+            .andExpect(jsonPath("$.content[0].name", is(NAME)))
+            .andExpect(jsonPath("$.content[0].issueDate", is(ISSUE_DATE_TEXT)))
+            .andExpect(jsonPath("$.content[0].expirationDate", is(EXPIRATION_DATE_TEXT)))
+            .andExpect(jsonPath("$.content[0].expirationDate", is(EXPIRATION_DATE_TEXT)))
+            .andExpect(jsonPath("$.links[0].rel", is("self")))
+            .andExpect(jsonPath("$.links[0].href", is(String.format("http://localhost/v1/resumes/%s/certificates", RESUME_ID))))
             .andReturn();
     }
 
@@ -125,7 +128,7 @@ public class CertificateControllerTest {
             .contentType(MediaType.APPLICATION_JSON))
             .andDo(print())
             .andExpect(status().isCreated())
-            .andExpect(content().contentType(MediaTypes.HAL_JSON_VALUE))
+            .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString()))
             .andReturn();
     }
 

@@ -5,9 +5,17 @@ import com.kuaidaoresume.common.config.KuaidaoresumeRestConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.hateoas.client.LinkDiscoverer;
+import org.springframework.hateoas.client.LinkDiscoverers;
+import org.springframework.hateoas.mediatype.hal.HalLinkDiscoverer;
+import org.springframework.hateoas.server.LinkRelationProvider;
+import org.springframework.hateoas.server.core.EvoInflectorLinkRelationProvider;
+import org.springframework.plugin.core.SimplePluginRegistry;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Executor;
 
 @Configuration
@@ -29,5 +37,17 @@ public class AppConfig {
         executor.setThreadNamePrefix("AsyncThread-");
         executor.initialize();
         return executor;
+    }
+
+    @Bean
+    public LinkDiscoverers discoverers() {
+        List<LinkDiscoverer> plugins = new ArrayList<>();
+        plugins.add(new HalLinkDiscoverer());
+        return new LinkDiscoverers(SimplePluginRegistry.create(plugins));
+    }
+
+    @Bean
+    public LinkRelationProvider provider() {
+        return new EvoInflectorLinkRelationProvider();
     }
 }

@@ -1,6 +1,6 @@
 package com.kuaidaoresume.resume.repository;
 
-import com.kuaidaoresume.resume.config.ResumeApplicationTestConfig;
+import com.kuaidaoresume.resume.config.JpaTestConfig;
 import com.kuaidaoresume.resume.model.Award;
 import com.kuaidaoresume.resume.model.Education;
 import com.kuaidaoresume.resume.model.Resume;
@@ -34,7 +34,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestExecutionListeners({
     DependencyInjectionTestExecutionListener.class
 })
-@Import(ResumeApplicationTestConfig.class)
+@Import(JpaTestConfig.class)
 public class EducationRepositoryTest {
 
     private static final Date NOW = Date.valueOf(LocalDate.now());
