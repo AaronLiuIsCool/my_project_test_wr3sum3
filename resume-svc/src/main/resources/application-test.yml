@@ -3,11 +3,11 @@ spring:
     test
   jpa:
     show-sql: true
-    hibernate.ddl-auto: create-drop
-  datasource:
-    url: jdbc:mysql://localhost:3306/resume_test?useUnicode=true&characterEncoding=utf-8
-    username: root
-    password:
+    #hibernate.ddl-auto: create-drop
+  #datasource:
+    #url: jdbc:mysql://localhost:3306/resume_test?useUnicode=true&characterEncoding=utf-8
+    #username: root
+    #password:
 
 management:
   endpoints:

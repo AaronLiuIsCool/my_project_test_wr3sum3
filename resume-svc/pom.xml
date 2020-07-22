@@ -12,6 +12,8 @@
 
     <artifactId>resume-svc</artifactId>
     <version>0.0.1</version>
+    <name>Kuaidao-Resume-Svc</name>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>

@@ -17,6 +17,20 @@ services:
       - internal_access
       - external_access # db access
 
+  resume-service:
+    build: ./resume-svc
+    image: kuaidaoresume/resume-svc
+    environment:
+      - SPRING_PROFILES_ACTIVE
+      - SERVER_PORT
+      - SIGNING_SECRET
+      - RESUME_DATASOURCE_URL
+      - RESUME_DATASOURCE_USERNAME
+      - RESUME_DATASOURCE_PASSWORD
+    networks:
+      - internal_access
+      - external_access # db access
+
   kdr-service:
     build: ./kdr
     image: kuaidaoresume/kdr-svc
@@ -29,8 +43,8 @@ services:
       - SIGNING_SECRET
     depends_on:
       - account-service
+      - resume-service
       #- job-service
-      #- resume-service
       #- www-service
       #- whoami-service
 #      - ical-service # commented for demo
