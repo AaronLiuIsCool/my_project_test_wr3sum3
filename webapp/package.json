@@ -19,8 +19,9 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "test:nowatch": "CI=true  react-scripts test",
+    "build:prod": "NODE_ENV=production react-scripts build",
+    "test": "NODE_ENV=test react-scripts test",
+    "test:nowatch": "NODE_ENV=test CI=true react-scripts test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

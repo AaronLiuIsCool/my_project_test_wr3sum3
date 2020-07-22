@@ -1,3 +1,5 @@
+root=true
+
 # javascript files
 [*.{js, jsx, ts, tsx}]
 charset = utf-8

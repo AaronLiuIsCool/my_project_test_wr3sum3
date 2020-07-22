@@ -18,11 +18,11 @@ import java.util.Collection;
 @Builder
 @Entity
 @Table(name = "basic_info")
-public class BasicInfo {
+public class BasicInfo implements ResumeContainable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     @NotNull
     private String fullName;
     private String alias;

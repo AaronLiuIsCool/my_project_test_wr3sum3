@@ -1,6 +1,6 @@
 package com.kuaidaoresume.resume.repository;
 
-import com.kuaidaoresume.resume.config.ResumeApplicationTestConfig;
+import com.kuaidaoresume.resume.config.JpaTestConfig;
 import com.kuaidaoresume.resume.model.BasicInfo;
 import com.kuaidaoresume.resume.model.Profile;
 import com.kuaidaoresume.resume.model.Resume;
@@ -10,7 +10,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.TestPropertySource;
@@ -33,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @TestExecutionListeners({
     DependencyInjectionTestExecutionListener.class
 })
-@Import(ResumeApplicationTestConfig.class)
+@Import(JpaTestConfig.class)
 public class BasicInfoRepositoryTest {
 
     private Resume resume;
@@ -73,7 +72,7 @@ public class BasicInfoRepositoryTest {
 
     @Test
     public void whenSaved_thenFindByResumeId() {
-        BasicInfo savedBasicInfo = basicInfoRepository.findByResumeId(resumeId);
+        BasicInfo savedBasicInfo = basicInfoRepository.findByResumeId(resumeId).get();
         assertNotNull(savedBasicInfo);
     }
 

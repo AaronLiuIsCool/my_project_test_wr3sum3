@@ -2,10 +2,10 @@ package com.kuaidaoresume.resume.controller.v1.api;
 
 import com.kuaidaoresume.common.auth.AuthConstant;
 import com.kuaidaoresume.common.auth.Authorize;
-import com.kuaidaoresume.resume.controller.v1.assembler.EducationRepresentationModelAssembler;
-import com.kuaidaoresume.resume.dto.EducationDto;
-import com.kuaidaoresume.resume.dto.PersistedEducationDto;
-import com.kuaidaoresume.resume.model.Education;
+import com.kuaidaoresume.resume.controller.v1.assembler.CertificateRepresentationModelAssembler;
+import com.kuaidaoresume.resume.dto.CertificateDto;
+import com.kuaidaoresume.resume.dto.PersistedCertificateDto;
+import com.kuaidaoresume.resume.model.Certificate;
 import com.kuaidaoresume.resume.service.ResumeService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -28,12 +28,12 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @RestController
 @RequestMapping("/v1")
 @RequiredArgsConstructor
-public class EducationController {
+public class CertificateController {
 
     @Autowired
     private final ResumeService resumeService;
     @Autowired
-    private final EducationRepresentationModelAssembler educationAssembler;
+    private final CertificateRepresentationModelAssembler assembler;
     @Autowired
     private final ModelMapper modelMapper;
 
@@ -46,11 +46,11 @@ public class EducationController {
         AuthConstant.AUTHORIZATION_SUPPORT_USER,
         AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
     })
-    @GetMapping("/educations/{id}")
-    public ResponseEntity<EntityModel<PersistedEducationDto>> findById(@PathVariable Long id) {
-        return resumeService.findById(id, Education.class)
-            .map(education -> modelMapper.map(education, PersistedEducationDto.class))
-            .map(educationAssembler::toModel)
+    @GetMapping("/certificates/{id}")
+    public ResponseEntity<EntityModel<PersistedCertificateDto>> findById(@PathVariable Long id) {
+        return resumeService.findById(id, Certificate.class)
+            .map(certificate -> modelMapper.map(certificate, PersistedCertificateDto.class))
+            .map(assembler::toModel)
             .map(ResponseEntity::ok)
             .orElse(ResponseEntity.notFound().build());
     }
@@ -64,16 +64,16 @@ public class EducationController {
         AuthConstant.AUTHORIZATION_SUPPORT_USER,
         AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
     })
-    @GetMapping("/resumes/{resumeId}/educations")
-    public ResponseEntity<CollectionModel<EntityModel<PersistedEducationDto>>> findAllByResumeId(
+    @GetMapping("/resumes/{resumeId}/certificates")
+    public ResponseEntity<CollectionModel<EntityModel<PersistedCertificateDto>>> findAllByResumeId(
         @PathVariable String resumeId) {
 
-        List<PersistedEducationDto> dtos = resumeService.findAllByResumeId(resumeId, Education.class).stream()
-        .map(education -> modelMapper.map(education, PersistedEducationDto.class)).collect(Collectors.toList());
-        CollectionModel<EntityModel<PersistedEducationDto>> collectionModel = educationAssembler.toCollectionModel(dtos);
+        List<PersistedCertificateDto> dtos = resumeService.findAllByResumeId(resumeId, Certificate.class).stream()
+            .map(certificate -> modelMapper.map(certificate, PersistedCertificateDto.class)).collect(Collectors.toList());
+        CollectionModel<EntityModel<PersistedCertificateDto>> collectionModel = assembler.toCollectionModel(dtos);
 
         Links links = collectionModel.getLinks().merge(Links.MergeMode.REPLACE_BY_REL,
-            linkTo(methodOn(EducationController.class).findAllByResumeId(resumeId)).withSelfRel());
+            linkTo(methodOn(CertificateController.class).findAllByResumeId(resumeId)).withSelfRel());
         return ResponseEntity.ok(CollectionModel.of(collectionModel.getContent(), links));
     }
 
@@ -86,19 +86,16 @@ public class EducationController {
         AuthConstant.AUTHORIZATION_SUPPORT_USER,
         AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
     })
-    @PostMapping("/resumes/{resumeId}/educations")
-    public ResponseEntity<EntityModel<PersistedEducationDto>> create(
-        @PathVariable
-        String resumeId,
-        @Valid
-        @RequestBody
-        EducationDto educationDto) {
+    @PostMapping("/resumes/{resumeId}/certificates")
+    public ResponseEntity<EntityModel<PersistedCertificateDto>> create(
+        @PathVariable String resumeId,
+        @Valid @RequestBody CertificateDto certificateDto) {
 
-        Education education = modelMapper.map(educationDto, Education.class);
-        Education saved = resumeService.newEducation(resumeId, education);
-        EntityModel<PersistedEducationDto> entityModel =
-            educationAssembler.toModel(modelMapper.map(saved, PersistedEducationDto.class));
-        return ResponseEntity.created(educationAssembler.getSelfLink(entityModel).toUri()).body(entityModel);
+        Certificate certificate = modelMapper.map(certificateDto, Certificate.class);
+        Certificate saved = resumeService.newCertificate(resumeId, certificate);
+        EntityModel<PersistedCertificateDto> entityModel =
+            assembler.toModel(modelMapper.map(saved, PersistedCertificateDto.class));
+        return ResponseEntity.created(assembler.getSelfLink(entityModel).toUri()).body(entityModel);
     }
 
     @Authorize(value = {
@@ -110,20 +107,17 @@ public class EducationController {
         AuthConstant.AUTHORIZATION_SUPPORT_USER,
         AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
     })
-    @PutMapping("/educations/{id}")
-    public ResponseEntity<EntityModel<PersistedEducationDto>> save(
-        @PathVariable
-        Long id,
-        @Valid
-        @RequestBody
-        PersistedEducationDto educationDto) {
+    @PutMapping("/certificates/{id}")
+    public ResponseEntity<EntityModel<PersistedCertificateDto>> save(
+        @PathVariable Long id,
+        @Valid @RequestBody PersistedCertificateDto certificateDto) {
 
-        Education toUpdate = modelMapper.map(educationDto, Education.class);
+        Certificate toUpdate = modelMapper.map(certificateDto, Certificate.class);
         toUpdate.setId(id);
-        resumeService.save(toUpdate, Education.class);
-        EntityModel<PersistedEducationDto> entityModel =
-            educationAssembler.toModel(modelMapper.map(toUpdate, PersistedEducationDto.class));
-        return ResponseEntity.noContent().location(educationAssembler.getSelfLink(entityModel).toUri()).build();
+        resumeService.save(toUpdate, Certificate.class);
+        EntityModel<PersistedCertificateDto> entityModel =
+            assembler.toModel(modelMapper.map(toUpdate, PersistedCertificateDto.class));
+        return ResponseEntity.noContent().location(assembler.getSelfLink(entityModel).toUri()).build();
     }
 
     @Authorize(value = {
@@ -135,21 +129,19 @@ public class EducationController {
         AuthConstant.AUTHORIZATION_SUPPORT_USER,
         AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
     })
-    @PutMapping("/resumes/{resumeId}/educations")
-    public ResponseEntity<CollectionModel<EntityModel<PersistedEducationDto>>> saveAll(
-        @PathVariable
-        String resumeId,
-        @Valid
-        @RequestBody
-        List<PersistedEducationDto> educationDtoBatch) {
+    @PutMapping("/resumes/{resumeId}/certificates")
+    public ResponseEntity<CollectionModel<EntityModel<PersistedCertificateDto>>> saveAll(
+        @PathVariable String resumeId,
+        @Valid @RequestBody List<PersistedCertificateDto> certificateDtosBatch) {
 
-        Iterable<Education> batchToUpdate = educationDtoBatch.stream()
-            .map(educationDto -> modelMapper.map(educationDto, Education.class))
+        Iterable<Certificate> batchToUpdate = certificateDtosBatch.stream()
+            .map(certificateDto -> modelMapper.map(certificateDto, Certificate.class))
             .collect(Collectors.toList());
-        Collection<Education> saved = resumeService.saveEducations(resumeId, batchToUpdate);
-        CollectionModel<EntityModel<PersistedEducationDto>> collectionModel = educationAssembler
-            .toCollectionModel(saved.stream().map(education -> modelMapper.map(education, PersistedEducationDto.class))
-            .collect(Collectors.toList()));
+        Collection<Certificate> saved = resumeService.saveCertificates(resumeId, batchToUpdate);
+        CollectionModel<EntityModel<PersistedCertificateDto>> collectionModel = assembler
+            .toCollectionModel(saved.stream().map(certificate ->
+                modelMapper.map(certificate, PersistedCertificateDto.class))
+                .collect(Collectors.toList()));
         return ResponseEntity.noContent().location(
             collectionModel.getRequiredLink(IanaLinkRelations.SELF).toUri()).build();
     }
@@ -163,9 +155,9 @@ public class EducationController {
         AuthConstant.AUTHORIZATION_SUPPORT_USER,
         AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
     })
-    @DeleteMapping("/educations/{id}")
+    @DeleteMapping("/certificates/{id}")
     public ResponseEntity<?> deleteById(@PathVariable Long id) {
-        resumeService.deleteById(id, Education.class);
+        resumeService.deleteById(id, Certificate.class);
         return ResponseEntity.noContent().build();
     }
 
@@ -178,9 +170,9 @@ public class EducationController {
         AuthConstant.AUTHORIZATION_SUPPORT_USER,
         AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
     })
-    @DeleteMapping("/resumes/{resumeId}/educations")
+    @DeleteMapping("/resumes/{resumeId}/certificates")
     public ResponseEntity<?> deleteAllByResumeId(@PathVariable String resumeId) {
-        resumeService.deleteAllByResumeId(resumeId, Education.class);
+        resumeService.deleteAllByResumeId(resumeId, Certificate.class);
         return ResponseEntity.noContent().build();
     }
 }
