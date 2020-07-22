@@ -28,8 +28,6 @@
 		<module>account-svc</module>
 		<module>account-api</module>
 		<module>resume-svc</module>
-    <module>mail-api</module>
-    <module>mail-svc</module>
     <module>kdr</module>
 	</modules>
 
