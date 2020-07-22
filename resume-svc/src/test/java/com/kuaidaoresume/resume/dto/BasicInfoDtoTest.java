@@ -15,7 +15,7 @@ import static org.junit.Assert.assertNotNull;
 
 public class BasicInfoDtoTest {
     public static final Profile.ProfileType PROFILE_TYPE = Profile.ProfileType.LINKEDIN;
-    private final long id = 1L;
+    private final Long id = 1L;
     private final String fullName = "aFullName";
     private final String alias = "aAlias";
     private final String country = "aCountry";

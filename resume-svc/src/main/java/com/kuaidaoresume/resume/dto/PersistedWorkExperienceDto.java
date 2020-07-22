@@ -10,9 +10,8 @@ import javax.validation.constraints.NotNull;
 @Data
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-@Relation(itemRelation = "basic-infos", collectionRelation = "basic-infos")
-public class PersistedBasicInfoDto extends BasicInfoDto implements PersistedEntityDto<Long> {
-
+@Relation(itemRelation = "work-experiences", collectionRelation = "work-experiences")
+public class PersistedWorkExperienceDto extends ExperienceDto implements PersistedEntityDto<Long> {
     @NotNull
     private Long id;
 }

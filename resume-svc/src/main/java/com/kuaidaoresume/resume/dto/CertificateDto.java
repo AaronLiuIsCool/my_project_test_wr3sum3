@@ -2,17 +2,25 @@ package com.kuaidaoresume.resume.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import org.springframework.hateoas.server.core.Relation;
+import lombok.RequiredArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 
 @Data
+@AllArgsConstructor
+@RequiredArgsConstructor
+@Builder
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-@Relation(itemRelation = "basic-infos", collectionRelation = "basic-infos")
-public class PersistedBasicInfoDto extends BasicInfoDto implements PersistedEntityDto<Long> {
+public class CertificateDto {
 
     @NotNull
-    private Long id;
+    private String name;
+
+    private String issueDate;
+
+    private String expirationDate;
 }

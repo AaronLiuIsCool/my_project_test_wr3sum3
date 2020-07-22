@@ -2,12 +2,10 @@ package com.kuaidaoresume.resume.controller.v1.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kuaidaoresume.resume.config.ResumeApplicationTestConfig;
-import com.kuaidaoresume.resume.controller.v1.assembler.EducationRepresentationModelAssembler;
-import com.kuaidaoresume.resume.dto.AwardDto;
-import com.kuaidaoresume.resume.dto.EducationDto;
-import com.kuaidaoresume.resume.dto.PersistedEducationDto;
-import com.kuaidaoresume.resume.model.Award;
-import com.kuaidaoresume.resume.model.Education;
+import com.kuaidaoresume.resume.controller.v1.assembler.WorkExperienceRepresentationModelAssembler;
+import com.kuaidaoresume.resume.dto.ExperienceDto;
+import com.kuaidaoresume.resume.dto.PersistedWorkExperienceDto;
+import com.kuaidaoresume.resume.model.WorkExperience;
 import com.kuaidaoresume.resume.service.ResumeService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,35 +37,29 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(SpringExtension.class)
-@WebMvcTest(EducationController.class)
-@Import({ EducationRepresentationModelAssembler.class, ResumeApplicationTestConfig.class })
-public class EducationControllerTest {
+@WebMvcTest(WorkExperienceController.class)
+@Import({ WorkExperienceRepresentationModelAssembler.class, ResumeApplicationTestConfig.class })
+public class ExperienceControllerTest {
 
     private static final String RESUME_ID = "aUUID";
-    private static final Long EDUCATION_ID = 1L;
+    private static final Long WORK_EXPERIENCE_ID = 1L;
+    private static final String ROLE = "CEO";
+    private static final String ORGANIZATION = "Delos Inc.";
     private static final String COUNTRY = "Canada";
     private static final String CITY = "Vancouver";
-    private static final String INSTITUTION = "UBC";
-    private static final String MAJOR = "arts";
-    private static final String DEGREE = "master";
+    private static final String DESCRIPTION = "I nailed it.";
     private static final String TIMEZONE = TimeZone.getDefault().getDisplayName();
-    private static final String GPA = "4.0";
     private static final Date START_DATE = Date.valueOf(LocalDate.of(2000, 1, 1));
     private static final Date END_DATE = Date.valueOf(LocalDate.of(2001, 1, 1));
-    private static final String AWARD_NAME = "nobel";
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE;
     private static final String START_DATE_TEXT = START_DATE.toLocalDate().format(FORMATTER);
     private static final String END_DATE_TEXT = END_DATE.toLocalDate().format(FORMATTER);
 
-    private Education education;
+    private WorkExperience workExperience;
 
-    private EducationDto educationDto;
+    private ExperienceDto experienceDto;
 
-    private PersistedEducationDto persistedEducationDto;
-
-    private Award award;
-
-    private AwardDto awardDto;
+    private PersistedWorkExperienceDto persistedWorkExperienceDto;
 
     @Autowired
     private MockMvc mvc;
@@ -83,85 +75,76 @@ public class EducationControllerTest {
 
     @BeforeEach
     public void setup() {
-        awardDto = new AwardDto(AWARD_NAME);
-
-        educationDto = EducationDto.builder()
-            .country(COUNTRY)
+        experienceDto = ExperienceDto.builder()
+            .role(ROLE)
+            .organization(ORGANIZATION)
             .city(CITY)
-            .institution(INSTITUTION)
-            .major(MAJOR)
-            .degree(DEGREE)
-            .gpa(GPA)
+            .country(COUNTRY)
             .startDate(START_DATE_TEXT)
             .endDate(END_DATE_TEXT)
-            .awards(Arrays.asList(awardDto))
+            .description(DESCRIPTION)
             .build();
 
-        persistedEducationDto = modelMapper.map(educationDto, PersistedEducationDto.class);
-        persistedEducationDto.setId(EDUCATION_ID);
+        persistedWorkExperienceDto = modelMapper.map(experienceDto, PersistedWorkExperienceDto.class);
+        persistedWorkExperienceDto.setId(WORK_EXPERIENCE_ID);
 
-        education = Education.builder()
-            .id(EDUCATION_ID)
-            .country(COUNTRY)
+        workExperience = WorkExperience.builder()
+            .id(WORK_EXPERIENCE_ID)
+            .role(ROLE)
+            .organization(ORGANIZATION)
             .city(CITY)
-            .institution(INSTITUTION)
-            .major(MAJOR)
-            .degree(DEGREE)
-            .gpa(GPA)
+            .country(COUNTRY)
             .startDate(START_DATE)
             .endDate(END_DATE)
+            .description(DESCRIPTION)
             .build();
-        award = Award.builder().name(AWARD_NAME).education(education).build();
-        education.setAwards(Arrays.asList(award));
     }
 
     @Test
     public void whenFindById_thenReturn200() throws Exception {
-        given(resumeService.findById(EDUCATION_ID, Education.class)).willReturn(Optional.of(education));
+        given(resumeService.findById(WORK_EXPERIENCE_ID, WorkExperience.class)).willReturn(Optional.of(workExperience));
 
-        mvc.perform(get("/v1/educations/{id}", EDUCATION_ID).accept(MediaType.APPLICATION_JSON))
+        mvc.perform(get("/v1/work-experiences/{id}", WORK_EXPERIENCE_ID).accept(MediaType.APPLICATION_JSON))
             .andDo(print())
             .andExpect(status().isOk())
             .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString()))
-            .andExpect(jsonPath("$.country", is(COUNTRY)))
+            .andExpect(jsonPath("$.role", is(ROLE)))
+            .andExpect(jsonPath("$.organization", is(ORGANIZATION)))
             .andExpect(jsonPath("$.city", is(CITY)))
-            .andExpect(jsonPath("$.institution", is(INSTITUTION)))
-            .andExpect(jsonPath("$.major", is(MAJOR)))
-            .andExpect(jsonPath("$.degree", is(DEGREE)))
-            .andExpect(jsonPath("$.gpa", is(GPA)))
+            .andExpect(jsonPath("$.country", is(COUNTRY)))
             .andExpect(jsonPath("$.startDate", is(START_DATE_TEXT)))
             .andExpect(jsonPath("$.endDate", is(END_DATE_TEXT)))
+            .andExpect(jsonPath("$.description", is(DESCRIPTION)))
             .andExpect(jsonPath("$.links[0].rel", is("self")))
-            .andExpect(jsonPath("$.links[0].href", is(String.format("http://localhost/v1/educations/%s", EDUCATION_ID))))
+            .andExpect(jsonPath("$.links[0].href", is(String.format("http://localhost/v1/work-experiences/%s", WORK_EXPERIENCE_ID))))
             .andReturn();
     }
 
     @Test
     public void whenFindAllByResumeId_thenReturn200() throws Exception {
-        given(resumeService.findAllByResumeId(RESUME_ID, Education.class)).willReturn(Arrays.asList(education));
-        mvc.perform(get("/v1/resumes/{resumeId}/educations", RESUME_ID).accept(MediaType.APPLICATION_JSON))
+        given(resumeService.findAllByResumeId(RESUME_ID, WorkExperience.class)).willReturn(Arrays.asList(workExperience));
+        mvc.perform(get("/v1/resumes/{resumeId}/work-experiences", RESUME_ID).accept(MediaType.APPLICATION_JSON))
             .andDo(print())
             .andExpect(status().isOk())
             .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString()))
+            .andExpect(jsonPath("$.content[0].role", is(ROLE)))
+            .andExpect(jsonPath("$.content[0].organization", is(ORGANIZATION)))
             .andExpect(jsonPath("$.content[0].country", is(COUNTRY)))
             .andExpect(jsonPath("$.content[0].city", is(CITY)))
-            .andExpect(jsonPath("$.content[0].institution", is(INSTITUTION)))
-            .andExpect(jsonPath("$.content[0].major", is(MAJOR)))
-            .andExpect(jsonPath("$.content[0].degree", is(DEGREE)))
-            .andExpect(jsonPath("$.content[0].gpa", is(GPA)))
             .andExpect(jsonPath("$.content[0].startDate", is(START_DATE_TEXT)))
             .andExpect(jsonPath("$.content[0].endDate", is(END_DATE_TEXT)))
+            .andExpect(jsonPath("$.content[0].description", is(DESCRIPTION)))
             .andExpect(jsonPath("$.links[0].rel", is("self")))
-            .andExpect(jsonPath("$.links[0].href", is(String.format("http://localhost/v1/resumes/%s/educations", RESUME_ID))))
+            .andExpect(jsonPath("$.links[0].href", is(String.format("http://localhost/v1/resumes/%s/work-experiences", RESUME_ID))))
             .andReturn();
     }
 
     @Test
     public void whenCreate_thenReturn201() throws Exception {
-        given(resumeService.newEducation(eq(RESUME_ID), any(Education.class))).willReturn(education);
+        given(resumeService.newWorkExperience(eq(RESUME_ID), any(WorkExperience.class))).willReturn(workExperience);
 
-        mvc.perform(post("/v1/resumes/{resumeId}/educations", RESUME_ID)
-            .content(objectMapper.writeValueAsString(educationDto))
+        mvc.perform(post("/v1/resumes/{resumeId}/work-experiences", RESUME_ID)
+            .content(objectMapper.writeValueAsString(experienceDto))
             .contentType(MediaType.APPLICATION_JSON))
             .andDo(print())
             .andExpect(status().isCreated())
@@ -171,10 +154,10 @@ public class EducationControllerTest {
 
     @Test
     public void whenSave_thenReturn202() throws Exception {
-        doNothing().when(resumeService).save(education, Education.class);
+        doNothing().when(resumeService).save(workExperience, WorkExperience.class);
 
-        mvc.perform(put("/v1/educations/{id}", EDUCATION_ID)
-            .content(objectMapper.writeValueAsString(persistedEducationDto))
+        mvc.perform(put("/v1/work-experiences/{id}", WORK_EXPERIENCE_ID)
+            .content(objectMapper.writeValueAsString(persistedWorkExperienceDto))
             .contentType(MediaType.APPLICATION_JSON))
             .andDo(print())
             .andExpect(status().isNoContent())
@@ -183,9 +166,9 @@ public class EducationControllerTest {
 
     @Test
     public void whenDeleteById_thenReturn202() throws Exception {
-        doNothing().when(resumeService).deleteById(EDUCATION_ID, Education.class);
+        doNothing().when(resumeService).deleteById(WORK_EXPERIENCE_ID, WorkExperience.class);
 
-        mvc.perform(delete("/v1/educations/{id}", EDUCATION_ID))
+        mvc.perform(delete("/v1/work-experiences/{id}", WORK_EXPERIENCE_ID))
             .andDo(print())
             .andExpect(status().isNoContent())
             .andReturn();
@@ -193,9 +176,9 @@ public class EducationControllerTest {
 
     @Test
     public void whenDeleteAllByResumeId_thenReturn202() throws Exception {
-        doNothing().when(resumeService).deleteAllByResumeId(RESUME_ID, Education.class);
+        doNothing().when(resumeService).deleteAllByResumeId(RESUME_ID, WorkExperience.class);
 
-        mvc.perform(delete("/v1/resumes/{resumeId}/educations", RESUME_ID))
+        mvc.perform(delete("/v1/resumes/{resumeId}/work-experiences", RESUME_ID))
             .andDo(print())
             .andExpect(status().isNoContent())
             .andReturn();
