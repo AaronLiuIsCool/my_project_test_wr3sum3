@@ -1,11 +1,14 @@
 import React from 'react';
 
 import WorkExperience from './WorkExperience';
+import BasicExperience from './BasicExperience';
+import EducationExperience from './EducationExperience';
 
 const ExperiencesForm = () => (
     <div>
-        <p>TODO: 基本信息</p>
-        <p>TODO: 教育背景</p>
+        <p>TODO: update progress bar</p>
+        <BasicExperience />
+        <EducationExperience />
         <WorkExperience />
         <p>TODO: 项目经历</p>
         <p>TODO: 其他经历</p>

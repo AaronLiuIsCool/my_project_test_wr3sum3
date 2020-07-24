@@ -9,7 +9,7 @@ In `kuaidao/webapp`, you can install dependencies by run
 
 ### `yarn`
 
-## Ongoing evelopment
+## Ongoing Development
 
 Please use [this guideline](DEVELOPMENT.md) to as initial help. You can also run below commands to run/test/build the application
 
