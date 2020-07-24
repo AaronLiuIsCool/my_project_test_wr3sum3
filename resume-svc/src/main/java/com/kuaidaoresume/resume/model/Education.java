@@ -15,24 +15,32 @@ import java.util.Collection;
 @AllArgsConstructor
 @Builder
 @Entity
-public class Education {
+public class Education implements ResumeContainable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
+
     private String country;
+
     @NotNull
     private String city;
+
     @NotNull
     private String institution;
+
     @NotNull
     private String major;
+
     @NotNull
     private String degree;
+
     @NotNull
     private Date startDate;
+
     @NotNull
     private Date endDate;
+
     private String gpa;
 
     @OneToMany(mappedBy = "education", cascade = CascadeType.ALL, orphanRemoval = true)

@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TestAwardRepository extends CrudRepository<Award, Long> {
-    Award findByEducationId(long educationId);
+    Award findByEducationId(Long educationId);
 }

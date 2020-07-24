@@ -1,6 +1,7 @@
 package com.kuaidaoresume.resume.controller.v1.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kuaidaoresume.resume.config.ResumeApplicationTestConfig;
 import com.kuaidaoresume.resume.controller.v1.assembler.BasicInfoRepresentationModelAssembler;
 import com.kuaidaoresume.resume.dto.BasicInfoDto;
 import com.kuaidaoresume.resume.dto.PersistedBasicInfoDto;
@@ -17,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
-import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -36,12 +36,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(BasicInfoController.class)
-@Import({ BasicInfoRepresentationModelAssembler.class })
+@Import({ BasicInfoRepresentationModelAssembler.class, ResumeApplicationTestConfig.class })
 public class BasicInfoControllerTest {
 
     private static final String RESUME_ID = "aUUID";
     private static final String FULL_NAME = "fullName";
-    private static final long BASIC_INFO_ID = 1L;
+    private static final Long BASIC_INFO_ID = 1L;
     private static final String ALIAS = "alias";
     private static final String COUNTRY = "Canada";
     private static final String PROVINCE = "province";
@@ -115,12 +115,12 @@ public class BasicInfoControllerTest {
 
     @Test
     public void whenFindById_thenReturn200() throws Exception {
-        given(resumeService.findBasicInfoById(BASIC_INFO_ID)).willReturn(Optional.of(basicInfo));
+        given(resumeService.findById(BASIC_INFO_ID, BasicInfo.class)).willReturn(Optional.of(basicInfo));
 
-        mvc.perform(get("/v1/basicInfos/{id}", BASIC_INFO_ID).accept(MediaTypes.HAL_JSON_VALUE))
+        mvc.perform(get("/v1/basic-infos/{id}", BASIC_INFO_ID).accept(MediaType.APPLICATION_JSON))
             .andDo(print())
             .andExpect(status().isOk())
-            .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaTypes.HAL_JSON_VALUE))
+            .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString()))
             .andExpect(jsonPath("$.fullName", is(FULL_NAME)))
             .andExpect(jsonPath("$.alias", is(ALIAS)))
             .andExpect(jsonPath("$.country", is(COUNTRY)))
@@ -130,18 +130,19 @@ public class BasicInfoControllerTest {
             .andExpect(jsonPath("$.phoneNumber", is(PHONE_NUMBER)))
             .andExpect(jsonPath("$.profiles[0].type", is(PROFILE_TYPE.name())))
             .andExpect(jsonPath("$.profiles[0].url", is(PROFILE_URL)))
-            .andExpect(jsonPath("$._links.self.href", is(String.format("http://localhost/v1/basicInfos/%s", BASIC_INFO_ID))))
+            .andExpect(jsonPath("$.links[0].rel", is("self")))
+            .andExpect(jsonPath("$.links[0].href", is(String.format("http://localhost/v1/basic-infos/%s", BASIC_INFO_ID))))
             .andReturn();
     }
 
     @Test
     public void whenFindByResumeId_thenReturn200() throws Exception {
-        given(resumeService.findBasicInfoByResumeId(RESUME_ID)).willReturn(Optional.of(basicInfo));
+        given(resumeService.findByResumeId(RESUME_ID, BasicInfo.class)).willReturn(Optional.of(basicInfo));
 
-        mvc.perform(get("/v1/resumes/{resumeId}/basicInfo", RESUME_ID).accept(MediaTypes.HAL_JSON_VALUE))
+        mvc.perform(get("/v1/resumes/{resumeId}/basic-info", RESUME_ID).accept(MediaType.APPLICATION_JSON))
             .andDo(print())
             .andExpect(status().isOk())
-            .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaTypes.HAL_JSON_VALUE))
+            .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString()))
             .andExpect(jsonPath("$.fullName", is(FULL_NAME)))
             .andExpect(jsonPath("$.alias", is(ALIAS)))
             .andExpect(jsonPath("$.country", is(COUNTRY)))
@@ -151,7 +152,8 @@ public class BasicInfoControllerTest {
             .andExpect(jsonPath("$.phoneNumber", is(PHONE_NUMBER)))
             .andExpect(jsonPath("$.profiles[0].type", is(PROFILE_TYPE.name())))
             .andExpect(jsonPath("$.profiles[0].url", is(PROFILE_URL)))
-            .andExpect(jsonPath("$._links.self.href", is(String.format("http://localhost/v1/resumes/%s/basicInfo", RESUME_ID))))
+            .andExpect(jsonPath("$.links[1].rel", is("self")))
+            .andExpect(jsonPath("$.links[1].href", is(String.format("http://localhost/v1/resumes/%s/basic-info", RESUME_ID))))
             .andReturn();
     }
 
@@ -159,12 +161,12 @@ public class BasicInfoControllerTest {
     public void whenCreate_thenReturn201() throws Exception {
         given(resumeService.saveBasicInfo(eq(RESUME_ID), any(BasicInfo.class))).willReturn(basicInfo);
 
-        mvc.perform(post("/v1/resumes/{resumeId}/basicInfo", RESUME_ID)
+        mvc.perform(post("/v1/resumes/{resumeId}/basic-info", RESUME_ID)
             .content(objectMapper.writeValueAsString(basicInfoDto))
             .contentType(MediaType.APPLICATION_JSON))
             .andDo(print())
             .andExpect(status().isCreated())
-            .andExpect(content().contentType(MediaTypes.HAL_JSON_VALUE))
+            .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString()))
             .andReturn();
     }
 
@@ -172,7 +174,7 @@ public class BasicInfoControllerTest {
     public void whenSave_thenReturn202() throws Exception {
         given(resumeService.saveBasicInfo(eq(RESUME_ID), any(BasicInfo.class))).willReturn(basicInfo);
 
-        mvc.perform(put("/v1/resumes/{resumeId}/basicInfo", RESUME_ID)
+        mvc.perform(put("/v1/resumes/{resumeId}/basic-info", RESUME_ID)
             .content(objectMapper.writeValueAsString(persistedBasicInfoDto))
             .contentType(MediaType.APPLICATION_JSON))
             .andDo(print())

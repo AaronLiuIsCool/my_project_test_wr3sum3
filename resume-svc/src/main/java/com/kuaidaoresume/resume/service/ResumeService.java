@@ -1,30 +1,35 @@
 package com.kuaidaoresume.resume.service;
 
-import com.kuaidaoresume.resume.model.BasicInfo;
-import com.kuaidaoresume.resume.model.Education;
+import com.kuaidaoresume.resume.model.*;
 
 import java.util.Collection;
 import java.util.Optional;
 
 public interface ResumeService {
 
-    BasicInfo saveBasicInfo(String resumeId, BasicInfo basicInfo);
+    <T extends ResumeContainable> Optional<T> findById(Long id, Class<? extends ResumeContainable> type);
 
-    Optional<BasicInfo> findBasicInfoByResumeId(String resumeId);
+    <T extends ResumeContainable> Optional<T> findByResumeId(String resumeId, Class<? extends ResumeContainable> type);
 
-    Optional<BasicInfo> findBasicInfoById(Long id);
+    <T extends ResumeContainable> Collection<T> findAllByResumeId(String resumeId, Class<? extends ResumeContainable> type);
 
-    Optional<Education> findEducationById(Long id);
+    <T extends ResumeContainable> void save(T toSave, Class<? extends ResumeContainable> type);
 
-    Collection<Education> findEducationsByResumeId(String resumeId);
+    void deleteById(Long id, Class<? extends ResumeContainable> type);
+
+    void deleteAllByResumeId(String resumeId, Class<? extends ResumeContainable> type);
+
+    BasicInfo saveBasicInfo(String resumeId, BasicInfo basicInfoToSave);
 
     Education newEducation(String resumeId, Education education);
 
-    Education saveEducation(Education education);
-
     Collection<Education> saveEducations(String resumeId, Iterable<Education> educations);
 
-    void deleteEducationById(Long id);
+    WorkExperience newWorkExperience(String resumeId, WorkExperience workExperience);
 
-    void deleteAllEducationsByResumeId(String resumeId);
+    Collection<WorkExperience> saveWorkExperiences(String resumeId, Iterable<WorkExperience> workExperiences);
+
+    Certificate newCertificate(String resumeId, Certificate certificate);
+
+    Collection<Certificate> saveCertificates(String resumeId, Iterable<Certificate> certificates);
 }

@@ -2,12 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
-import {selectEmployers} from '../slicers/resumeSlicer';
+import { selectEmployers } from '../slicers/resumeSlicer';
 
 import styles from '../styles/Experience.module.css';
 
-const Experience = ({name, title}) => (
-    <div className={styles.experienceContainer}>
+const Experience = ({ name, title }) => (
+    <div className={styles.container}>
         <p>{name}</p>
         <p>{title}</p>
     </div>

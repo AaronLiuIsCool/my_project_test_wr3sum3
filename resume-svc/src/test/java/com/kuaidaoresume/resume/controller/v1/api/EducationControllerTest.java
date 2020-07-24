@@ -1,6 +1,7 @@
 package com.kuaidaoresume.resume.controller.v1.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kuaidaoresume.resume.config.ResumeApplicationTestConfig;
 import com.kuaidaoresume.resume.controller.v1.assembler.EducationRepresentationModelAssembler;
 import com.kuaidaoresume.resume.dto.AwardDto;
 import com.kuaidaoresume.resume.dto.EducationDto;
@@ -16,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
-import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -40,11 +40,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(EducationController.class)
-@Import({ EducationRepresentationModelAssembler.class })
+@Import({ EducationRepresentationModelAssembler.class, ResumeApplicationTestConfig.class })
 public class EducationControllerTest {
 
     private static final String RESUME_ID = "aUUID";
-    private static final long EDUCATION_ID = 1L;
+    private static final Long EDUCATION_ID = 1L;
     private static final String COUNTRY = "Canada";
     private static final String CITY = "Vancouver";
     private static final String INSTITUTION = "UBC";
@@ -117,12 +117,12 @@ public class EducationControllerTest {
 
     @Test
     public void whenFindById_thenReturn200() throws Exception {
-        given(resumeService.findEducationById(EDUCATION_ID)).willReturn(Optional.of(education));
+        given(resumeService.findById(EDUCATION_ID, Education.class)).willReturn(Optional.of(education));
 
-        mvc.perform(get("/v1/educations/{id}", EDUCATION_ID).accept(MediaTypes.HAL_JSON_VALUE))
+        mvc.perform(get("/v1/educations/{id}", EDUCATION_ID).accept(MediaType.APPLICATION_JSON))
             .andDo(print())
             .andExpect(status().isOk())
-            .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaTypes.HAL_JSON_VALUE))
+            .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString()))
             .andExpect(jsonPath("$.country", is(COUNTRY)))
             .andExpect(jsonPath("$.city", is(CITY)))
             .andExpect(jsonPath("$.institution", is(INSTITUTION)))
@@ -131,26 +131,28 @@ public class EducationControllerTest {
             .andExpect(jsonPath("$.gpa", is(GPA)))
             .andExpect(jsonPath("$.startDate", is(START_DATE_TEXT)))
             .andExpect(jsonPath("$.endDate", is(END_DATE_TEXT)))
-            .andExpect(jsonPath("$._links.self.href", is(String.format("http://localhost/v1/educations/%s", EDUCATION_ID))))
+            .andExpect(jsonPath("$.links[0].rel", is("self")))
+            .andExpect(jsonPath("$.links[0].href", is(String.format("http://localhost/v1/educations/%s", EDUCATION_ID))))
             .andReturn();
     }
 
     @Test
     public void whenFindAllByResumeId_thenReturn200() throws Exception {
-        given(resumeService.findEducationsByResumeId(RESUME_ID)).willReturn(Arrays.asList(education));
-        mvc.perform(get("/v1/resumes/{resumeId}/educations", RESUME_ID).accept(MediaTypes.HAL_JSON_VALUE))
+        given(resumeService.findAllByResumeId(RESUME_ID, Education.class)).willReturn(Arrays.asList(education));
+        mvc.perform(get("/v1/resumes/{resumeId}/educations", RESUME_ID).accept(MediaType.APPLICATION_JSON))
             .andDo(print())
             .andExpect(status().isOk())
-            .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaTypes.HAL_JSON_VALUE))
-            .andExpect(jsonPath("$._embedded.educations[0].country", is(COUNTRY)))
-            .andExpect(jsonPath("$._embedded.educations[0].city", is(CITY)))
-            .andExpect(jsonPath("$._embedded.educations[0].institution", is(INSTITUTION)))
-            .andExpect(jsonPath("$._embedded.educations[0].major", is(MAJOR)))
-            .andExpect(jsonPath("$._embedded.educations[0].degree", is(DEGREE)))
-            .andExpect(jsonPath("$._embedded.educations[0].gpa", is(GPA)))
-            .andExpect(jsonPath("$._embedded.educations[0].startDate", is(START_DATE_TEXT)))
-            .andExpect(jsonPath("$._embedded.educations[0].endDate", is(END_DATE_TEXT)))
-            .andExpect(jsonPath("$._links.self.href", is(String.format("http://localhost/v1/resumes/%s/educations", RESUME_ID))))
+            .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString()))
+            .andExpect(jsonPath("$.content[0].country", is(COUNTRY)))
+            .andExpect(jsonPath("$.content[0].city", is(CITY)))
+            .andExpect(jsonPath("$.content[0].institution", is(INSTITUTION)))
+            .andExpect(jsonPath("$.content[0].major", is(MAJOR)))
+            .andExpect(jsonPath("$.content[0].degree", is(DEGREE)))
+            .andExpect(jsonPath("$.content[0].gpa", is(GPA)))
+            .andExpect(jsonPath("$.content[0].startDate", is(START_DATE_TEXT)))
+            .andExpect(jsonPath("$.content[0].endDate", is(END_DATE_TEXT)))
+            .andExpect(jsonPath("$.links[0].rel", is("self")))
+            .andExpect(jsonPath("$.links[0].href", is(String.format("http://localhost/v1/resumes/%s/educations", RESUME_ID))))
             .andReturn();
     }
 
@@ -163,13 +165,13 @@ public class EducationControllerTest {
             .contentType(MediaType.APPLICATION_JSON))
             .andDo(print())
             .andExpect(status().isCreated())
-            .andExpect(content().contentType(MediaTypes.HAL_JSON_VALUE))
+            .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString()))
             .andReturn();
     }
 
     @Test
     public void whenSave_thenReturn202() throws Exception {
-        given(resumeService.saveEducation(any(Education.class))).willReturn(education);
+        doNothing().when(resumeService).save(education, Education.class);
 
         mvc.perform(put("/v1/educations/{id}", EDUCATION_ID)
             .content(objectMapper.writeValueAsString(persistedEducationDto))
@@ -180,20 +182,8 @@ public class EducationControllerTest {
     }
 
     @Test
-    public void whenSaveAll_thenReturn202() throws Exception {
-        given(resumeService.saveEducation(any(Education.class))).willReturn(education);
-
-        mvc.perform(put("/v1/resumes/{resumeId}/educations", RESUME_ID)
-            .content(objectMapper.writeValueAsString(Arrays.asList(persistedEducationDto)))
-            .contentType(MediaType.APPLICATION_JSON))
-            .andDo(print())
-            .andExpect(status().isNoContent())
-            .andReturn();
-    }
-
-    @Test
     public void whenDeleteById_thenReturn202() throws Exception {
-        doNothing().when(resumeService).deleteEducationById(EDUCATION_ID);
+        doNothing().when(resumeService).deleteById(EDUCATION_ID, Education.class);
 
         mvc.perform(delete("/v1/educations/{id}", EDUCATION_ID))
             .andDo(print())
@@ -203,7 +193,7 @@ public class EducationControllerTest {
 
     @Test
     public void whenDeleteAllByResumeId_thenReturn202() throws Exception {
-        doNothing().when(resumeService).deleteAllEducationsByResumeId(RESUME_ID);
+        doNothing().when(resumeService).deleteAllByResumeId(RESUME_ID, Education.class);
 
         mvc.perform(delete("/v1/resumes/{resumeId}/educations", RESUME_ID))
             .andDo(print())

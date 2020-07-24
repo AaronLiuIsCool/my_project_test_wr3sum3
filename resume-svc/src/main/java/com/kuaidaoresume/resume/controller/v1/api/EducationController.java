@@ -31,9 +31,9 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class EducationController {
 
     @Autowired
-    private ResumeService resumeService;
+    private final ResumeService resumeService;
     @Autowired
-    private EducationRepresentationModelAssembler educationAssembler;
+    private final EducationRepresentationModelAssembler educationAssembler;
     @Autowired
     private final ModelMapper modelMapper;
 
@@ -48,7 +48,7 @@ public class EducationController {
     })
     @GetMapping("/educations/{id}")
     public ResponseEntity<EntityModel<PersistedEducationDto>> findById(@PathVariable Long id) {
-        return resumeService.findEducationById(id)
+        return resumeService.findById(id, Education.class)
             .map(education -> modelMapper.map(education, PersistedEducationDto.class))
             .map(educationAssembler::toModel)
             .map(ResponseEntity::ok)
@@ -68,7 +68,7 @@ public class EducationController {
     public ResponseEntity<CollectionModel<EntityModel<PersistedEducationDto>>> findAllByResumeId(
         @PathVariable String resumeId) {
 
-        List<PersistedEducationDto> dtos = resumeService.findEducationsByResumeId(resumeId).stream()
+        List<PersistedEducationDto> dtos = resumeService.findAllByResumeId(resumeId, Education.class).stream()
         .map(education -> modelMapper.map(education, PersistedEducationDto.class)).collect(Collectors.toList());
         CollectionModel<EntityModel<PersistedEducationDto>> collectionModel = educationAssembler.toCollectionModel(dtos);
 
@@ -113,16 +113,16 @@ public class EducationController {
     @PutMapping("/educations/{id}")
     public ResponseEntity<EntityModel<PersistedEducationDto>> save(
         @PathVariable
-        long id,
+        Long id,
         @Valid
         @RequestBody
         PersistedEducationDto educationDto) {
 
         Education toUpdate = modelMapper.map(educationDto, Education.class);
         toUpdate.setId(id);
-        Education updated = resumeService.saveEducation(toUpdate);
+        resumeService.save(toUpdate, Education.class);
         EntityModel<PersistedEducationDto> entityModel =
-            educationAssembler.toModel(modelMapper.map(updated, PersistedEducationDto.class));
+            educationAssembler.toModel(modelMapper.map(toUpdate, PersistedEducationDto.class));
         return ResponseEntity.noContent().location(educationAssembler.getSelfLink(entityModel).toUri()).build();
     }
 
@@ -165,7 +165,7 @@ public class EducationController {
     })
     @DeleteMapping("/educations/{id}")
     public ResponseEntity<?> deleteById(@PathVariable Long id) {
-        resumeService.deleteEducationById(id);
+        resumeService.deleteById(id, Education.class);
         return ResponseEntity.noContent().build();
     }
 
@@ -180,7 +180,7 @@ public class EducationController {
     })
     @DeleteMapping("/resumes/{resumeId}/educations")
     public ResponseEntity<?> deleteAllByResumeId(@PathVariable String resumeId) {
-        resumeService.deleteAllEducationsByResumeId(resumeId);
+        resumeService.deleteAllByResumeId(resumeId, Education.class);
         return ResponseEntity.noContent().build();
     }
 }

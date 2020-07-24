@@ -19,7 +19,7 @@ public class Award {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     @NotNull
     private String name;
     @NotNull
