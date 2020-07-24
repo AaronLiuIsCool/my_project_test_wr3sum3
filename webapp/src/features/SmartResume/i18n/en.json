@@ -1,3 +1,10 @@
 {
+  "title": "Smart Resume",
 
+  "basicInfo": "Basic information",
+  "education": "Education background",
+  "workXp": "Work experiences",
+  "projectXp": "Project experiences",
+  "otherXp": "Other experiences",
+  "certifications": "Skills/Certifications"
 }

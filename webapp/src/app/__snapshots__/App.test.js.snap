@@ -4,136 +4,101 @@ exports[`renders App 1`] = `
 <div
   className="App"
 >
+  <nav
+    className="navbar navbar-expand-lg navbar-light bg-light"
+  >
+    <a
+      className="navbar-brand"
+      href="/"
+    />
+    <button
+      aria-controls="top-navigation-bar"
+      aria-label="Toggle navigation"
+      className="navbar-toggler collapsed"
+      onClick={[Function]}
+      type="button"
+    >
+      <span
+        className="navbar-toggler-icon"
+      />
+    </button>
+    <div
+      aria-expanded={null}
+      className="navbar-collapse collapse"
+      id="top-navigation-bar"
+    >
+      <div
+        className="mr-auto navbar-nav"
+        onKeyDown={[Function]}
+      >
+        <a
+          className="nav-link"
+          data-rb-event-key="#"
+          href="#"
+          onClick={[Function]}
+          onKeyDown={[Function]}
+          role="button"
+        >
+          <a
+            href="/"
+            onClick={[Function]}
+          />
+        </a>
+        <a
+          className="nav-link"
+          data-rb-event-key="#"
+          href="#"
+          onClick={[Function]}
+          onKeyDown={[Function]}
+          role="button"
+        >
+          <a
+            href="/example"
+            onClick={[Function]}
+          />
+        </a>
+      </div>
+      <div
+        className="btn-group btn-group-toggle"
+        role="group"
+      >
+        <label
+          className="btn active btn-primary"
+          disabled={false}
+        >
+          <input
+            autoComplete="off"
+            checked={true}
+            disabled={false}
+            name="languageSelect"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onFocus={[Function]}
+            type="radio"
+            value="zh"
+          />
+        </label>
+        <label
+          className="btn btn-primary"
+          disabled={false}
+        >
+          <input
+            autoComplete="off"
+            checked={false}
+            disabled={false}
+            name="languageSelect"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onFocus={[Function]}
+            type="radio"
+            value="en"
+          />
+        </label>
+      </div>
+    </div>
+  </nav>
   <div>
     Loading...
-  </div>
-  <br />
-  <br />
-  <br />
-  <p>
-    Below is the example Bootstrap Component Wrapper
-  </p>
-  <button
-    className="btn btn-primary"
-    disabled={false}
-    type="button"
-  >
-    Primary
-  </button>
-   
-  <button
-    className="btn btn-secondary"
-    disabled={false}
-    type="button"
-  >
-    Secondary
-  </button>
-   
-  <button
-    className="btn btn-success"
-    disabled={false}
-    type="button"
-  >
-    Success
-  </button>
-   
-  <button
-    className="btn btn-warning"
-    disabled={false}
-    type="button"
-  >
-    Warning
-  </button>
-   
-  <button
-    className="btn btn-danger"
-    disabled={false}
-    type="button"
-  >
-    Danger
-  </button>
-  <button
-    className="btn btn-info"
-    disabled={false}
-    type="button"
-  >
-    Info
-  </button>
-   
-  <button
-    className="btn btn-light"
-    disabled={false}
-    type="button"
-  >
-    Light
-  </button>
-  <button
-    className="btn btn-dark"
-    disabled={false}
-    type="button"
-  >
-    Dark
-  </button>
-   
-  <button
-    className="btn btn-link"
-    disabled={false}
-    type="button"
-  >
-    Link
-  </button>
-  <br />
-  <br />
-  <br />
-  <p>
-    Below is the example code with Redux and Hooks
-  </p>
-  <div>
-    <div
-      className="row"
-    >
-      <button
-        aria-label="Increment value"
-        className="button"
-        onClick={[Function]}
-      >
-        +
-      </button>
-      <span
-        className="value"
-      >
-        0
-      </span>
-      <button
-        aria-label="Decrement value"
-        className="button"
-        onClick={[Function]}
-      >
-        -
-      </button>
-    </div>
-    <div
-      className="row"
-    >
-      <input
-        aria-label="Set increment amount"
-        className="textbox"
-        onChange={[Function]}
-        value="2"
-      />
-      <button
-        className="button"
-        onClick={[Function]}
-      >
-        Add Amount
-      </button>
-      <button
-        className="asyncButton"
-        onClick={[Function]}
-      >
-        Add Async
-      </button>
-    </div>
   </div>
 </div>
 `;

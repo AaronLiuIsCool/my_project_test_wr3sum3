@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
-import { selectEmployers } from '../slicers/resumeSlicer';
+import { selectEmployers } from '../slicer';
 
 import styles from '../styles/Experience.module.css';
 

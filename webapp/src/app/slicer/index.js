@@ -1,18 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-export const appSlicers = createSlice({
+const appSlicers = createSlice({
   name: 'app',
   initialState: {
     language: 'zh'
   },
   reducers: {
-    updateLocale: (state, action) => {
-      state.locale += action.payload;
+    updateLanguage: (state, action) => {
+      state.language = action.payload;
     },
   },
 });
 
-export const { updateLocale } = appSlicers.actions;
+export const { updateLanguage } = appSlicers.actions;
 
 export const selectLanguage = ({app}) => app.language;
 

@@ -1,38 +1,38 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter, Route } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
+import { I8nContext } from 'shell/i18n';
+import { selectLanguage } from './slicer';
+
+import Navigation from './components/Navigation';
 import SmartResume from 'features/SmartResume';
 import Counter from 'features/CounterExample';
 
-import KButton from 'components/KButton';
+import './styles/App.css';
 
-import './App.css';
+import zh from './i18n/zh.json';
+import en from './i18n/en.json';
 
-function App() {
+const App = () => {
+  const language = useSelector(selectLanguage);
+  const [messages, setMessages] = useState({});
+
+  useEffect(() => {
+    setMessages(language === 'zh' ? zh : en);
+  }, [language]);
+
   return (
-    <div className="App">
-      <SmartResume />
-
-      <br />
-      <br />
-      <br />
-      <p>Below is the example Bootstrap Component Wrapper</p>
-      <KButton variant="primary">Primary</KButton>{' '}
-      <KButton variant="secondary">Secondary</KButton>{' '}
-      <KButton variant="success">Success</KButton>{' '}
-      <KButton variant="warning">Warning</KButton>{' '}
-      <KButton variant="danger">Danger</KButton>
-      <KButton variant="info">Info</KButton>{' '}
-      <KButton variant="light">Light</KButton>
-      <KButton variant="dark">Dark</KButton>{' '}
-      <KButton variant="link">Link</KButton>
-
-      <br />
-      <br />
-      <br />
-      <p>Below is the example code with Redux and Hooks</p>
-      <Counter />
-    </div>
+    <I8nContext.Provider value={messages}>
+      <BrowserRouter>
+        <div className="App">
+          <Navigation />
+          <Route exact path="/" component={SmartResume} />
+          <Route path="/example" component={Counter} />
+        </div>
+      </BrowserRouter>
+    </I8nContext.Provider>
   );
-}
+};
 
 export default App;

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import { I8nContext } from 'shell/i18n';
-import { selectLanguage } from 'app/appSlicer';
+import { selectLanguage } from 'app/slicer';
 
 import LeftNav from './LeftNav';
 import ExperiencesForm from './ExperiencesForm';

@@ -1,8 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-import resumeReducer from 'features/SmartResume/slicers/resumeSlicer';
-import counterReducer from 'features/CounterExample/counterSlice.js';
-import appReducer from './appSlicer';
+import resumeReducer from 'features/SmartResume/slicer';
+import counterReducer from 'features/CounterExample/counterSlice';
+import appReducer from './slicer';
 
 export default configureStore({
   reducer: {
