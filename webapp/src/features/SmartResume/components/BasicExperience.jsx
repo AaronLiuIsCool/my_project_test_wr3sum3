@@ -1,10 +1,10 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
-import { Container, Row, Col, Form, Button } from 'react-bootstrap';
+import { Container, Row, Col, Form } from 'react-bootstrap';
 
 import { useI8n } from 'shell/i18n';
 
-import styles from '../styles/Basic.module.css';
+// import styles from '../styles/Basic.module.css';
 import InputGroup from 'components/InputGroup';
 import DropdownGroup from 'components/DropdownGroup';
 import KButton from 'components/KButton';
