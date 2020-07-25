@@ -18,8 +18,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.kuaidao</groupId>
-            <artifactId>common-lib</artifactId>
+          <groupId>com.kuaidao</groupId>
+          <artifactId>common-lib</artifactId>
         </dependency>
         <dependency>
             <groupId>javax.validation</groupId>

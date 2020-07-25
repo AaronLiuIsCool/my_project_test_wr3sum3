@@ -1,6 +1,7 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/resume_test?useUnicode=true&characterEncoding=utf-8&serverTimezone=PST
+    url: jdbc:mysql://localhost:3306/kuaidaoresume_resume?useUnicode=true&characterEncoding=utf-8
+    #url: jdbc:mysql://kuaidaoresume-resume.cm27uwrvuert.ca-central-1.rds.amazonaws.com:3306/kuaidaoresume-resume?useUnicode=true&characterEncoding=utf-8
     username: root
     password:
     driverClassName: com.mysql.jdbc.Driver
