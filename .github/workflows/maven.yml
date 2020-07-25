@@ -10,8 +10,7 @@ on:
     branches: [ develop ]
 
 jobs:
-  build:
-
+  java-build:
     runs-on: ubuntu-latest
 
     steps:
