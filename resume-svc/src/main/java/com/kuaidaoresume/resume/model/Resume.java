@@ -51,5 +51,11 @@ public class Resume {
     private Collection<WorkExperience> workExperiences;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "resume")
+    private Collection<ProjectExperience> projectExperiences;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "resume")
+    private Collection<VolunteerExperience> volunteerExperiences;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "resume")
     private Collection<Certificate> certificates;
 }

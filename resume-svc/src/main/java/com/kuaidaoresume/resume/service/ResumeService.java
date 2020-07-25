@@ -29,6 +29,14 @@ public interface ResumeService {
 
     Collection<WorkExperience> saveWorkExperiences(String resumeId, Iterable<WorkExperience> workExperiences);
 
+    ProjectExperience newProjectExperience(String resumeId, ProjectExperience projectExperience);
+
+    Collection<ProjectExperience> saveProjectExperiences(String resumeId, Iterable<ProjectExperience> projectExperiences);
+
+    VolunteerExperience newVolunteerExperience(String resumeId, VolunteerExperience volunteerExperience);
+
+    Collection<VolunteerExperience> saveVolunteerExperiences(String resumeId, Iterable<VolunteerExperience> volunteerExperiences);
+
     Certificate newCertificate(String resumeId, Certificate certificate);
 
     Collection<Certificate> saveCertificates(String resumeId, Iterable<Certificate> certificates);

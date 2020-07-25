@@ -25,7 +25,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Optional;
-import java.util.TimeZone;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.ArgumentMatchers.any;
@@ -39,7 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(WorkExperienceController.class)
 @Import({ WorkExperienceRepresentationModelAssembler.class, ResumeApplicationTestConfig.class })
-public class ExperienceControllerTest {
+public class WorkExperienceControllerTest {
 
     private static final String RESUME_ID = "aUUID";
     private static final Long WORK_EXPERIENCE_ID = 1L;
@@ -48,7 +47,6 @@ public class ExperienceControllerTest {
     private static final String COUNTRY = "Canada";
     private static final String CITY = "Vancouver";
     private static final String DESCRIPTION = "I nailed it.";
-    private static final String TIMEZONE = TimeZone.getDefault().getDisplayName();
     private static final Date START_DATE = Date.valueOf(LocalDate.of(2000, 1, 1));
     private static final Date END_DATE = Date.valueOf(LocalDate.of(2001, 1, 1));
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE;

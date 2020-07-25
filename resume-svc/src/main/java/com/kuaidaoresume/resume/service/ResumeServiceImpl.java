@@ -62,6 +62,34 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
+    public ProjectExperience newProjectExperience(String resumeId, ProjectExperience projectExperienceToSave) {
+        return saveResumeWithItemUpdate(
+            (BiConsumer<ProjectExperience, Resume>) (projectExperience, resume) -> resume.getProjectExperiences().add(projectExperience),
+            resumeRepository).apply(resumeId, projectExperienceToSave);
+    }
+
+    @Override
+    public Collection<ProjectExperience> saveProjectExperiences(String resumeId, Iterable<ProjectExperience> projectExperiences) {
+        return saveResumeWithItemsUpdate(resume -> resume.getProjectExperiences(),
+            (resume, updatedExperience) -> resume.setProjectExperiences(updatedExperience),
+            resumeRepository).apply(resumeId, projectExperiences);
+    }
+
+    @Override
+    public VolunteerExperience newVolunteerExperience(String resumeId, VolunteerExperience volunteerExperienceToSave) {
+        return saveResumeWithItemUpdate(
+            (BiConsumer<VolunteerExperience, Resume>) (volunteerExperience, resume) -> resume.getVolunteerExperiences().add(volunteerExperience),
+            resumeRepository).apply(resumeId, volunteerExperienceToSave);
+    }
+
+    @Override
+    public Collection<VolunteerExperience> saveVolunteerExperiences(String resumeId, Iterable<VolunteerExperience> volunteerExperiences) {
+        return saveResumeWithItemsUpdate(resume -> resume.getVolunteerExperiences(),
+            (resume, updatedExperience) -> resume.setVolunteerExperiences(updatedExperience),
+            resumeRepository).apply(resumeId, volunteerExperiences);
+    }
+
+    @Override
     public Certificate newCertificate(String resumeId, Certificate certificateToSave) {
         return saveResumeWithItemUpdate(
             (BiConsumer<Certificate, Resume>) (certificate, resume) -> resume.getCertificates().add(certificate),

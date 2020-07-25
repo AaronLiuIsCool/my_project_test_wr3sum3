@@ -1,8 +1,8 @@
 package com.kuaidaoresume.resume.repository;
 
 import com.kuaidaoresume.resume.config.JpaTestConfig;
+import com.kuaidaoresume.resume.model.VolunteerExperience;
 import com.kuaidaoresume.resume.model.Resume;
-import com.kuaidaoresume.resume.model.WorkExperience;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
     DependencyInjectionTestExecutionListener.class
 })
 @Import(JpaTestConfig.class)
-public class WorkExperienceRepositoryTest {
+public class VolunteerExperienceRepositoryTest {
     
     private static final Date NOW = Date.valueOf(LocalDate.now());
 
@@ -41,10 +41,10 @@ public class WorkExperienceRepositoryTest {
     private static final String DESCRIPTION = "I nailed it.";
     
     private Resume resume;
-    private WorkExperience workExperience;
+    private VolunteerExperience volunteerExperience;
 
     @Autowired
-    private WorkExperienceRepository workExperienceRepository;
+    private VolunteerExperienceRepository volunteerExperienceRepository;
 
     @Autowired
     private ResumeRepository resumeRepository;
@@ -53,7 +53,7 @@ public class WorkExperienceRepositoryTest {
     public void setup() {
         resume = resumeRepository.save(Resume.builder().language("en").build());
 
-        workExperience = WorkExperience.builder()
+        volunteerExperience = VolunteerExperience.builder()
             .role(ROLE)
             .organization(ORGANIZATION)
             .city(CITY)
@@ -63,27 +63,27 @@ public class WorkExperienceRepositoryTest {
             .description(DESCRIPTION)
             .resume(resume)
             .build();
-        workExperienceRepository.save(workExperience);
+        volunteerExperienceRepository.save(volunteerExperience);
     }
 
     @Test
     public void whenSaved_thenFindByResumeId() {
-        Collection<WorkExperience> educations = workExperienceRepository.findAllByResumeId(resume.getId());
+        Collection<VolunteerExperience> educations = volunteerExperienceRepository.findAllByResumeId(resume.getId());
         assertThat(educations.size(), is(1));
     }
 
     @Test
     public void whenSaved_thenUpdate() {
-        WorkExperience toUpdate = workExperience;
+        VolunteerExperience toUpdate = volunteerExperience;
         String role = "CFO";
         toUpdate.setRole(role);
-        WorkExperience updated = workExperienceRepository.save(toUpdate);
-        assertThat(workExperienceRepository.findById(updated.getId()).get().getRole(), is(role));
+        VolunteerExperience updated = volunteerExperienceRepository.save(toUpdate);
+        assertThat(volunteerExperienceRepository.findById(updated.getId()).get().getRole(), is(role));
     }
 
     @Test
     public void whenSaveAll_thenAllSaved() {
-        WorkExperience experience1 = WorkExperience.builder()
+        VolunteerExperience experience1 = VolunteerExperience.builder()
             .role(ROLE)
             .organization(ORGANIZATION)
             .city(CITY)
@@ -94,7 +94,7 @@ public class WorkExperienceRepositoryTest {
             .resume(resume)
             .build();
 
-        WorkExperience experience2 = WorkExperience.builder()
+        VolunteerExperience experience2 = VolunteerExperience.builder()
             .role(ROLE)
             .organization(ORGANIZATION)
             .city(CITY)
@@ -105,13 +105,13 @@ public class WorkExperienceRepositoryTest {
             .resume(resume)
             .build();
 
-        workExperienceRepository.saveAll(Arrays.asList(experience1, experience2));
-        assertThat(workExperienceRepository.count(), is(3L));
+        volunteerExperienceRepository.saveAll(Arrays.asList(experience1, experience2));
+        assertThat(volunteerExperienceRepository.count(), is(3L));
     }
 
     @Test
     public void whenSaveAll_thenUpdateExisting() {
-        WorkExperience experience1 = WorkExperience.builder()
+        VolunteerExperience experience1 = VolunteerExperience.builder()
             .role(ROLE)
             .organization(ORGANIZATION)
             .city(CITY)
@@ -123,21 +123,21 @@ public class WorkExperienceRepositoryTest {
             .build();
 
         String country = "China";
-        workExperience.setCountry(country);
-        workExperienceRepository.saveAll(Arrays.asList(experience1, workExperience));
-        assertThat(workExperienceRepository.findById(workExperience.getId()).get().getCountry(), is(country));
+        volunteerExperience.setCountry(country);
+        volunteerExperienceRepository.saveAll(Arrays.asList(experience1, volunteerExperience));
+        assertThat(volunteerExperienceRepository.findById(volunteerExperience.getId()).get().getCountry(), is(country));
     }
 
     @Test
     public void whenSaved_thenDelete() {
-        Long id = workExperience.getId();
-        workExperienceRepository.deleteById(id);
-        assertFalse(workExperienceRepository.findById(id).isPresent());
+        Long id = volunteerExperience.getId();
+        volunteerExperienceRepository.deleteById(id);
+        assertFalse(volunteerExperienceRepository.findById(id).isPresent());
     }
 
     @Test
     public void whenSaved_thenDeleteAllByResumeId() {
-        WorkExperience experience1 = WorkExperience.builder()
+        VolunteerExperience experience1 = VolunteerExperience.builder()
             .role(ROLE)
             .organization(ORGANIZATION)
             .city(CITY)
@@ -147,8 +147,8 @@ public class WorkExperienceRepositoryTest {
             .description(DESCRIPTION)
             .resume(resume)
             .build();
-        workExperienceRepository.save(experience1);
-        workExperienceRepository.deleteAll(workExperienceRepository.findAllByResumeId(resume.getId()));
-        assertThat(workExperienceRepository.findAllByResumeId(resume.getId()).size(), is(0));
+        volunteerExperienceRepository.save(experience1);
+        volunteerExperienceRepository.deleteAll(volunteerExperienceRepository.findAllByResumeId(resume.getId()));
+        assertThat(volunteerExperienceRepository.findAllByResumeId(resume.getId()).size(), is(0));
     }
 }

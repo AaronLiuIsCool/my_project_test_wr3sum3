@@ -1,9 +1,6 @@
 package com.kuaidaoresume.resume.repository;
 
-import com.kuaidaoresume.resume.model.BasicInfo;
-import com.kuaidaoresume.resume.model.Education;
-import com.kuaidaoresume.resume.model.ResumeContainable;
-import com.kuaidaoresume.resume.model.WorkExperience;
+import com.kuaidaoresume.resume.model.*;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -21,6 +18,12 @@ public class ResumeContainableRepositoryFactory {
     @Autowired
     private WorkExperienceRepository workExperienceRepository;
 
+    @Autowired
+    private ProjectExperienceRepository projectExperienceRepository;
+
+    @Autowired
+    private VolunteerExperienceRepository volunteerExperienceRepository;
+
     public ResumeContainableRepository getResumeContainableRepository(Class<? extends ResumeContainable> type) {
         if (type.equals(BasicInfo.class)) {
             return basicInfoRepository;
@@ -28,6 +31,10 @@ public class ResumeContainableRepositoryFactory {
             return educationRepository;
         } else if (type.equals(WorkExperience.class)) {
             return workExperienceRepository;
+        } else if (type.equals(ProjectExperience.class)) {
+            return projectExperienceRepository;
+        } else if (type.equals(VolunteerExperience.class)) {
+            return volunteerExperienceRepository;
         } else {
             throw new IllegalArgumentException("Invalid class type");
         }

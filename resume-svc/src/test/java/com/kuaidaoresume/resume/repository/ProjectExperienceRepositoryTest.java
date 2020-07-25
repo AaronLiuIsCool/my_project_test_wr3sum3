@@ -2,7 +2,7 @@ package com.kuaidaoresume.resume.repository;
 
 import com.kuaidaoresume.resume.config.JpaTestConfig;
 import com.kuaidaoresume.resume.model.Resume;
-import com.kuaidaoresume.resume.model.WorkExperience;
+import com.kuaidaoresume.resume.model.ProjectExperience;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
     DependencyInjectionTestExecutionListener.class
 })
 @Import(JpaTestConfig.class)
-public class WorkExperienceRepositoryTest {
+public class ProjectExperienceRepositoryTest {
     
     private static final Date NOW = Date.valueOf(LocalDate.now());
 
@@ -41,10 +41,10 @@ public class WorkExperienceRepositoryTest {
     private static final String DESCRIPTION = "I nailed it.";
     
     private Resume resume;
-    private WorkExperience workExperience;
+    private ProjectExperience projectExperience;
 
     @Autowired
-    private WorkExperienceRepository workExperienceRepository;
+    private ProjectExperienceRepository projectExperienceRepository;
 
     @Autowired
     private ResumeRepository resumeRepository;
@@ -53,7 +53,7 @@ public class WorkExperienceRepositoryTest {
     public void setup() {
         resume = resumeRepository.save(Resume.builder().language("en").build());
 
-        workExperience = WorkExperience.builder()
+        projectExperience = ProjectExperience.builder()
             .role(ROLE)
             .organization(ORGANIZATION)
             .city(CITY)
@@ -63,27 +63,27 @@ public class WorkExperienceRepositoryTest {
             .description(DESCRIPTION)
             .resume(resume)
             .build();
-        workExperienceRepository.save(workExperience);
+        projectExperienceRepository.save(projectExperience);
     }
 
     @Test
     public void whenSaved_thenFindByResumeId() {
-        Collection<WorkExperience> educations = workExperienceRepository.findAllByResumeId(resume.getId());
+        Collection<ProjectExperience> educations = projectExperienceRepository.findAllByResumeId(resume.getId());
         assertThat(educations.size(), is(1));
     }
 
     @Test
     public void whenSaved_thenUpdate() {
-        WorkExperience toUpdate = workExperience;
+        ProjectExperience toUpdate = projectExperience;
         String role = "CFO";
         toUpdate.setRole(role);
-        WorkExperience updated = workExperienceRepository.save(toUpdate);
-        assertThat(workExperienceRepository.findById(updated.getId()).get().getRole(), is(role));
+        ProjectExperience updated = projectExperienceRepository.save(toUpdate);
+        assertThat(projectExperienceRepository.findById(updated.getId()).get().getRole(), is(role));
     }
 
     @Test
     public void whenSaveAll_thenAllSaved() {
-        WorkExperience experience1 = WorkExperience.builder()
+        ProjectExperience experience1 = ProjectExperience.builder()
             .role(ROLE)
             .organization(ORGANIZATION)
             .city(CITY)
@@ -94,7 +94,7 @@ public class WorkExperienceRepositoryTest {
             .resume(resume)
             .build();
 
-        WorkExperience experience2 = WorkExperience.builder()
+        ProjectExperience experience2 = ProjectExperience.builder()
             .role(ROLE)
             .organization(ORGANIZATION)
             .city(CITY)
@@ -105,13 +105,13 @@ public class WorkExperienceRepositoryTest {
             .resume(resume)
             .build();
 
-        workExperienceRepository.saveAll(Arrays.asList(experience1, experience2));
-        assertThat(workExperienceRepository.count(), is(3L));
+        projectExperienceRepository.saveAll(Arrays.asList(experience1, experience2));
+        assertThat(projectExperienceRepository.count(), is(3L));
     }
 
     @Test
     public void whenSaveAll_thenUpdateExisting() {
-        WorkExperience experience1 = WorkExperience.builder()
+        ProjectExperience experience1 = ProjectExperience.builder()
             .role(ROLE)
             .organization(ORGANIZATION)
             .city(CITY)
@@ -123,21 +123,21 @@ public class WorkExperienceRepositoryTest {
             .build();
 
         String country = "China";
-        workExperience.setCountry(country);
-        workExperienceRepository.saveAll(Arrays.asList(experience1, workExperience));
-        assertThat(workExperienceRepository.findById(workExperience.getId()).get().getCountry(), is(country));
+        projectExperience.setCountry(country);
+        projectExperienceRepository.saveAll(Arrays.asList(experience1, projectExperience));
+        assertThat(projectExperienceRepository.findById(projectExperience.getId()).get().getCountry(), is(country));
     }
 
     @Test
     public void whenSaved_thenDelete() {
-        Long id = workExperience.getId();
-        workExperienceRepository.deleteById(id);
-        assertFalse(workExperienceRepository.findById(id).isPresent());
+        Long id = projectExperience.getId();
+        projectExperienceRepository.deleteById(id);
+        assertFalse(projectExperienceRepository.findById(id).isPresent());
     }
 
     @Test
     public void whenSaved_thenDeleteAllByResumeId() {
-        WorkExperience experience1 = WorkExperience.builder()
+        ProjectExperience experience1 = ProjectExperience.builder()
             .role(ROLE)
             .organization(ORGANIZATION)
             .city(CITY)
@@ -147,8 +147,8 @@ public class WorkExperienceRepositoryTest {
             .description(DESCRIPTION)
             .resume(resume)
             .build();
-        workExperienceRepository.save(experience1);
-        workExperienceRepository.deleteAll(workExperienceRepository.findAllByResumeId(resume.getId()));
-        assertThat(workExperienceRepository.findAllByResumeId(resume.getId()).size(), is(0));
+        projectExperienceRepository.save(experience1);
+        projectExperienceRepository.deleteAll(projectExperienceRepository.findAllByResumeId(resume.getId()));
+        assertThat(projectExperienceRepository.findAllByResumeId(resume.getId()).size(), is(0));
     }
 }
