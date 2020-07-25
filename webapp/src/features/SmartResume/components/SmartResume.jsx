@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 
 import { I8nContext } from 'shell/i18n';
@@ -13,11 +13,7 @@ import en from '../i18n/en.json';
 
 const SmartResume = () => {
   const language = useSelector(selectLanguage);
-  const [messages, setMessages] = useState({});
-
-  useEffect(() => {
-    setMessages(language === 'zh' ? zh : en );
-  }, [language]);
+  const messages = language === 'zh' ? zh : en;
 
   return (
     <I8nContext.Provider value={messages}>

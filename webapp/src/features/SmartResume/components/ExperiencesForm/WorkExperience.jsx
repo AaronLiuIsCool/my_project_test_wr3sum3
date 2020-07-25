@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
-import { selectEmployers } from '../slicer';
+import { selectEmployers } from '../../slicer';
 
-import styles from '../styles/Experience.module.css';
+import styles from '../../styles/Experience.module.css';
 
 const Experience = ({ name, title }) => (
     <div className={styles.container}>
