@@ -134,9 +134,21 @@ TBD
 Run Prod
 TBD
 
+## Flyway
+Flyway is integrated with Spring Boot. To run migrations, follow these steps
+1. Add flyway dependency to the sub-module pom
+2. Create folder src/main/resources/db/migration
+3. Add sql migration script with V{migration_version}__{brief description}.sql to the folder
+4. Make sure spring.jpa.hibernate.ddl-auto is set to either "validate" or "none"
+5. Start the application
+
+To run migration from maven cli: 
+`mvn flyway:migrate`
+
 ## Web UI
 1. `cd webapp`
 2. `yarn`
 3. For develop build use `yarn start`
 
 Please see [guidelines for webapp](webapp/README.md) for more details
+

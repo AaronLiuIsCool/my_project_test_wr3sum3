@@ -28,9 +28,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
 @ActiveProfiles("test")
-@TestPropertySource(properties = {
-    "spring.jpa.hibernate.ddl-auto=create-drop"
-})
 @TestExecutionListeners({
     DependencyInjectionTestExecutionListener.class
 })
@@ -53,8 +50,9 @@ public class EducationRepositoryTest {
 
     @BeforeEach
     public void setup() {
-        resume = resumeRepository.save(new Resume());
+        resume = resumeRepository.save(Resume.builder().language("en").build());
         education = Education.builder()
+            .country("Canada")
             .city("Vancouver")
             .institution("UBC")
             .major("Math")
@@ -87,6 +85,7 @@ public class EducationRepositoryTest {
     @Test
     public void whenSaveAll_thenAllSaved() {
         Education education1 = Education.builder()
+            .country("Canada")
             .city("Vancouver")
             .institution("UBC")
             .major("ComSci")
@@ -97,6 +96,7 @@ public class EducationRepositoryTest {
             .build();
 
         Education education2 = Education.builder()
+            .country("Canada")
             .city("Vancouver")
             .institution("UBC")
             .major("philosophy")
@@ -113,6 +113,7 @@ public class EducationRepositoryTest {
     @Test
     public void whenSaveAll_thenUpdateExisting() {
         Education education1 = Education.builder()
+            .country("Canada")
             .city("Vancouver")
             .institution("UBC")
             .major("ComSci")
@@ -139,6 +140,7 @@ public class EducationRepositoryTest {
     @Test
     public void whenSaved_thenDeleteAllByResumeId() {
         Education education1 = Education.builder()
+            .country("Canada")
             .city("Vancouver")
             .institution("UBC")
             .major("Computer Science")

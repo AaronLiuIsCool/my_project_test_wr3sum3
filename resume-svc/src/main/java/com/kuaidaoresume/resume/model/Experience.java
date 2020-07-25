@@ -6,11 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.sql.Date;
 
 @Data
@@ -24,14 +22,23 @@ public class Experience {
     protected Long id;
 
     @NotNull
+    @Size(min = 2, max = 50)
+    @Column(length = 50)
     protected String role;
 
     @NotNull
+    @Size(min = 2, max = 50)
+    @Column(length = 50)
     private String organization;
 
     @NotNull
+    @Size(min = 2, max = 100)
+    @Column(length = 100)
     private String city;
 
+    @NotNull
+    @Size(min = 2, max = 60)
+    @Column(length = 60)
     private String country;
 
     @NotNull
@@ -41,5 +48,7 @@ public class Experience {
     private Date endDate;
 
     @NotNull
+    @Size(min = 3, max = 500)
+    @Column(length = 500)
     private String description;
 }

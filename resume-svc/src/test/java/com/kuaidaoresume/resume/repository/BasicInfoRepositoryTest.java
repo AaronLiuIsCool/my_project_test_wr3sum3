@@ -26,9 +26,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
 @ActiveProfiles("test")
-@TestPropertySource(properties = {
-    "spring.jpa.hibernate.ddl-auto=create-drop"
-})
 @TestExecutionListeners({
     DependencyInjectionTestExecutionListener.class
 })
@@ -51,11 +48,12 @@ public class BasicInfoRepositoryTest {
 
     @BeforeEach
     public void setup() {
-        resume = resumeRepository.save(new Resume());
+        resume = resumeRepository.save(Resume.builder().language("en").build());
         resumeId = resume.getId();
         basicInfo = BasicInfo.builder()
             .fullName("Donald Trump")
             .alias("Jianguo")
+            .country("Russia")
             .city("Beijing")
             .email("spy@whitehouse.com")
             .phoneNumber("123456789")

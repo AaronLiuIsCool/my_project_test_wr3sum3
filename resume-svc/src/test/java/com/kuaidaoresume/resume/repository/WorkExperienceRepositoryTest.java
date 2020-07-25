@@ -27,9 +27,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
 @ActiveProfiles("test")
-@TestPropertySource(properties = {
-    "spring.jpa.hibernate.ddl-auto=create-drop"
-})
 @TestExecutionListeners({
     DependencyInjectionTestExecutionListener.class
 })
@@ -55,7 +52,7 @@ public class WorkExperienceRepositoryTest {
 
     @BeforeEach
     public void setup() {
-        resume = resumeRepository.save(new Resume());
+        resume = resumeRepository.save(Resume.builder().language("en").build());
 
         workExperience = WorkExperience.builder()
             .role(ROLE)

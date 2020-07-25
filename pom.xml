@@ -50,6 +50,13 @@
 				<scope>import</scope>
 			</dependency>
 
+			<!-- flyway -->
+			<dependency>
+				<groupId>org.flywaydb</groupId>
+				<artifactId>flyway-core</artifactId>
+				<version>6.5.1</version>
+			</dependency>
+
 			<!-- Swagger -->
 			<dependency>
 				<groupId>io.springfox</groupId>
