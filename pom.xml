@@ -27,6 +27,8 @@
 		<module>common-lib</module>
 		<module>account-svc</module>
 		<module>account-api</module>
+		<module>job-svc</module>
+		<module>job-api</module>
 		<module>resume-svc</module>
     <module>kdr</module>
 	</modules>

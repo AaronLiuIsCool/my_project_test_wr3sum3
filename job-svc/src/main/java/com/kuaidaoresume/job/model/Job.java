@@ -1,0 +1,63 @@
+package com.kuaidaoresume.job.model;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import java.time.Instant;
+import java.util.List;
+import java.util.Date;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Entity
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"post_date", "position_title", "company_name", "url"}))
+/**
+ * plan to use mysql events for time to live
+ * http://mablomy.blogspot.com/2019/03/ttl-time-to-live-in-mysql.html
+ */
+public class Job {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+    @Column(name = "post_date", nullable = false, updatable = false, unique = true)
+    private Date postDate;
+    @Column(name = "position_title", nullable = false, updatable = false, unique = true)
+    private String positionTitle;
+    @Column(name = "company_name", nullable = false, updatable = false, unique = true)
+    private String companyName;
+    @Column(name = "url", nullable = false, updatable = true, unique = true)
+    private String url;
+    @Column(name = "salary_min", nullable = true, updatable = false)
+    private int salaryMin;
+    @Column(name = "salary_max", nullable = true, updatable = false)
+    private int salaryMax;
+    @Column(name = "salary_currency", nullable = true, updatable = false)
+    private String currency;
+    @Column(name = "year_experience_required", nullable = true, updatable = false)
+    private int yearExperienceRequired;
+    @Column(name = "certificate_required", nullable = true, updatable = false)
+    private String certificateRequired;
+    @Column(name = "education_required", nullable = true, updatable = false)
+    private String educationRequired;
+    @Column(name = "job_post_id", nullable = true, updatable = false)
+    private int jobPostId;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "Location_id", referencedColumnName="id")
+    private Location location;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "Job_has_Required_Major",
+            joinColumns = { @JoinColumn(name = "Job_id", referencedColumnName="id") },
+            inverseJoinColumns = { @JoinColumn(name = "Major_id", referencedColumnName="id") }
+    )
+    private List<Major> majors;
+}

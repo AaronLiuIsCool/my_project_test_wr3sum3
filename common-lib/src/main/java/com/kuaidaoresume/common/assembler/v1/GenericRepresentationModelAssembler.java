@@ -1,6 +1,6 @@
-package com.kuaidaoresume.resume.controller.v1.assembler;
+package com.kuaidaoresume.common.assembler.v1;
 
-import com.kuaidaoresume.resume.dto.PersistedEntityDto;
+import com.kuaidaoresume.common.dto.PersistedEntityDto;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.core.GenericTypeResolver;

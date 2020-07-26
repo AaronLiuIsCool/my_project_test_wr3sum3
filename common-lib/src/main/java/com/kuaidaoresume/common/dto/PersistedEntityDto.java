@@ -1,4 +1,4 @@
-package com.kuaidaoresume.resume.dto;
+package com.kuaidaoresume.common.dto;
 
 /*
  * For UPDATE and DELETE cases in which the persisted

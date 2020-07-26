@@ -1,5 +1,7 @@
 package com.kuaidaoresume.resume.dto;
 
+import com.kuaidaoresume.common.dto.PersistedEntityDto;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
