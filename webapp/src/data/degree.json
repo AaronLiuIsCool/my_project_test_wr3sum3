@@ -1,0 +1,11 @@
+[
+  {"id": 1, "degree": "大专"},
+  {"id": 2, "degree": "本科"},
+  {"id": 3, "degree": "硕士"},
+  {"id": 4, "degree": "博士"},
+  {"id": 5, "degree": "Diploma"},
+  {"id": 6, "degree": "Associate Degree"},
+  {"id": 7, "degree": "Bachelor Degree"},
+  {"id": 8, "degree": "Master Degree"},
+  {"id": 9, "degree": "Ph.D."}
+]

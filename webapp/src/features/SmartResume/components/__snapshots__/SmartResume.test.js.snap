@@ -103,7 +103,7 @@ exports[`SmartResume tests renders Smart Resume 1`] = `
               className="row"
             >
               <div
-                className="col"
+                className="col-lg-6"
               >
                 <div
                   className="form_item form-group"
@@ -123,7 +123,7 @@ exports[`SmartResume tests renders Smart Resume 1`] = `
                 </div>
               </div>
               <div
-                className="col"
+                className="col-lg-3"
               >
                 <div
                   className="form_item form-group"
@@ -142,30 +142,6 @@ exports[`SmartResume tests renders Smart Resume 1`] = `
                   />
                 </div>
               </div>
-            </div>
-            <div
-              className="row"
-            >
-              <div
-                className="col"
-              >
-                <div
-                  className="form_item form-group"
-                >
-                  <label
-                    className="form-label"
-                    htmlFor="basic-province"
-                  >
-                    省份
-                  </label>
-                  <input
-                    className="form-control"
-                    id="basic-province"
-                    placeholder="您现在的所在的省份"
-                    type="text"
-                  />
-                </div>
-              </div>
               <div
                 className="col"
               >
@@ -178,14 +154,70 @@ exports[`SmartResume tests renders Smart Resume 1`] = `
                   >
                     城市
                   </label>
-                  <input
-                    className="form-control"
-                    id="basic-city"
-                    placeholder="您现在的居住城市"
-                    type="text"
-                  />
+                  <div
+                    className="rbt"
+                    style={
+                      Object {
+                        "outline": "none",
+                        "position": "relative",
+                      }
+                    }
+                    tabIndex={-1}
+                  >
+                    <div
+                      style={
+                        Object {
+                          "display": "flex",
+                          "flex": 1,
+                          "height": "100%",
+                          "position": "relative",
+                        }
+                      }
+                    >
+                      <input
+                        aria-autocomplete="both"
+                        aria-expanded={false}
+                        aria-haspopup="listbox"
+                        autoComplete="off"
+                        className="rbt-input-main form-control rbt-input"
+                        onBlur={[Function]}
+                        onChange={[Function]}
+                        onClick={[Function]}
+                        onFocus={[Function]}
+                        onKeyDown={[Function]}
+                        placeholder="您的居住城市"
+                        role="combobox"
+                        type="text"
+                        value=""
+                      />
+                      <input
+                        aria-hidden={true}
+                        className="rbt-input-hint"
+                        readOnly={true}
+                        style={
+                          Object {
+                            "backgroundColor": "transparent",
+                            "borderColor": "transparent",
+                            "boxShadow": "none",
+                            "color": "rgba(0, 0, 0, 0.35)",
+                            "left": 0,
+                            "pointerEvents": "none",
+                            "position": "absolute",
+                            "top": 0,
+                            "width": "100%",
+                          }
+                        }
+                        tabIndex={-1}
+                        value=""
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
+            </div>
+            <div
+              className="row"
+            >
               <div
                 className="col"
               />
@@ -292,7 +324,7 @@ exports[`SmartResume tests renders Smart Resume 1`] = `
                 className="col"
               >
                 <h2
-                  class="form_h2"
+                  className="form_h2"
                 >
                   填写院校信息
                 </h2>
@@ -313,12 +345,64 @@ exports[`SmartResume tests renders Smart Resume 1`] = `
                   >
                     院校名称
                   </label>
-                  <input
-                    className="form-control"
-                    id="education-school"
-                    placeholder="请输入学校名字"
-                    type="text"
-                  />
+                  <div
+                    className="rbt"
+                    style={
+                      Object {
+                        "outline": "none",
+                        "position": "relative",
+                      }
+                    }
+                    tabIndex={-1}
+                  >
+                    <div
+                      style={
+                        Object {
+                          "display": "flex",
+                          "flex": 1,
+                          "height": "100%",
+                          "position": "relative",
+                        }
+                      }
+                    >
+                      <input
+                        aria-autocomplete="both"
+                        aria-expanded={false}
+                        aria-haspopup="listbox"
+                        autoComplete="off"
+                        className="rbt-input-main form-control rbt-input"
+                        onBlur={[Function]}
+                        onChange={[Function]}
+                        onClick={[Function]}
+                        onFocus={[Function]}
+                        onKeyDown={[Function]}
+                        placeholder="请输入学校名字"
+                        role="combobox"
+                        type="text"
+                        value=""
+                      />
+                      <input
+                        aria-hidden={true}
+                        className="rbt-input-hint"
+                        readOnly={true}
+                        style={
+                          Object {
+                            "backgroundColor": "transparent",
+                            "borderColor": "transparent",
+                            "boxShadow": "none",
+                            "color": "rgba(0, 0, 0, 0.35)",
+                            "left": 0,
+                            "pointerEvents": "none",
+                            "position": "absolute",
+                            "top": 0,
+                            "width": "100%",
+                          }
+                        }
+                        tabIndex={-1}
+                        value=""
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
               <div
@@ -397,12 +481,64 @@ exports[`SmartResume tests renders Smart Resume 1`] = `
                   >
                     专业
                   </label>
-                  <input
-                    className="form-control"
-                    id="education-major"
-                    placeholder="输入所在的专业"
-                    type="text"
-                  />
+                  <div
+                    className="rbt"
+                    style={
+                      Object {
+                        "outline": "none",
+                        "position": "relative",
+                      }
+                    }
+                    tabIndex={-1}
+                  >
+                    <div
+                      style={
+                        Object {
+                          "display": "flex",
+                          "flex": 1,
+                          "height": "100%",
+                          "position": "relative",
+                        }
+                      }
+                    >
+                      <input
+                        aria-autocomplete="both"
+                        aria-expanded={false}
+                        aria-haspopup="listbox"
+                        autoComplete="off"
+                        className="rbt-input-main form-control rbt-input"
+                        onBlur={[Function]}
+                        onChange={[Function]}
+                        onClick={[Function]}
+                        onFocus={[Function]}
+                        onKeyDown={[Function]}
+                        placeholder="输入所在的专业"
+                        role="combobox"
+                        type="text"
+                        value=""
+                      />
+                      <input
+                        aria-hidden={true}
+                        className="rbt-input-hint"
+                        readOnly={true}
+                        style={
+                          Object {
+                            "backgroundColor": "transparent",
+                            "borderColor": "transparent",
+                            "boxShadow": "none",
+                            "color": "rgba(0, 0, 0, 0.35)",
+                            "left": 0,
+                            "pointerEvents": "none",
+                            "position": "absolute",
+                            "top": 0,
+                            "width": "100%",
+                          }
+                        }
+                        tabIndex={-1}
+                        value=""
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
               <div
@@ -417,12 +553,64 @@ exports[`SmartResume tests renders Smart Resume 1`] = `
                   >
                     学历
                   </label>
-                  <input
-                    className="form-control"
-                    id="education-degree"
-                    placeholder="请输入您获得的学历"
-                    type="text"
-                  />
+                  <div
+                    className="rbt"
+                    style={
+                      Object {
+                        "outline": "none",
+                        "position": "relative",
+                      }
+                    }
+                    tabIndex={-1}
+                  >
+                    <div
+                      style={
+                        Object {
+                          "display": "flex",
+                          "flex": 1,
+                          "height": "100%",
+                          "position": "relative",
+                        }
+                      }
+                    >
+                      <input
+                        aria-autocomplete="both"
+                        aria-expanded={false}
+                        aria-haspopup="listbox"
+                        autoComplete="off"
+                        className="rbt-input-main form-control rbt-input"
+                        onBlur={[Function]}
+                        onChange={[Function]}
+                        onClick={[Function]}
+                        onFocus={[Function]}
+                        onKeyDown={[Function]}
+                        placeholder="获得的最高学历"
+                        role="combobox"
+                        type="text"
+                        value=""
+                      />
+                      <input
+                        aria-hidden={true}
+                        className="rbt-input-hint"
+                        readOnly={true}
+                        style={
+                          Object {
+                            "backgroundColor": "transparent",
+                            "borderColor": "transparent",
+                            "boxShadow": "none",
+                            "color": "rgba(0, 0, 0, 0.35)",
+                            "left": 0,
+                            "pointerEvents": "none",
+                            "position": "absolute",
+                            "top": 0,
+                            "width": "100%",
+                          }
+                        }
+                        tabIndex={-1}
+                        value=""
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
               <div

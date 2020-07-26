@@ -33,6 +33,7 @@
 .form_item label{
   color: #bfc4d3;
 }
+.form_item .rbt-input-main,
 .form_item input{
   background-color: #f2f4f9;
   color: #d5d9e6;
