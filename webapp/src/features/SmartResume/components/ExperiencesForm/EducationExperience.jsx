@@ -73,7 +73,7 @@ const EducationExperience = () => {
 
         <Row>
           <Col>
-            <InputGroup label={messages.enterHighestAward} id="education-highest-award" placeholder={messages.enterHighestAward} />
+            <InputGroup label={messages.highestAward} id="education-highest-award" placeholder={messages.enterHighestAward} />
           </Col>
           <Col>
             <InputGroup label={messages.otherAward} id="education-other-award" placeholder={messages.enterOtherAward} />

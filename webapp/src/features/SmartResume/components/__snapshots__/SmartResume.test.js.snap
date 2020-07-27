@@ -184,7 +184,7 @@ exports[`SmartResume tests renders Smart Resume 1`] = `
                 </div>
               </div>
               <div
-                className="col"
+                className="col-lg-3"
               >
                 <div
                   className="form_item form-group"
@@ -226,7 +226,7 @@ exports[`SmartResume tests renders Smart Resume 1`] = `
                         onClick={[Function]}
                         onFocus={[Function]}
                         onKeyDown={[Function]}
-                        placeholder="您的居住城市"
+                        placeholder="您现在的居住城市"
                         role="combobox"
                         type="text"
                         value=""
@@ -255,10 +255,6 @@ exports[`SmartResume tests renders Smart Resume 1`] = `
                   </div>
                 </div>
               </div>
-            </div>
-            <div
-              className="row"
-            >
               <div
                 className="col"
               />
@@ -279,7 +275,7 @@ exports[`SmartResume tests renders Smart Resume 1`] = `
                     className="form-label"
                     htmlFor="basic-linkedin"
                   >
-                    个人领英   Linkedin 链接
+                    个人领英 Linkedin 链接
                   </label>
                   <input
                     className="form-control"
@@ -367,7 +363,7 @@ exports[`SmartResume tests renders Smart Resume 1`] = `
                 className="col"
               >
                 <h2
-                  className="form_h2"
+                  class="form_h2"
                 >
                   填写院校信息
                 </h2>
@@ -498,7 +494,7 @@ exports[`SmartResume tests renders Smart Resume 1`] = `
                     className="form-label"
                     htmlFor="education-graduate-date"
                   >
-                    毕业GPA
+                    毕业日期
                   </label>
                   <input
                     className="form-control"
@@ -627,7 +623,79 @@ exports[`SmartResume tests renders Smart Resume 1`] = `
                         onClick={[Function]}
                         onFocus={[Function]}
                         onKeyDown={[Function]}
-                        placeholder="获得的最高学历"
+                        placeholder="请输入您获得的学历"
+                        role="combobox"
+                        type="text"
+                        value=""
+                      />
+                      <input
+                        aria-hidden={true}
+                        className="rbt-input-hint"
+                        readOnly={true}
+                        style={
+                          Object {
+                            "backgroundColor": "transparent",
+                            "borderColor": "transparent",
+                            "boxShadow": "none",
+                            "color": "rgba(0, 0, 0, 0.35)",
+                            "left": 0,
+                            "pointerEvents": "none",
+                            "position": "absolute",
+                            "top": 0,
+                            "width": "100%",
+                          }
+                        }
+                        tabIndex={-1}
+                        value=""
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                className="col"
+              >
+                <div
+                  className="form_item form-group"
+                >
+                  <label
+                    className="form-label"
+                    htmlFor="education-school-city"
+                  >
+                    学院所在城市
+                  </label>
+                  <div
+                    className="rbt"
+                    style={
+                      Object {
+                        "outline": "none",
+                        "position": "relative",
+                      }
+                    }
+                    tabIndex={-1}
+                  >
+                    <div
+                      style={
+                        Object {
+                          "display": "flex",
+                          "flex": 1,
+                          "height": "100%",
+                          "position": "relative",
+                        }
+                      }
+                    >
+                      <input
+                        aria-autocomplete="both"
+                        aria-expanded={false}
+                        aria-haspopup="listbox"
+                        autoComplete="off"
+                        className="rbt-input-main form-control rbt-input"
+                        onBlur={[Function]}
+                        onChange={[Function]}
+                        onClick={[Function]}
+                        onFocus={[Function]}
+                        onKeyDown={[Function]}
+                        placeholder="学院所在城市"
                         role="combobox"
                         type="text"
                         value=""
@@ -671,27 +739,7 @@ exports[`SmartResume tests renders Smart Resume 1`] = `
                   <input
                     className="form-control"
                     id="education-school-country"
-                    placeholder="学院所在国家"
-                    type="text"
-                  />
-                </div>
-              </div>
-              <div
-                className="col"
-              >
-                <div
-                  className="form_item form-group"
-                >
-                  <label
-                    className="form-label"
-                    htmlFor="education-graduate-date"
-                  >
-                    毕业GPA
-                  </label>
-                  <input
-                    className="form-control"
-                    id="education-graduate-date"
-                    placeholder="年/月/日期"
+                    placeholder="学校所在国家"
                     type="text"
                   />
                 </div>
