@@ -5,8 +5,14 @@ import { Row, Col, Form } from 'react-bootstrap';
 import { useI8n } from 'shell/i18n';
 
 import InputGroup from 'components/InputGroup';
-// import DropdownGroup from 'components/DropdownGroup';
+import DropdownGroup from 'components/DropdownGroup';
 import KButton from 'components/KButton';
+
+// json data for dropdowns
+import degreeOptions from '../../../../data/degree.json';
+import majorOptions from '../../../../data/major.json';
+import univOptions from '../../../../data/university.json';
+import cityOptions from '../../../../data/city.json';
 
 import Step from '../Step';
 
@@ -30,49 +36,47 @@ const EducationExperience = () => {
       <Form>
         <Row>
           <Col>
-            <h2 class="form_h2">填写院校信息</h2>
+            <h2 class="form_h2">{messages.enterSchoolInfo}</h2>
           </Col>
         </Row>
         <Row>
           <Col lg="4">
-            <InputGroup label="院校名称" id="education-school" placeholder="请输入学校名字" />
+            <DropdownGroup label={messages.schoolName} id="education-school" placeholder={messages.enterSchoolName} searchKey="u" options={univOptions}/>
           </Col>
           <Col lg="2">
-            <InputGroup label="毕业GPA" id="education-gpa" placeholder="4.0?" />
+            <InputGroup label={messages.graduateGPA} id="education-gpa" placeholder="4.0?" />
           </Col>
           <Col>
             {/* todo: Convert this to airbnb calendar */}
-            <InputGroup label="入学日期" id="education-enter-date" placeholder="年/月/日期" />
+            <InputGroup label={messages.enterSchoolDate} id="education-enter-date" placeholder={messages.yymmdd} />
           </Col>
           <Col>
             {/* todo: Convert this to airbnb calendar */}
-            <InputGroup label="毕业GPA" id="education-graduate-date" placeholder="年/月/日期" />
+            <InputGroup label={messages.graduateDate} id="education-graduate-date" placeholder={messages.yymmdd} />
           </Col>
         </Row>
 
         <Row>
           <Col>
-            <InputGroup label="专业" id="education-major" placeholder="输入所在的专业" />
+            <DropdownGroup label={messages.major} id="education-major" placeholder={messages.enterMajor} searchKey="city" options={cityOptions}/>
           </Col>
           <Col>
-            <InputGroup label="学历" id="education-degree" placeholder="请输入您获得的学历" />
+            <DropdownGroup label={messages.degree} id="education-degree" placeholder={messages.enterDegree} searchKey="degree" options={degreeOptions} />
           </Col>
           <Col>
-            {/* todo: Convert this to airbnb calendar */}
-            <InputGroup label="学校所在国家" id="education-school-country" placeholder="学院所在国家" />
+            <DropdownGroup label={messages.schoolCity} id="education-school-city" placeholder={messages.schoolCity} searchKey="major" options={majorOptions}/>
           </Col>
           <Col>
-            {/* todo: Convert this to airbnb calendar */}
-            <InputGroup label="毕业GPA" id="education-graduate-date" placeholder="年/月/日期" />
+            <InputGroup label={messages.schoolCountry} id="education-school-country" placeholder={messages.schoolCountry} />
           </Col>
         </Row>
 
         <Row>
           <Col>
-            <InputGroup label="所获最高奖项 (有任何奖项都是加分好事！)" id="education-highest-award" placeholder="请填写您在校期间所获得的最高奖项" />
+            <InputGroup label={messages.enterHighestAward} id="education-highest-award" placeholder={messages.enterHighestAward} />
           </Col>
           <Col>
-            <InputGroup label="其他获得奖项" id="education-other-award" placeholder="请填写您在校期间所获得的其他奖项" />
+            <InputGroup label={messages.otherAward} id="education-other-award" placeholder={messages.enterOtherAward} />
           </Col>
         </Row>
         <Row className="form_buttons">
@@ -80,7 +84,7 @@ const EducationExperience = () => {
             {/* just a placeholder so we do need to change the css */}
             <p className="hidden"></p>
             <KButton variant="primary" type="submit">
-              保存
+            {messages.save}
           </KButton>
           </Col>
         </Row>

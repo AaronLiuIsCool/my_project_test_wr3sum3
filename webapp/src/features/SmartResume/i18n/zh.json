@@ -8,5 +8,42 @@
   "workXp": "工作经历",
   "projectXp": "项目经历",
   "otherXp": "其他经历",
-  "certifications": "技能证书"
+  "certifications": "技能证书",
+
+  "cnName": "中文姓名",
+  "enterCnName": "请输入您的中文全名",
+  "enName": "英文称呼",
+  "enterEnName": "First & Last Name",
+  "email": "邮箱",
+  "enterEmail": "请填写您的邮箱地址",
+  "tel": "联系电话",
+  "enterTel": "填写院校信息",
+  "city": "城市",
+  "enterCity": "您现在的居住城市",
+  "linkedin": "个人领英 Linkedin 链接",
+  "enterLinkedin": "请填写您的Linkedin链接",
+  "weblink": "个人 Github 或者作品集链接",
+  "enterWeblink": "请填写您的Github链接或作品集链接",
+  "resetForm": "清空重填",
+
+
+  "enterSchoolInfo": "填写院校信息",
+  "schoolName": "院校名称",
+  "enterSchoolName": "请输入学校名字",
+  "graduateGPA": "毕业GPA",
+  "enterSchoolDate": "入学日期",
+  "yymmdd": "年/月/日期",
+  "graduateDate": "毕业日期",
+  "major": "专业",
+  "enterMajor": "输入所在的专业",
+  "degree": "学历",
+  "enterDegree": "请输入您获得的学历",
+  "schoolCity": "学院所在城市",
+  "schoolCountry": "学校所在国家",
+  "highestAward": "所获最高奖项 (有任何奖项都是加分好事！)",
+  "enterHighestAward": "请填写您在校期间所获得的最高奖项",
+  "otherAward": "其他获得奖项",
+  "enterOtherAward": "请填写您在校期间所获得的其他奖项",
+  "save": "保存"
+  
 }

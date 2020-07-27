@@ -13,7 +13,7 @@ import cityOptions from '../../../data/city.json';
 
 // todo: do propTypes validaton
 // BasicExperience.propTypes = {
-//   name: PropTypes.string,
+//   name: PropTypes.string,\
 //   title: PropTypes.string
 // };
 
