@@ -22,6 +22,7 @@ const EducationExperience = () => {
   return (
     // todo: translate to message string
     <Step
+      id="education"
       title={messages.education}
       subtitle={messages.educationInfo}
       addMore={true}

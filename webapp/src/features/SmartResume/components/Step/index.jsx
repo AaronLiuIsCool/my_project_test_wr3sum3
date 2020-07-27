@@ -13,8 +13,8 @@ const AddMore = ({ addMore }) => {
     return <AddMoreForm>添加新经历</AddMoreForm>
 }
 
-const Step = ({ title, subtitle, children, addMore = false }) => (
-    <div>
+const Step = ({ id, title, subtitle, children, addMore = false }) => (
+    <div id={id}>
         <StepHeader
             title={title}
             subtitle={subtitle}
@@ -27,6 +27,7 @@ const Step = ({ title, subtitle, children, addMore = false }) => (
 );
 
 Step.propTypes = {
+    id: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     subtitle: PropTypes.string.isRequired,
     children: PropTypes.node.isRequired,

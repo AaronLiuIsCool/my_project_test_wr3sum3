@@ -13,7 +13,7 @@ const Navigation = () => {
     const dispatch = useDispatch();
 
     return (
-        <Navbar bg="light" expand="lg">
+        <Navbar bg="light" expand="lg" fixed="top">
             <Navbar.Brand href="/">{messages.brand}</Navbar.Brand>
             <Navbar.Toggle aria-controls="top-navigation-bar" />
             <Navbar.Collapse id="top-navigation-bar">

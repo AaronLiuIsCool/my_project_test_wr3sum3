@@ -1,36 +1,77 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`SmartResume tests renders Smart Resume 1`] = `
-<div>
-  <div>
-    智能创建
+<div
+  className="features smart-resume"
+>
+  <div
+    className="overlay"
+  >
+    <div
+      className="container"
+    >
+      <div
+        className="content"
+      >
+        <a
+          className="navItemSelected"
+          href="/#basicInfo"
+          onClick={[Function]}
+        >
+          基本信息
+        </a>
+        <a
+          className="navItem"
+          href="/#education"
+          onClick={[Function]}
+        >
+          教育背景
+        </a>
+        <a
+          className="navItem"
+          href="/#workXp"
+          onClick={[Function]}
+        >
+          工作经历
+        </a>
+        <a
+          className="navItem"
+          href="/#projectXp"
+          onClick={[Function]}
+        >
+          项目经历
+        </a>
+        <a
+          className="navItem"
+          href="/#otherXp"
+          onClick={[Function]}
+        >
+          其他经历
+        </a>
+        <a
+          className="navItem"
+          href="/#certifications"
+          onClick={[Function]}
+        >
+          技能证书
+        </a>
+      </div>
+    </div>
+    <div
+      className="container"
+    >
+      TODO: Preview on right
+    </div>
   </div>
-  <div>
-    TODO: Navigation on the left
-    <p>
-      基本信息
-    </p>
-    <p>
-      教育背景
-    </p>
-    <p>
-      项目经历
-    </p>
-    <p>
-      项目经历
-    </p>
-    <p>
-      其他经历
-    </p>
-    <p>
-      技能证书
-    </p>
-  </div>
-  <div>
+  <div
+    className="container"
+  >
     <p>
       TODO: update progress bar
     </p>
-    <div>
+    <div
+      id="basicInfo"
+    >
       <div
         className="form_h1"
       >
@@ -295,7 +336,9 @@ exports[`SmartResume tests renders Smart Resume 1`] = `
         </div>
       </div>
     </div>
-    <div>
+    <div
+      id="education"
+    >
       <div
         className="form_h1"
       >
@@ -730,40 +773,6 @@ exports[`SmartResume tests renders Smart Resume 1`] = `
         </p>
       </div>
     </div>
-    <div>
-      <div
-        className="container"
-      >
-        <p>
-          Kuaidao
-        </p>
-        <p>
-          Intern
-        </p>
-      </div>
-      <div
-        className="container"
-      >
-        <p>
-          Kuaidao
-        </p>
-        <p>
-          Software Engineer
-        </p>
-      </div>
-    </div>
-    <p>
-      TODO: 项目经历
-    </p>
-    <p>
-      TODO: 其他经历
-    </p>
-    <p>
-      TODO: 技能证书
-    </p>
-  </div>
-  <div>
-    TODO: Preview on right
   </div>
 </div>
 `;

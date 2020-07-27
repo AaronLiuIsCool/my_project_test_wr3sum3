@@ -1,19 +1,24 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-import WorkExperience from './WorkExperience';
+import ViewObserver from './ViewObserver';
 import BasicExperience from './BasicExperience';
 import EducationExperience from './EducationExperience';
 
-const ExperiencesForm = () => (
-    <div>
+import styles from '../../styles/ExperiencesForm.module.css';
+
+const ExperiencesForm = ({ useObserver }) => (
+    <div className={styles.container}>
         <p>TODO: update progress bar</p>
-        <BasicExperience />
-        <EducationExperience />
-        <WorkExperience />
-        <p>TODO: 项目经历</p>
-        <p>TODO: 其他经历</p>
-        <p>TODO: 技能证书</p>
+        <ViewObserver enabled={useObserver}>
+            <BasicExperience />
+            <EducationExperience />
+        </ViewObserver>
     </div>
 );
+
+ExperiencesForm.propTypes = {
+    useObserver: PropTypes.bool.isRequired
+};
 
 export default ExperiencesForm;

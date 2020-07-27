@@ -21,6 +21,7 @@ const BasicExperience = () => {
   return (
     // todo: translate to message string
     <Step
+      id="basicInfo"
       title={messages.basicInfo}
       subtitle={messages.enterBasicInfo}
     >

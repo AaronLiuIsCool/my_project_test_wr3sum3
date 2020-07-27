@@ -1,7 +1,11 @@
 import React from 'react';
 
+import styles from '../styles/Preview.module.css';
+
 const Preview = () => (
-    <div>TODO: Preview on right</div>
+    <div className={styles.container}>
+        TODO: Preview on right
+    </div>
 );
 
 export default Preview;

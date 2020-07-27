@@ -5,7 +5,7 @@ exports[`renders App 1`] = `
   className="App"
 >
   <nav
-    className="navbar navbar-expand-lg navbar-light bg-light"
+    className="navbar navbar-expand-lg navbar-light bg-light fixed-top"
   >
     <a
       className="navbar-brand"

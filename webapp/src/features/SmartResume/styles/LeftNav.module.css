@@ -1,0 +1,32 @@
+.container {
+  float: left;
+  width: 120px;
+  height: 100vh;
+
+  top: 0;
+  left: 0;
+
+  background-color: #3e89ec;
+}
+
+.content {
+  margin: 80px 0 0 10px
+}
+
+.navItem, .navItemSelected {
+  color: white;
+  text-align: right;
+  padding: 20px 22px 0 0;
+  height: 60px;
+  width: 110px;
+  cursor: pointer;
+  display: block;
+}
+
+.navItemSelected {
+  font-weight: bolder;
+  color: #3e89ec;
+  background-color: white;
+  border-top-left-radius: 30px;
+  border-bottom-left-radius: 30px;
+}

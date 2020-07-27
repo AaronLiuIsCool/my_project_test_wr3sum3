@@ -1,13 +1,13 @@
 import React, { Suspense } from 'react';
 
 import LoadFallbackComponent from 'components/LoadFallbackComponent';
-import './styles/index.css';
+import './styles/index.scss';
 
 const SmartResume = React.lazy(() => import('./components/SmartResume'));
 
 const LazyLoadSmartResume = () => (
   <Suspense fallback={<LoadFallbackComponent />}>
-    <SmartResume />
+    <SmartResume useObserver={true} />
   </Suspense>
 );
 

@@ -22,7 +22,7 @@ const WorkExperience = () => {
     const employers = useSelector(selectEmployers);
 
     return (
-        <div>
+        <div id="workXp">
             {employers.map(employer =>
                 <Experience
                     key={`${employer.name}-${employer.title}`}
