@@ -31,6 +31,19 @@ services:
       - internal_access
       - external_access # db access
 
+  email-service:
+    build: ./mail-svc
+    image: kuaidaoresume/mail-svc
+    environment:
+      - SPRING_PROFILES_ACTIVE
+      - SERVER_PORT
+      - SENTRY_DSN
+      - AWS_ACCESS_KEY
+      - AWS_ACCESS_SECRET
+    networks:
+      - internal_access
+      - external_access # aws access
+
   kdr-service:
     build: ./kdr
     image: kuaidaoresume/kdr-svc

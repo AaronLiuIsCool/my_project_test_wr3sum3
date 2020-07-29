@@ -1,0 +1,19 @@
+# application.yml
+
+spring:
+  profiles:
+    active: dev
+  application:
+    name: email-service
+
+# local test only
+cloud.aws.stack.auto: false
+cloud.aws.region.auto: false
+cloud.aws.region.static: ca-central-1
+
+kuaidaoresume:
+  common:
+    sentry-dsn: ${SENTRY_DSN:https://80bbf4ae778b525f9fe72e2813cd5246@sentry.io/1271087}
+    deploy-env: ${DEPLOY:V2}
+  aws-access-key: ${AWS_ACCESS_KEY}
+  aws-access-secret: ${AWS_ACCESS_SECRET}
