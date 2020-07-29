@@ -43,4 +43,14 @@ public class AuthConstant {
     // AUTH ERROR Messages
     public static final String ERROR_MSG_DO_NOT_HAVE_ACCESS = "You do not have access to this service";
     public static final String ERROR_MSG_MISSING_AUTH_HEADER = "Missing Authorization http header";
+    // AUTHORIZATION_RESUME_SERVICE is set as Authorization header to denote that
+    // a request is being made by resume service
+    public static final String AUTHORIZATION_RESUME_SERVICE = "resume-service";
+    // AUTHORIZATION_RESUME_SERVICE is set as Authorization header to denote that
+    // a request is being made by job service
+    public static final String AUTHORIZATION_JOB_SERVICE = "job-service";
+    // AUTHORIZATION_MATCHING_SERVICE is set as Authorization header to denote that
+    // a request is being made by matching service
+    public static final String AUTHORIZATION_MATCHING_SERVICE = "matching-service";
+
 }

@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS account (
                                      confirmed_and_active BOOLEAN NOT NULL DEFAULT false,
                                      member_since TIMESTAMP NOT NULL default current_timestamp,
                                      password_hash VARCHAR(100) default '',
-                                     photo_url VARCHAR(255) NOT NULL,
+                                     photo_url VARCHAR(255),
                                      support BOOLEAN NOT NULL DEFAULT false,
                                      PRIMARY KEY (id),
                                      key ix_account_email (email),

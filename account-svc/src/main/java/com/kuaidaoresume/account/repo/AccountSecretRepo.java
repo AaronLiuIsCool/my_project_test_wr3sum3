@@ -18,4 +18,3 @@ public interface AccountSecretRepo extends JpaRepository<AccountSecret, String> 
     @Transactional
     int updatePasswordHashById(@Param("passwordHash") String passwordHash, @Param("id") String id);
 }
-

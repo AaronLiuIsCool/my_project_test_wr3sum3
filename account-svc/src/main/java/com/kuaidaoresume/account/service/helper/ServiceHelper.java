@@ -1,4 +1,5 @@
 package com.kuaidaoresume.account.service.helper;
+
 import com.github.structlog4j.ILogger;
 import com.github.structlog4j.SLoggerFactory;
 import com.google.common.collect.Maps;
@@ -38,6 +39,43 @@ public class ServiceHelper {
     //private final BotClient botClient;
 
     private final EnvConfig envConfig;
+
+    @Async(AppConfig.ASYNC_EXECUTOR_NAME)
+    public void syncUserAsync(String userId) {
+        if (envConfig.isDebug()) {
+            logger.debug("syncUserAsync in dev & test environment");
+            return;
+        }
+
+        Account account = accountRepo.findAccountById(userId);
+        if (account == null) {
+            throw new ServiceException(ResultCode.NOT_FOUND, String.format("User with id %s not found", userId));
+        }
+        if (StringUtils.isEmpty(account.getPhoneNumber()) && StringUtils.isEmpty(account.getEmail())) {
+            logger.info(String.format("skipping sync for user %s because no email or phonenumber", account.getId()));
+            return;
+        }
+
+        // resumes sync as necessary for this account.
+
+        User user = new User();
+        user.setUserId(account.getId());
+        user.setEmail(account.getEmail());
+        user.setName(account.getName());
+        user.setSignedUpAt(account.getMemberSince().toEpochMilli());
+        user.setAvatar(new Avatar().setImageURL(account.getPhotoUrl()));
+        user.setLastRequestAt(Instant.now().toEpochMilli());
+
+        user.addCustomAttribute(CustomAttribute.newBooleanAttribute("v2", true));
+        user.addCustomAttribute(CustomAttribute.newStringAttribute("phonenumber", account.getPhoneNumber()));
+        user.addCustomAttribute(CustomAttribute.newBooleanAttribute("confirmed_and_active", account.isConfirmedAndActive()));
+        user.addCustomAttribute(CustomAttribute.newBooleanAttribute("is_regular_user", true));
+        //TODO: Aaron Liu, may not need in phase I
+        // user.addCustomAttribute(CustomAttribute.newBooleanAttribute("is_admin", isAdmin));
+        user.addCustomAttribute(CustomAttribute.newBooleanAttribute("is_kuaidaoresume_support", account.isSupport()));
+
+        //TODO: Aaron Liu, may not need in phase I. this.syncUserWithIntercom(user, account.getId());
+    }
 
     void syncUserWithIntercom(User user, String userId) {
         try {
