@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import { HashLink } from 'react-router-hash-link';
 import { useDispatch } from 'react-redux';
 
-import { moveStep } from '../../slicer';
+import { actions } from '../../slicer';
 
 import styles from '../../styles/LeftNav.module.css';
 
 const NavItem = ({ index, path, name, selected = false }) => {
     const dispatch = useDispatch();
     return (
-        <HashLink smooth to={`/#${path}`} onClick={() => dispatch(moveStep(index))}
+        <HashLink smooth to={`/#${path}`} onClick={() => dispatch(actions.moveStep(index))}
             className={selected ? styles.navItemSelected : styles.navItem}>
             {name}
         </HashLink>

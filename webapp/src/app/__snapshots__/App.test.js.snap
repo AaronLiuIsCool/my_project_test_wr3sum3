@@ -10,7 +10,9 @@ exports[`renders App 1`] = `
     <a
       className="navbar-brand"
       href="/"
-    />
+    >
+      快刀
+    </a>
     <button
       aria-controls="top-navigation-bar"
       aria-label="Toggle navigation"
@@ -42,7 +44,9 @@ exports[`renders App 1`] = `
           <a
             href="/"
             onClick={[Function]}
-          />
+          >
+            智能创建
+          </a>
         </a>
         <a
           className="nav-link"
@@ -55,7 +59,9 @@ exports[`renders App 1`] = `
           <a
             href="/example"
             onClick={[Function]}
-          />
+          >
+            Counter Example
+          </a>
         </a>
       </div>
       <div
@@ -77,6 +83,7 @@ exports[`renders App 1`] = `
             type="radio"
             value="zh"
           />
+          中文
         </label>
         <label
           className="btn btn-primary"
@@ -93,6 +100,7 @@ exports[`renders App 1`] = `
             type="radio"
             value="en"
           />
+          English
         </label>
       </div>
     </div>

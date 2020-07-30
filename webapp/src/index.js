@@ -7,6 +7,8 @@ import store from 'app/store';
 
 import * as serviceWorker from './serviceWorker';
 
+import 'react-dates/initialize';
+import 'react-dates/lib/css/_datepicker.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import './index.css';
 

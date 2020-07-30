@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { InView } from 'react-intersection-observer'
 import { useDispatch } from 'react-redux';
 
-import { moveStep } from '../../slicer';
+import { actions } from '../../slicer';
 
 const wrapChildrenWithInView = (children, makeChangeHandler) => (
     children.map((child, index) => {
@@ -24,7 +24,7 @@ const ViewObserver = ({ enabled, children }) => {
             if (!inView) {
                 return;
             }
-            dispatch(moveStep(index))
+            dispatch(actions.moveStep(index))
         };
     };
 

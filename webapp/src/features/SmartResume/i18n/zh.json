@@ -10,6 +10,8 @@
   "otherXp": "其他经历",
   "certifications": "技能证书",
 
+  "addNewExperience": "添加新经历",
+
   "cnName": "中文姓名",
   "enterCnName": "请输入您的中文全名",
   "enName": "英文称呼",
@@ -32,7 +34,6 @@
   "enterSchoolName": "请输入学校名字",
   "graduateGPA": "毕业GPA",
   "enterSchoolDate": "入学日期",
-  "yymmdd": "年/月/日期",
   "graduateDate": "毕业日期",
   "major": "专业",
   "enterMajor": "输入所在的专业",
@@ -44,6 +45,10 @@
   "enterHighestAward": "请填写您在校期间所获得的最高奖项",
   "otherAward": "其他获得奖项",
   "enterOtherAward": "请填写您在校期间所获得的其他奖项",
-  "save": "保存"
-  
+  "save": "保存",
+  "entryIsInvalid": "请输入正确的信息",
+
+  "yymmdd": "年/月/日期",
+  "monthFormat":"YYYY[年]MMMM",
+  "dateDisplayFormat":"YYYY/MM/DD"
 }

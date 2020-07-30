@@ -41,17 +41,28 @@
     padding: 24px 20px;
   }
 
-  .form_item label {
-    color: #bfc4d3;
-  }
+  .form_item {
+    label {
+      color: #bfc4d3;
+    }
 
-  .form_item .rbt-input-main,
-  .form_item input {
-    background-color: #f2f4f9;
-    color: #d5d9e6;
-    border-radius: 8px;
-    border: none;
-    /* box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.1); */
+    .rbt-input-main, input {
+      background-color: #f2f4f9;
+      color: #d5d9e6;
+      border-radius: 8px;
+      border: none;
+      /* box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.1); */
+    }
+
+    .DateInput_input {
+      height: 38px;
+      font-size: 16px;
+      line-height: 24px;
+
+      &::placeholder {
+        color: black;
+      }
+    }
   }
 
   .space_betweens {

@@ -1,30 +1,24 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+import education from './education';
+
 export const resumeSlice = createSlice({
   name: 'resume',
   initialState: {
     stepIndex: 0,
-    employers: [{
-      name: 'Kuaidao',
-      title: 'Intern'
-    }, {
-      name: 'Kuaidao',
-      title: 'Software Engineer'
-    }] // default should be empty [], here is for demo purposes
+    education: education.initialState
   },
   reducers: {
     moveStep: (state, action) => {
       state.stepIndex = action.payload;
     },
-    addEmployer: (state, action) => {
-      state.employers.push(action.payload)
-    }
+    ...education.reducers
   }
 });
 
-export const { addEmployer, moveStep} = resumeSlice.actions;
+export const { actions } = resumeSlice;
 
-export const selectEmployers = ({ resume }) => resume.employers;
 export const selectStep = ({ resume }) => resume.stepIndex;
+export const educationSelectors = education.selectors;
 
 export default resumeSlice.reducer;

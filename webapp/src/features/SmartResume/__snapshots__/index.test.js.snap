@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renders SmartResume 1`] = `
+exports[`renders lazy loaded component for SmartResume 1`] = `
 <div>
   Loading...
 </div>

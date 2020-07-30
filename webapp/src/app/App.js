@@ -1,6 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+
+import moment from 'moment';
+import 'moment/locale/zh-cn';
 
 import { I8nContext } from 'shell/i18n';
 import { selectLanguage } from './slicer';
@@ -16,11 +19,13 @@ import en from './i18n/en.json';
 
 const App = () => {
   const language = useSelector(selectLanguage);
-  const [messages, setMessages] = useState({});
 
-  useEffect(() => {
-    setMessages(language === 'zh' ? zh : en);
-  }, [language]);
+  let messages = en;
+  moment.locale('en');
+  if (language === 'zh') {
+    messages = zh;
+    moment.locale('zh-cn');
+  }
 
   return (
     <I8nContext.Provider value={messages}>

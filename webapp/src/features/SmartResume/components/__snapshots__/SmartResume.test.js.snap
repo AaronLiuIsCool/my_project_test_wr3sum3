@@ -355,6 +355,7 @@ exports[`SmartResume tests renders Smart Resume 1`] = `
         >
           <form
             className=""
+            onSubmit={[Function]}
           >
             <div
               className="row"
@@ -363,7 +364,7 @@ exports[`SmartResume tests renders Smart Resume 1`] = `
                 className="col"
               >
                 <h2
-                  class="form_h2"
+                  className="form_h2"
                 >
                   填写院校信息
                 </h2>
@@ -459,6 +460,7 @@ exports[`SmartResume tests renders Smart Resume 1`] = `
                   <input
                     className="form-control"
                     id="education-gpa"
+                    onChange={[Function]}
                     placeholder="4.0?"
                     type="text"
                   />
@@ -476,12 +478,43 @@ exports[`SmartResume tests renders Smart Resume 1`] = `
                   >
                     入学日期
                   </label>
-                  <input
-                    className="form-control"
-                    id="education-enter-date"
-                    placeholder="年/月/日期"
-                    type="text"
-                  />
+                  <div
+                    className="SingleDatePicker SingleDatePicker_1"
+                  >
+                    <div>
+                      <div
+                        className="SingleDatePickerInput SingleDatePickerInput_1"
+                      >
+                        <div
+                          className="DateInput DateInput_1"
+                        >
+                          <input
+                            aria-describedby="DateInput__screen-reader-message-education-enter-date"
+                            aria-label="年/月/日期"
+                            autoComplete="off"
+                            className="DateInput_input DateInput_input_1 DateInput_input__readOnly DateInput_input__readOnly_2"
+                            disabled={false}
+                            id="education-enter-date"
+                            name="education-enter-date"
+                            onChange={[Function]}
+                            onFocus={[Function]}
+                            onKeyDown={[Function]}
+                            placeholder="年/月/日期"
+                            readOnly={true}
+                            required={false}
+                            type="text"
+                            value=""
+                          />
+                          <p
+                            className="DateInput_screenReaderMessage DateInput_screenReaderMessage_1"
+                            id="DateInput__screen-reader-message-education-enter-date"
+                          >
+                            Navigate forward to interact with the calendar and select a date. Press the question mark key to get the keyboard shortcuts for changing dates.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div
@@ -496,12 +529,43 @@ exports[`SmartResume tests renders Smart Resume 1`] = `
                   >
                     毕业日期
                   </label>
-                  <input
-                    className="form-control"
-                    id="education-graduate-date"
-                    placeholder="年/月/日期"
-                    type="text"
-                  />
+                  <div
+                    className="SingleDatePicker SingleDatePicker_1"
+                  >
+                    <div>
+                      <div
+                        className="SingleDatePickerInput SingleDatePickerInput_1"
+                      >
+                        <div
+                          className="DateInput DateInput_1"
+                        >
+                          <input
+                            aria-describedby="DateInput__screen-reader-message-education-graduate-date"
+                            aria-label="年/月/日期"
+                            autoComplete="off"
+                            className="DateInput_input DateInput_input_1 DateInput_input__readOnly DateInput_input__readOnly_2"
+                            disabled={false}
+                            id="education-graduate-date"
+                            name="education-graduate-date"
+                            onChange={[Function]}
+                            onFocus={[Function]}
+                            onKeyDown={[Function]}
+                            placeholder="年/月/日期"
+                            readOnly={true}
+                            required={false}
+                            type="text"
+                            value=""
+                          />
+                          <p
+                            className="DateInput_screenReaderMessage DateInput_screenReaderMessage_1"
+                            id="DateInput__screen-reader-message-education-graduate-date"
+                          >
+                            Navigate forward to interact with the calendar and select a date. Press the question mark key to get the keyboard shortcuts for changing dates.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -664,64 +728,13 @@ exports[`SmartResume tests renders Smart Resume 1`] = `
                   >
                     学院所在城市
                   </label>
-                  <div
-                    className="rbt"
-                    style={
-                      Object {
-                        "outline": "none",
-                        "position": "relative",
-                      }
-                    }
-                    tabIndex={-1}
-                  >
-                    <div
-                      style={
-                        Object {
-                          "display": "flex",
-                          "flex": 1,
-                          "height": "100%",
-                          "position": "relative",
-                        }
-                      }
-                    >
-                      <input
-                        aria-autocomplete="both"
-                        aria-expanded={false}
-                        aria-haspopup="listbox"
-                        autoComplete="off"
-                        className="rbt-input-main form-control rbt-input"
-                        onBlur={[Function]}
-                        onChange={[Function]}
-                        onClick={[Function]}
-                        onFocus={[Function]}
-                        onKeyDown={[Function]}
-                        placeholder="学院所在城市"
-                        role="combobox"
-                        type="text"
-                        value=""
-                      />
-                      <input
-                        aria-hidden={true}
-                        className="rbt-input-hint"
-                        readOnly={true}
-                        style={
-                          Object {
-                            "backgroundColor": "transparent",
-                            "borderColor": "transparent",
-                            "boxShadow": "none",
-                            "color": "rgba(0, 0, 0, 0.35)",
-                            "left": 0,
-                            "pointerEvents": "none",
-                            "position": "absolute",
-                            "top": 0,
-                            "width": "100%",
-                          }
-                        }
-                        tabIndex={-1}
-                        value=""
-                      />
-                    </div>
-                  </div>
+                  <input
+                    className="form-control"
+                    id="education-school-city"
+                    onChange={[Function]}
+                    placeholder="学院所在城市"
+                    type="text"
+                  />
                 </div>
               </div>
               <div
@@ -739,6 +752,7 @@ exports[`SmartResume tests renders Smart Resume 1`] = `
                   <input
                     className="form-control"
                     id="education-school-country"
+                    onChange={[Function]}
                     placeholder="学校所在国家"
                     type="text"
                   />
@@ -763,6 +777,7 @@ exports[`SmartResume tests renders Smart Resume 1`] = `
                   <input
                     className="form-control"
                     id="education-highest-award"
+                    onChange={[Function]}
                     placeholder="请填写您在校期间所获得的最高奖项"
                     type="text"
                   />
@@ -783,6 +798,7 @@ exports[`SmartResume tests renders Smart Resume 1`] = `
                   <input
                     className="form-control"
                     id="education-other-award"
+                    onChange={[Function]}
                     placeholder="请填写您在校期间所获得的其他奖项"
                     type="text"
                   />
@@ -812,6 +828,7 @@ exports[`SmartResume tests renders Smart Resume 1`] = `
       </div>
       <div
         className="addMoreForm"
+        onClick={[Function]}
       >
         <span>
           +

@@ -6,12 +6,17 @@ import { Typeahead } from 'react-bootstrap-typeahead';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 
 // TODO: Update consumer to pass in select and handleChange
-const DropdownGroup = ({ label, id, placeholder, searchKey, options, select, handleChange }) => (
+const DropdownGroup = ({
+	label, id, placeholder, searchKey, options, value, onChange, isValid, isInvalid, feedbackMessage
+}) => (
 	<Form.Group className="form_item">
 		<Form.Label htmlFor={id}>{label}</Form.Label>
 		<Typeahead id={id} labelKey={searchKey} options={options}
-			placeholder={placeholder} selected={select}
-			onChange={handleChange} />
+			placeholder={placeholder} defaultValue={value}
+			onChange={onChange} isValid={isValid} isInvalid={isInvalid}/>
+		{isInvalid ? (<Form.Control.Feedback type="invalid">
+			{feedbackMessage}
+		</Form.Control.Feedback>) : null}
 	</Form.Group>
 );
 
@@ -22,8 +27,10 @@ DropdownGroup.propTypes = {
 	placeholder: PropTypes.string,
 	searchKey: PropTypes.string,
 	options: PropTypes.array,
-	select: PropTypes.string,
-	handleChange: PropTypes.func
+	value: PropTypes.string,
+	onChange: PropTypes.func,
+	isValid: PropTypes.bool,
+	isInvalid: PropTypes.bool
 };
 
 export default DropdownGroup;

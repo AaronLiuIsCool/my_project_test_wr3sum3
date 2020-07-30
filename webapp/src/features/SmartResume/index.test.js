@@ -7,7 +7,7 @@ import store from 'app/store';
 import SmartResume from './index';
 
 
-test('renders SmartResume', () => {
+test('renders lazy loaded component for SmartResume', () => {
   const smartResume = renderer.create(
     <Provider store={store}>
       <SmartResume />

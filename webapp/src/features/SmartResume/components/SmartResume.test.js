@@ -6,6 +6,8 @@ import renderer from 'react-test-renderer';
 import store from 'app/store';
 import SmartResume from './SmartResume';
 
+import 'react-dates/initialize';
+
 describe('SmartResume tests', () => {
   test('renders Smart Resume', () => {
     const smartResumeApp = renderer.create(

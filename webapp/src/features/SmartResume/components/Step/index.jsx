@@ -6,14 +6,16 @@ import AddMoreForm from 'components/AddMoreForm';
 import StepHeader from './StepHeader';
 import StepContainer from './StepContainer';
 
-const AddMore = ({ addMore }) => {
-    if (!addMore) {
+const getAddMoreForm = (enabled, message, handleAddMore) => {
+    if (!enabled) {
         return null;
     }
-    return <AddMoreForm>添加新经历</AddMoreForm>
+    return (
+        <AddMoreForm onAdd={handleAddMore} message={message} />
+    )
 }
 
-const Step = ({ id, title, subtitle, children, addMore = false }) => (
+const Step = ({ id, title, subtitle, children, addMore = false, addMoreMessage, handleAddMore }) => (
     <div id={id}>
         <StepHeader
             title={title}
@@ -22,7 +24,7 @@ const Step = ({ id, title, subtitle, children, addMore = false }) => (
         <StepContainer>
             {children}
         </StepContainer>
-        <AddMore addMore={addMore} />
+        {getAddMoreForm(addMore, addMoreMessage, handleAddMore)}
     </div>
 );
 
@@ -31,7 +33,9 @@ Step.propTypes = {
     title: PropTypes.string.isRequired,
     subtitle: PropTypes.string.isRequired,
     children: PropTypes.node.isRequired,
-    addMore: PropTypes.bool
+    addMore: PropTypes.bool,
+    addMoreMessage: PropTypes.string,
+    handleAddMore: PropTypes.func
 }
 
 export default Step;
