@@ -130,7 +130,18 @@ Run ```kubectl apply -f test```
 3. Go to localhost:30001
 
 Run uat (It's on AWS EKS CA central region)
-TBD
+1. Go to k8s/uat folder
+Run ```kubectl apply -f config```
+2. Go to k8s/ folder
+Run ```kubectl apply -f uat```
+
+2.5 check deployed services
+Run ```kubectl get services```
+2.6 check pods status
+Run ```kubectl get pods -o wide```
+2.7 check deployment status
+Run ```kubectl get deployments```
+
 Run Prod
 TBD
 
