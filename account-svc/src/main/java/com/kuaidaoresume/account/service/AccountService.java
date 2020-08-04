@@ -27,9 +27,9 @@ import com.kuaidaoresume.common.auth.AuthContext;
 import com.kuaidaoresume.common.crypto.Sign;
 import com.kuaidaoresume.common.env.EnvConfig;
 import com.kuaidaoresume.common.error.ServiceException;
-//import com.kuaidaoresume.common.utils.Helper;
-//import com.kuaidaoresume.mail.client.MailClient;
-//import com.kuaidaoresume.mail.dto.EmailRequest;
+import com.kuaidaoresume.common.utils.Helper;
+import com.kuaidaoresume.mail.client.MailClient;
+import com.kuaidaoresume.mail.dto.EmailRequest;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -59,7 +59,7 @@ public class AccountService {
 
     private final EnvConfig envConfig;
 
-    //private final MailClient mailClient;
+    private final MailClient mailClient;
 
     private final ServiceHelper serviceHelper;
 
@@ -395,6 +395,7 @@ public class AccountService {
     void sendEmail(String userId, String email, String name, String subject, String template, boolean activateOrConfirm) {
         String token = null;
         try {
+            System.out.println("THis is the Account Sign! ->" + appProps.getSigningSecret());
             token = Sign.generateEmailConfirmationToken(userId, email, appProps.getSigningSecret());
         } catch(Exception ex) {
             String errMsg = "Could not create token";
@@ -426,10 +427,9 @@ public class AccountService {
             htmlBody = String.format(template, link.toString(), link.toString());
         }
 
-        /*
-        TODO: Aaron Liu Uncomment when email services done.
         EmailRequest emailRequest = EmailRequest.builder()
                 .to(email)
+                .from("aaronliu.dev.canada@gmail.com") //TODO: Aaron Liu update to Eyeshigh customer support as default
                 .name(name)
                 .subject(subject)
                 .htmlBody(htmlBody)
@@ -447,7 +447,6 @@ public class AccountService {
             serviceHelper.handleError(logger, baseResponse.getMessage());
             throw new ServiceException(baseResponse.getMessage());
         }
-        */
     }
 
     public void trackEvent(String userId, String eventName) {

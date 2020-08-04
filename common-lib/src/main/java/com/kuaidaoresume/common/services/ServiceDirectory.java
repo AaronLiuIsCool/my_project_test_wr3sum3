@@ -29,12 +29,33 @@ public class ServiceDirectory {
     map.put("account", service);
 
     service = Service.builder()
+            .security(SecurityConstant.SEC_AUTHENTICATED)
+            .restrictDev(false)
+            .backendDomain("resume-service")
+            .build();
+    map.put("resume", service);
+
+    service = Service.builder()
+            .security(SecurityConstant.SEC_AUTHENTICATED)
+            .restrictDev(false)
+            .backendDomain("job-service")
+            .build();
+    map.put("job", service);
+
+    service = Service.builder()
       // Debug site for kdr proxy
       .security(SecurityConstant.SEC_PUBLIC)
       .restrictDev(true)
       .backendDomain("httpbin.org")
       .build();
     map.put("kdr", service);
+
+    service = Service.builder()
+            .security(SecurityConstant.SEC_PUBLIC)
+            .restrictDev(false)
+            .backendDomain("www-service")
+            .build();
+    map.put("www", service);
 
     serviceMap = Collections.unmodifiableMap(map);
   }

@@ -1,0 +1,10 @@
+spring:
+  thymeleaf:
+    cache: false # Disable template caching for local development
+
+server:
+  port: 8086
+
+kuaidaoresume:
+  email-service-endpoint: http://localhost:8088
+  account-service-endpoint: http://localhost:8081

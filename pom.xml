@@ -30,7 +30,10 @@
 		<module>job-svc</module>
 		<module>job-api</module>
 		<module>resume-svc</module>
-    <module>kdr</module>
+		<module>mail-api</module>
+		<module>mail-svc</module>
+		<module>onboarding-app</module>
+		<module>kdr</module>
 	</modules>
 
 	<dependencyManagement>

@@ -25,6 +25,10 @@ kdr:
       name: superpowers_route
       host: superpowers.kuaidaoresume-v2.local
       destinations: localhost:8085
+    -
+      name: www_route
+      host: www.kuaidaoresume-v2.local
+      destinations: localhost:8086
 
 management:
   endpoints:

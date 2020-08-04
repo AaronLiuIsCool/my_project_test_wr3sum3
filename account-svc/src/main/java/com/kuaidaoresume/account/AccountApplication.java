@@ -5,10 +5,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
 /**
- *
+ * Account services main entry.
+ * @author Aaron Liu.
  */
 @SpringBootApplication
-//@EnableFeignClients(basePackages = {"com.kuaidaoresume.mail"})
+@EnableFeignClients(basePackages = {"com.kuaidaoresume.mail"})
 public class AccountApplication {
 
     public static void main(String[] args) {

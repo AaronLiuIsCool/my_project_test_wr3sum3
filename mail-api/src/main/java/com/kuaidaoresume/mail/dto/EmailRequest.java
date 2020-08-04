@@ -19,6 +19,7 @@ public class EmailRequest {
     @NotBlank(message = "Please provide a subject")
     private String subject;
 
+    @NotBlank(message = "Please provide an from")
     private String from;
 
     private Map<String, Object> model;
