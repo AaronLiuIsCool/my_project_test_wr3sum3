@@ -12,14 +12,17 @@
 
   "addNewExperience": "添加新经历",
 
+  "uploadPhoto": "上传照片",
+  "addPhoto": "添加头像",
+  "samples": "什么样的照片试用于简历?",
   "cnName": "中文姓名",
   "enterCnName": "请输入您的中文全名",
   "enName": "英文称呼",
   "enterEnName": "First & Last Name",
   "email": "邮箱",
   "enterEmail": "请填写您的邮箱地址",
-  "tel": "联系电话",
-  "enterTel": "输入您的联系电话",
+  "phone": "联系电话",
+  "enterPhone": "输入您的联系电话",
   "city": "城市",
   "enterCity": "您现在的居住城市",
   "linkedin": "个人领英 Linkedin 链接",
@@ -27,6 +30,7 @@
   "weblink": "个人 Github 或者作品集链接",
   "enterWeblink": "请填写您的Github链接或作品集链接",
   "resetForm": "清空重填",
+  "confirm": "确认",
 
 
   "enterSchoolInfo": "填写院校信息",

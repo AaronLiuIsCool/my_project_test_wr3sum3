@@ -15,11 +15,12 @@ const getAddMoreForm = (enabled, message, handleAddMore) => {
     )
 }
 
-const Step = ({ id, title, subtitle, children, addMore = false, addMoreMessage, handleAddMore }) => (
+const Step = ({ id, title, subtitle, children, addMore, icon = false, addMoreMessage, handleAddMore }) => (
     <div id={id}>
         <StepHeader
             title={title}
             subtitle={subtitle}
+            icon={icon}
         />
         <StepContainer>
             {children}

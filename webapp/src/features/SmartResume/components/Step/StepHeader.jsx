@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const StepHeader = ({title, subtitle}) => (
+const StepHeader = ({title, subtitle, icon}) => (
     <div className="form_h1">
         <div>
-            {/* todo: need an icon  */}
+            <img src={`${process.env.PUBLIC_URL}/images/${icon}`} alt={title + " Icon"} />
             <h1>{title}</h1>
         </div>
         <p>{subtitle}</p>
@@ -13,7 +13,8 @@ const StepHeader = ({title, subtitle}) => (
 
 StepHeader.propTypes = {
     title: PropTypes.string.isRequired,
-    subtitle: PropTypes.string.isRequired
+    subtitle: PropTypes.string.isRequired,
+    icon: PropTypes.string.isRequired
 }
 
 export default StepHeader;

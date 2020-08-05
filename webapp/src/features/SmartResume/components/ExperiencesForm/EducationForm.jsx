@@ -10,10 +10,12 @@ import KButton from 'components/KButton';
 
 import { actions } from '../../slicer';
 import { validateEducation, validateEducationEntry } from '../../slicer/education';
+import { updateStatus } from '../../slicer/common';
 
-import degreeOptions from '../../../../data/degree.json';
-import majorOptions from '../../../../data/major.json';
-import univOptions from '../../../../data/university.json';
+import degreeOptions from 'data/degree.json';
+import majorOptions from 'data/major.json';
+import univOptions from 'data/university.json';
+import cityOptions from 'data/city.json';
 
 const EducationForm = ({ data, index, isLast = false, messages }) => {
     const [validated, setValidated] = useState(false);
@@ -43,79 +45,51 @@ const EducationForm = ({ data, index, isLast = false, messages }) => {
         setValidated(true);
     };
 
-    const isValid = (name, value) => {
-        const flag = validateEducationEntry(name, value);
-        const newStatus = { ...status };
-        if (flag === undefined) {
-            newStatus[name] = {};
-        } else {
-            newStatus[name] = { isValid: flag, isInvalid: !flag }
-        }
-        setStatus(newStatus);
-        return flag;
-    };
-
     const handleSchoolChange = (values) => {
         const value = values.length === 0 ? null : values[0].u
-        if (isValid("schoolName", value) === false) {
-            return;
-        }
+        updateStatus(validateEducationEntry, status, setStatus, 'schoolName', value);
         dispatch(actions.updateSchoolName({value, index}));
     };
 
     const handleGPAChange = (event) => {
         const value = event.target.value;
-        if (isValid("gpa", value) === false) {
-            return;
-        }
+        updateStatus(validateEducationEntry, status, setStatus, "gpa", value);
         dispatch(actions.updateGPA({value, index}));
     };
 
     const handleSchoolStartDateChange = (date) => {
         const value = date ? date.toISOString() : undefined;
-        if (isValid("startDate", value) === false) {
-            return;
-        }
+        updateStatus(validateEducationEntry, status, setStatus, "startDate", value);
         dispatch(actions.updateStartDate({value, index}))
     };
 
     const handleGradDateChange = (date) => {
         const value = date ? date.toISOString() : undefined;
-        if (isValid("graduateDate", value) === false) {
-            return;
-        }
+        updateStatus(validateEducationEntry, status, setStatus, "graduateDate", value);
         dispatch(actions.updateGraduateDate({value, index}))
     };
 
     const handleMajorChange = (values) => {
         const value = values.length === 0 ? null : values[0].major
-        if (isValid("major", value) === false) {
-            return;
-        }
+        updateStatus(validateEducationEntry, status, setStatus, "major", value);
         dispatch(actions.updateMajor({value, index}))
     };
 
     const handleDegreeChange = (values) => {
         const value = values.length === 0 ? null : values[0].degree
-        if (isValid("degree", value) === false) {
-            return;
-        }
+        updateStatus(validateEducationEntry, status, setStatus, "degree", value);
         dispatch(actions.updateDegree({value, index}))
     };
 
-    const handleCityChange = (event) => {
-        const value = event.target.value;
-        if (isValid("city", value) === false) {
-            return;
-        }
+    const handleCityChange = (values) => {
+        const value = values.length === 0 ? null : values[0].city
+        updateStatus(validateEducationEntry, status, setStatus, "city", value);
         dispatch(actions.updateCity({value, index}));
     };
 
     const handleCountryChange = (event) => {
         const value = event.target.value;
-        if (isValid("country", value) === false) {
-            return;
-        }
+        updateStatus(validateEducationEntry, status, setStatus, "country", value);
         dispatch(actions.updateCountry({value, index}));
     };
 
@@ -169,8 +143,8 @@ const EducationForm = ({ data, index, isLast = false, messages }) => {
                         isValid={status.degree.isValid} isInvalid={status.degree.isInvalid} />
                 </Col>
                 <Col>
-                    <InputGroup label={messages.schoolCity} id="education-school-city"
-                        placeholder={messages.schoolCity} value={data.city}
+                    <DropdownGroup label={messages.schoolCity} id="education-school-city" placeholder={messages.schoolCity}
+                        searchKey="city" options={cityOptions} value={data.city}
                         onChange={handleCityChange} feedbackMessage={messages.entryIsInvalid}
                         isValid={status.city.isValid} isInvalid={status.city.isInvalid} />
                 </Col>

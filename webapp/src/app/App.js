@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Switch  } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import moment from 'moment';
@@ -11,6 +11,7 @@ import { selectLanguage } from './slicer';
 import Navigation from './components/Navigation';
 import SmartResume from 'features/SmartResume';
 import Counter from 'features/CounterExample';
+import Page404 from 'features/SpecialPages/Page404';
 
 import './styles/App.css';
 
@@ -32,8 +33,12 @@ const App = () => {
       <BrowserRouter>
         <div className="App">
           <Navigation />
-          <Route exact path="/" component={SmartResume} />
-          <Route path="/example" component={Counter} />
+          <Switch>
+            <Route exact path="/" component={SmartResume} />
+            <Route path="/example" component={Counter} />
+            <Route component={Page404} />
+            <Route path="/404" component={Page404} />
+          </Switch>
         </div>
       </BrowserRouter>
     </I8nContext.Provider>

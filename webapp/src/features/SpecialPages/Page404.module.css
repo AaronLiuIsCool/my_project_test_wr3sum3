@@ -1,0 +1,20 @@
+/* 这个页面先叫这个名字 以后特殊页面多了之后 大家可以共用这一个css file */
+
+.page404{
+  text-align:center;
+  width: 400px;
+  margin: 100px auto 0;
+}
+.header img{
+  width: 150px;
+}
+.page404 img{
+  max-width: 100%;
+}
+.content{
+  margin-top: 176px;
+}
+.content p{
+  font-size: 30px;
+  color: #333333;
+}
