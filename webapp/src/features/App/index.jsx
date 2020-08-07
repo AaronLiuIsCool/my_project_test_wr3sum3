@@ -10,7 +10,7 @@ import { selectLanguage } from './slicer';
 
 import Navigation from './components/Navigation';
 import SmartResume from 'features/SmartResume';
-import Counter from 'features/CounterExample';
+import JobsMatcher from 'features/JobsMatcher';
 import Page404 from 'features/SpecialPages/Page404';
 
 import './styles/App.css';
@@ -35,7 +35,7 @@ const App = () => {
           <Navigation />
           <Switch>
             <Route exact path="/" component={SmartResume} />
-            <Route path="/example" component={Counter} />
+            <Route path="/jobs" component={JobsMatcher} />
             <Route component={Page404} />
             <Route path="/404" component={Page404} />
           </Switch>

@@ -14,6 +14,8 @@ switch (process.env.NODE_ENV) {
       "test-baseservices-baseUrl": "test.kuaidao.com"
     }
     break;
+  default:
+    break;
 }
 
 const configs = {...baseConfigs, ...overrides};

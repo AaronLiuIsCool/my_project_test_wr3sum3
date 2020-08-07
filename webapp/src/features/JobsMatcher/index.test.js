@@ -4,15 +4,15 @@ import renderer from 'react-test-renderer';
 
 import store from 'store';
 
-import SmartResume from './index';
+import JobsMatcher from './index';
 
 
-test('renders lazy loaded component for SmartResume', () => {
-  const smartResume = renderer.create(
+test('renders lazy loaded component for JobsMatcher', () => {
+  const jobsMatcher = renderer.create(
     <Provider store={store}>
-      <SmartResume />
+      <JobsMatcher />
     </Provider>
   ).toJSON();
 
-  expect(smartResume).toMatchSnapshot();
+  expect(jobsMatcher).toMatchSnapshot();
 });

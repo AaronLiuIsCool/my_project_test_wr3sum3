@@ -1,0 +1,150 @@
+.container-details {
+  width: 640px;
+  float: left;
+}
+
+.job-details-header {
+  padding: 30px 20px 26px 20px;
+  border: solid 1px #f0f0f0;
+}
+
+.job-details-title {
+  height: 26px;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 1.5;
+  color: #333333;
+  margin-bottom: 10px;
+}
+
+.job-details-title-off {
+  float: right;
+  height: 19px;
+  font-size: 14px;
+  line-height: 2.14;
+  color: #bfc4d3;
+}
+
+.job-details-subtitle {
+  height: 19px;
+  font-size: 14px;
+  line-height: 2.14;
+  color: #bfc4d3;
+  margin-bottom: 20px;
+}
+
+.job-details-actions {
+  height: 32px;
+}
+
+.job-details-actions-left {
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 2.14;
+  color: #3e89ec;
+  width: 50%;
+  float: left;
+}
+
+.job-details-actions-right {
+  float: right;
+  bottom: 23px;
+}
+
+.job-details-action {
+  padding-right: 30px;
+  cursor: pointer;
+}
+
+.job-details-action-icon {
+  height: 22px;
+  width: 30px;
+}
+
+.job-details-action-apply {
+  width: 144px;
+  height: 41px;
+}
+
+.job-details-subtitle-location {
+  padding-left: 10px;
+}
+
+.job-details-subtitle-salary {
+  padding-left: 20px;
+}
+
+.job-details-content {
+  padding: 0 20px;
+  border: solid 1px #f0f0f0;
+}
+
+.job-details-description {
+  height: 381px;
+  font-size: 16px;
+  line-height: 2;
+  color: #333333;
+  padding: 20px 0;
+}
+
+.job-details-description-label {
+  height: 26px;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.score-container {
+  margin: 20px 0;
+  height: 50px;
+}
+
+.score-icon {
+  height: 40px;
+  width: 40px;
+  float: left;
+  position: relative;
+}
+
+.score {
+  width: 36px;
+  height: 36px;
+  opacity: 0.96;
+  border-radius: 50px;
+  background-color: #edbc4d;
+  margin-top: 10px;
+  margin-left: 6px;
+  position: absolute;
+  text-align: center;
+  line-height: 36px;
+  color: white;
+}
+
+.score-description {
+  float: left;
+  margin-left: 20px;
+}
+
+.score-description-main {
+  height: 19px;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 2.14;
+  color: #333333;
+  margin-bottom: 9px;
+}
+
+.score-description-sub {
+  height: 19px;
+  font-size: 14px;
+  line-height: 2.14;
+  color: #bfc4d3;
+}
+
+.suggestions {
+  float: right;
+  width: 144px;
+  height: 41px;
+  margin-top: 8px;
+}

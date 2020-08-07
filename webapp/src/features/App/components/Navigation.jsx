@@ -22,7 +22,7 @@ const Navigation = () => {
                         <Link to="/">{messages["nav_item_smartresume"]}</Link>
                     </Nav.Link>
                     <Nav.Link href="#">
-                        <Link to="/example">{messages["nav_item_example"]}</Link>
+                        <Link to="/jobs">{messages["nav_item_jobmatcher"]}</Link>
                     </Nav.Link>
                 </Nav>
 

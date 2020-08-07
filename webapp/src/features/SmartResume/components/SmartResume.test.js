@@ -3,7 +3,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import renderer from 'react-test-renderer';
 
-import store from 'app/store';
+import store from 'store';
 import SmartResume from './SmartResume';
 
 import 'react-dates/initialize';

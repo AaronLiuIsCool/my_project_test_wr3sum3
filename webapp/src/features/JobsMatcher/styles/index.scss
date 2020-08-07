@@ -1,0 +1,52 @@
+.job-matcher {
+  margin: auto;
+  width: 1000px;
+
+  // TODO: refactor below
+  .form_item {
+    label {
+      color: #bfc4d3;
+    }
+
+    input {
+      height: 41px;
+      background-color: #f2f4f9;
+      color: #d5d9e6;
+      border-radius: 8px;
+      border: none;
+      /* box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.1); */
+    }
+  }
+
+  ul.pagination {
+    .page-link {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      border-color: #f2f4f9;
+      background-color: #f2f4f9;
+      margin-right: 16px;
+      color: #bfc4d3;
+      text-align: center;
+    }
+
+    .active {
+      .page-link {
+        border-color: #bfc4d3;
+        background-color: #bfc4d3;
+        color: #ffffff;
+      }
+    }
+  }
+
+  circle {
+    transition: stroke-dashoffset 0.35s;
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+  }
+
+  .score-ring {
+    margin-top: 4px;
+    position: absolute;
+  }
+}

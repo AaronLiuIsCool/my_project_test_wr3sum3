@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
 import { I8nContext } from 'shell/i18n';
-import { selectLanguage } from 'app/slicer';
+import { selectLanguage } from 'features/App/slicer';
 
 import LeftNav from './LeftNav';
 import ExperiencesForm from './ExperiencesForm';

@@ -1,0 +1,15 @@
+{
+  "search_query_label": "工作岗位搜索",
+  "search_query_placeholder": "输入职位或公司",
+  "search_country_label": "国家",
+  "search_city_label": "城市",
+  "search_button": "搜索",
+
+  "job_list_summary": "找到{0}份和您所填经历匹配的工作",
+  "job-details-save": "收藏",
+  "job-details-referral": "联系内推",
+  "job-details-apply": "申请工作", 
+  "job_matching_score": "简历匹配度：还行",
+  "job_finishing_touches": "对岗精修",
+  "job_details_description": "职位描述"
+}

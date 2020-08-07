@@ -1,0 +1,64 @@
+.container-list {
+  width: 320px;
+  float: left;
+  margin-right: 20px;
+}
+
+.container-job, .container-job-selected {
+  width: 320px;
+  height: 134px;
+  border-radius: 8px;
+  border: solid 1px #f0f0f0;
+  padding: 20px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.container-job-selected {
+  border-radius: 8px;
+  box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.1);
+  border: solid 1px #3e89ec;
+}
+
+.list-summary  {
+  width: 212px;
+  height: 19px;
+  font-size: 14px;
+  line-height: 2.14;
+  color: #bfc4d3;
+  margin-bottom: 20px;
+}
+
+.job-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: #333333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-bottom: 10px;
+}
+
+.job-company {
+  font-size: 14px;
+  font-weight: bold;
+  color: #3e89ec;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-bottom: 20px;
+}
+
+.job-salary {
+  font-size: 14px;
+  text-align: left;
+  color: #bfc4d3;
+  float: left;
+}
+
+.job-post-time {
+  font-size: 14px;
+  text-align: right;
+  color: #d5d9e6;
+  float: right;
+}

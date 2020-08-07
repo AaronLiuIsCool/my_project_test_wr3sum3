@@ -1,10 +1,10 @@
 import React from "react";
 
 import styles from "./Page404.module.css";
-import KButton from "./../../components/KButton";
+import KButton from "components/KButton";
 import { useSelector } from 'react-redux';
 import { I8nContext } from 'shell/i18n';
-import { selectLanguage } from 'app/slicer';
+import { selectLanguage } from 'features/App/slicer';
 
 import zh from './i18n/zh.json';
 import en from './i18n/en.json';
