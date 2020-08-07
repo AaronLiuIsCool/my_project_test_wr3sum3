@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: email-svc
-          image: kuaidaoresume/email-svc
+          image: kuaidaoresume/mail-svc
           imagePullPolicy: Never
           ports:
             - name: http-port

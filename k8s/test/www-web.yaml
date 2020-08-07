@@ -1,22 +1,21 @@
-# https://matthewpalmer.net/kubernetes-app-developer/articles/kubernetes-apiversion-definition-guide.html
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: account-svc-deployment
+  name: www-web-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: account-svc
+      app: www-svc
   template:
     metadata:
       labels:
-        app: account-svc
+        app: www-svc
         env: test
     spec:
       containers:
-        - name: account-svc
-          image: kuaidaoresume/account-svc
+        - name: www-svc
+          image: kuaidaoresume/www-svc
           imagePullPolicy: Never
           ports:
             - name: http-port
@@ -28,10 +27,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: account-service
+  name: www-service
 spec:
   selector:
-    app: account-svc
+    app: www-svc
     env: test
   ports:
     - protocol: TCP

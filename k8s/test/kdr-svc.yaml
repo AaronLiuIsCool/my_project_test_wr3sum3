@@ -1,22 +1,23 @@
 # https://matthewpalmer.net/kubernetes-app-developer/articles/kubernetes-apiversion-definition-guide.html
+# https://stackoverflow.com/questions/53775328/kubernetes-port-forwarding-error-listen-tcp4-127-0-0-188-bind-permission-de
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: account-svc-deployment
+  name: kdr-svc-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: account-svc
+      app: kdr-svc
   template:
     metadata:
       labels:
-        app: account-svc
+        app: kdr-svc
         env: test
     spec:
       containers:
-        - name: account-svc
-          image: kuaidaoresume/account-svc
+        - name: kdr-svc
+          image: kuaidaoresume/kdr-svc
           imagePullPolicy: Never
           ports:
             - name: http-port
@@ -28,12 +29,14 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: account-service
+  name: kdr-service
 spec:
   selector:
-    app: account-svc
+    app: kdr-svc
     env: test
   ports:
     - protocol: TCP
       port: 80
       targetPort: 80
+      nodePort: 30001
+  type: NodePort

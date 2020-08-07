@@ -121,6 +121,7 @@ For actuator
 
 Also, you can run ```mvn spring-boot:run``` for each specific micro-service.
 
+(Before you run k8s ensure your local .env and local config/application.yml had been setup)
 ## K8S
 Run test local (as account-svc example) initial your services yaml
 1. Go to k8s/test folder
@@ -129,7 +130,35 @@ Run ```kubectl apply -f config```
 Run ```kubectl apply -f test```
 3. Go to localhost:30001
 
-Run uat (It's on AWS EKS CA central region)
+### 安装Kubernetes Dashboard
+```https://github.com/kubernetes/dashboard```
+```kubectl get pods —namespace=kube-system```
+### 启动 kube proxy
+```kubectl proxy```
+### 生成访问令牌
+```kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}')```
+### 访问 Dashboard
+```http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/```
+
+### 本地部署
+查询kdr pod名: ```Kubectl get pods```
+### Port forwarding
+```kubectl port-forward kdr-svc-deployment-8584d9c74d-v92wt 80:80```
+sudo as you needed 
+### start switch host
+rest of them are same as docker-compose
+
+### Check local k8s status (either you can go to dashboard or using below's commend)
+```kubectl get pods -o wide```
+```kubectl get services```
+```kubectl get deployments```
+
+### Clean up 
+```kubectl delete deployments --all```
+```kubectl delete services --all
+```kubectl delete configmaps --all```
+
+## Run uat (It's on AWS EKS CA central region)
 1. Go to k8s/uat folder
 Run ```kubectl apply -f config```
 2. Go to k8s/ folder
