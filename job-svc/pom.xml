@@ -11,7 +11,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>job-svc</artifactId>
-    <version>0.0.1</version>
+    <name>Kuaidao-Job-Svc</name>
+    <version>1.0.0</version>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>

@@ -32,6 +32,20 @@ services:
       - internal_access
       - external_access # db access
 
+  job-service:
+    build: ./job-svc
+    image: kuaidaoresume/job-svc
+    environment:
+      - SPRING_PROFILES_ACTIVE
+      - SERVER_PORT
+      - SIGNING_SECRET
+      - JOB_DATASOURCE_URL
+      - JOB_DATASOURCE_USERNAME
+      - JOB_DATASOURCE_PASSWORD
+    networks:
+      - internal_access
+      - external_access # db access
+
   email-service:
     build: ./mail-svc
     image: kuaidaoresume/mail-svc
@@ -77,7 +91,7 @@ services:
       - account-service
       - resume-service
       - www-service
-      #- job-service
+      - job-service
       #- whoami-service
 #      - ical-service # commented for demo
     networks:

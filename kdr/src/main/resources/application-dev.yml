@@ -15,6 +15,14 @@ kdr:
       host: account.kuaidaoresume-v2.local
       destinations: localhost:8081
     -
+      name: resume_route
+      host: resume.kuaidaoresume-v2.local
+      destinations: localhost:8082
+    -
+      name: job_route
+      host: job.kuaidaoresume-v2.local
+      destinations: localhost:8083
+    -
       name: whoami_route
       host: whoami.kuaidaoresume-v2.local
       destinations: localhost:8084
