@@ -21,6 +21,7 @@ public class BasicInfoDto {
     @NotNull
     private String fullName;
     private String alias;
+    @NotNull
     private String country;
     private String province;
     @NotNull

@@ -12,7 +12,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
@@ -59,12 +58,6 @@ public class BasicInfoRepositoryTest {
             .phoneNumber("123456789")
             .resume(resume)
             .build();
-        profile = Profile.builder()
-            .type(Profile.ProfileType.LINKEDIN)
-            .url("https://www.linkedin.com/mcga")
-            .basicInfo(basicInfo)
-            .build();
-        basicInfo.setProfiles(Arrays.asList(profile));
         basicInfoRepository.save(basicInfo);
     }
 
@@ -76,6 +69,13 @@ public class BasicInfoRepositoryTest {
 
     @Test
     public void whenSaved_thenFindProfile() {
+        profile = Profile.builder()
+            .type(Profile.ProfileType.LINKEDIN)
+            .url("https://www.linkedin.com/mcga")
+            .basicInfo(basicInfo)
+            .build();
+        basicInfo.setProfiles(Arrays.asList(profile));
+        basicInfoRepository.save(basicInfo);
         assertTrue(testProfileRepository.findAll().iterator().hasNext());
     }
 

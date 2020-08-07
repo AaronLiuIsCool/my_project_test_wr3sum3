@@ -1,7 +1,6 @@
 package com.kuaidaoresume.resume.model;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -16,7 +15,7 @@ import java.sql.Date;
 @AllArgsConstructor
 @SuperBuilder
 @MappedSuperclass
-public class Experience {
+public abstract class Experience implements ResumeContainable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
@@ -51,4 +50,8 @@ public class Experience {
     @Size(min = 3, max = 500)
     @Column(length = 500)
     private String description;
+
+    public abstract Resume getResume();
+
+    public abstract void setResume(Resume resume);
 }

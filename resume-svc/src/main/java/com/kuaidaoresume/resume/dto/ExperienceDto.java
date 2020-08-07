@@ -23,6 +23,7 @@ public class ExperienceDto {
     private String organization;
     @NotNull
     private String city;
+    @NotNull
     private String country;
     @NotNull
     private String startDate;

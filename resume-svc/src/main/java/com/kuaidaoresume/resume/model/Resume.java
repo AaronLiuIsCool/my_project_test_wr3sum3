@@ -58,4 +58,6 @@ public class Resume {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "resume")
     private Collection<Certificate> certificates;
+
+    private String photoReference;
 }

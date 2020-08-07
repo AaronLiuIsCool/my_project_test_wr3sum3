@@ -8,6 +8,7 @@ CREATE TABLE `resume` (
   `created_at` datetime(6) NOT NULL,
   `language` varchar(2) NOT NULL,
   `updated_at` datetime(6) NOT NULL,
+  `photo_reference` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -37,11 +38,10 @@ CREATE TABLE `basic_info` (
 
 DROP TABLE IF EXISTS `profile`;
 CREATE TABLE `profile` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
   `type` varchar(255) NOT NULL,
   `url` varchar(255) NOT NULL,
   `basic_info_id` bigint NOT NULL,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`url`),
   KEY `FKtg6mox52p5qvmp46fo95vn8yy` (`basic_info_id`),
   CONSTRAINT `FKtg6mox52p5qvmp46fo95vn8yy` FOREIGN KEY (`basic_info_id`) REFERENCES `basic_info` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

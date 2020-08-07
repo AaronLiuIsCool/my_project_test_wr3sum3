@@ -36,7 +36,6 @@ public class BasicInfoDtoTest {
     public void whenConvertBasicInfoToBasicInfoDto_thenCorrect() {
         List<Profile> profiles = new ArrayList<>();
         profiles.add(Profile.builder()
-                .id(id)
                 .type(Profile.ProfileType.LINKEDIN)
                 .url(profileUrl)
                 .build()

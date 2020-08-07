@@ -13,7 +13,7 @@ import javax.persistence.ManyToOne;
 @SuperBuilder
 @NoArgsConstructor
 @Entity
-public class WorkExperience extends Experience implements ResumeContainable {
+public class WorkExperience extends Experience {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "resume_id", nullable = false)
     private Resume resume;

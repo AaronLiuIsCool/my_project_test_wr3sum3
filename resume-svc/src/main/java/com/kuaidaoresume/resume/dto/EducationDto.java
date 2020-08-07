@@ -18,6 +18,7 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class EducationDto {
 
+    @NotNull
     private String country;
     @NotNull
     private String city;

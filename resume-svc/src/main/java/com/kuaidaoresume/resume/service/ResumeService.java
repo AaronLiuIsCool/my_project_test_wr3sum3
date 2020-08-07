@@ -1,11 +1,16 @@
 package com.kuaidaoresume.resume.service;
 
+import com.kuaidaoresume.resume.dto.ResumeScoreDto;
 import com.kuaidaoresume.resume.model.*;
 
 import java.util.Collection;
 import java.util.Optional;
 
 public interface ResumeService {
+
+    Optional<Resume> findResumeById(String resumeId);
+
+    Resume saveResume(Resume resume);
 
     <T extends ResumeContainable> Optional<T> findById(Long id, Class<? extends ResumeContainable> type);
 
@@ -40,4 +45,8 @@ public interface ResumeService {
     Certificate newCertificate(String resumeId, Certificate certificate);
 
     Collection<Certificate> saveCertificates(String resumeId, Iterable<Certificate> certificates);
+
+    void saveKeywords(Iterable<Keyword> keywords);
+
+    Optional<ResumeScoreDto> getResumeScore(String resumeId);
 }

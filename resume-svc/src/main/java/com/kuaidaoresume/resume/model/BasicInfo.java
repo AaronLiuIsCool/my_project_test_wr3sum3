@@ -54,7 +54,7 @@ public class BasicInfo implements ResumeContainable {
     @Column(length = 20)
     private String phoneNumber;
 
-    @OneToMany(mappedBy = "basicInfo", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "basicInfo", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Collection<Profile> profiles;
 
     @OneToOne(fetch = FetchType.LAZY, optional = false)

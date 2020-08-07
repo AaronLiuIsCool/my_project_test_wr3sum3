@@ -55,6 +55,13 @@
 				<scope>import</scope>
 			</dependency>
 
+			<!-- Language detection library -->
+			<dependency>
+				<groupId>com.github.pemistahl</groupId>
+				<artifactId>lingua</artifactId>
+				<version>1.0.1</version>
+			</dependency>
+
 			<!-- flyway -->
 			<dependency>
 				<groupId>org.flywaydb</groupId>
