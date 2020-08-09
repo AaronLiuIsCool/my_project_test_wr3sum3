@@ -6,17 +6,8 @@ import org.springframework.web.bind.annotation.*;
 import com.kuaidaoresume.account.AccountConstant;
 import com.kuaidaoresume.account.dto.*;
 import com.kuaidaoresume.common.api.BaseResponse;
-//import com.kuaidaoresume.common.auth.AuthConstant;
-import com.kuaidaoresume.common.validation.PhoneNumber;
-
-
-import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-import com.kuaidaoresume.account.AccountConstant;
-import com.kuaidaoresume.account.dto.*;
-import com.kuaidaoresume.common.api.BaseResponse;
 import com.kuaidaoresume.common.auth.AuthConstant;
+import com.kuaidaoresume.common.validation.PhoneNumber;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;

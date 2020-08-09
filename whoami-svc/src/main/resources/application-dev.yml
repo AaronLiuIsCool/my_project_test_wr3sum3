@@ -1,0 +1,15 @@
+server:
+  port: 8084
+
+spring:
+  jpa:
+    show-sql: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+kuaidaoresume:
+  account-service-endpoint: http://localhost:8081

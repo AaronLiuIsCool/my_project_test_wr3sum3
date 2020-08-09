@@ -51,6 +51,13 @@ public class ServiceDirectory {
     map.put("kdr", service);
 
     service = Service.builder()
+         .security(SecurityConstant.SEC_AUTHENTICATED)
+         .restrictDev(false)
+         .backendDomain("whoami-service")
+         .build();
+    map.put("whoami", service);
+
+    service = Service.builder()
             .security(SecurityConstant.SEC_PUBLIC)
             .restrictDev(false)
             .backendDomain("www-service")

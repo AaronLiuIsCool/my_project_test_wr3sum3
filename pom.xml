@@ -32,6 +32,8 @@
 		<module>resume-svc</module>
 		<module>mail-api</module>
 		<module>mail-svc</module>
+		<module>whoami-api</module>
+		<module>whoami-svc</module>
 		<module>onboarding-app</module>
 		<module>kdr</module>
 	</modules>
