@@ -170,7 +170,7 @@ public class AccountController {
     }
 
     // RequestPasswordReset sends an email to a user with a password reset link
-    /*@PostMapping(path = "/request_email_change")
+    @PostMapping(path = "/request_email_change")
     @Authorize(value = {
             AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
             AuthConstant.AUTHORIZATION_SUPPORT_USER
@@ -184,11 +184,11 @@ public class AccountController {
         baseResponse.setMessage("email change requested");
 
         return baseResponse;
-    }*/
+    }
 
     // ChangeEmail sets an account to active and updates its email. It is
     // used after a user clicks a confirmation link in their email.
-    /*@PostMapping(path = "/change_email")
+    @PostMapping(path = "/change_email")
     @Authorize(value = {
             AuthConstant.AUTHORIZATION_WWW_SERVICE,
             AuthConstant.AUTHORIZATION_SUPPORT_USER
@@ -200,7 +200,7 @@ public class AccountController {
         baseResponse.setMessage("email change requested");
 
         return baseResponse;
-    }*/
+    }
 
     @PostMapping(path = "/track_event")
     public BaseResponse trackEvent(@RequestBody @Valid TrackEventRequest request) {

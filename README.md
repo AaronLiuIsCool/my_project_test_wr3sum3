@@ -117,7 +117,7 @@ Gateway health check
 Each services' itself swagger ui (account services as example.)
 ```account.kuaidaoresume-v2.local/swagger-ui.html```
 For actuator
-```account.kuaidaoresume-v2.local/actuator``
+```account.kuaidaoresume-v2.local/actuator```
 
 Also, you can run ```mvn spring-boot:run``` for each specific micro-service.
 
@@ -141,7 +141,8 @@ Run ```kubectl apply -f test```
 ```http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/```
 
 ### 本地部署
-查询kdr pod名: ```Kubectl get pods```
+查询kdr pod名: 
+```kubectl get pods```
 ### Port forwarding
 ```kubectl port-forward kdr-svc-deployment-8584d9c74d-v92wt 80:80```
 sudo as you needed 

@@ -53,12 +53,11 @@ public interface AccountClient {
     @PostMapping(path = "/request_password_reset")
     BaseResponse requestPasswordReset(@RequestHeader(AuthConstant.AUTHORIZATION_HEADER) String authz, @RequestBody @Valid PasswordResetRequest request);
 
-    //TODO: Afrer email services check in
-    //@PostMapping(path = "/request_email_change")
-    //BaseResponse requestEmailChange(@RequestHeader(AuthConstant.AUTHORIZATION_HEADER) String authz, @RequestBody @Valid EmailChangeRequest request);
+    @PostMapping(path = "/request_email_change")
+    BaseResponse requestEmailChange(@RequestHeader(AuthConstant.AUTHORIZATION_HEADER) String authz, @RequestBody @Valid EmailChangeRequest request);
 
     // ChangeEmail sets an account to active and updates its email. It is
     // used after a user clicks a confirmation link in their email.
-    //@PostMapping(path = "/change_email")
-    //BaseResponse changeEmail(@RequestHeader(AuthConstant.AUTHORIZATION_HEADER) String authz, @RequestBody @Valid EmailConfirmation request);
+    @PostMapping(path = "/change_email")
+    BaseResponse changeEmail(@RequestHeader(AuthConstant.AUTHORIZATION_HEADER) String authz, @RequestBody @Valid EmailConfirmation request);
 }

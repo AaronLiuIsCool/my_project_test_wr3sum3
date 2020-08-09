@@ -45,4 +45,15 @@ public class PageFactory {
                 .version(kuaidaoresumeProps.getDeployEnv())
                 .build();
     }
+
+    public ActivatePage buildActivatePage() {
+        return ActivatePage.childBuilder()
+                .title("Activate your Kuaidaoresume account")
+                .templateName("activate")
+                .cssId("sign-up")
+                .version(kuaidaoresumeProps.getDeployEnv())
+                .build();
+    }
+
+
 }

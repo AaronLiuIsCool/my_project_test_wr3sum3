@@ -238,10 +238,9 @@ public class AccountService {
             }
             // User can request email change - not do it :-)
             if (!existingAccount.getEmail().equals(newAccount.getEmail())) {
-                // TODO Aaron Liu Email service check in
-                //this.requestEmailChange(newAccount.getId(), newAccount.getEmail());
+                this.requestEmailChange(newAccount.getId(), newAccount.getEmail());
                 // revert
-                //newAccount.setEmail(existingAccount.getEmail());
+                newAccount.setEmail(existingAccount.getEmail());
             }
         }
         // newAccount.setPhotoUrl(Helper.generateGravatarUrl(newAccount.getEmail()));
@@ -304,8 +303,7 @@ public class AccountService {
     }
 
     // requestEmailChange sends an email to a user with a confirm email link
-    // TODO: Aaron Liu uncomment ater mail services merged.
-    /*public void requestEmailChange(String userId, String email) {
+    public void requestEmailChange(String userId, String email) {
         Account account = accountRepo.findAccountById(userId);
         if (account == null) {
             throw new ServiceException(ResultCode.NOT_FOUND, String.format("User with id %s not found", userId));
@@ -337,7 +335,7 @@ public class AccountService {
         logger.info("changed email", auditLog);
 
         this.trackEventWithAuthCheck("email_updated");
-    }*/
+    }
 
     public void updatePassword(String userId, String password) {
         String pwHash = passwordEncoder.encode(password);
