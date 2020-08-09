@@ -30,6 +30,8 @@
 		<module>job-svc</module>
 		<module>job-api</module>
 		<module>resume-svc</module>
+		<module>matching-svc</module>
+		<module>matching-api</module>
 		<module>mail-api</module>
 		<module>mail-svc</module>
 		<module>whoami-api</module>

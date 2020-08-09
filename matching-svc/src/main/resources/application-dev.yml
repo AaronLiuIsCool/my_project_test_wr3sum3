@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    url: jdbc:mongo://TBD
+    username: TBD
+    password: TDB
+#logging.level.org.springframework.data.mongodb.core.MongoTemplate=DEBUG
+server:
+  port: 8087
+kuaidaoresume:
+  job-service-endpoint: http://localhost:8083
+  resume-service-endpoint: http://localhost:8082
+  email-service-endpoint: http://localhost:8088
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
