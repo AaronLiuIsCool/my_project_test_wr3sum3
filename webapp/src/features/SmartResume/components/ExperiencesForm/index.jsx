@@ -7,6 +7,7 @@ import EducationExperience from './EducationExperience';
 import WorkExperience from './WorkExperience';
 import ProjectExperience from './ProjectExperience';
 import VolunteerExperience from './VolunteerExperience';
+import CertificateExperience from './CertificateExperience';
 
 import styles from '../../styles/ExperiencesForm.module.css';
 
@@ -19,6 +20,7 @@ const ExperiencesForm = ({ useObserver }) => (
             <WorkExperience />
             <ProjectExperience />
             <VolunteerExperience />
+            <CertificateExperience />
         </ViewObserver>
     </div>
 );

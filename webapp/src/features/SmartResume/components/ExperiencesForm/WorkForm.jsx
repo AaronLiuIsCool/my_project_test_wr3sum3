@@ -49,7 +49,6 @@ const WorkForm = ({ data, index, isLast = false, messages }) => {
 	
 	const handleCurrentWorkFlagChange = (event) => {
 		const value = event.target.value;
-		console.log('value', value);
 		dispatch(actions.updateCurrentWorkFlag({ value, index }));
 	};
 	const handleWorkCompanyNameChange = (event) => {

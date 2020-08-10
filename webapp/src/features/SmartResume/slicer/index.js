@@ -5,6 +5,7 @@ import basic from "./basic";
 import work from "./work";
 import project from "./project";
 import volunteer from "./volunteer";
+import certificate from "./certificate";
 
 export const resumeSlice = createSlice({
   name: "resume",
@@ -14,6 +15,7 @@ export const resumeSlice = createSlice({
     basic: basic.initialState,
     work: work.initialState,
     project: project.initialState,
+    certificate: certificate.initialState,
     volunteer: volunteer.initialState
   },
   reducers: {
@@ -25,6 +27,7 @@ export const resumeSlice = createSlice({
     ...work.reducers,
     ...project.reducers,
     ...volunteer.reducers,
+    ...certificate.reducers,
   }
 });
 
@@ -36,5 +39,6 @@ export const basicSelectors = basic.selectors;
 export const workSelectors = work.selectors;
 export const projectSelectors = project.selectors;
 export const volunteerSelectors = volunteer.selectors;
+export const certificateSelectors = certificate.selectors;
 
 export default resumeSlice.reducer;

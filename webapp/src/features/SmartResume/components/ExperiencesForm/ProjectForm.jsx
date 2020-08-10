@@ -52,7 +52,6 @@ const ProjectForm = ({ data, index, isLast = false, messages }) => {
 		const value = event.target.value;
 		updateStatus(validateProjectEntry, status, setStatus, 'currentProjectFlag', value);
 		dispatch(actions.updateCurrentProjectFlag({ value, index }));
-		console.log('data', data);
 	};
 
 	const handleProjectCompanyNameChange = (event) => {
