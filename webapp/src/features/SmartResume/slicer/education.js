@@ -34,16 +34,16 @@ export function validateEducationEntry(name, value) {
 }
 
 export const education = {
-    schoolName: undefined,
-    gpa: undefined,
-    startDate: undefined,
-    graduateDate: undefined,
-    major: undefined,
-    degree: undefined,
-    city: undefined,
-    country: undefined,
-    highestAward: undefined,
-    otherAward: undefined
+    schoolName: "",
+    gpa: "",
+    startDate: "",
+    graduateDate: "",
+    major: "",
+    degree: "",
+    city: "",
+    country: "",
+    highestAward: "",
+    otherAward: ""
 }
 
 const initialState = {
@@ -80,7 +80,7 @@ const reducers = {
   updateDegree: (state, action) => {
     updateField(state, action.payload.index, "degree", action.payload.value);
   },
-  updateCity: (state, action) => {
+  updateEduCity: (state, action) => {
     updateField(state, action.payload.index, "city", action.payload.value);
   },
   updateCountry: (state, action) => {

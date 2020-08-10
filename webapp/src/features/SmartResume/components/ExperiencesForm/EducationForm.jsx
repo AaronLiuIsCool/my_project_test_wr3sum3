@@ -84,7 +84,7 @@ const EducationForm = ({ data, index, isLast = false, messages }) => {
     const handleCityChange = (values) => {
         const value = values.length === 0 ? null : values[0].city
         updateStatus(validateEducationEntry, status, setStatus, "city", value);
-        dispatch(actions.updateCity({value, index}));
+        dispatch(actions.updateEduCity({value, index}));
     };
 
     const handleCountryChange = (event) => {

@@ -4,6 +4,9 @@ import PropTypes from 'prop-types';
 import ViewObserver from './ViewObserver';
 import BasicExperience from './BasicExperience';
 import EducationExperience from './EducationExperience';
+import WorkExperience from './WorkExperience';
+import ProjectExperience from './ProjectExperience';
+import VolunteerExperience from './VolunteerExperience';
 
 import styles from '../../styles/ExperiencesForm.module.css';
 
@@ -13,6 +16,9 @@ const ExperiencesForm = ({ useObserver }) => (
         <ViewObserver enabled={useObserver}>
             <BasicExperience />
             <EducationExperience />
+            <WorkExperience />
+            <ProjectExperience />
+            <VolunteerExperience />
         </ViewObserver>
     </div>
 );

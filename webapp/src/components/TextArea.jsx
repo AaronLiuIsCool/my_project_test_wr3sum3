@@ -2,15 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Form } from 'react-bootstrap';
 
-const InputGroup = ({ label, id, placeholder, type = 'text', value, onChange, isValid, isInvalid, feedbackMessage }) => (
+const TextArea = ({ label, id, placeholder, value, onChange, row = '3' }) => (
 	<Form.Group className="form_item">
 		<Form.Label htmlFor={id}>{label}</Form.Label>
-		<Form.Control type={type} id={id} placeholder={placeholder} value={value} onChange={onChange} isValid={isValid} isInvalid={isInvalid} />
-		{isInvalid && <Form.Control.Feedback type="invalid">{feedbackMessage}</Form.Control.Feedback>}
+		<Form.Control as="textarea" rows={row} placeholder={placeholder} onChange={onChange} value={value} />
 	</Form.Group>
 );
 
-InputGroup.propTypes = {
+TextArea.propTypes = {
 	label: PropTypes.string,
 	id: PropTypes.string,
 	placeholder: PropTypes.string.isRequired,
@@ -21,4 +20,4 @@ InputGroup.propTypes = {
 	feedbackMessage: PropTypes.string,
 };
 
-export default InputGroup;
+export default TextArea;

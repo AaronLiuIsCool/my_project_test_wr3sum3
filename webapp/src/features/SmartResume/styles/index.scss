@@ -52,6 +52,7 @@
       color: #bfc4d3;
     }
 
+    textarea,
     .rbt-input-main, input {
       background-color: #f2f4f9;
       color: #333333;
@@ -68,6 +69,36 @@
         color: black;
       }
     }
+
+    .radioButton_container{
+      display:flex;
+      justify-content: space-around;
+      .radioButton{
+        width: 38px;
+        height: 38px;
+        border-radius: 21px;
+        border: none;
+        background:white;
+        color: #bfc4d3;
+        &.selected{
+          color: white;
+          background-color: #3e89ec;
+        }
+        &:focus{
+          border:none;
+          outline:none;
+        }
+      }
+    }
+
+
+  }
+  .form-group textarea{
+    background-color: #f2f4f9;
+    color: #d5d9e6;
+    border-radius: 8px;
+    border: none;
+    color: #333;
   }
   .form_item .rbt-input-main,
   .form_item input {
@@ -92,6 +123,16 @@
   .w-100{
     width: 100%;
     border-radius: 30px;
+  }
+
+  .SingleDatePicker{
+    display:block;
+    .SingleDatePickerInput{
+      width:100%;
+      .DateInput{
+        width:100%;
+      }
+    }
   }
 
 
