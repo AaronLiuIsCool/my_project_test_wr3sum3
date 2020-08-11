@@ -1,11 +1,10 @@
 package com.kuaidaoresume.common.matching;
 
 import org.ahocorasick.trie.Trie;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.util.FileCopyUtils;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -18,8 +17,8 @@ public class NumericWordMatcherImpl implements NumericWordMatcher {
     public NumericWordMatcherImpl() {
         digitsPattern = Pattern.compile("[-\\+$]?\\d+(\\.\\d+)?%?([\\.,;!\\+])?");
         List<String> numericWords = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(new File(Thread.currentThread().getContextClassLoader()
-            .getResource("matching/numeric-words.txt").getFile())))) {
+        ClassPathResource resource = new ClassPathResource("matching/numeric-words.txt");
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(resource.getInputStream()))) {
             String numericWord;
             while ((numericWord = br.readLine()) != null) {
                 numericWords.add(numericWord);
