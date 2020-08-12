@@ -1,22 +1,29 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col, Form } from 'react-bootstrap';
 
 import InputGroup from 'components/InputGroup';
 import DropdownGroup from 'components/DropdownGroup';
 import KButton from 'components/KButton';
 
-import { actions } from '../../slicer';
+import { actions, selectId } from '../../slicer';
 import AvatarUpload from './AvatarUpload';
 
 import { validateBasic, validateBasicEntry } from '../../slicer/basic';
 import { updateStatus } from '../../slicer/common';
+import { adaptBasics } from '../../utils/servicesAdaptor';
+import ResumeServices from 'shell/services/ResumeServices';
+import { getLogger } from 'shell/logger';
 
 // json data for dropdowns
 import cityOptions from 'data/city.json';
 
-const BasicForm = ({ data, index, messages }) => {
+const logger = getLogger('BasicForm');
+const resumeServices = new ResumeServices();
+
+const BasicForm = ({ data, completed, messages }) => {
+	const resumeId = useSelector(selectId);
 	const [validated, setValidated] = useState(false);
 	const [status, setStatus] = useState({
 		nameCn: {},
@@ -29,6 +36,21 @@ const BasicForm = ({ data, index, messages }) => {
 	});
 	const dispatch = useDispatch();
 
+	const save = async () => {
+		let id;
+		try {
+			const response = (data.id === undefined) ? 
+				await resumeServices.createBasics(resumeId, adaptBasics({completed: true, data})) : 
+				await resumeServices.updateBasics(resumeId, adaptBasics({completed: true, data}));
+			const responseJson = await response.json();
+			id = responseJson.id;
+		} catch (exception) {
+			logger.error(exception);
+		} finally {
+			dispatch(actions.updateBasicsId({ id }));
+		}
+	}
+
 	const handleSubmit = (event) => {
 		event.preventDefault();
 		event.stopPropagation();
@@ -36,9 +58,9 @@ const BasicForm = ({ data, index, messages }) => {
 			setValidated(false);
 			return;
 		}
-		// TODO: Save this use API.
-		alert(`Save this to kuaidao service: ${JSON.stringify(data)}`);
 		setValidated(true);
+		dispatch(actions.completeBasic());
+		save();
 	};
 
 	const handleNameCnChange = (event) => {
@@ -201,6 +223,7 @@ const BasicForm = ({ data, index, messages }) => {
 
 BasicForm.propTypes = {
 	data: PropTypes.object.isRequired,
+	completed: PropTypes.bool.isRequired,
 	messages: PropTypes.object.isRequired,
 };
 

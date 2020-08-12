@@ -4,7 +4,7 @@ import BaseServices from './BaseServices';
 import mockData from './mocks/jobs.json';
 
 const logger = getLogger('JobsService');
-const PREFIX = 'jobs';
+const PREFIX = 'services-job';
 
 const MAX_SIZE_PER_PAGE = 7;
 
@@ -20,7 +20,7 @@ function getMockData(delay, pageNumber) {
   return new Promise(resolve => setTimeout(resolve, delay, slicedData));
 }
 
-export default class AccountServices extends BaseServices {
+export default class JobsServices extends BaseServices {
   constructor() {
     super();
     this.configsPrefix = PREFIX;

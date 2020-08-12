@@ -12,7 +12,7 @@ const BasicExperience = () => {
 	const messages = useI8n();
 	return (
 		<Step id="basicInfo" title={messages.basicInfo} subtitle={messages.enterBasicInfo} icon="job.svg">
-			<BasicForm data={basic.data} messages={messages} />
+			<BasicForm completed={basic.completed} data={basic.data} messages={messages}  />
 		</Step>
 	);
 };

@@ -1,28 +1,41 @@
 import configs from 'shell/configs';
 
+function getHeaders() {
+  return new Headers({
+    'Content-Type': 'application/json',
+    'Authorization': 'basic'
+  });
+}
+
 export function getServiceUrl(baseUrl, api) {
   return `http://${baseUrl}/${api}`
 }
 
 export async function get(url,  options) {
-  const headers = new Headers();
+  const headers = getHeaders();
   const request = new Request(url, {
     method: 'GET',
-    headers,
-    mode: 'cors',
-    cache: 'default'
+    headers
   });
   return await fetch(request);
 }
 
 export async function post(url, data, options) {
-  const headers = new Headers();
+  const headers = getHeaders();
   const request = new Request(url, {
     method: 'POST',
     headers,
-    body: JSON.stringify(data),
-    mode: 'cors',
-    cache: 'default'
+    body: JSON.stringify(data)
+  });
+  return await fetch(request);
+}
+
+export async function put(url, data, options) {
+  const headers = getHeaders();
+  const request = new Request(url, {
+    method: 'PUT',
+    headers,
+    body: JSON.stringify(data)
   });
   return await fetch(request);
 }
@@ -40,5 +53,10 @@ export default class BaseServices {
   async post(api, data) {
     const url = this.getURL(api);
     return await post(url, data);
+  }
+
+  async put(api, data) {
+    const url = this.getURL(api);
+    return await put(url, data);
   }
 }

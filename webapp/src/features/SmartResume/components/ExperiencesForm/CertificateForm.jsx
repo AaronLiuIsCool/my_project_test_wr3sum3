@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col, Form } from 'react-bootstrap';
 
 import SingleDatePicker from 'components/SingleDatePicker';
@@ -8,12 +8,18 @@ import InputGroup from 'components/InputGroup';
 import RadioButtonGroup from 'components/RadioButtonGroup';
 import KButton from 'components/KButton';
 
-import { actions } from '../../slicer';
+import { adaptCertificate } from '../../utils/servicesAdaptor';
+import { actions, selectId } from '../../slicer';
 import { validateCertificate, validateCertificateEntry } from '../../slicer/certificate';
 import { updateStatus } from '../../slicer/common';
+import ResumeServices from 'shell/services/ResumeServices';
+import { getLogger } from 'shell/logger';
 
+const logger = getLogger('CertificateForm');
+const resumeServices = new ResumeServices();
 
 const CertificateForm = ({ data, index, isLast = false, messages }) => {
+	const resumeId = useSelector(selectId);
 	const [validated, setValidated] = useState(false);
 	const [status, setStatus] = useState({
 		certificateName: {},
@@ -22,6 +28,21 @@ const CertificateForm = ({ data, index, isLast = false, messages }) => {
 	});
 	const dispatch = useDispatch();
 
+	const save = async () => {
+        let id;
+        try {
+            const response = (data.id === undefined) ?
+                await resumeServices.createCertificate(resumeId, adaptCertificate(data)) :
+                await resumeServices.updateCertificate(data.id, adaptCertificate(data));
+            const responseJson = await response.json();
+            id = responseJson.id;
+        } catch(exception) {
+            logger.error(exception);
+        } finally {
+            dispatch(actions.updateCertificateId({ index, id }));
+        }
+    };
+
 	const handleSubmit = (event) => {
 		event.preventDefault();
 		event.stopPropagation();
@@ -29,9 +50,8 @@ const CertificateForm = ({ data, index, isLast = false, messages }) => {
 			setValidated(false);
 			return;
 		}
-		// TODO: Save this use API.
-		alert(`Save this to kuaidao service: ${JSON.stringify(data)}`);
 		setValidated(true);
+		save();
 	};
 
 	const handleCertificateChange = (event) => {

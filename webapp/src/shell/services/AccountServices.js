@@ -2,7 +2,7 @@ import { getLogger } from 'shell/logger';
 import BaseServices from './BaseServices';
 
 const logger = getLogger('AccountService');
-const ACCOUNT_SERVICE_CONFIGS_PREFIX = 'services-accounts';
+const ACCOUNT_SERVICE_CONFIGS_PREFIX = 'services-account';
 
 export default class AccountServices extends BaseServices {
   constructor() {

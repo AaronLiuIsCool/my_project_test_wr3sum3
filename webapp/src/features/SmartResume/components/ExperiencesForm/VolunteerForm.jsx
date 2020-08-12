@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col, Form } from 'react-bootstrap';
 
 import SingleDatePicker from 'components/SingleDatePicker';
@@ -10,13 +10,20 @@ import RadioButtonGroup from 'components/RadioButtonGroup';
 import KButton from 'components/KButton';
 import TextArea from 'components/TextArea';
 
-import { actions } from '../../slicer';
+import { adaptVolunteer } from '../../utils/servicesAdaptor';
+import { actions, selectId } from '../../slicer';
 import { validateVolunteer, validateVolunteerEntry } from '../../slicer/volunteer';
 import { updateStatus } from '../../slicer/common';
+import ResumeServices from 'shell/services/ResumeServices';
+import { getLogger } from 'shell/logger';
 
 import cityOptions from 'data/city.json';
 
+const logger = getLogger('VolunteerForm');
+const resumeServices = new ResumeServices();
+
 const VolunteerForm = ({ data, index, isLast = false, messages }) => {
+	const resumeId = useSelector(selectId);
 	const [validated, setValidated] = useState(false);
 	const [status, setStatus] = useState({
 		volunteerRole: {},
@@ -30,6 +37,21 @@ const VolunteerForm = ({ data, index, isLast = false, messages }) => {
 	});
 	const dispatch = useDispatch();
 
+    const save = async () => {
+        let id;
+        try {
+            const response = (data.id === undefined) ?
+                await resumeServices.createVolunteer(resumeId, adaptVolunteer(data)) :
+                await resumeServices.updateVolunteer(data.id, adaptVolunteer(data));
+            const responseJson = await response.json();
+            id = responseJson.id;
+        } catch(exception) {
+            logger.error(exception);
+        } finally {
+            dispatch(actions.updateVolunteerId({ index, id }));
+        }
+    };
+
 	const handleSubmit = (event) => {
 		event.preventDefault();
 		event.stopPropagation();
@@ -37,9 +59,8 @@ const VolunteerForm = ({ data, index, isLast = false, messages }) => {
 			setValidated(false);
 			return;
 		}
-		// TODO: Save this use API.
-		alert(`Save this to kuaidao service: ${JSON.stringify(data)}`);
 		setValidated(true);
+		save();
 	};
 
 	const handleVolunteerRoleChange = (event) => {

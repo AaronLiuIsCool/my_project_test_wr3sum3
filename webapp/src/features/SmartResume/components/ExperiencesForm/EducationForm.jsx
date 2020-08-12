@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col, Form } from 'react-bootstrap';
 
 import SingleDatePicker from 'components/SingleDatePicker';
@@ -8,16 +8,23 @@ import InputGroup from 'components/InputGroup';
 import DropdownGroup from 'components/DropdownGroup';
 import KButton from 'components/KButton';
 
-import { actions } from '../../slicer';
+import { adaptEducation } from '../../utils/servicesAdaptor';
+import { actions, selectId } from '../../slicer';
 import { validateEducation, validateEducationEntry } from '../../slicer/education';
 import { updateStatus } from '../../slicer/common';
+import ResumeServices from 'shell/services/ResumeServices';
+import { getLogger } from 'shell/logger';
 
 import degreeOptions from 'data/degree.json';
 import majorOptions from 'data/major.json';
 import univOptions from 'data/university.json';
 import cityOptions from 'data/city.json';
 
+const logger = getLogger('EducationForm');
+const resumeServices = new ResumeServices();
+
 const EducationForm = ({ data, index, isLast = false, messages }) => {
+    const resumeId = useSelector(selectId);
     const [validated, setValidated] = useState(false);
     const [status, setStatus] = useState({
         schoolName: {},
@@ -33,6 +40,21 @@ const EducationForm = ({ data, index, isLast = false, messages }) => {
     });
     const dispatch = useDispatch();
 
+    const save = async () => {
+        let id;
+        try {
+            const response = (data.id === undefined) ?
+                await resumeServices.createEducation(resumeId, adaptEducation(data)) :
+                await resumeServices.updateEducation(data.id, adaptEducation(data));
+            const responseJson = await response.json();
+            id = responseJson.id;
+        } catch(exception) {
+            logger.error(exception);
+        } finally {
+            dispatch(actions.updateEducationId({ index, id }));
+        }
+    };
+
     const handleSubmit = (event) => {
         event.preventDefault();
         event.stopPropagation();
@@ -40,9 +62,8 @@ const EducationForm = ({ data, index, isLast = false, messages }) => {
             setValidated(false);
             return;
         }
-        // TODO: Save this use API.
-        alert(`Save this to kuaidao service: ${JSON.stringify(data)}`);
         setValidated(true);
+        save();
     };
 
     const handleSchoolChange = (values) => {

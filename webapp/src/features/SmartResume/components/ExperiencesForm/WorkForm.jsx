@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col, Form } from 'react-bootstrap';
 
 import SingleDatePicker from 'components/SingleDatePicker';
@@ -10,13 +10,20 @@ import DropdownGroup from 'components/DropdownGroup';
 import KButton from 'components/KButton';
 import TextArea from 'components/TextArea';
 
-import { actions } from '../../slicer';
+import { adaptWork } from '../../utils/servicesAdaptor';
+import { actions, selectId } from '../../slicer';
 import { validateWork, validateWorkEntry } from '../../slicer/work';
 import { updateStatus } from '../../slicer/common';
+import ResumeServices from 'shell/services/ResumeServices';
+import { getLogger } from 'shell/logger';
 
 import cityOptions from 'data/city.json';
 
+const logger = getLogger('WorkForm');
+const resumeServices = new ResumeServices();
+
 const WorkForm = ({ data, index, isLast = false, messages }) => {
+	const resumeId = useSelector(selectId);
 	const [validated, setValidated] = useState(false);
 	const [status, setStatus] = useState({
 		workName: {},
@@ -29,6 +36,21 @@ const WorkForm = ({ data, index, isLast = false, messages }) => {
 	});
 	const dispatch = useDispatch();
 
+	const save = async () => {
+        let id;
+        try {
+            const response = (data.id === undefined) ?
+                await resumeServices.createWork(resumeId, adaptWork(data)) :
+                await resumeServices.updateWork(data.id, adaptWork(data));
+            const responseJson = await response.json();
+            id = responseJson.id;
+        } catch(exception) {
+            logger.error(exception);
+        } finally {
+            dispatch(actions.updateWorkId({ index, id }));
+        }
+    };
+
 	const handleSubmit = (event) => {
 		event.preventDefault();
 		event.stopPropagation();
@@ -36,9 +58,8 @@ const WorkForm = ({ data, index, isLast = false, messages }) => {
 			setValidated(false);
 			return;
 		}
-		// TODO: Save this use API.
-		alert(`Save this to kuaidao service: ${JSON.stringify(data)}`);
 		setValidated(true);
+		save();
 	};
 
 	const handleWorkChange = (event) => {

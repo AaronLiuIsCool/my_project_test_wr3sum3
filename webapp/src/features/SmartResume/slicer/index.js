@@ -8,32 +8,42 @@ import volunteer from "./volunteer";
 import certificate from "./certificate";
 
 export const resumeSlice = createSlice({
-  name: "resume",
-  initialState: {
-    stepIndex: 0,
-    education: education.initialState,
-    basic: basic.initialState,
-    work: work.initialState,
-    project: project.initialState,
-    certificate: certificate.initialState,
-    volunteer: volunteer.initialState
-  },
-  reducers: {
-    moveStep: (state, action) => {
-      state.stepIndex = action.payload;
+    name: "resume",
+    initialState: {
+        id: undefined,
+        stepIndex: 0,
+
+        education: education.initialState,
+        basic: basic.initialState,
+        work: work.initialState,
+        project: project.initialState,
+        certificate: certificate.initialState,
+        volunteer: volunteer.initialState
     },
-    ...education.reducers,
-    ...basic.reducers,
-    ...work.reducers,
-    ...project.reducers,
-    ...volunteer.reducers,
-    ...certificate.reducers,
-  }
+    reducers: {
+        setId: (state, action) => {
+            state.id = action.payload;
+        },
+
+        moveStep: (state, action) => {
+            state.stepIndex = action.payload;
+        },
+
+        ...education.reducers,
+        ...basic.reducers,
+        ...work.reducers,
+        ...project.reducers,
+        ...volunteer.reducers,
+        ...certificate.reducers,
+    }
 });
 
 export const { actions } = resumeSlice;
 
+export const selectId = ({ resume }) => resume.id;
 export const selectStep = ({ resume }) => resume.stepIndex;
+export const selectResume = ({ resume }) => resume;
+
 export const educationSelectors = education.selectors;
 export const basicSelectors = basic.selectors;
 export const workSelectors = work.selectors;
