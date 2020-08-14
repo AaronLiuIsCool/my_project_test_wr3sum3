@@ -1,27 +1,24 @@
 package com.kuaidaoresume.job.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Date;
+import java.util.Set;
 
 /**
  * job DTO
  * @author Ruichen Teng
  */
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
-@RequiredArgsConstructor
 @Builder
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -43,4 +40,5 @@ public class JobDto {
     private int jobPostId;
     public LocationDto location;
     public List<MajorDto> majors;
+    private Set<JobHasKeywordDto> jobHasKeywords = new HashSet<>();
 }

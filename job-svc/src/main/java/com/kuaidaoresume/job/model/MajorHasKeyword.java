@@ -11,12 +11,12 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "Job_has_Keyword")
-public class JobHasKeyword implements Serializable{
+@Table(name = "Major_has_Keyword")
+public class MajorHasKeyword implements Serializable {
     @Id
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "Job_id")
-    private Job job;
+    @JoinColumn(name = "Major_id")
+    private Major major;
 
     @Id
     @ManyToOne (fetch = FetchType.LAZY, cascade = CascadeType.ALL)

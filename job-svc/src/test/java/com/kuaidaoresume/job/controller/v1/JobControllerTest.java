@@ -1,7 +1,7 @@
 package com.kuaidaoresume.job.controller.v1;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kuaidaoresume.job.controller.v1.JobController;
+import com.kuaidaoresume.common.auth.AuthConstant;
 import com.kuaidaoresume.job.controller.assembler.JobRepresentationModelAssembler;
 import com.kuaidaoresume.job.config.JobApplicationTestConfig;
 import com.kuaidaoresume.job.service.JobService;
@@ -20,8 +20,6 @@ import org.modelmapper.ModelMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.Import;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.hateoas.MediaTypes;
@@ -61,7 +59,7 @@ public class JobControllerTest {
                 .build();
         when(jobService.findJobById(1L)).thenReturn(Optional.of(modelMapper.map(job, JobDto.class)));
 
-        mvc.perform(get("/v1/jobs/{id}", 1L).accept(MediaTypes.HAL_JSON_VALUE))
+        mvc.perform(get("/v1/jobs/{id}", 1L).header(HttpHeaders.AUTHORIZATION, AuthConstant.AUTHORIZATION_SUPPORT_USER).accept(MediaTypes.HAL_JSON_VALUE))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaTypes.HAL_JSON_VALUE))
@@ -90,7 +88,7 @@ public class JobControllerTest {
 
         when(jobService.findAll()).thenReturn(Arrays.asList(modelMapper.map(first, JobDto.class), modelMapper.map(second, JobDto.class)));
 
-        mvc.perform(get("/v1/jobs/all").accept(MediaTypes.HAL_JSON_VALUE))
+        mvc.perform(get("/v1/jobs/all").header(HttpHeaders.AUTHORIZATION, AuthConstant.AUTHORIZATION_SUPPORT_USER).accept(MediaTypes.HAL_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaTypes.HAL_JSON_VALUE))
                 .andDo(print())
@@ -104,7 +102,7 @@ public class JobControllerTest {
     }
 
     @Test
-    public void whenSaveJob_thenReturn201() throws Exception {
+    public void whenCreateJob_thenReturn201() throws Exception {
         Job job = Job.builder()
                 .id(1L)
                 .postDate(new Date(System.currentTimeMillis()))
@@ -113,16 +111,39 @@ public class JobControllerTest {
                 .url("someUrl")
                 .build();
 
-        when(jobService.saveJob(any(JobDto.class))).thenReturn(Optional.of(modelMapper.map(job, JobDto.class)));
+        when(jobService.createJob(any(JobDto.class))).thenReturn(Optional.of(modelMapper.map(job, JobDto.class)));
 
-        mvc.perform(post("/v1/jobs/save")
+        mvc.perform(post("/v1/jobs").header(HttpHeaders.AUTHORIZATION, AuthConstant.AUTHORIZATION_SUPPORT_USER)
                 .content(objectMapper.writeValueAsString(modelMapper.map(job, JobDto.class)))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andReturn();
 
-        verify(jobService, times(1)).saveJob(modelMapper.map(job, JobDto.class));
+        verify(jobService, times(1)).createJob(modelMapper.map(job, JobDto.class));
+        verifyNoMoreInteractions(jobService);
+    }
+
+    @Test
+    public void whenUpdateJob_thenReturn200() throws Exception {
+        Job job = Job.builder()
+                .id(1L)
+                .postDate(new Date(System.currentTimeMillis()))
+                .positionTitle("SDE")
+                .companyName("ABC")
+                .url("someUrl")
+                .build();
+
+        when(jobService.updateJob(any(JobDto.class))).thenReturn(Optional.of(modelMapper.map(job, JobDto.class)));
+
+        mvc.perform(put("/v1/jobs").header(HttpHeaders.AUTHORIZATION, AuthConstant.AUTHORIZATION_SUPPORT_USER)
+                .content(objectMapper.writeValueAsString(modelMapper.map(job, JobDto.class)))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isNoContent())
+                .andReturn();
+
+        verify(jobService, times(1)).updateJob(modelMapper.map(job, JobDto.class));
         verifyNoMoreInteractions(jobService);
     }
 
@@ -130,9 +151,11 @@ public class JobControllerTest {
     public void whenDeleteById_thenReturn202() throws Exception {
         doNothing().when(jobService).deleteJobById(any(Long.class));
 
-        mvc.perform(delete("/v1/jobs/{id}", 1L))
+        mvc.perform(delete("/v1/jobs/{id}", 1L).header(HttpHeaders.AUTHORIZATION, AuthConstant.AUTHORIZATION_SUPPORT_USER))
                 .andDo(print())
-                .andExpect(status().isNoContent())
+                .andExpect(status().isAccepted())
                 .andReturn();
+        verify(jobService, times(1)).deleteJobById(1L);
+        verifyNoMoreInteractions(jobService);
     }
 }

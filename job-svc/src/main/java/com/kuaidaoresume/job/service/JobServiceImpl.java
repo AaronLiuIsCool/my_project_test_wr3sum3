@@ -17,9 +17,7 @@ import com.kuaidaoresume.job.repository.MajorRepository;
 import org.modelmapper.ModelMapper;
 import java.util.List;
 import java.util.Optional;
-import java.util.HashSet;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -95,19 +93,25 @@ public class JobServiceImpl implements JobService{
     }
 
     @Override
-    public  Optional<JobDto>  saveJob(JobDto jobDto) {
-
-        Optional<Job> jobOptional = jobRepository.findByUrl(jobDto.getUrl());
-        if (jobOptional.isPresent()) {
-            return Optional.ofNullable(null);
-        }
-
+    public  Optional<JobDto> createJob(JobDto jobDto) {
         Job job = modelMapper.map(jobDto, Job.class);
 
         JobDto savedJobDto = modelMapper.map(jobRepository.save(job), JobDto.class);
 
         return Optional.ofNullable(savedJobDto);
-
     }
 
+    @Override
+    public  Optional<JobDto> updateJob(JobDto jobDto) {
+        Optional<Job> existing = jobRepository.findByUrl(jobDto.getUrl());
+        if (existing.isPresent()) {
+            Job toUpdate = modelMapper.map(jobDto, Job.class);
+            toUpdate.setId(existing.get().getId());
+            jobRepository.save(toUpdate);
+            return Optional.ofNullable(modelMapper.map(toUpdate, JobDto.class));
+        }
+        else {
+            return createJob((jobDto));
+        }
+    }
 }

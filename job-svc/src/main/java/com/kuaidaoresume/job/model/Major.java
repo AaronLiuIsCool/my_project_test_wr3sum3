@@ -11,7 +11,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -26,4 +28,8 @@ public class Major {
     long id;
     @Column(name = "name", nullable = false, updatable = false, unique = true)
     private String name;
+
+    @OneToMany(mappedBy = "major", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private Set<MajorHasKeyword> majorHasKeywords = new HashSet<>();
 }

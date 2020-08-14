@@ -1,20 +1,19 @@
 package com.kuaidaoresume.job.dto;
 
+import com.kuaidaoresume.common.dto.PersistedEntityDto;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.*;
+import lombok.Data;
+import org.springframework.hateoas.server.core.Relation;
 
 import javax.validation.constraints.NotNull;
 
-@Getter
-@Setter
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class KeywordDto {
+@Relation(itemRelation = "keyword", collectionRelation = "keywords")
+public class PersistedRatingDto implements PersistedEntityDto<Long> {
     @NotNull
-    private String name;
+    private Long id;
 }

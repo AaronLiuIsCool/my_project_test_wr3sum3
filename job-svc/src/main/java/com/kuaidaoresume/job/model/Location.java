@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -30,6 +31,11 @@ public class Location {
     private String city;
     @Column(name = "post_code", nullable = true, updatable = false)
     private String postCode;
+
+    @OneToMany(mappedBy = "location", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private Set<LocationHasKeyword> locationHasKeywords = new HashSet<>();
+
 //    @OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY, orphanRemoval = true)
 //    @JoinColumn(name = "Job_id", referencedColumnName="id")
 //    private Set<Job> jobs;

@@ -1,7 +1,9 @@
 package com.kuaidaoresume.job.repository;
 
 import com.kuaidaoresume.job.model.*;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.After;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,6 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
+//@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @ActiveProfiles("test")
 @TestPropertySource(properties = {
     "spring.jpa.hibernate.ddl-auto=create-drop"
@@ -84,6 +88,13 @@ public class JobRepositoryTest {
                 .majors(majors)
                 .build();
         jobRepository.save(job);
+    }
+
+    @After
+    public void tearDown() {
+        jobRepository.deleteAll();
+        locationRepository.deleteAll();
+        majorRepository.deleteAll();
     }
 
     @Test

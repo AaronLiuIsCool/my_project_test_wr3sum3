@@ -2,20 +2,16 @@ package com.kuaidaoresume.job.controller.v1;
 
 import com.github.structlog4j.ILogger;
 import com.github.structlog4j.SLoggerFactory;
-import com.kuaidaoresume.job.service.JobService;
 import com.kuaidaoresume.common.auth.AuthConstant;
 import com.kuaidaoresume.common.auth.Authorize;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
-import org.springframework.validation.annotation.Validated;
+import com.kuaidaoresume.job.service.JobService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.Links;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.kuaidaoresume.job.dto.*;
-import com.kuaidaoresume.job.service.JobService;
 import com.kuaidaoresume.job.controller.assembler.JobRepresentationModelAssembler;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -24,12 +20,6 @@ import javax.validation.Valid;
 import java.util.Optional;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("/v1")
@@ -48,16 +38,16 @@ public class JobController {
     @Autowired
     private final ModelMapper modelMapper;
 
-//    @Authorize(value = {
-//            AuthConstant.AUTHORIZATION_WWW_SERVICE,
-//            AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
-//            //AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
-//            //AuthConstant.AUTHORIZATION_BOT_SERVICE,
-//            AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
-//            AuthConstant.AUTHORIZATION_SUPPORT_USER,
-//            AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
-//    })
 
+    @Authorize(value = {
+            AuthConstant.AUTHORIZATION_WWW_SERVICE,
+            AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
+            AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
+            AuthConstant.AUTHORIZATION_BOT_SERVICE,
+            AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
+            AuthConstant.AUTHORIZATION_SUPPORT_USER,
+            AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
+    })
     @GetMapping("/jobs/{id}")
     public ResponseEntity<EntityModel<PersistedJobDto>> findJob(@PathVariable long id) {
         return jobService.findJobById(id)
@@ -67,12 +57,74 @@ public class JobController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @Authorize(value = {
+            AuthConstant.AUTHORIZATION_WWW_SERVICE,
+            AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
+            AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
+            AuthConstant.AUTHORIZATION_BOT_SERVICE,
+            AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
+            AuthConstant.AUTHORIZATION_SUPPORT_USER,
+            AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
+    })
     @DeleteMapping("jobs/{id}")
     public ResponseEntity<?> deleteJob(@PathVariable Long id) {
         jobService.deleteJobById(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.accepted().build();
     }
 
+    @Authorize(value = {
+            AuthConstant.AUTHORIZATION_WWW_SERVICE,
+            AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
+            AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
+            AuthConstant.AUTHORIZATION_BOT_SERVICE,
+            AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
+            AuthConstant.AUTHORIZATION_SUPPORT_USER,
+            AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
+    })
+    @PostMapping("/jobs")
+    public ResponseEntity<EntityModel<PersistedJobDto>> createJob(
+            @Valid @RequestBody
+                    JobDto jobDto) {
+        logger.info("jobDto = " + jobDto);
+        Optional<JobDto> newJob = jobService.createJob(jobDto);
+        if (newJob.isPresent()) {
+            EntityModel<PersistedJobDto> entityModel =
+                    jobRepresentationModelAssembler.toModel(modelMapper.map(newJob, PersistedJobDto.class));
+            return ResponseEntity.created(jobRepresentationModelAssembler.getSelfLink(entityModel).toUri()).body(entityModel);
+        }
+        return ResponseEntity.badRequest().build();
+    }
+
+    @Authorize(value = {
+            AuthConstant.AUTHORIZATION_WWW_SERVICE,
+            AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
+            AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
+            AuthConstant.AUTHORIZATION_BOT_SERVICE,
+            AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
+            AuthConstant.AUTHORIZATION_SUPPORT_USER,
+            AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
+    })
+    @PutMapping("/jobs")
+    public ResponseEntity<EntityModel<PersistedJobDto>> updateJob(
+            @Valid @RequestBody
+                    JobDto jobDto) {
+        logger.info("jobDto = " + jobDto);
+        Optional<JobDto> updatedJob = jobService.updateJob(jobDto);
+        if (updatedJob.isPresent()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.badRequest().build();
+    }
+
+    @Authorize(value = {
+            AuthConstant.AUTHORIZATION_WWW_SERVICE,
+            AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
+            AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
+            AuthConstant.AUTHORIZATION_BOT_SERVICE,
+            AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
+            AuthConstant.AUTHORIZATION_SUPPORT_USER,
+            AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
+    })
     @GetMapping(path = "/jobs/all")
     public ResponseEntity<CollectionModel<EntityModel<PersistedJobDto>>> findAllJobs() {
         //TODO@ruichen: add pagination, limit
@@ -86,6 +138,15 @@ public class JobController {
         return ResponseEntity.notFound().build();
     }
 
+    @Authorize(value = {
+            AuthConstant.AUTHORIZATION_WWW_SERVICE,
+            AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
+            AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
+            AuthConstant.AUTHORIZATION_BOT_SERVICE,
+            AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
+            AuthConstant.AUTHORIZATION_SUPPORT_USER,
+            AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
+    })
     @PostMapping("/jobs/job-search/location")
     public ResponseEntity<CollectionModel<EntityModel<PersistedJobDto>>> findJobByLocation(@RequestBody List<LocationDto> locations) {
         logger.info("location = " + locations);
@@ -97,6 +158,15 @@ public class JobController {
         return ResponseEntity.notFound().build();
     }
 
+    @Authorize(value = {
+            AuthConstant.AUTHORIZATION_WWW_SERVICE,
+            AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
+            AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
+            AuthConstant.AUTHORIZATION_BOT_SERVICE,
+            AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
+            AuthConstant.AUTHORIZATION_SUPPORT_USER,
+            AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
+    })
     @PostMapping("/jobs/job-search/major")
     public ResponseEntity<CollectionModel<EntityModel<PersistedJobDto>>> findJobByMajor(@RequestBody List<MajorDto> majors) {
         logger.info("major = " + majors);
@@ -106,19 +176,5 @@ public class JobController {
                     .collect(Collectors.toList()))));
         }
         return ResponseEntity.notFound().build();
-    }
-
-    @PostMapping("/jobs/save")
-    public ResponseEntity<EntityModel<PersistedJobDto>> saveJob(
-            @Valid @RequestBody
-                    JobDto jobDto) {
-        logger.info("jobDto = " + jobDto);
-        Optional<JobDto> savedJob = jobService.saveJob(jobDto);
-        if(savedJob.isPresent()) {
-            EntityModel<PersistedJobDto> entityModel =
-                    jobRepresentationModelAssembler.toModel(modelMapper.map(savedJob, PersistedJobDto.class));
-            return ResponseEntity.created(jobRepresentationModelAssembler.getSelfLink(entityModel).toUri()).body(entityModel);
-        }
-        return ResponseEntity.badRequest().build();
     }
 }

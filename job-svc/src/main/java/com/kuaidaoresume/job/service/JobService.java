@@ -1,7 +1,6 @@
 package com.kuaidaoresume.job.service;
 
 import com.kuaidaoresume.job.dto.*;
-import com.kuaidaoresume.job.model.*;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +20,8 @@ public interface JobService {
 
     public List<JobDto> findJobByMajor(List<MajorDto> majorDtos);
 
-    public  Optional<JobDto> saveJob(JobDto jobDto);
+    public Optional<JobDto> createJob(JobDto jobDto);
+
+    public Optional<JobDto> updateJob(JobDto jobDto);
 
 }

@@ -4,22 +4,23 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import java.time.Instant;
 import java.util.List;
 import java.util.Date;
+import java.util.Set;
+import java.util.HashSet;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"post_date", "position_title", "company_name", "url"}))
+@Table(name="Job", uniqueConstraints = @UniqueConstraint(columnNames = {"post_date", "position_title", "company_name", "url"}))
 /**
  * plan to use mysql events for time to live
  * http://mablomy.blogspot.com/2019/03/ttl-time-to-live-in-mysql.html
@@ -60,4 +61,7 @@ public class Job {
             inverseJoinColumns = { @JoinColumn(name = "Major_id", referencedColumnName="id") }
     )
     private List<Major> majors;
+    @OneToMany(mappedBy = "job", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private Set<JobHasKeyword> jobHasKeywords = new HashSet<>();
 }
