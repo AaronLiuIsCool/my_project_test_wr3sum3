@@ -7,6 +7,7 @@ import SingleDatePicker from 'components/SingleDatePicker';
 import InputGroup from 'components/InputGroup';
 import RadioButtonGroup from 'components/RadioButtonGroup';
 import KButton from 'components/KButton';
+import DropdownGroup from 'components/DropdownGroup';
 
 import { adaptCertificate } from '../../utils/servicesAdaptor';
 import { actions, selectId } from '../../slicer';
@@ -14,6 +15,8 @@ import { validateCertificate, validateCertificateEntry } from '../../slicer/cert
 import { updateStatus } from '../../slicer/common';
 import ResumeServices from 'shell/services/ResumeServices';
 import { getLogger } from 'shell/logger';
+
+import certificateOptions from 'data/certificate.json';
 
 const logger = getLogger('CertificateForm');
 const resumeServices = new ResumeServices();
@@ -29,19 +32,20 @@ const CertificateForm = ({ data, index, isLast = false, messages }) => {
 	const dispatch = useDispatch();
 
 	const save = async () => {
-        let id;
-        try {
-            const response = (data.id === undefined) ?
-                await resumeServices.createCertificate(resumeId, adaptCertificate(data)) :
-                await resumeServices.updateCertificate(data.id, adaptCertificate(data));
-            const responseJson = await response.json();
-            id = responseJson.id;
-        } catch(exception) {
-            logger.error(exception);
-        } finally {
-            dispatch(actions.updateCertificateId({ index, id }));
-        }
-    };
+		let id;
+		try {
+			const response =
+				data.id === undefined
+					? await resumeServices.createCertificate(resumeId, adaptCertificate(data))
+					: await resumeServices.updateCertificate(data.id, adaptCertificate(data));
+			const responseJson = await response.json();
+			id = responseJson.id;
+		} catch (exception) {
+			logger.error(exception);
+		} finally {
+			dispatch(actions.updateCertificateId({ index, id }));
+		}
+	};
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
@@ -54,17 +58,16 @@ const CertificateForm = ({ data, index, isLast = false, messages }) => {
 		save();
 	};
 
-	const handleCertificateChange = (event) => {
-		const value = event.target.value;
+	const handleCertificateChange = (values) => {
+		const value = values.length === 0 ? null : values[0].name;
 		updateStatus(validateCertificateEntry, status, setStatus, 'certificateName', value);
 		dispatch(actions.updateCertificateName({ value, index }));
 	};
-	
+
 	const handleValidCertificateFlag = (event) => {
 		const value = event.target.value;
 		dispatch(actions.updateCurrentCertificateFlag({ value, index }));
 	};
-	
 
 	const handleCertificateStartDateChange = (date) => {
 		const value = date ? date.toISOString() : undefined;
@@ -87,10 +90,12 @@ const CertificateForm = ({ data, index, isLast = false, messages }) => {
 			</Row>
 			<Row>
 				<Col lg="4">
-					<InputGroup
+					<DropdownGroup
 						label={messages.certificateName}
 						id="certificate-name"
 						placeholder={messages.enterCertificateName}
+						searchKey="name"
+						options={certificateOptions}
 						value={data.certificateName}
 						onChange={handleCertificateChange}
 						feedbackMessage={messages.entryIsInvalid}
@@ -110,7 +115,7 @@ const CertificateForm = ({ data, index, isLast = false, messages }) => {
 						onClickHandler={handleValidCertificateFlag}
 					/>
 				</Col>
-			
+
 				<Col>
 					<SingleDatePicker
 						label={messages.issueDate}
@@ -123,31 +128,31 @@ const CertificateForm = ({ data, index, isLast = false, messages }) => {
 						displayFormat={messages.dateDisplayFormat}
 						onDateChange={handleCertificateStartDateChange}
 						feedbackMessage={messages.entryIsInvalid}
-					isValid={status.certificateIssuedDate.isValid}
+						isValid={status.certificateIssuedDate.isValid}
 						isInvalid={status.certificateIssuedDate.isInvalid}
 					/>
 				</Col>
 
 				<Col>
-				{!data.validCertificateFlag && (<SingleDatePicker
-						label={messages.expireDate}
-						id="certificate-end-date"
-						placeholder={messages.yymmdd}
-						value={data.certificateEndDate}
-						allowPastDatesOnly={true}
-						readOnly={true}
-						monthFormat={messages.monthFormat}
-						displayFormat={messages.dateDisplayFormat}
-						onDateChange={handleCertificateEndDateChange}
-						feedbackMessage={messages.entryIsInvalid}
-						isValid={status.certificateEndDate.isValid}
-						isInvalid={status.certificateEndDate.isInvalid}
-					/>)}
+					{!data.validCertificateFlag && (
+						<SingleDatePicker
+							label={messages.expireDate}
+							id="certificate-end-date"
+							placeholder={messages.yymmdd}
+							value={data.certificateEndDate}
+							allowPastDatesOnly={true}
+							readOnly={true}
+							monthFormat={messages.monthFormat}
+							displayFormat={messages.dateDisplayFormat}
+							onDateChange={handleCertificateEndDateChange}
+							feedbackMessage={messages.entryIsInvalid}
+							isValid={status.certificateEndDate.isValid}
+							isInvalid={status.certificateEndDate.isInvalid}
+						/>
+					)}
 				</Col>
-
-				
 			</Row>
-			
+
 			<Row className="form_buttons">
 				<Col className="space_betweens">
 					{/* just a placeholder so we do need to change the css */}

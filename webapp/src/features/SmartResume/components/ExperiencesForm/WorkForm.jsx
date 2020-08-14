@@ -71,6 +71,10 @@ const WorkForm = ({ data, index, isLast = false, messages }) => {
 	const handleCurrentWorkFlagChange = (event) => {
 		const value = event.target.value;
 		dispatch(actions.updateCurrentWorkFlag({ value, index }));
+		// reset the end date value if current work is true
+		if (value){
+			dispatch(actions.updateWorkEndDate({ value: "", index }));
+		}
 	};
 	const handleWorkCompanyNameChange = (event) => {
 		const value = event.target.value;
@@ -156,7 +160,7 @@ const WorkForm = ({ data, index, isLast = false, messages }) => {
 			<Row>
 				<Col>
 					<SingleDatePicker
-						label={messages.enterWorkDate}
+						label={messages.workStartDate}
 						id="work-start-date"
 						placeholder={messages.yymmdd}
 						value={data.workStartDate}
@@ -171,9 +175,9 @@ const WorkForm = ({ data, index, isLast = false, messages }) => {
 					/>
 				</Col>
 
-				{!data.currentWorkFlag && (<Col>
+				{data.currentWorkFlag && (<Col>
 					<SingleDatePicker
-						label={messages.enterWorkDate}
+						label={messages.workEndDate}
 						id="work-end-date"
 						placeholder={messages.yymmdd}
 						value={data.workEndDate}

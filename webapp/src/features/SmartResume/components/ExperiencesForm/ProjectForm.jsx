@@ -52,9 +52,10 @@ const ProjectForm = ({ data, index, isLast = false, messages }) => {
         }
     };
 
-	const handleSubmit = (event) => {
+		const handleSubmit = (event) => {
 		event.preventDefault();
 		event.stopPropagation();
+		
 		if (!validateProject(data)) {
 			setValidated(false);
 			return;
@@ -73,6 +74,11 @@ const ProjectForm = ({ data, index, isLast = false, messages }) => {
 		const value = event.target.value;
 		updateStatus(validateProjectEntry, status, setStatus, 'currentProjectFlag', value);
 		dispatch(actions.updateCurrentProjectFlag({ value, index }));
+
+		// reset the end date value if current project is true
+		if (value){
+			dispatch(actions.updateProjectEndDate({ value: "", index }));
+		}
 	};
 
 	const handleProjectCompanyNameChange = (event) => {
@@ -102,13 +108,13 @@ const ProjectForm = ({ data, index, isLast = false, messages }) => {
 	const handleCityChange = (values) => {
 		const value = values.length === 0 ? null : values[0].city;
 		updateStatus(validateProjectEntry, status, setStatus, 'projectCity', value);
-		dispatch(actions.updateEduCity({ value, index }));
+		dispatch(actions.updateProjectCity({ value, index }));
 	};
 
 	const handleCountryChange = (event) => {
 		const value = event.target.value;
 		updateStatus(validateProjectEntry, status, setStatus, 'projectCountry', value);
-		dispatch(actions.updateCountry({ value, index }));
+		dispatch(actions.updateProjectCountry({ value, index }));
 	};
 	
 	return (
@@ -173,7 +179,7 @@ const ProjectForm = ({ data, index, isLast = false, messages }) => {
 						isInvalid={status.projectStartDate.isInvalid}
 					/>
 				</Col>
-				{!data.currentProjectFlag && (<Col>
+				{data.currentProjectFlag && (<Col>
 					<SingleDatePicker
 						label={messages.projectEndDate}
 						id="project-graduate-date"

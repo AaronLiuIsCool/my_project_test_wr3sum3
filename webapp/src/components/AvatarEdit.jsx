@@ -1,5 +1,7 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { useI8n } from 'shell/i18n';
+import { actions } from '../features/SmartResume/slicer';
 import Avatar from 'react-avatar-edit';
 import KButton from './KButton';
 
@@ -8,6 +10,7 @@ import styles from '../features/SmartResume/styles/AvatarUpload.module.css';
 const AvatarEdit = ({ imagePreview, setImagePreview, closeModalHandler }) => {
 	// class AvatarEdit extends Component {
 	const messages = useI8n();
+	const dispatch = useDispatch();
 
 	const onCrop = (imagePreview) => {
 		setImagePreview(imagePreview);
@@ -19,6 +22,7 @@ const AvatarEdit = ({ imagePreview, setImagePreview, closeModalHandler }) => {
 
 	const onSave = () => {
 		setImagePreview(imagePreview);
+		dispatch(actions.updateAvatar({ value: imagePreview }));
 		closeModalHandler();
 	};
 

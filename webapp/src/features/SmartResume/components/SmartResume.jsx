@@ -9,7 +9,7 @@ import ResumeServices from 'shell/services/ResumeServices';
 
 import LeftNav from './LeftNav';
 import ExperiencesForm from './ExperiencesForm';
-import Preview from './Preview';
+import ResumePreview from './ResumePreview';
 
 import { actions, selectResume } from '../slicer';
 import { resumeAdaptor } from '../utils/servicesAdaptor';
@@ -50,7 +50,7 @@ const SmartResume = ({ useObserver = false }) => {
             <div className="features smart-resume">
                 <div className="overlay">
                     <LeftNav />
-                    <Preview />
+                    <ResumePreview  />
                 </div>
                 <ExperiencesForm useObserver={useObserver} />
             </div>
@@ -59,7 +59,7 @@ const SmartResume = ({ useObserver = false }) => {
 };
 
 SmartResume.propTypes = {
-    useObserver: PropTypes.bool
+    useObserver: PropTypes.bool 
 };
 
 export default SmartResume;

@@ -1,4 +1,9 @@
 import { validateDate, validateString, validateNonEmptyString } from 'utils/validator';
+import { detectChangesForAllItem } from "./common";
+
+export function anyProjectChanges(projects) {
+    return detectChangesForAllItem(projects, project);
+}
 
 export function validateProject(data) {
     return Object.keys(data).every(key => validateProjectEntry(key, data[key]));

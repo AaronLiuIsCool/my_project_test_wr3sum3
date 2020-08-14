@@ -2,6 +2,12 @@ import {
     validateString,
     validateNonEmptyString
 } from 'utils/validator';
+import { detectChangesForSingleItem } from "./common";
+
+export function anyBasicChanges(basicData) {
+    return detectChangesForSingleItem(basicData, basic);
+}
+
 
 export function validateBasic(data) {
     return Object.keys(data).every(key => validateBasicEntry(key, data[key]));
@@ -16,13 +22,13 @@ const validatePhone = (input) => {
     var re = /^\d{8,11}$/;
     return re.test(input);
 }
-const validateURL = (input) => {
-    var re = /(https?:\/\/(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9])(:?\d*)\/?([a-z_/0-9\-#.]*)\??([a-z_/0-9\-#=&]*)/g
-    return re.test(input);
-}
+// we don't want to valid URL for now
+// const validateURL = (input) => {
+//     var re = /(https?:\/\/(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9])(:?\d*)\/?([a-z_/0-9\-#.]*)\??([a-z_/0-9\-#=&]*)/g
+//     return re.test(input);
+// }
 
 export function validateBasicEntry(name, value) {
-    // todo: merge photo avatar
     switch (name) {
         case 'nameEn':
         case 'nameCn':
@@ -46,13 +52,13 @@ export function validateBasicEntry(name, value) {
             } else {
                 return false;
             }
-        case 'linkedin':
-        case 'weblink':
-            if (validateURL(value)) {
-                return true;
-            } else {
-                return false;
-            }
+        // case 'linkedin':
+        // case 'weblink':
+        //     if (validateURL(value)) {
+        //         return true;
+        //     } else {
+        //         return false;
+        //     }
         default:
             return true;
     }
@@ -60,6 +66,7 @@ export function validateBasicEntry(name, value) {
 
 export const basic = {
     id: undefined,
+    avatar: "",
     nameCn: "",
     nameEn: "",
     email: "",
@@ -86,6 +93,9 @@ const reducers = {
     },
     updateBasicsId: (state, action) => {
         updateField(state, "id", action.payload.id);
+    },
+    updateAvatar: (state, action) => {
+        updateField(state, "avatar", action.payload.value);
     },
     updateNameCn: (state, action) => {
         updateField(state, "nameCn", action.payload.value);

@@ -62,7 +62,8 @@
   "stillAtWork": "是否已离职？",
   "companyName": "单位/公司名称",
   "enterCompanyName": "请填写您所在的单位/公司名称",
-  "enterWorkDate": "入职日期",
+  "workStartDate": "入职日期",
+  "workEndDate": "离职日期",
   "workCity": "岗位所在城市",
   "country": "国家",
   "workCountry": "岗位所在国家",
@@ -104,5 +105,18 @@
 
   "yymmdd": "年/月/日期",
   "monthFormat":"YYYY[年]MMMM",
-  "dateDisplayFormat":"YYYY/MM/DD"
+  "dateDisplayFormat":"YYYY/MM/DD",
+
+  "RPreview": {
+    "linkedinLink": "领英链接",
+    "githubLink": "Github链接",
+    "workExperience": "工作经历",
+    "studentWorkAndVolunteer": "学生工作和志愿服务",
+    "current": "现今",
+    "editThemeColor":"编辑主题色",
+    "smartTranslation":"智能翻译",
+    "oneClickWholePage":"一键整页",
+    "downLoadResume":"下载简历"
+
+  }
 }

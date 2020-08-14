@@ -9,11 +9,12 @@ const AvatarUpload = () => {
 	const messages = useI8n();
 	const [modalOpen, setModalOpen] = useState(false);
 	const [avatar, setAvatar] = useState(null);
+
+	
 	return (
 		<div className={styles.avatarContainer}>
 			<div className={styles.avatarPreviewContainer} onClick={() => setModalOpen(true)}>
 				<div className={styles.avatarPreview}>
-					{/* todo: icon needed */}
 					<img src={avatar ? avatar : process.env.PUBLIC_URL + '/images/photoupload.svg'} alt="avatar" />
 				</div>
 				<div className={styles.avatarPreviewText}>{messages.uploadPhoto}</div>

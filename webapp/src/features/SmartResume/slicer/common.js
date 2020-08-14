@@ -10,3 +10,17 @@ export function updateStatus(validatorFunc, status, statusSetter, name, value) {
   statusSetter(newStatus);
 }
 
+
+
+export function detectChangesForAllItem(datas, originData) {
+	let changed = false;
+	datas.forEach(data=>{
+			if (detectChangesForSingleItem(data, originData))
+					changed = true;
+	})
+	return changed;
+}
+
+export function detectChangesForSingleItem(data, originData){
+	return Object.keys(data).some(key => data[key] !== originData[key]);
+}

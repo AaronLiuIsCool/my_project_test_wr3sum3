@@ -1,0 +1,163 @@
+.container {
+  float: right;
+  width: calc(100% - 1080px);
+  /* navigation height = 56px; */
+  height: calc(100vh - 56px); 
+  overflow-y: auto;
+  background: #f0f0f0;
+  position: relative;
+}
+
+/* Hide Scrollbars But Keep Functionality */
+/* Hide scrollbar for Chrome, Safari and Opera */
+.container::-webkit-scrollbar {
+  display: none;
+}
+.container {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+
+.pageContainer{
+  box-shadow: 0 12px 24px 0 rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  width: 97%;
+  height: auto;
+  padding:30px;
+  max-width: 720px;
+  margin: 40px auto 0;
+}
+
+.widgetContainer{
+  padding: 15px;
+  position: fixed;
+  background: #f0f0f0;
+  width: calc(100% - 1080px);
+  bottom:0;
+}
+.widgetContainer div{
+  max-width: 720px;
+  margin:0 auto;
+  justify-content: space-between;
+  display:flex;
+}
+
+
+
+.widgetContainer button{
+  height: 42px;
+  border-radius: 4px;
+  background-color: #3e89ec;
+  color: white;
+  border:none;
+  padding:10px 28px;
+}
+.widgetContainer button.whiteBtn{
+  background-color: white;
+  color: #3e89ec;
+}
+
+.header{
+  display:flex;
+  align-items: center;
+}
+
+.pageBreaker{
+  height: 30px;
+  /* note: 30px is the padding  */
+  width: calc(100% + 60px);
+  margin-left: -30px;
+  box-shadow: inset 0px 40px 0px rgba(0,0,0,0.1), inset 0px 0px 0px white;
+  margin: 20px 0 20px -30px;
+}
+
+
+
+.avatar img{
+  width: 70px;
+  height: 70px;
+  border-radius: 80px;
+  background-color: #f2f4f9;
+}
+
+.headerContent{
+  margin-left: 20px;
+  font-size: 12px;
+  color: #8e94a7;
+  min-width: 300px;
+}
+
+
+.headerContentTop{
+  display:flex;
+  align-items: center;
+}
+.headerContentTop > div{
+  margin-right: 15px;
+}
+
+.headerContentName{
+  font-size: 20px;
+  font-weight: bold;
+  letter-spacing: 2.4px;
+  text-align: left;
+  color: #333333;
+}
+.headerContentSchool{
+  font-weight: bold;
+  color: #3e89ec;
+}
+
+.headerContentContact{
+  display:flex;
+  border-radius: 13px;
+  background-color: #f2f4f9;
+  color: #8e94a7;
+  justify-content: space-around;
+  margin-top:10px;
+  padding: 5px;
+}
+.headerContentContact > div{
+  padding: 0 5px;
+}
+
+.headerLink a{
+  color: #3e89ec;
+  font-weight: bold;
+  padding-right: 5px;
+}
+
+.section{
+  margin-top:20px;
+}
+
+.sectionHeader{
+  color: #333333;
+  border-bottom:solid thin #333;
+  font-size:14px;
+  padding-bottom:15px;
+}
+
+.infoGroupHeader{
+  font-size: 12px;
+  color: #8e94a7;
+  padding-bottom:15px;
+  display:flex;
+  justify-content: space-between;
+  margin-top:15px;
+}
+.infoGroupTitle{
+  color: #3e89ec;
+  font-weight: bold;
+  margin-right:15px;
+}
+
+.infoGroupItem{
+  font-size: 10px;
+  color: #333333;
+  display: list-item; 
+  list-style-type: disc;
+  margin-left: 17px;
+  line-height: 2;
+}
