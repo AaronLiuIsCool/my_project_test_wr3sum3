@@ -18,7 +18,7 @@ const ProjectExperience = () => {
 	const messages = useI8n();
 	return (
 		<Step
-			id="project"
+			id="projectXp"
 			title={messages.project}
 			subtitle={messages.projectInfo}
 			icon="project.svg"

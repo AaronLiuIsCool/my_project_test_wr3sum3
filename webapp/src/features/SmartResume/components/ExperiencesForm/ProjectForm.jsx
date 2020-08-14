@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col, Form } from 'react-bootstrap';
 
@@ -7,11 +8,12 @@ import SingleDatePicker from 'components/SingleDatePicker';
 import InputGroup from 'components/InputGroup';
 import DropdownGroup from 'components/DropdownGroup';
 import RadioButtonGroup from 'components/RadioButtonGroup';
-import KButton from 'components/KButton';
+import Button from 'react-bootstrap/Button';
 import TextArea from 'components/TextArea';
+import { ReactComponent as WrittenAssistIcon } from '../../assets/writing_assit.svg';
 
 import { adaptProject } from '../../utils/servicesAdaptor';
-import { actions, selectId } from '../../slicer';
+import { actions, selectId, assistantSelectors } from '../../slicer';
 import { validateProject, validateProjectEntry } from '../../slicer/project';
 import { updateStatus } from '../../slicer/common';
 import ResumeServices from 'shell/services/ResumeServices';
@@ -23,6 +25,8 @@ const logger = getLogger('ProjectForm');
 const resumeServices = new ResumeServices();
 
 const ProjectForm = ({ data, index, isLast = false, messages }) => {
+	const trigger = useSelector(assistantSelectors.selectTrigger);
+    const showAssistant = useSelector(assistantSelectors.selectShow);
 	const resumeId = useSelector(selectId);
 	const [validated, setValidated] = useState(false);
 	const [status, setStatus] = useState({
@@ -116,6 +120,18 @@ const ProjectForm = ({ data, index, isLast = false, messages }) => {
 		updateStatus(validateProjectEntry, status, setStatus, 'projectCountry', value);
 		dispatch(actions.updateProjectCountry({ value, index }));
 	};
+
+    const handleAssistantClick = () => {
+        dispatch(actions.toggleAssistant({
+            trigger: "project", 
+            context: {index, ...data}
+        }));
+	};
+	
+	const assistantContainerClassNames = classNames({
+        'writeAssistantContainer': true,
+        'active': showAssistant && trigger === 'project'
+    });
 	
 	return (
 		<Form validated={validated} onSubmit={handleSubmit}>
@@ -223,24 +239,30 @@ const ProjectForm = ({ data, index, isLast = false, messages }) => {
 				</Col>
 			</Row>
 			<Row>
-				<Col lg="12">
-					{/*todo: replace with rich text editor */}
-					<TextArea
-						label={messages.projectDetailsDescription}
-						id="volunteer-description"
-						placeholder={messages.enterProjectDetailsDescription}
-						value={data.projectDescription}
-						onChange={handleProjectDescriptionChange}
-					/>
-				</Col>
-			</Row>
+                <Col lg="12">
+                    {/*todo: replace with rich text editor */}
+                    <div className={assistantContainerClassNames}>
+						<TextArea
+							label={messages.projectDetailsDescription}
+							id="volunteer-description"
+							placeholder={messages.enterProjectDetailsDescription}
+							value={data.projectDescription}
+							onChange={handleProjectDescriptionChange}
+						/>
+                        <span className='writeAssistant'>
+                            <WrittenAssistIcon />
+                            <Button variant="link" onClick={handleAssistantClick}>{messages.writeAssistant}</Button>
+                        </span>
+                    </div>
+                </Col>
+            </Row>
 			<Row className="form_buttons">
 				<Col className="space_betweens">
 					{/* just a placeholder so we do need to change the css */}
 					<p className="hidden"></p>
-					<KButton variant="primary" type="submit">
+					<Button variant="primary" type="submit">
 						{messages.save}
-					</KButton>
+					</Button>
 				</Col>
 			</Row>
 		</Form>

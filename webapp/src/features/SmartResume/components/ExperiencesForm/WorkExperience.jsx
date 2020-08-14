@@ -18,7 +18,7 @@ const WorkExperience = () => {
 	const messages = useI8n();
 	return (
 		<Step
-			id="Work"
+			id="workXp"
 			title={messages.work}
 			subtitle={messages.workInfo}
 			icon="job.svg"

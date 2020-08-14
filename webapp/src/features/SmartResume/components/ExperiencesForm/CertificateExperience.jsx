@@ -18,7 +18,7 @@ const CertificateExperience = () => {
 	const messages = useI8n();
 	return (
 		<Step
-			id="Certificate"
+			id="certifications"
 			title={messages.certificate}
 			subtitle={messages.certificateInfo}
 			icon="job.svg"

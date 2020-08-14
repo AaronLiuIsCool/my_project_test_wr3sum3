@@ -6,6 +6,7 @@
   overflow-y: auto;
   background: #f0f0f0;
   position: relative;
+  z-index: -1;
 }
 
 /* Hide Scrollbars But Keep Functionality */

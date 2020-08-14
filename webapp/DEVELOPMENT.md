@@ -20,7 +20,7 @@ Please see [code](src/features/SmartResume/styles/Experience.module.css) as an e
 
 Being able to reuse code is important for software engineering. We are adding a wrapper on top of react-bootstrap, so we can have a unified style for our components.
 
-Please see [code](src/components/KButton.jsx) as an example.
+Please see [code](src/components/Button.jsx) as an example.
 
 ## Internationalization
 

@@ -1,0 +1,21 @@
+.smart-resume {
+    .writtenAssistantWidgetHeader {
+      margin-bottom: 20px;
+
+      .input-group-prepend {
+        width: 105px;
+      }
+
+      .input-group-append {
+
+        .input-group-text {
+          padding: 0;
+
+          button {
+            background-color: white;
+            border: none;
+          }
+        }
+      }
+    }
+}

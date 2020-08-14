@@ -9,6 +9,7 @@ import ResumeServices from 'shell/services/ResumeServices';
 
 import LeftNav from './LeftNav';
 import ExperiencesForm from './ExperiencesForm';
+import Assistant from './Assistant';
 import ResumePreview from './ResumePreview';
 
 import { actions, selectResume } from '../slicer';
@@ -50,6 +51,7 @@ const SmartResume = ({ useObserver = false }) => {
             <div className="features smart-resume">
                 <div className="overlay">
                     <LeftNav />
+                    <Assistant />
                     <ResumePreview  />
                 </div>
                 <ExperiencesForm useObserver={useObserver} />

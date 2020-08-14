@@ -1,10 +1,10 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button'
 
-const KButton = (props) => (
+const Button = (props) => (
     <Button {...props}>
       {props.children}
     </Button>
 );
 
-export default KButton;
+export default Button;

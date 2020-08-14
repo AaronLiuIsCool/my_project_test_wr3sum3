@@ -1,7 +1,7 @@
 import React from "react";
 
 import styles from "./Page404.module.css";
-import KButton from "components/KButton";
+import Button from 'react-bootstrap/Button';
 import { useSelector } from 'react-redux';
 import { I8nContext } from 'shell/i18n';
 import { selectLanguage } from 'features/App/slicer';
@@ -27,9 +27,9 @@ export default function Page404() {
             alt="404 page not found"
           />
           <p>{messages.notFoundPageContent}</p>
-          <KButton variant="primary" className="w-100">
+          <Button variant="primary" className="w-100">
           {messages.refresh}
-          </KButton>
+          </Button>
         </div>
       </div>
     </I8nContext.Provider>

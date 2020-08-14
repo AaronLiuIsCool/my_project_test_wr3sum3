@@ -90,6 +90,12 @@ const reducers = {
     updateProjectDescription: (state, action) => {
         updateField(state, action.payload.index, "projectDescription", action.payload.value);
     },
+    appendProjectDescription: (state, action) => {
+      const index = action.payload.index;
+      const value = state.project.data[index].projectDescription.length == 0 ?
+        action.payload.value : `${state.project.data[index].projectDescription}\n${action.payload.value}`;
+      updateField( state, index, "projectDescription", value);
+    }
 }
 
 const selectors = {

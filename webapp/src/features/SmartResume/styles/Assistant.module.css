@@ -1,0 +1,119 @@
+.container,
+.containerHide {
+  width: 360px;
+  height: 100vh;
+  margin-left: 1080px;
+  position: fixed;
+  box-shadow: 1px 0 8px 0 rgba(0, 0, 0, 0.1);
+  background-color: white;
+  z-index: 1;
+}
+
+.container {
+  left: -80px;
+  opacity: 0;
+  -webkit-animation: slidein 0.5s forwards;
+  -webkit-animation-delay: 0.1s;
+  animation: slidein 0.5s forwards;
+  animation-delay: 0.1s;
+}
+
+.containerHide {
+  left: 0;
+  opacity: 1;
+  -webkit-animation: slideout 0.5s forwards;
+  -webkit-animation-delay: 0.1s;
+  animation: slideout 0.5s forwards;
+  animation-delay: 0.1s;
+}
+
+@-webkit-keyframes slidein {
+  100% {
+    left: 0;
+    opacity: 1;
+  }
+}
+
+@keyframes slidein {
+  100% {
+    left: 0;
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes slideout {
+  100% {
+    left: -80px;
+    opacity: 0;
+  }
+}
+
+@keyframes slideout {
+  100% {
+    left: -80px;
+    opacity: 0;
+  }
+}
+
+.inner-container {
+  padding: 20px;
+  position: relative;
+}
+
+.tipCard, .tipCardAnimation {
+  width: 320px;
+  height: 110px;
+  border-radius: 4px;
+  background-color: #f2f4f9;
+  padding: 0 20px;
+  margin-bottom: 10px;
+  position: relative;
+  cursor: pointer;
+}
+
+.tipIcon {
+  position: absolute;
+  width: 40px;
+  height: 70px;
+  margin: 40px 2px;
+}
+
+.tipContent {
+  position: absolute;
+  top: 0;
+  left: 60px;
+  right: 20px;
+  bottom: 0;
+  margin: auto;
+  width: 240px;
+  height: 70px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #333333;
+}
+
+.tipCardAnimation {
+  -webkit-animation: slide 0.5s forwards;
+  animation: slide 0.5s forwards;
+  left: 0;
+}
+
+@-webkit-keyframes slide {
+  50% {
+    left: -30px;
+  }
+
+  100% {
+    left: 0;
+  }
+}
+
+@keyframes slide {
+  50% {
+    left: -30px;
+  }
+
+  100% {
+    left: 0;
+  }
+}

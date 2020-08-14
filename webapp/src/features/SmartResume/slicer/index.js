@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import education from "./education";
+import assistant from './assistant';
 import basic from "./basic";
+import education from "./education";
 import work from "./work";
 import project from "./project";
 import volunteer from "./volunteer";
@@ -14,8 +15,9 @@ export const resumeSlice = createSlice({
         id: undefined,
         stepIndex: 0,
 
-        education: education.initialState,
+        assistant: assistant.initialState,
         basic: basic.initialState,
+        education: education.initialState,
         work: work.initialState,
         project: project.initialState,
         certificate: certificate.initialState,
@@ -31,13 +33,14 @@ export const resumeSlice = createSlice({
             state.stepIndex = action.payload;
         },
 
-        ...education.reducers,
+        ...assistant.reducers,
         ...basic.reducers,
+        ...education.reducers,
         ...work.reducers,
         ...project.reducers,
         ...volunteer.reducers,
         ...certificate.reducers,
-        ...preview.reducers,
+        ...preview.reducers
     }
 });
 
@@ -47,8 +50,9 @@ export const selectId = ({ resume }) => resume.id;
 export const selectStep = ({ resume }) => resume.stepIndex;
 export const selectResume = ({ resume }) => resume;
 
-export const educationSelectors = education.selectors;
+export const assistantSelectors = assistant.selectors;
 export const basicSelectors = basic.selectors;
+export const educationSelectors = education.selectors;
 export const workSelectors = work.selectors;
 export const projectSelectors = project.selectors;
 export const volunteerSelectors = volunteer.selectors;

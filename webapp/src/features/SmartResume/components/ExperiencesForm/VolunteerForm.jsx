@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col, Form } from 'react-bootstrap';
 
@@ -7,11 +8,12 @@ import SingleDatePicker from 'components/SingleDatePicker';
 import InputGroup from 'components/InputGroup';
 import DropdownGroup from 'components/DropdownGroup';
 import RadioButtonGroup from 'components/RadioButtonGroup';
-import KButton from 'components/KButton';
+import Button from 'react-bootstrap/Button';
 import TextArea from 'components/TextArea';
+import { ReactComponent as WrittenAssistIcon } from '../../assets/writing_assit.svg';
 
 import { adaptVolunteer } from '../../utils/servicesAdaptor';
-import { actions, selectId } from '../../slicer';
+import { actions, selectId, assistantSelectors } from '../../slicer';
 import { validateVolunteer, validateVolunteerEntry } from '../../slicer/volunteer';
 import { updateStatus } from '../../slicer/common';
 import ResumeServices from 'shell/services/ResumeServices';
@@ -23,6 +25,8 @@ const logger = getLogger('VolunteerForm');
 const resumeServices = new ResumeServices();
 
 const VolunteerForm = ({ data, index, isLast = false, messages }) => {
+	const trigger = useSelector(assistantSelectors.selectTrigger);
+	const showAssistant = useSelector(assistantSelectors.selectShow);
 	const resumeId = useSelector(selectId);
 	const [validated, setValidated] = useState(false);
 	const [status, setStatus] = useState({
@@ -37,20 +41,20 @@ const VolunteerForm = ({ data, index, isLast = false, messages }) => {
 	});
 	const dispatch = useDispatch();
 
-    const save = async () => {
-        let id;
-        try {
-            const response = (data.id === undefined) ?
-                await resumeServices.createVolunteer(resumeId, adaptVolunteer(data)) :
-                await resumeServices.updateVolunteer(data.id, adaptVolunteer(data));
-            const responseJson = await response.json();
-            id = responseJson.id;
-        } catch(exception) {
-            logger.error(exception);
-        } finally {
-            dispatch(actions.updateVolunteerId({ index, id }));
-        }
-    };
+	const save = async () => {
+		let id;
+		try {
+			const response = (data.id === undefined) ?
+				await resumeServices.createVolunteer(resumeId, adaptVolunteer(data)) :
+				await resumeServices.updateVolunteer(data.id, adaptVolunteer(data));
+			const responseJson = await response.json();
+			id = responseJson.id;
+		} catch (exception) {
+			logger.error(exception);
+		} finally {
+			dispatch(actions.updateVolunteerId({ index, id }));
+		}
+	};
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
@@ -115,6 +119,17 @@ const VolunteerForm = ({ data, index, isLast = false, messages }) => {
 		dispatch(actions.updateVolunteerDescription({ value, index }));
 	};
 
+	const handleAssistantClick = () => {
+		dispatch(actions.toggleAssistant({
+			trigger: "volunteer",
+			context: { index, ...data }
+		}));
+	};
+	const assistantContainerClassNames = classNames({
+		'writeAssistantContainer': true,
+		'active': showAssistant && trigger === 'volunteer'
+	});
+
 	return (
 		<Form validated={validated} onSubmit={handleSubmit}>
 			<Row>
@@ -176,7 +191,6 @@ const VolunteerForm = ({ data, index, isLast = false, messages }) => {
 						isInvalid={status.volunteerStartDate.isInvalid}
 					/>
 				</Col>
-				
 				{data.currentVolunteerFlag && (<Col>
 					<SingleDatePicker
 						label={messages.volunteerEndDate}
@@ -223,22 +237,28 @@ const VolunteerForm = ({ data, index, isLast = false, messages }) => {
 			<Row>
 				<Col lg="12">
 					{/*todo: replace with rich text editor */}
-					<TextArea
-						label={messages.volunteerDetailsDescription}
-						id="volunteer-description"
-						placeholder={messages.enterVolunteerDetailsDescription}
-						value={data.volunteerDescription}
-						onChange={handleVolunteerDescriptionChange}
-					/>
+					<div className={assistantContainerClassNames}>
+						<TextArea
+							label={messages.volunteerDetailsDescription}
+							id="volunteer-description"
+							placeholder={messages.enterVolunteerDetailsDescription}
+							value={data.volunteerDescription}
+							onChange={handleVolunteerDescriptionChange}
+						/>
+						<span className='writeAssistant'>
+							<WrittenAssistIcon />
+							<Button variant="link" onClick={handleAssistantClick}>{messages.writeAssistant}</Button>
+						</span>
+					</div>
 				</Col>
 			</Row>
 			<Row className="form_buttons">
 				<Col className="space_betweens">
 					{/* just a placeholder so we do need to change the css */}
 					<p className="hidden"></p>
-					<KButton variant="primary" type="submit">
+					<Button variant="primary" type="submit">
 						{messages.save}
-					</KButton>
+					</Button>
 				</Col>
 			</Row>
 		</Form>

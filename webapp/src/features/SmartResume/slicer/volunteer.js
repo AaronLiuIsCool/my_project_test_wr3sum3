@@ -89,6 +89,12 @@ const reducers = {
     updateVolunteerDescription: (state, action) => {
         updateField(state, action.payload.index, "volunteerDescription", action.payload.value);
     },
+    appendVolunteerDescription: (state, action) => {
+      const index = action.payload.index;
+      const value = state.volunteer.data[index].volunteerDescription.length == 0 ?
+        action.payload.value : `${state.volunteer.data[index].volunteerDescription}\n${action.payload.value}`;
+      updateField( state, index, "volunteerDescription", value);
+    }
 }
 
 const selectors = {

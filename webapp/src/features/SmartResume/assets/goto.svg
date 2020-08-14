@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+  <defs>
+    <style>
+      .gotoa {
+        fill: #bfc4d3;
+      }
+
+      .gotob {
+        fill: #fff;
+      }
+
+      .gotoc {
+        fill: none;
+        stroke: #fff;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 2px;
+      }
+    </style>
+  </defs>
+  <g transform="translate(-147 -95)">
+    <rect class="gotoa" width="16" height="16" rx="8" transform="translate(147 95)" />
+    <rect class="gotob" width="10" height="2" rx="1" transform="translate(150 102)" />
+    <path class="gotoc" d="M-609.129,5630.92l-4,4.032,4,3.968" transform="translate(764 -5532)" />
+  </g>
+</svg>

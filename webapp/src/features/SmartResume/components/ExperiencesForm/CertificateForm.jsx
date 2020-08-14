@@ -6,7 +6,7 @@ import { Row, Col, Form } from 'react-bootstrap';
 import SingleDatePicker from 'components/SingleDatePicker';
 import InputGroup from 'components/InputGroup';
 import RadioButtonGroup from 'components/RadioButtonGroup';
-import KButton from 'components/KButton';
+import Button from 'react-bootstrap/Button';
 import DropdownGroup from 'components/DropdownGroup';
 
 import { adaptCertificate } from '../../utils/servicesAdaptor';
@@ -157,9 +157,9 @@ const CertificateForm = ({ data, index, isLast = false, messages }) => {
 				<Col className="space_betweens">
 					{/* just a placeholder so we do need to change the css */}
 					<p className="hidden"></p>
-					<KButton variant="primary" type="submit">
+					<Button variant="primary" type="submit">
 						{messages.save}
-					</KButton>
+					</Button>
 				</Col>
 			</Row>
 		</Form>

@@ -1,8 +1,14 @@
 import { getLogger } from 'shell/logger';
 import BaseServices from './BaseServices';
 
+import workWrittenAssistantData from './mocks/workWrittenAssistantData.json';
+
 const logger = getLogger('JobsService');
 const PREFIX = 'services-resume';
+
+function getMockData(delay, key) {
+    return new Promise(resolve => setTimeout(resolve, delay, workWrittenAssistantData[key]));
+}
 
 export default class ResumeServices extends BaseServices {
     constructor() {
@@ -109,6 +115,14 @@ export default class ResumeServices extends BaseServices {
     async updateCertificate(id, certificate) {
         try {
             return await this.put(`/v1/certificates/${id}`, certificate);
+        } catch (exception) {
+            logger.error(exception);
+        }
+    }
+
+    async getWrittenAssistant(type, key) {
+        try {
+            return await getMockData(Math.random() * 1000, key);
         } catch (exception) {
             logger.error(exception);
         }

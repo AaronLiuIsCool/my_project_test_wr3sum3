@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useI8n } from 'shell/i18n';
 import { actions } from '../features/SmartResume/slicer';
 import Avatar from 'react-avatar-edit';
-import KButton from './KButton';
+import Button from 'react-bootstrap/Button';
 
 import styles from '../features/SmartResume/styles/AvatarUpload.module.css';
 
@@ -56,9 +56,9 @@ const AvatarEdit = ({ imagePreview, setImagePreview, closeModalHandler }) => {
 			)}
 			{imagePreview && (
 				<div className={styles.photoEditButton}>
-					<KButton variant="primary" className="w-100" onClick={onSave}>
+					<Button variant="primary" className="w-100" onClick={onSave}>
 						{messages.confirm}
-					</KButton>
+					</Button>
 				</div>
 			)}
 		</div>

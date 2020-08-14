@@ -18,7 +18,7 @@ const VolunteerExperience = () => {
 	const messages = useI8n();
 	return (
 		<Step
-			id="volunteer"
+			id="otherXp"
 			title={messages.volunteerExperience}
 			subtitle={messages.enterVolunteerExperience}
 			icon="volunteer.svg"
