@@ -13,7 +13,7 @@ cloud.aws.region.static: ca-central-1
 
 kuaidaoresume:
   common:
-    sentry-dsn: ${SENTRY_DSN:https://80bbf4ae778b525f9fe72e2813cd5246@sentry.io/1271087}
+    sentry-dsn: ${SENTRY_DSN:https://270864132b0845e4a9ae4f68f96c77c2@o434398.ingest.sentry.io/5391423}
     deploy-env: ${DEPLOY:V2}
   aws-access-key: ${AWS_ACCESS_KEY}
   aws-access-secret: ${AWS_ACCESS_SECRET}

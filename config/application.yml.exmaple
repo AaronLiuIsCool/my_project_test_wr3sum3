@@ -2,7 +2,7 @@
 # this file should and will not be checked into version control
 kuaidaoresume:
   common:
-    sentry-dsn: https://80bbf4ae778b525f9fefake72e2813cd5246@sentry.io/1271087
+    sentry-dsn: https://270864132b0845e4a9ae4f68f96c77c2@o434398.ingest.sentry.io/5391423
   signing-secret: YOUR-SIGNING-SECRET
   intercom-access-token: YOUR-INTERCOM-ACCESS-TOKEN
   aws-access-key: ACCESS-KEY

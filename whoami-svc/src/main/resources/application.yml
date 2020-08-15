@@ -8,7 +8,7 @@ spring:
 
 kuaidaoresume:
   common:
-    sentry-dsn: ${SENTRY_DSN:https://80aaf4ae889b414f9feFAKE72e3904cd5246@sentry.io/1380198}
+    sentry-dsn: ${SENTRY_DSN:https://270864132b0845e4a9ae4f68f96c77c2@o434398.ingest.sentry.io/5391423}
     deploy-env: ${DEPLOY:V2}
   account-service-endpoint: ${ACCOUNT_SERVICE_ENDPOINT:http://account-service:8080}
 #  intercom-app-id: ${INTERCOM_APP_ID}

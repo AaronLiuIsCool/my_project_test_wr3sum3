@@ -17,7 +17,7 @@ spring:
 
 kuaidaoresume:
   common:
-    sentry-dsn: ${SENTRY_DSN:https://80bbf4ae778b525f9fe72e2813cd5246@sentry.io/1271087}
+    sentry-dsn: ${SENTRY_DSN:https://270864132b0845e4a9ae4f68f96c77c2@o434398.ingest.sentry.io/5391423}
     deploy-env: ${DEPLOY:V2}
   signing-secret: ${SIGNING_SECRET}
   email-service-endpoint: ${EMAIL_SERVICE_ENDPOINT:http://email-service:8080}
