@@ -8,12 +8,10 @@ const reducers = {
             state.assistant.show = false;
             delete state.assistant.trigger;
             delete state.assistant.context;
-            delete state.assistant.handleAction;
         } else {
             state.assistant.show = true;
-            state.assistant.trigger = action.payload.trigger
+            state.assistant.trigger = action.payload.trigger;
             state.assistant.context = action.payload.context;
-            state.assistant.handleAction = action.payload.handleAction
         }
     }
 };
@@ -21,8 +19,7 @@ const reducers = {
 const selectors = {
     selectShow: ({ resume }) => resume.assistant.show,
     selectTrigger: ({ resume }) => resume.assistant.trigger,
-    selectAssistantContext: ({ resume }) => resume.assistant.context,
-    selectActionHandler: ({ resume }) => resume.assistant.handleAction
+    selectAssistantContext: ({ resume }) => resume.assistant.context
 };
 
 export default {

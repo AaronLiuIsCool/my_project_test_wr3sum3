@@ -19,7 +19,7 @@ const VolunteerExperience = ({ volunteerData }) => {
 
 	useEffect(() => {
 		dispatch(actions.updatelineNum({ value: volunteerLineCount, section: 'volunteer' }));
-	}, [volunteerData]);
+	}, [volunteerData]); // eslint-disable-line react-hooks/exhaustive-deps
 
 	const messages = useI8n();
 	if (anyVolunteerChanges(volunteerData)) {

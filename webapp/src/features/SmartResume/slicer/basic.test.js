@@ -4,7 +4,6 @@ import {
   validateBasic,
   validateBasicEntry,
 } from "./basic";
-import { education } from "./education";
 import resumeReducer from ".";
 
 describe("test basic form related functionalities", () => {
@@ -59,13 +58,13 @@ describe("test basic form related functionalities", () => {
       ["linkedin", 123, false],
       ["linkedin", "http://123", false],
       ["linkedin", "http://123.com", true],
-      ["linkedin", "", false],
+      ["linkedin", "", true],
 
       ["weblink", undefined, false],
       ["weblink", 123, false],
       ["weblink", "http://123", false],
       ["weblink", "http://123.com", true],
-      ["weblink", "", false],
+      ["weblink", "", true]
     ];
 
     tests.forEach((test, index) =>

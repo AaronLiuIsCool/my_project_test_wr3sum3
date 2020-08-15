@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col, Form } from 'react-bootstrap';
 
 import SingleDatePicker from 'components/SingleDatePicker';
-import InputGroup from 'components/InputGroup';
 import RadioButtonGroup from 'components/RadioButtonGroup';
 import Button from 'react-bootstrap/Button';
 import DropdownGroup from 'components/DropdownGroup';

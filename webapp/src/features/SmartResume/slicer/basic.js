@@ -19,14 +19,17 @@ const validateEmail = (email) => {
 }
 
 const validatePhone = (input) => {
-    var re = /^\d{8,11}$/;
+    const re = /^\d{8,11}$/;
     return re.test(input);
 }
-// we don't want to valid URL for now
-// const validateURL = (input) => {
-//     var re = /(https?:\/\/(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9])(:?\d*)\/?([a-z_/0-9\-#.]*)\??([a-z_/0-9\-#=&]*)/g
-//     return re.test(input);
-// }
+
+const validateURL = (input) => {
+    if (validateString(input) && !validateNonEmptyString(input)) {
+      return true;
+    }
+    const re = /[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/ig
+    return re.test(input);
+}
 
 export function validateBasicEntry(name, value) {
     switch (name) {
@@ -52,13 +55,13 @@ export function validateBasicEntry(name, value) {
             } else {
                 return false;
             }
-        // case 'linkedin':
-        // case 'weblink':
-        //     if (validateURL(value)) {
-        //         return true;
-        //     } else {
-        //         return false;
-        //     }
+        case 'linkedin':
+        case 'weblink':
+            if (validateURL(value)) {
+                return true;
+            } else {
+                return false;
+            }
         default:
             return true;
     }

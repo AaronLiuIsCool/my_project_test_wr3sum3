@@ -23,7 +23,7 @@ const WorkExperience = ({ workData, projectData }) => {
 			dispatch(actions.updatelineNum({ value: workLineCount, section: 'work' }));
 		},
 		//run it once after component mounted.
-		[workData, projectData]
+		[workData, projectData] // eslint-disable-line react-hooks/exhaustive-deps
 	);
 
 	const messages = useI8n();

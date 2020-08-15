@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { useI8n } from 'shell/i18n';
 import { basicSelectors, educationSelectors, workSelectors, projectSelectors, volunteerSelectors } from './../../slicer/';

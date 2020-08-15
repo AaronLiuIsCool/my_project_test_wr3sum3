@@ -54,7 +54,7 @@ export function validateWorkEntry(name, value) {
 //     workCountry: ""
 // };
 
-// for testing 
+// for testing
 export const work = {
     id: undefined,
     workName: "金融分析师",
@@ -138,7 +138,7 @@ const reducers = {
     },
     appendWorkDescription: (state, action) => {
       const index = action.payload.index;
-      const value = state.work.data[index].workDescription.length == 0 ?
+      const value = state.work.data[index].workDescription.length === 0 ?
         action.payload.value : `${state.work.data[index].workDescription}\n${action.payload.value}`;
       updateField( state, index, "workDescription", value);
     }

@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { actions, previewSelectors } from '../../slicer/';
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { actions } from '../../slicer/';
 import { useI8n } from 'shell/i18n';
 import { dateRangeBuilder } from './common';
 import { anyBasicChanges } from '../../slicer/basic';

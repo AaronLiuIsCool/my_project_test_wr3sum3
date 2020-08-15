@@ -18,7 +18,7 @@ const renderAssistant = (trigger, context) => {
 }
 
 const Assistant = () => {
-    const { selectShow, selectTrigger, selectAssistantContext, selectActionHandler } = assistantSelectors;
+    const { selectShow, selectTrigger, selectAssistantContext } = assistantSelectors;
     const show = useSelector(selectShow);
     const trigger = useSelector(selectTrigger);
     const context = useSelector(selectAssistantContext);
