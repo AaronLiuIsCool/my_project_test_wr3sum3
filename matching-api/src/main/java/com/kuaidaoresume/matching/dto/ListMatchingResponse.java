@@ -9,6 +9,6 @@ import lombok.*;
 @AllArgsConstructor
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-public class GenericMatchingResponse extends BaseResponse {
-    private MatchingDto matchingDto;
+public class ListMatchingResponse extends BaseResponse {
+    private MatchingList matchingList;
 }
