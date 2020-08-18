@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="321.715" height="290.364" viewBox="0 0 321.715 290.364">
+  <defs>
+    <style>
+      .createyourresumea {
+        fill: #d5d9e6;
+      }
+
+      .createyourresumeb {
+        fill: #f0f0f0;
+      }
+
+      .createyourresumec {
+        fill: #fff;
+      }
+
+      .createyourresumed {
+        fill: #3e89ec;
+      }
+
+      .createyourresumee {
+        fill: #9f616a;
+      }
+
+      .createyourresumef {
+        fill: #4c4c78;
+      }
+
+      .createyourresumeg {
+        fill: #8e94a7;
+      }
+
+      .createyourresumeh {
+        fill: #333;
+      }
+    </style>
+  </defs>
+  <g transform="translate(-812 -158)">
+    <path class="createyourresumea"
+      d="M670.143,734.1c1.727,5.225-1.81,11.093-1.81,11.093s-6.336-2.6-8.063-7.83,1.81-11.093,1.81-11.093S668.416,728.87,670.143,734.1Z"
+      transform="translate(338.969 -303.393)" />
+    <path class="createyourresumea"
+      d="M942.208,740.77c-3.293,4.41-10.128,4.874-10.128,4.874s-1.5-6.685,1.8-11.095S944,729.675,944,729.675,945.5,736.36,942.208,740.77Z"
+      transform="translate(184.842 -305.325)" />
+    <ellipse class="createyourresumea" cx="73.218" cy="5.199" rx="73.218" ry="5.199" transform="translate(987.278 437.966)" />
+    <rect class="createyourresumeb" width="283.716" height="181.704" rx="8" transform="translate(812.121 158.161)" />
+    <rect class="createyourresumec" width="267.491" height="154.165" rx="4" transform="translate(820.234 176.951)" />
+    <path class="createyourresumed" d="M8,0H275.716a8,8,0,0,1,8,8v4.053a0,0,0,0,1,0,0H0a0,0,0,0,1,0,0V8A8,8,0,0,1,8,0Z"
+      transform="translate(812 158)" />
+    <circle class="createyourresumec" cx="2.234" cy="2.234" r="2.234" transform="translate(818.723 161.928)" />
+    <circle class="createyourresumec" cx="2.234" cy="2.234" r="2.234" transform="translate(827.203 161.928)" />
+    <circle class="createyourresumec" cx="2.234" cy="2.234" r="2.234" transform="translate(835.683 161.928)" />
+    <rect class="createyourresumeb" width="100.153" height="9.953" transform="translate(903.843 193.946)" />
+    <rect class="createyourresumeb" width="100.153" height="3.77" transform="translate(903.843 217.391)" />
+    <rect class="createyourresumeb" width="100.153" height="3.77" transform="translate(903.843 228.896)" />
+    <rect class="createyourresumeb" width="51.749" height="3.77" transform="translate(903.843 240.549)" />
+    <rect class="createyourresumeb" width="100.153" height="3.77" transform="translate(903.843 252.407)" />
+    <rect class="createyourresumeb" width="100.153" height="3.77" transform="translate(903.843 264.266)" />
+    <rect class="createyourresumeb" width="50.016" height="3.77" transform="translate(903.843 276.125)" />
+    <rect class="createyourresumeb" width="100.153" height="3.77" transform="translate(903.843 287.983)" />
+    <rect class="createyourresumeb" width="100.153" height="3.77" transform="translate(903.843 299.842)" />
+    <rect class="createyourresumed" width="31.627" height="10.398" transform="translate(972.488 314.388)" />
+    <path class="createyourresumee" d="M664.166,461.6l-.241.189-5.555,4.365s-7.866,8.279-10.763,3.726,8.28-9.935,8.28-9.935l4.14-2.9Z"
+      transform="translate(346.148 -150.813)" />
+    <path class="createyourresumee" d="M877.876,478.294s-3.312,11.591-4.14,12.419l-6.21-9.107,2.9-4.968Z"
+      transform="translate(221.236 -161.916)" />
+    <path class="createyourresumef"
+      d="M795.851,483.8l5.8,11.177-2.9,11.177v35.188l2.9,52.575H786.329L771.84,508.643,755.7,593.922H739.964l3.312-54.645-.828-31.876s.414-18.629,4.554-20.285S795.851,483.8,795.851,483.8Z"
+      transform="translate(293.532 -165.977)" />
+    <path class="createyourresumef"
+      d="M860.6,733.2l1.242,4.968s4.554,3.312,3.312,7.038-.414,5.8-3.312,6.624-12.419,2.07-12.005-2.07a124.907,124.907,0,0,0,0-12.833l1.242-2.9Z"
+      transform="translate(231.271 -307.32)" />
+    <path class="createyourresumef"
+      d="M742.326,733.2l-1.242,4.968s-4.554,3.312-3.312,7.038.414,5.8,3.312,6.624,12.419,2.07,12.005-2.07a124.944,124.944,0,0,1,0-12.833l-1.242-2.9Z"
+      transform="translate(294.896 -307.32)" />
+    <circle class="createyourresumee" cx="14.422" cy="14.422" r="14.422" transform="translate(1038.738 200.259)" />
+    <path class="createyourresumee" d="M561.646,145.179l1.989,16.412h-17.9l1.492-13.925Z" transform="translate(502.704 75.719)" />
+    <path class="createyourresumeg"
+      d="M731.842,297.539s17.8-12.005,26.494-12.005,30.634,4.554,33.946,9.935L789.8,353.426s5.8,8.693,2.484,12.005.621,10.142.621,10.142-25.873-1.449-34.567,2.277-19.043,0-19.043,0,4.347-5.589.207-7.245,2.484-28.15,2.484-28.15l-1.863-16.766Z"
+      transform="translate(298.135 -53.606)" />
+    <path class="createyourresumeg"
+      d="M860.583,307.654l3.1-.621s20.078,32.5,18.836,39.535-9.107,38.914-9.107,38.914l-10.763-2.9,6.21-30.22-9.935-25.252Z"
+      transform="translate(226.11 -65.791)" />
+    <path class="createyourresumeg"
+      d="M701.2,314.629l-4.347-1.863a44.186,44.186,0,0,1-2.547,5.712c-5.135,9.658-6.767,41.274-6.767,41.274l-17.8,14.9,6.21,9.107s23.168-13.424,26.908-21.113c3.124-6.422,2.691-29.185,2.691-29.185Z"
+      transform="translate(333.336 -69.04)" />
+    <path class="createyourresumeh"
+      d="M781.254,228.618s14.64-10.457,6.971-23.006c-5.32-8.706-16.344-8.016-22.6-6.778a10.565,10.565,0,0,0-7.729,6.081c-1.046,2.44-1.046,4.88,3.137,4.88,8.366,0,4.183,6.274,4.183,6.274s5.577,1.394,4.183,6.274S781.254,228.618,781.254,228.618Z"
+      transform="translate(283.697 -4.055)" />
+  </g>
+</svg>

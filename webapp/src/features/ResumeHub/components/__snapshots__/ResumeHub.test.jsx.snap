@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders ResumeHub 1`] = `
+<div
+  className="features resumeHub"
+>
+  <div
+    className="container"
+  >
+    <div
+      className="illustration"
+    >
+      <svg>
+        create_your_resume.svg
+      </svg>
+    </div>
+    <div
+      className="callToAction"
+    >
+      <p
+        className="description"
+      >
+        看似您还没有简历，花5分钟创造一份吧
+      </p>
+      <a
+        className="action btn btn-primary"
+        href="/resume/new"
+        onClick={[Function]}
+        onKeyDown={[Function]}
+      >
+        开始创建
+      </a>
+    </div>
+  </div>
+</div>
+`;

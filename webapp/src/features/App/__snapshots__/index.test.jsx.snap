@@ -5,13 +5,15 @@ exports[`renders App 1`] = `
   className="App"
 >
   <nav
-    className="navbar navbar-expand-lg navbar-light bg-light fixed-top"
+    className="navbar navbar-expand-lg navbar-light bg-white fixed-top"
   >
     <a
       className="navbar-brand"
       href="/"
     >
-      快刀
+      <svg>
+        logo_zh.svg
+      </svg>
     </a>
     <button
       aria-controls="top-navigation-bar"
@@ -34,34 +36,22 @@ exports[`renders App 1`] = `
         onKeyDown={[Function]}
       >
         <a
-          className="nav-link"
-          data-rb-event-key="#"
-          href="#"
+          className="nav-link active"
+          data-rb-event-key="/"
+          href="/"
           onClick={[Function]}
           onKeyDown={[Function]}
-          role="button"
         >
-          <a
-            href="/"
-            onClick={[Function]}
-          >
-            智能创建
-          </a>
+          我的简历
         </a>
         <a
           className="nav-link"
-          data-rb-event-key="#"
-          href="#"
+          data-rb-event-key="/jobs"
+          href="/jobs"
           onClick={[Function]}
           onKeyDown={[Function]}
-          role="button"
         >
-          <a
-            href="/jobs"
-            onClick={[Function]}
-          >
-            工作匹配
-          </a>
+          我的工作
         </a>
       </div>
       <div

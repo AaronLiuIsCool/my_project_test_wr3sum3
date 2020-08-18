@@ -9,11 +9,13 @@ import { I8nContext } from 'shell/i18n';
 import { selectLanguage } from './slicer';
 
 import Navigation from './components/Navigation';
+import ResumeHub from 'features/ResumeHub';
+import ResumeStarter from 'features/ResumeStarter';
 import SmartResume from 'features/SmartResume';
 import JobsMatcher from 'features/JobsMatcher';
 import Page404 from 'features/SpecialPages/Page404';
 
-import './styles/App.css';
+import './styles/index.scss';
 
 import zh from './i18n/zh.json';
 import en from './i18n/en.json';
@@ -34,7 +36,9 @@ const App = () => {
         <div className="App">
           <Navigation />
           <Switch>
-            <Route exact path="/" component={SmartResume} />
+            <Route exact path="/" component={ResumeHub} />
+            <Route exact path="/resume" component={SmartResume} />
+            <Route path="/resume/new" component={ResumeStarter} />
             <Route path="/jobs" component={JobsMatcher} />
             <Route component={Page404} />
             <Route path="/404" component={Page404} />

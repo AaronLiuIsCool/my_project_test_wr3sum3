@@ -1,0 +1,29 @@
+.App {
+  height: 100%;
+
+  nav {
+    height: 80px;
+    border-bottom: 1px solid #f2f4f9;
+
+    .navbar-brand {
+      margin: 0 10px;
+    }
+
+    .nav-link {
+      margin-left: 2.5em !important;
+      font-size: 1rem !important;
+      color: #bfc4d3 !important;
+      line-height: 64px;
+
+      &.active {
+        color: #333333 !important;
+        font-weight: bold;
+        border-bottom: 2px solid #3e89ec;
+      }
+    }
+  }
+
+  .features {
+    padding-top: 80px;
+  }
+}
