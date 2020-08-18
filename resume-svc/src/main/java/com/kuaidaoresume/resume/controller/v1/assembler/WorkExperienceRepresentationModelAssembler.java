@@ -1,7 +1,6 @@
 package com.kuaidaoresume.resume.controller.v1.assembler;
 
 import com.kuaidaoresume.common.assembler.v1.GenericRepresentationModelAssembler;
-
 import com.kuaidaoresume.resume.controller.v1.api.WorkExperienceController;
 import com.kuaidaoresume.resume.dto.PersistedWorkExperienceDto;
 import org.springframework.stereotype.Component;

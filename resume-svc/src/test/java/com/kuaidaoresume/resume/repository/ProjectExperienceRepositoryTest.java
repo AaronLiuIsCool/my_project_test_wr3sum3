@@ -1,8 +1,8 @@
 package com.kuaidaoresume.resume.repository;
 
 import com.kuaidaoresume.resume.config.JpaTestConfig;
-import com.kuaidaoresume.resume.model.Resume;
 import com.kuaidaoresume.resume.model.ProjectExperience;
+import com.kuaidaoresume.resume.model.Resume;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

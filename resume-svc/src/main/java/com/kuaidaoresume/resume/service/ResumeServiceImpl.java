@@ -36,17 +36,21 @@ public class ResumeServiceImpl implements ResumeService {
 
     @Override
     public BasicInfo saveBasicInfo(String resumeId, BasicInfo basicInfoToSave) {
-        basicInfoToSave.getProfiles().stream().forEach(profile -> profile.setBasicInfo(basicInfoToSave));
-        return saveResumeWithItemUpdate(
+        if (Objects.nonNull(basicInfoToSave.getProfiles())) {
+            basicInfoToSave.getProfiles().stream().forEach(profile -> profile.setBasicInfo(basicInfoToSave));
+        }
+        Resume savedResume = saveResumeWithItemUpdate(
             (BiConsumer<BasicInfo, Resume>) (basicInfo, resume) -> resume.setBasicInfo(basicInfo)
         ).apply(resumeId, basicInfoToSave);
+        return savedResume.getBasicInfo();
     }
 
     @Override
     public Education newEducation(String resumeId, Education educationToSave) {
-        return saveResumeWithItemUpdate(
+        Resume savedResume = saveResumeWithItemUpdate(
             (BiConsumer<Education, Resume>) (education, resume) ->
-            resume.getEducations().add(education)).apply(resumeId, educationToSave);
+                resume.getEducations().add(education)).apply(resumeId, educationToSave);
+        return savedResume.getEducations().stream().reduce((cur, next) -> next).orElse(null);
     }
 
     @Override
@@ -58,8 +62,10 @@ public class ResumeServiceImpl implements ResumeService {
 
     @Override
     public WorkExperience newWorkExperience(String resumeId, WorkExperience workExperienceToSave) {
-        return saveResumeWithItemUpdate(
-            (BiConsumer<WorkExperience, Resume>) (workExperience, resume) -> resume.getWorkExperiences().add(workExperience)).apply(resumeId, workExperienceToSave);
+        Resume savedResume = saveResumeWithItemUpdate(
+            (BiConsumer<WorkExperience, Resume>) (workExperience, resume) ->
+                resume.getWorkExperiences().add(workExperience)).apply(resumeId, workExperienceToSave);
+        return savedResume.getWorkExperiences().stream().reduce((cur, next) -> next).orElse(null);
     }
 
     @Override
@@ -71,8 +77,10 @@ public class ResumeServiceImpl implements ResumeService {
 
     @Override
     public ProjectExperience newProjectExperience(String resumeId, ProjectExperience projectExperienceToSave) {
-        return saveResumeWithItemUpdate(
-            (BiConsumer<ProjectExperience, Resume>) (projectExperience, resume) -> resume.getProjectExperiences().add(projectExperience)).apply(resumeId, projectExperienceToSave);
+        Resume savedResume = saveResumeWithItemUpdate(
+            (BiConsumer<ProjectExperience, Resume>) (projectExperience, resume) ->
+                resume.getProjectExperiences().add(projectExperience)).apply(resumeId, projectExperienceToSave);
+        return savedResume.getProjectExperiences().stream().reduce((cur, next) -> next).orElse(null);
     }
 
     @Override
@@ -84,8 +92,9 @@ public class ResumeServiceImpl implements ResumeService {
 
     @Override
     public VolunteerExperience newVolunteerExperience(String resumeId, VolunteerExperience volunteerExperienceToSave) {
-        return saveResumeWithItemUpdate(
+        Resume savedResume = saveResumeWithItemUpdate(
             (BiConsumer<VolunteerExperience, Resume>) (volunteerExperience, resume) -> resume.getVolunteerExperiences().add(volunteerExperience)).apply(resumeId, volunteerExperienceToSave);
+        return savedResume.getVolunteerExperiences().stream().reduce((cur, next) -> next).orElse(null);
     }
 
     @Override
@@ -97,8 +106,9 @@ public class ResumeServiceImpl implements ResumeService {
 
     @Override
     public Certificate newCertificate(String resumeId, Certificate certificateToSave) {
-        return saveResumeWithItemUpdate(
+        Resume savedResume = saveResumeWithItemUpdate(
             (BiConsumer<Certificate, Resume>) (certificate, resume) -> resume.getCertificates().add(certificate)).apply(resumeId, certificateToSave);
+        return savedResume.getCertificates().stream().reduce((cur, next) -> next).orElse(null);
     }
 
     @Override
@@ -159,14 +169,14 @@ public class ResumeServiceImpl implements ResumeService {
         return resumeRepository.findById(resumeId).map(resumeScoreBuilder::getResumeScoreDto);
     }
 
-    private <T extends ResumeContainable> BiFunction<String, T, T> saveResumeWithItemUpdate(
+    private <T extends ResumeContainable> BiFunction<String, T, Resume> saveResumeWithItemUpdate(
         BiConsumer<T, Resume> resumeUpdater) {
 
         return (resumeId, item) -> resumeRepository.findById(resumeId).map(resume -> {
             item.setResume(resume);
             resumeUpdater.accept(item, resume);
             resumeRepository.save(resume);
-            return item;
+            return resume;
         }).orElseThrow(resumeNotFoundException(resumeId));
     }
 
