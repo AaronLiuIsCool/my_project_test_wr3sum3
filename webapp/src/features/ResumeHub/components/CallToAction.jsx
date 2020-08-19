@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Button from 'react-bootstrap/button';
+import Button from 'react-bootstrap/Button';
 import { ReactComponent as CreateYourResumeIllustration } from '../assets/create_your_resume.svg';
 
 import { useI8n } from 'shell/i18n';
