@@ -3,6 +3,7 @@ package com.kuaidaoresume.account.controller;
 import com.github.structlog4j.ILogger;
 import com.github.structlog4j.SLoggerFactory;
 import com.kuaidaoresume.account.service.AccountService;
+import com.kuaidaoresume.common.api.ResultCode;
 import com.kuaidaoresume.common.auth.*;
 import com.kuaidaoresume.common.env.EnvConstant;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +48,8 @@ public class AccountController {
             AuthConstant.AUTHORIZATION_RESUME_SERVICE
     })
     public GenericAccountResponse getOrCreate(@RequestBody @Valid GetOrCreateRequest request) {
-        AccountDto accountDto = accountService.getOrCreate(request.getName(), request.getEmail(), request.getPhoneNumber());
+        // AccountDto accountDto = accountService.getOrCreate(request.getName(), request.getEmail(), request.getPhoneNumber()); not for phase I TODO:Woody
+        AccountDto accountDto = accountService.getOrCreate(request.getName(), request.getEmail());
         GenericAccountResponse genericAccountResponse = new GenericAccountResponse(accountDto);
         return genericAccountResponse;
     }
@@ -59,7 +61,8 @@ public class AccountController {
             AuthConstant.AUTHORIZATION_RESUME_SERVICE
     })
     public GenericAccountResponse createAccount(@RequestBody @Valid CreateAccountRequest request) {
-        AccountDto accountDto = accountService.create(request.getName(), request.getEmail(), request.getPhoneNumber());
+        //AccountDto accountDto = accountService.create(request.getName(), request.getEmail(), request.getPhoneNumber()); not for phase I TODO:Woody
+        AccountDto accountDto = accountService.create(request.getName(), request.getEmail());//
         GenericAccountResponse genericAccountResponse = new GenericAccountResponse(accountDto);
         return genericAccountResponse;
     }
@@ -71,9 +74,9 @@ public class AccountController {
             AuthConstant.AUTHORIZATION_RESUME_SERVICE
     })
     public GenericAccountResponse getAccountByPhonenumber(@RequestParam @PhoneNumber String phoneNumber) {
-        AccountDto accountDto = accountService.getAccountByPhoneNumber(phoneNumber);
-        GenericAccountResponse genericAccountResponse = new GenericAccountResponse(accountDto);
-        return genericAccountResponse;
+        //AccountDto accountDto = accountService.getAccountByPhoneNumber(phoneNumber);
+        //GenericAccountResponse genericAccountResponse = new GenericAccountResponse(accountDto); not for phase I TODO:Woody
+        return new GenericAccountResponse();
     }
 
     @GetMapping(path = "/list")

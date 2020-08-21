@@ -15,7 +15,7 @@ public interface AccountRepo extends JpaRepository<Account, String> {
 
     Account findAccountByEmail(String email);
 
-    Account findAccountByPhoneNumber(String phoneNumber);
+    // Account findAccountByPhoneNumber(String phoneNumber); not for phase I TODO:Woody
 
     @Modifying(clearAutomatically = true)
     @Query("update Account account set account.email = :email, account.confirmedAndActive = true where account.id = :id")

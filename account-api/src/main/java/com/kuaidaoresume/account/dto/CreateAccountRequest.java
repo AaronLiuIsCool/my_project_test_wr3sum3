@@ -18,11 +18,12 @@ public class CreateAccountRequest {
     @Email(message = "Invalid email")
     private String email;
 
-    private String phoneNumber;
+    // private String phoneNumber; not for phase I TODO:Woody
 
     @AssertTrue(message = "Empty request")
     private boolean isValidRequest() {
-        return StringUtils.hasText(name) || StringUtils.hasText(email) || StringUtils.hasText(phoneNumber);
+        //return StringUtils.hasText(name) || StringUtils.hasText(email) || StringUtils.hasText(phoneNumber); not for phase I TODO:Woody
+        return StringUtils.hasText(name) || StringUtils.hasText(email);
     }
 
 }

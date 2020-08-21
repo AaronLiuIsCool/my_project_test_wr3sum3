@@ -78,34 +78,33 @@ public class AccountService {
         return this.convertToDto(account);
     }
 
-    public AccountDto create(String name, String email, String phoneNumber) {
+    //public AccountDto create(String name, String email, String phoneNumber) {
+    public AccountDto create(String name, String email) {
         if (StringUtils.hasText(email)) {
             // Check to see if account exists
             Account foundAccount = accountRepo.findAccountByEmail(email);
             if (foundAccount != null) {
-                throw new ServiceException("A user with that email already exists. Try a password reset");
+                String errMsg = "A user with that email already exists. Try a password reset.";
+                serviceHelper.handleException(logger, new ServiceException(errMsg), errMsg);
+                throw new ServiceException(errMsg);
             }
         }
+        /* not for phase I TODO:Woody
         if (StringUtils.hasText(phoneNumber)) {
             Account foundAccount = accountRepo.findAccountByPhoneNumber(phoneNumber);
             if (foundAccount != null) {
                 throw new ServiceException("A user with that phonenumber already exists. Try a password reset");
             }
         }
+        */
 
         // Column name/email/phone_number cannot be null
-        if (name == null) {
-            name = "";
-        }
-        if (email == null) {
-            email = "";
-        }
-        if (phoneNumber == null) {
-            phoneNumber = "";
-        }
+        if (name == null) { name = ""; }
+        if (email == null) { email = ""; }
+        // if (phoneNumber == null) { phoneNumber = ""; } not for phase I TODO:Woody
 
         Account account = Account.builder()
-                .email(email).name(name).phoneNumber(phoneNumber)
+                .email(email).name(name) // not for phase I TODO:Woody .phoneNumber(phoneNumber)
                 .build();
         //account.setPhotoUrl(Helper.generateGravatarUrl(account.getEmail())); //TODO: Aaron Liu add wechat/fb avator sync
         account.setMemberSince(Instant.now());
@@ -132,7 +131,6 @@ public class AccountService {
             this.sendEmail(account.getId(), email, emailName, subject, AccountConstant.ACTIVATE_ACCOUNT_TMPL, true);
         }
 
-        // todo - sms onboarding (if worker??)
         LogEntry auditLog = LogEntry.builder()
                 .authorization(AuthContext.getAuthz())
                 .currentUserId(AuthContext.getUserId())
@@ -148,23 +146,28 @@ public class AccountService {
     }
 
     // GetOrCreate is for internal use by other APIs to match a user based on their phonenumber or email.
-    public AccountDto getOrCreate(String name, String email, String phoneNumber) {
+    // public AccountDto getOrCreate(String name, String email, String phoneNumber) {  not for phase I TODO:Woody
+    public AccountDto getOrCreate(String name, String email) {
         // rely on downstream permissions
         // check for existing user
         Account existingAccount = null;
         if (StringUtils.hasText(email)) {
             existingAccount = accountRepo.findAccountByEmail(email);
         }
+        /* not for phase I TODO:Woody
         if (existingAccount == null && StringUtils.hasText(phoneNumber)) {
             existingAccount = accountRepo.findAccountByPhoneNumber(phoneNumber);
         }
+        */
 
         if (existingAccount != null) {
             return this.convertToDto(existingAccount);
         }
-        return this.create(name, email, phoneNumber);
+        //return this.create(name, email, phoneNumber);  not for phase I TODO:Woody
+        return this.create(name, email);
     }
 
+    /* not for phase I TODO:Woody
     public AccountDto getAccountByPhoneNumber(String phoneNumber) {
         Account account = accountRepo.findAccountByPhoneNumber(phoneNumber);
         if (account == null) {
@@ -172,7 +175,7 @@ public class AccountService {
         }
         return this.convertToDto(account);
     }
-
+    */
     public AccountList list(int offset, int limit) {
         if (limit <= 0) {
             limit = 10;
@@ -210,11 +213,12 @@ public class AccountService {
         if (StringUtils.hasText(newAccount.getEmail()) && !newAccount.getEmail().equals(existingAccount.getEmail())) {
             Account foundAccount = accountRepo.findAccountByEmail(newAccount.getEmail());
             if (foundAccount != null) {
-                throw new ServiceException(ResultCode.REQ_REJECT,
-                        "A user with that email already exists. Try a password reset");
+                String errMsg = "A user with that email already exists. Try a password reset";
+                serviceHelper.handleException(logger, new ServiceException(errMsg), errMsg);
+                throw new ServiceException(ResultCode.REQ_REJECT, errMsg);
             }
         }
-
+/* not for phase I TODO:Woody
         if (StringUtils.hasText(newAccount.getPhoneNumber()) && !newAccount.getPhoneNumber().equals(existingAccount.getPhoneNumber())) {
             Account foundAccount = accountRepo.findAccountByPhoneNumber(newAccount.getPhoneNumber());
             if (foundAccount != null) {
@@ -222,7 +226,7 @@ public class AccountService {
                         "A user with that phonenumber already exists. Try a password reset");
             }
         }
-
+*/
         if (AuthConstant.AUTHORIZATION_AUTHENTICATED_USER.equals(AuthContext.getAuthz())) {
             if (!existingAccount.isConfirmedAndActive() && newAccount.isConfirmedAndActive()) {
                 throw new ServiceException(ResultCode.REQ_REJECT,

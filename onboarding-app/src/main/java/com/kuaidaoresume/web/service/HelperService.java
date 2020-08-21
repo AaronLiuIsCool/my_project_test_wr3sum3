@@ -78,9 +78,10 @@ public class HelperService {
                 .to("sales@kuaidaoresume.com")
                 .name("")
                 .subject(String.format("%s from %s just joined Kuaidaoresume", a.getName()))
-                .htmlBody(String.format("Name: %s<br>Phone: %s<br>Email: %s<br>",
+                // .htmlBody(String.format("Name: %s<br>Phone: %s<br>Email: %s<br>", not for phase I TODO:Woody
+                .htmlBody(String.format("Name: %s <br>Email: %s<br>",
                         a.getName(),
-                        a.getPhoneNumber(),
+                        // a.getPhoneNumber(), not for phase I TODO:Woody
                         a.getEmail()
                         ))
                 .build();

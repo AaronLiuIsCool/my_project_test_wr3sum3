@@ -91,7 +91,7 @@ public class ActivateController {
 
         page.setEmail(email);
         page.setName(account.getName());
-        page.setPhonenumber(account.getPhoneNumber());
+        // page.setPhonenumber(account.getPhoneNumber()); not for phase I TODO:Woody
 
         if (!HelperService.isPost(request)) {
             model.addAttribute(Constant.ATTRIBUTE_NAME_PAGE, page);
@@ -119,7 +119,7 @@ public class ActivateController {
         account.setEmail(email);
         account.setConfirmedAndActive(true);
         account.setName(name);
-        account.setPhoneNumber(phonenumber);
+        //account.setPhoneNumber(phonenumber); not for phase I TODO:Woody
 
         GenericAccountResponse genericAccountResponse2 = null;
         try {

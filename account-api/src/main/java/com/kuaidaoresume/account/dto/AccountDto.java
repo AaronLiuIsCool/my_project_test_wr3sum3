@@ -31,7 +31,7 @@ public class AccountDto {
     private Instant memberSince;
     private boolean support;
 
-    private String phoneNumber;
+    //private String phoneNumber; not for phase I TODO:Woody
     @NotEmpty
     private String photoUrl;
 }

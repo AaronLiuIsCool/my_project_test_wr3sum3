@@ -26,6 +26,6 @@ public class Account {
     private boolean confirmedAndActive;
     private Instant memberSince;
     private boolean support;
-    private String phoneNumber;
+    //private String phoneNumber; not for phase I TODO:Woody
     private String photoUrl;
 }

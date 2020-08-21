@@ -36,8 +36,6 @@ public class ServiceHelper {
 
     private final SentryClient sentryClient;
 
-    //private final BotClient botClient;
-
     private final EnvConfig envConfig;
 
     @Async(AppConfig.ASYNC_EXECUTOR_NAME)
@@ -51,13 +49,13 @@ public class ServiceHelper {
         if (account == null) {
             throw new ServiceException(ResultCode.NOT_FOUND, String.format("User with id %s not found", userId));
         }
-        if (StringUtils.isEmpty(account.getPhoneNumber()) && StringUtils.isEmpty(account.getEmail())) {
-            logger.info(String.format("skipping sync for user %s because no email or phonenumber", account.getId()));
+        //if (StringUtils.isEmpty(account.getPhoneNumber()) && StringUtils.isEmpty(account.getEmail())) { not for phase I TODO:Woody
+        if (StringUtils.isEmpty(account.getEmail())) {
+            logger.info(String.format("skipping sync for user %s because no email", account.getId()));
             return;
         }
 
         // resumes sync as necessary for this account.
-
         User user = new User();
         user.setUserId(account.getId());
         user.setEmail(account.getEmail());
@@ -67,7 +65,7 @@ public class ServiceHelper {
         user.setLastRequestAt(Instant.now().toEpochMilli());
 
         user.addCustomAttribute(CustomAttribute.newBooleanAttribute("v2", true));
-        user.addCustomAttribute(CustomAttribute.newStringAttribute("phonenumber", account.getPhoneNumber()));
+        //user.addCustomAttribute(CustomAttribute.newStringAttribute("phonenumber", account.getPhoneNumber())); not for phase I TODO:Woody
         user.addCustomAttribute(CustomAttribute.newBooleanAttribute("confirmed_and_active", account.isConfirmedAndActive()));
         user.addCustomAttribute(CustomAttribute.newBooleanAttribute("is_regular_user", true));
         //TODO: Aaron Liu, may not need in phase I
@@ -133,15 +131,18 @@ public class ServiceHelper {
 
     public void handleError(ILogger log, String errMsg) {
         log.error(errMsg);
-        if (!envConfig.isDebug()) {
+        //if (!envConfig.isDebug()) {
             sentryClient.sendMessage(errMsg);
-        }
+        //}
     }
 
     public void handleException(ILogger log, Exception ex, String errMsg) {
         log.error(errMsg, ex);
-        if (!envConfig.isDebug()) {
+        //if (!envConfig.isDebug()) {
+            sentryClient.sendMessage(errMsg);
+            System.out.println("her1");
             sentryClient.sendException(ex);
-        }
+            System.out.println("herre");
+        //}
     }
 }
