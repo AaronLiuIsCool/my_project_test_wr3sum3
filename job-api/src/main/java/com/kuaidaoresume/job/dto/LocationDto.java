@@ -29,5 +29,6 @@ public class LocationDto {
     private String country;
     @NotNull
     private String city;
+    private String state;
     private String postCode;
 }

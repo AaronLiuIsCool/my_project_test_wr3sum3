@@ -11,16 +11,16 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "Job_has_Keyword")
+@Table(name = "job_has_keyword")
 public class JobHasKeyword implements Serializable{
     @Id
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "Job_id")
+    @JoinColumn(name = "job_id")
     private Job job;
 
     @Id
     @ManyToOne (fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "Keyword_id")
+    @JoinColumn(name = "keyword_id")
     private Keyword keyword;
 
     @Column(name = "rating")

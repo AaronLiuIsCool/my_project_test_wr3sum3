@@ -1,0 +1,7 @@
+google-search-results==1.8.3
+beautifulsoup4==4.9.1
+requests==2.24.0
+lxml==4.5.2
+schedule==0.6.0
+pika==1.1.0
+sentry-sdk==0.16.5

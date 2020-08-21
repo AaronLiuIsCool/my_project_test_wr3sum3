@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kuaidaoresume.common.auth.AuthConstant;
 import com.kuaidaoresume.job.controller.assembler.JobRepresentationModelAssembler;
 import com.kuaidaoresume.job.config.JobApplicationTestConfig;
+import com.kuaidaoresume.job.service.JobInfoExtractionService;
 import com.kuaidaoresume.job.service.JobService;
 import com.kuaidaoresume.job.dto.*;
 import com.kuaidaoresume.job.model.*;
@@ -48,6 +49,9 @@ public class JobControllerTest {
 
     @MockBean
     private JobService jobService;
+
+    @MockBean
+    private JobInfoExtractionService jobInfoExtractionService;
 
     @Test
     public void whenFindById_thenReturn200() throws Exception {

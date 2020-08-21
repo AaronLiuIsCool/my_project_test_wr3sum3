@@ -19,7 +19,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "Location",
+@Table(name = "location",
         uniqueConstraints=@UniqueConstraint(columnNames={"country", "city","post_code"}))
 public class Location {
     @Id

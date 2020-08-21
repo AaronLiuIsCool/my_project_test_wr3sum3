@@ -31,6 +31,7 @@ public class JobDto {
     private String companyName;
     @NotNull
     private String url;
+    private String agency;
     private int salaryMin;
     private int salaryMax;
     private String currency;
@@ -38,6 +39,7 @@ public class JobDto {
     private String certificateRequired;
     private String educationRequired;
     private int jobPostId;
+    private String jobDescription;
     public LocationDto location;
     public List<MajorDto> majors;
     private Set<JobHasKeywordDto> jobHasKeywords = new HashSet<>();

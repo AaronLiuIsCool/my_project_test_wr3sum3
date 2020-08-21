@@ -16,16 +16,16 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "Location_has_Keyword")
+@Table(name = "location_has_keyword")
 public class LocationHasKeyword implements Serializable {
     @Id
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "Location_id")
+    @JoinColumn(name = "location_id")
     private Location location;
 
     @Id
     @ManyToOne (fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "Keyword_id")
+    @JoinColumn(name = "keyword_id")
     private Keyword keyword;
 
     @Column(name = "rating")

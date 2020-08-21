@@ -20,7 +20,7 @@ import java.util.HashSet;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name="Job", uniqueConstraints = @UniqueConstraint(columnNames = {"post_date", "position_title", "company_name", "url"}))
+@Table(name="job", uniqueConstraints = @UniqueConstraint(columnNames = {"post_date", "position_title", "company_name", "url"}))
 /**
  * plan to use mysql events for time to live
  * http://mablomy.blogspot.com/2019/03/ttl-time-to-live-in-mysql.html
@@ -37,6 +37,12 @@ public class Job {
     private String companyName;
     @Column(name = "url", nullable = false, updatable = true, unique = true)
     private String url;
+    @Column(name = "job_type", nullable = true, updatable = true, unique = true)
+    private String jobType;
+    @Column(name = "employement_type", nullable = true, updatable = true, unique = true)
+    private String employementType;
+    @Column(name = "agency", nullable = true, updatable = true, unique = true)
+    private String agency;
     @Column(name = "salary_min", nullable = true, updatable = false)
     private int salaryMin;
     @Column(name = "salary_max", nullable = true, updatable = false)
@@ -50,15 +56,17 @@ public class Job {
     @Column(name = "education_required", nullable = true, updatable = false)
     private String educationRequired;
     @Column(name = "job_post_id", nullable = true, updatable = false)
-    private int jobPostId;
+    private String jobPostId;
+    @Column(name = "job_description", nullable = true, updatable = false)
+    private String jobDescription;
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "Location_id", referencedColumnName="id")
+    @JoinColumn(name = "location_id", referencedColumnName="id")
     private Location location;
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
-            name = "Job_has_Required_Major",
-            joinColumns = { @JoinColumn(name = "Job_id", referencedColumnName="id") },
-            inverseJoinColumns = { @JoinColumn(name = "Major_id", referencedColumnName="id") }
+            name = "job_has_required_major",
+            joinColumns = { @JoinColumn(name = "job_id", referencedColumnName="id") },
+            inverseJoinColumns = { @JoinColumn(name = "major_id", referencedColumnName="id") }
     )
     private List<Major> majors;
     @OneToMany(mappedBy = "job", cascade = CascadeType.ALL, orphanRemoval = true)

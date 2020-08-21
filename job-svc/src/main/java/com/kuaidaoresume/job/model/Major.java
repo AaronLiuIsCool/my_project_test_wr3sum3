@@ -20,7 +20,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "Major",
+@Table(name = "major",
         uniqueConstraints=@UniqueConstraint(columnNames={"name"}))
 public class Major {
     @Id

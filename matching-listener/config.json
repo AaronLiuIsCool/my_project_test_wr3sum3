@@ -1,0 +1,8 @@
+{
+    "queue": {
+        "name": "jobQueue",
+        "key": "jobQueue",
+        "host": "rabbitmq3",
+        "retryWaitSecs" : 5
+    }
+}

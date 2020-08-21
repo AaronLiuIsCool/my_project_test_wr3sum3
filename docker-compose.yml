@@ -40,6 +40,7 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE
       - SERVER_PORT
+      - SENTRY_DSN
       - SIGNING_SECRET
       - JOB_DATASOURCE_URL
       - JOB_DATASOURCE_USERNAME
@@ -47,6 +48,34 @@ services:
     networks:
       - internal_access
       - external_access # db access
+
+  rabbitmq3:
+    image: rabbitmq:3-management
+    networks:
+      - internal_access
+
+  job-fetcher:
+    build: ./job-fetcher
+    environment:
+      - SENTRY_DSN
+    image: kuaidaoresume/job-fetcher
+    networks:
+      - internal_access
+      - external_access # serpapi
+    depends_on:
+      - rabbitmq3
+      - job-service
+
+  matching-listener:
+    build: ./matching-listener
+    environment:
+      - SENTRY_DSN
+    image: kuaidaoresume/matching-listener
+    networks:
+      - internal_access
+    depends_on:
+      - rabbitmq3
+      - job-fetcher
 
   email-service:
     build: ./mail-svc

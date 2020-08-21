@@ -1,5 +1,11 @@
 package com.kuaidaoresume.job.config;
 
+import com.kuaidaoresume.common.matching.InMemoryKeywordMatcher;
+import com.kuaidaoresume.common.matching.KeywordMatcher;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -23,9 +29,10 @@ import org.springframework.hateoas.server.core.EvoInflectorLinkRelationProvider;
 import com.kuaidaoresume.common.async.ContextCopyingDecorator;
 import com.kuaidaoresume.common.config.KuaidaoresumeRestConfig;
 
+import java.io.FileInputStream;
+import java.util.*;
 import java.util.concurrent.Executor;
-import java.util.List;
-import java.util.ArrayList;
+
 
 @Configuration
 @EnableAsync
@@ -59,5 +66,37 @@ public class AppConfig {
         List<JsonPathLinkDiscoverer> plugins = new ArrayList<>();
         plugins.add(new HalLinkDiscoverer());
         return new LinkDiscoverers(SimplePluginRegistry.create(plugins));
+    }
+
+    @Bean
+    public KeywordMatcher keywordMatcher() {
+        FileInputStream fis;
+        XSSFWorkbook keywordsWorkBook;
+        try {
+            fis = new FileInputStream(Thread.currentThread().getContextClassLoader()
+                    .getResource("matching/keywords.xlsx").getFile());
+            keywordsWorkBook = new XSSFWorkbook(fis);
+        } catch (Exception e1) {
+            try {
+                fis = new FileInputStream("matching/keywords.xlsx");
+                keywordsWorkBook = new XSSFWorkbook(fis);
+            }
+            catch (Exception e2){
+                return null;
+            }
+        }
+
+        XSSFSheet keywordsSheet = keywordsWorkBook.getSheetAt(0);
+        Iterator<Row> rowIterator = keywordsSheet.iterator();
+        Set<String> keywordsSet = new HashSet<>();
+        while (rowIterator.hasNext()) {
+            Row row = rowIterator.next();
+            Iterator<Cell> cellIterator = row.cellIterator();
+            while (cellIterator.hasNext()) {
+                Cell cell = cellIterator.next();
+                keywordsSet.add(cell.getStringCellValue());
+            }
+        }
+        return new InMemoryKeywordMatcher(keywordsSet);
     }
 }

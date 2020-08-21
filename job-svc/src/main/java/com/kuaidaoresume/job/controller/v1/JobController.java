@@ -4,6 +4,8 @@ import com.github.structlog4j.ILogger;
 import com.github.structlog4j.SLoggerFactory;
 import com.kuaidaoresume.common.auth.AuthConstant;
 import com.kuaidaoresume.common.auth.Authorize;
+import com.kuaidaoresume.job.model.JobHasKeyword;
+import com.kuaidaoresume.job.service.JobInfoExtractionService;
 import com.kuaidaoresume.job.service.JobService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 
 import javax.validation.Valid;
+import java.util.Date;
 import java.util.Optional;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,6 +34,9 @@ public class JobController {
 
     @Autowired
     private JobService jobService;
+
+    @Autowired
+    private JobInfoExtractionService jobInfoExtractionService;
 
     @Autowired
     private final JobRepresentationModelAssembler jobRepresentationModelAssembler;
@@ -93,6 +99,17 @@ public class JobController {
             return ResponseEntity.created(jobRepresentationModelAssembler.getSelfLink(entityModel).toUri()).body(entityModel);
         }
         return ResponseEntity.badRequest().build();
+    }
+
+    @PostMapping("/jobs/jobFetcher")
+    public JobFetcherResponse jobFetcher(
+            @Valid @RequestBody
+                    JobFetcherRequest jobFetcherRequest) {
+        logger.info("jobFetcherRequest = " + jobFetcherRequest);
+
+        JobFetcherResponse jobFetcherResponse = jobInfoExtractionService.extractAndPersist(jobFetcherRequest);
+
+        return jobFetcherResponse;
     }
 
     @Authorize(value = {

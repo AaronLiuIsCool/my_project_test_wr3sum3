@@ -1,0 +1,43 @@
+{
+    "queue": {
+        "name": "jobQueue",
+        "key": "jobQueue",
+        "host": "rabbitmq3",
+        "retryWaitSecs" : 5
+    },
+
+    "cronjob": {
+        "every": {
+            "days": 3,
+            "when": "00:00"
+        }
+    },
+
+    "serpParams": {
+        "api_key": "31f55573eb64d1b2e246b25014c71221827dd3f4c8b58cd26b64ce6e23d7af62",
+        "engine": "google_jobs",
+        "hl": "en",
+        "chips": "date_posted:week"
+    },
+
+    "serpConfig": {
+        "maxNumPages": 10, 
+        "maxResultsPerPage": 10,
+        "waitTimeSec": 4
+    },
+
+    "serpQueries":     {
+            "levels": [
+            "junior", "entry level", "student", "internship", "new graduate"
+        ],   
+        "industries": [
+            "accounting", "Actuarial science", "computer scienece", "software engineering", "chemical engineering", "civil engineering", "computer engineering", "data science", "economics", "electricial engineering",
+            "Environmental Engineering", "finance", "geology", "graphic design", "human resource", "industrial engineering", "management information system", "marketing", "mechanical engineering", "mining engineering",
+            "Nutrition", "petroleum engineering", "physics", "materials engineering", "Sociology", "biology", "statistics", "Bioinformatics", "mathematics", "supply chain"
+        ],
+        "countries": [
+            "canada",
+            "united states"
+        ]
+    }
+}

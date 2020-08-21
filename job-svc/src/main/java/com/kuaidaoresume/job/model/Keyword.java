@@ -16,7 +16,7 @@ import java.util.HashSet;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name="Keyword", uniqueConstraints = @UniqueConstraint(columnNames = {"name"}))
+@Table(name="keyword", uniqueConstraints = @UniqueConstraint(columnNames = {"name"}))
 public class Keyword {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

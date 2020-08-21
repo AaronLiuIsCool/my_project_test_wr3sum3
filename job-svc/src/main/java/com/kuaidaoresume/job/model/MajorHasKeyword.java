@@ -11,16 +11,16 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "Major_has_Keyword")
+@Table(name = "major_has_keyword")
 public class MajorHasKeyword implements Serializable {
     @Id
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "Major_id")
+    @JoinColumn(name = "major_id")
     private Major major;
 
     @Id
     @ManyToOne (fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "Keyword_id")
+    @JoinColumn(name = "keyword_id")
     private Keyword keyword;
 
     @Column(name = "rating")
