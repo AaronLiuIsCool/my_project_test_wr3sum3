@@ -120,6 +120,16 @@ services:
       - email-service
     networks:
       - internal_access
+      - external_access
+
+    app-service:
+      build:
+        context: ./webapp
+        dockerfile: Dockerfile
+      image: kuaidaoresume/app-spa
+      networks:
+        - internal_access
+        - external_access #TBD
 
   kdr-service:
     build: ./kdr
@@ -137,6 +147,7 @@ services:
       - www-service
       - whoami-service
       - job-service
+      - app-service
     networks:
       - internal_access
       - external_access
