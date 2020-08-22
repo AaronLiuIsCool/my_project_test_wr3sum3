@@ -2,6 +2,9 @@ package com.kuaidaoresume.account.service;
 
 import com.github.structlog4j.ILogger;
 import com.github.structlog4j.SLoggerFactory;
+import com.kuaidaoresume.account.dto.ResumeDto;
+import com.kuaidaoresume.account.model.Resume;
+import com.kuaidaoresume.account.repo.ResumeRepo;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -54,6 +57,8 @@ public class AccountService {
     private final AccountRepo accountRepo;
 
     private final AccountSecretRepo accountSecretRepo;
+
+    private final ResumeRepo resumeRepo;
 
     private final AppProps appProps;
 
@@ -457,6 +462,23 @@ public class AccountService {
 
     public void syncUser(String userId) {
         serviceHelper.syncUserAsync(userId);
+    }
+
+    public void addResumeToAccount(String userId, ResumeDto resumeDto) {
+        Resume resume = modelMapper.map(resumeDto, Resume.class);
+        Account account = accountRepo.findAccountById(userId);
+        account.getResumes().add(resume);
+        resume.setAccount(account);
+        accountRepo.save(account);
+    }
+
+    public void removeResumeFromAccount(String userId, ResumeDto resumeDto) {
+        Resume resume = modelMapper.map(resumeDto, Resume.class);
+        Account account = accountRepo.findAccountById(userId);
+        resume.setAccount(account);
+        account.getResumes().remove(resume);
+        accountRepo.save(account);
+        resumeRepo.delete(resume);
     }
 
     private AccountDto convertToDto(Account account) {

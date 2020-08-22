@@ -225,6 +225,32 @@ public class AccountController {
         return baseResponse;
     }
 
+    @Authorize(value = {
+        AuthConstant.AUTHORIZATION_SUPPORT_USER,
+        AuthConstant.AUTHORIZATION_WWW_SERVICE,
+        AuthConstant.AUTHORIZATION_RESUME_SERVICE
+    })
+    @PostMapping(path = "{userId}/resumes")
+    public BaseResponse addResumeToAccount(@PathVariable String userId, @RequestBody @Valid ResumeDto resumeDto) {
+        accountService.addResumeToAccount(userId, resumeDto);
+        BaseResponse baseResponse = new BaseResponse();
+        baseResponse.setMessage("resume added");
+        return baseResponse;
+    }
+
+    @Authorize(value = {
+        AuthConstant.AUTHORIZATION_SUPPORT_USER,
+        AuthConstant.AUTHORIZATION_WWW_SERVICE,
+        AuthConstant.AUTHORIZATION_RESUME_SERVICE
+    })
+    @DeleteMapping(path = "{userId}/resumes")
+    public BaseResponse removeResumeFromAccount(@PathVariable String userId, @RequestBody @Valid ResumeDto resumeDto) {
+        accountService.removeResumeFromAccount(userId, resumeDto);
+        BaseResponse baseResponse = new BaseResponse();
+        baseResponse.setMessage("resume removed");
+        return baseResponse;
+    }
+
     private void validateAuthenticatedUser(String userId) {
         if (AuthConstant.AUTHORIZATION_AUTHENTICATED_USER.equals(AuthContext.getAuthz())) {
             String currentUserId = AuthContext.getUserId();

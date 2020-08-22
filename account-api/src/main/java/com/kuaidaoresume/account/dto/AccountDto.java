@@ -10,6 +10,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.Instant;
+import java.util.List;
 
 /**
  * Account DTO
@@ -34,4 +35,5 @@ public class AccountDto {
     //private String phoneNumber; not for phase I TODO:Woody
     @NotEmpty
     private String photoUrl;
+    private List<ResumeDto> resumes;
 }
