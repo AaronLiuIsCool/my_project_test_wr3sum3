@@ -61,7 +61,7 @@ services:
     image: kuaidaoresume/job-fetcher
     networks:
       - internal_access
-      - external_access # serpapi
+      - external_access # serpapi, sentry
     depends_on:
       - rabbitmq3
       - job-service
@@ -73,6 +73,7 @@ services:
     image: kuaidaoresume/matching-listener
     networks:
       - internal_access
+      - external_access # sentry
     depends_on:
       - rabbitmq3
       - job-fetcher

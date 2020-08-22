@@ -12,7 +12,7 @@ import pika
 import logging
 from sentry_sdk import capture_exception, init
 
-init(dsn=os.getenv('SENTRY_DSN', 'https://80aaf4ae889b414f9fe72e3904cd5246@sentry.io/1380198'))
+init(dsn=os.getenv('SENTRY_DSN', 'https://270864132b0845e4a9ae4f68f96c77c2@o434398.ingest.sentry.io/5391423'))
 
 class JobFetcher:
     def __init__(self, config, connection, channel):
