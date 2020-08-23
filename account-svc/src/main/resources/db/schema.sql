@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS account (
                                      id VARCHAR(255),
                                      email VARCHAR(255) NOT NULL,
                                      name VARCHAR(255) NOT NULL default '',
-                                     phone_number VARCHAR(255) NOT NULL,
+                                     phone_number VARCHAR(255) NOT NULL default '',
                                      confirmed_and_active BOOLEAN NOT NULL DEFAULT false,
                                      member_since TIMESTAMP NOT NULL default current_timestamp,
                                      password_hash VARCHAR(100) default '',

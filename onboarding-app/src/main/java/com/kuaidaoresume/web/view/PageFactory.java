@@ -45,15 +45,23 @@ public class PageFactory {
                 .version(kuaidaoresumeProps.getDeployEnv())
                 .build();
     }
-
+    
     public ActivatePage buildActivatePage() {
         return ActivatePage.childBuilder()
                 .title("Activate your Kuaidaoresume account")
                 .templateName("activate")
-                .cssId("sign-up")
+                .cssId("activate")
                 .version(kuaidaoresumeProps.getDeployEnv())
                 .build();
     }
 
-
+    public Page buildCompletionPage() {
+        return Page.builder()
+                .title("You are all done!")
+                .description("Please go ahead create your first resume!")
+                .templateName("complete")
+                .cssId("complete")
+                .version(kuaidaoresumeProps.getDeployEnv())
+                .build();
+    }
 }

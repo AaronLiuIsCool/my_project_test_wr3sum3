@@ -34,6 +34,8 @@ import javax.servlet.http.HttpServletResponse;
 public class ActivateController {
     static final ILogger logger = SLoggerFactory.getLogger(ActivateController.class);
 
+    static final String DEFAULT_PHOTO_URL = "https://miro.medium.com/max/720/1*W35QUSvGpcLuxPo3SRTH4w.png"; // Update to one from our own CDN
+
     @Autowired
     private PageFactory pageFactory;
 
@@ -52,6 +54,7 @@ public class ActivateController {
     @RequestMapping(value = "/activate/{token}")
     public String activate(@PathVariable String token,
                            @RequestParam(value="password", required = false) String password,
+                           @RequestParam(value="password-verify", required = false) String passwordVerify,
                            @RequestParam(value="name", required = false) String name,
                            @RequestParam(value="tos", required = false) String tos,
                            @RequestParam(value="phonenumber", required = false) String phonenumber,
@@ -104,11 +107,11 @@ public class ActivateController {
         page.setPhonenumber(phonenumber);
 
         if (password.length() < 6) {
-            page.setErrorMessage("Your password must be at least 6 characters long");
-        }
-
-        if (StringUtils.isEmpty(tos)) {
-            page.setErrorMessage("You must agree to the terms and conditions by selecting the checkbox.");
+            page.setErrorMessage("请输入最少6位数的密码.");
+        } else if (!password.equals(passwordVerify)) {
+            page.setErrorMessage("密码不一样, 请重试.");
+        } else if (StringUtils.isEmpty(tos) || !tos.equals("on")) {
+            page.setErrorMessage("请阅读并同意快刀简历的使用条款.");
         }
 
         if (page.getErrorMessage() != null) {
@@ -116,9 +119,10 @@ public class ActivateController {
             return Constant.VIEW_ACTIVATE;
         }
 
-        account.setEmail(email);
         account.setConfirmedAndActive(true);
-        account.setName(name);
+        account.setEmail(email);
+        account.setName(email); // Use email to bypass the DB side not null check, given name is a not a required field at activation page
+        account.setPhotoUrl(DEFAULT_PHOTO_URL);
         //account.setPhoneNumber(phonenumber); not for phase I TODO:Woody
 
         GenericAccountResponse genericAccountResponse2 = null;
@@ -142,9 +146,9 @@ public class ActivateController {
         BaseResponse baseResponse = null;
         try {
             UpdatePasswordRequest updatePasswordRequest = UpdatePasswordRequest.builder()
-                .userId(userId)
-                .password(password)
-                .build();
+                    .userId(userId)
+                    .password(password)
+                    .build();
             baseResponse = accountClient.updatePassword(AuthConstant.AUTHORIZATION_WWW_SERVICE, updatePasswordRequest);
         } catch (Exception ex) {
             String errMsg = "fail to update password";
@@ -176,7 +180,8 @@ public class ActivateController {
             destination = helperService.buildUrl("http", "support." + envConfig.getExternalApex());
         }
         else {
-            // TODO: Sang Yu redirect to SPA home page.
+            model.addAttribute(Constant.ATTRIBUTE_NAME_PAGE, pageFactory.buildCompletionPage());
+            return Constant.VIEW_COMPLETE;
         }
 
         return "redirect:" + destination;

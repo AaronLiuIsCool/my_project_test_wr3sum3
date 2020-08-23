@@ -1,10 +1,135 @@
 <!DOCKTYPE html>
 
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+>
+<head>
+  <script
+    src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+    integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+    integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+    crossorigin="anonymous"
+  ></script>
+  <link
+    rel="stylesheet"
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
+    crossorigin="anonymous"
+  />
+</head>
+<style>
+  body {
+    font-family: MicrosoftYaHei, "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
+    "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  }
 
-<th:block layout:fragment="content"/>
+  a {
+    height: 19px;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 2.14;
+    color: #3e89ec;
+  }
 
+  a:hover {
+    text-decoration: none;
+  }
+
+  .app {
+    width: 1180px;
+    margin: auto;
+  }
+
+  .app-body {
+    margin-top: 193px;
+  }
+
+  .content {
+    margin: auto;
+    width: 380px;
+  }
+
+  .image {
+    margin: auto;
+    width: 476px;
+  }
+
+  .content-body .title {
+    height: 40px;
+    font-size: 30px;
+    font-weight: bold;
+    color: #3e89ec;
+  }
+
+  .content-body form, .content-body form .form-content {
+    margin: 40px 0;
+  }
+
+  .content-body form .form-content .form-group {
+    margin-bottom: 20px;
+  }
+
+  .content-body form label, .content-body .label {
+    height: 19px;
+    font-size: 14px;
+    color: #bfc4d3;
+  }
+
+  .content-body form .form-control {
+    width: 380px;
+    height: 41px;
+    border-radius: 4px;
+    background-color: #f2f4f9;
+  }
+
+  .content-body form .form-control::placeholder {
+    color: #d5d9e6;
+  }
+
+  .content-body form .button-group {
+    height: 45px;
+  }
+
+  .content-body form .button-group .btn {
+    width: 180px;
+    height: 41px;
+    border-radius: 4px;
+  }
+
+  .content-body form .button-group .btn.btn-light {
+    color: #bfc4d3;
+  }
+
+  .warning-message {
+    font-size: 0.875rem;
+    color: #edbc4d;
+  }
+</style>
+
+<body>
+<div class="app">
+  <div class="app-body">
+    <div class="content float-left">
+      <th:block layout:fragment="content"/>
+    </div>
+
+    <div class="image float-right">
+      <img th:src="@{/img/login_screen_insert.svg}" alt="Login in screen illustration" />
+    </div>
+  </div>
+</div>
 </body>
 </html>
+
+

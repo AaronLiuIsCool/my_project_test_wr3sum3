@@ -22,7 +22,7 @@ public class SignupController {
 
     static final String SIGN_UP_REDIRECT_PATH = "redirect:/sign-up";
 
-    static final ILogger logger = SLoggerFactory.getLogger(LoginController.class);
+    static final ILogger logger = SLoggerFactory.getLogger(SignupController.class);
 
     @Autowired
     private PageFactory pageFactory;
