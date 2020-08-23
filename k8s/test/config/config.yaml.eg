@@ -5,14 +5,19 @@ metadata:
 data:
   SPRING_PROFILES_ACTIVE: test
   SERVER_PORT: "80"
+  EMAIL_SERVICE_ENDPOINT: http://email-service
   ACCOUNT_SERVICE_ENDPOINT: http://account-service
-  #BOT_SERVICE_ENDPOINT: http://bot-service
-  #SMS_SERVICE_ENDPOINT: http://sms-service
+  RESUME_SERVICE_ENDPOINT: http://resume-service
+  JOB_SERVICE_ENDPOINT: http://job-service
+  MATCHING_SERVICE_ENDPOINT: http://matching-service
   SENTRY_DSN: https://270864132b0845e4a9ae4f68f96c77c2@o434398.ingest.sentry.io/5391423
   SIGNING_SECRET: secret
-  ACCOUNT_DATASOURCE_URL: jdbc:mysql://mysql-svc/kuaidaoresume_account?useUnicode=true&characterEncoding=utf-8
+  ACCOUNT_DATASOURCE_URL: jdbc:mysql://kuaidaoresume-account.cm27uwrvuert.ca-central-1.rds.amazonaws.com:3306/kuaidaoresume-account?useUnicode=true&characterEncoding=utf-8
   ACCOUNT_DATASOURCE_USERNAME: root
   ACCOUNT_DATASOURCE_PASSWORD: mysqlroot
-  #JOB_DATASOURCE_URL: jdbc:mysql://mysql-svc/kuaidaoresume_job?useUnicode=true&characterEncoding=utf-8
-  #JOB_DATASOURCE_USERNAME: root
-  #job_DATASOURCE_PASSWORD: mysqlroot
+  RESUME_DATASOURCE_URL: jdbc:mysql://kuaidaoresume-resume.cm27uwrvuert.ca-central-1.rds.amazonaws.com:3306/kuaidaoresume-resume?useUnicode=true&characterEncoding=utf-8
+  RESUME_DATASOURCE_USERNAME: root
+  RESUME_DATASOURCE_PASSWORD: mysqlroot
+  JOB_DATASOURCE_URL: jdbc:mysql://kuaidaoresume-job.cm27uwrvuert.ca-central-1.rds.amazonaws.com:3306/kuaidaoresume-job?useUnicode=true&characterEncoding=utf-8
+  JOB_DATASOURCE_USERNAME: root
+  JOB_DATASOURCE_PASSWORD: mysqlroot

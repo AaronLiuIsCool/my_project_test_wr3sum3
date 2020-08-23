@@ -2,22 +2,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: account-svc-deployment
+  name: job-svc-deployment
   #namespace: kuaidaoresume-uat
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: account-svc
+      app: job-svc
   template:
     metadata:
       labels:
-        app: account-svc
+        app: job-svc
         env: uat
     spec:
       containers:
-        - name: account-svc
-          image: kuaidaoresume/account-svc
+        - name: job-svc
+          image: kuaidaoresume/job-svc
           #imagePullPolicy: Never
           ports:
             - name: http-port
@@ -36,10 +36,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: account-service
+  name: job-service
 spec:
   selector:
-    app: account-svc
+    app: job-svc
     env: uat
   ports:
     - protocol: TCP
