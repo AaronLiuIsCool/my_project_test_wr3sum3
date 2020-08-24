@@ -36,9 +36,10 @@ export function adaptBasics(basics) {
 }
 
 export function adaptEducation(edu) {
-    const { schoolName, gpa, startDate, graduateDate,
+    const { id, schoolName, gpa, startDate, graduateDate,
         major, degree, city, country, highestAward, otherAward } = edu;
     const data = {
+        id,
         institution: schoolName,
         major,
         gpa,
@@ -70,10 +71,11 @@ export function adaptEducations(educations) {
 }
 
 export function adaptWork(work) {
-    const { workName, workCompanyName, workStartDate, workEndDate,
+    const { id, workName, workCompanyName, workStartDate, workEndDate,
         workDescription, workCity, workCountry } = work;
 
     const data = {
+        id,
         role: workName,
         organization: workCompanyName,
         city: workCity,
@@ -95,10 +97,11 @@ export function adaptWorks(works) {
 }
 
 export function adaptProject(project) {
-    const { projectRole, projectCompanyName, projectStartDate, projectEndDate,
+    const { id, projectRole, projectCompanyName, projectStartDate, projectEndDate,
         projectCity, projectCountry, projectDescription } = project;
 
     const data = {
+        id,
         role: projectRole,
         organization: projectCompanyName,
         city: projectCity,
@@ -120,8 +123,9 @@ export function adaptProjects(projects) {
 }
 
 export function adaptCertificate(cert) {
-    const { certificateName, certificateIssuedDate, certificateEndDate } = cert;
+    const { id, certificateName, certificateIssuedDate, certificateEndDate } = cert;
     return {
+        id,
         name: certificateName,
         issueDate: moment(certificateIssuedDate).format(JDBC_DATE_FORMAT),
         expirationDate: moment(certificateEndDate).format(JDBC_DATE_FORMAT)
@@ -137,10 +141,11 @@ export function adaptCertificates(certificates) {
 }
 
 export function adaptVolunteer(volunteer) {
-    const { volunteerRole, volunteerCompanyName, volunteerStartDate, volunteerEndDate,
+    const { id, volunteerRole, volunteerCompanyName, volunteerStartDate, volunteerEndDate,
         volunteerCity, volunteerCountry, volunteerDescription } = volunteer;
 
     return {
+        id,
         role: volunteerRole,
         organization: volunteerCompanyName,
         startDate: moment(volunteerStartDate).format(JDBC_DATE_FORMAT),

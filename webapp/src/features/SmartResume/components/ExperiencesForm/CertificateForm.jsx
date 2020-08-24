@@ -71,7 +71,7 @@ const CertificateForm = ({ data, index, isLast = false, messages }) => {
 	const handleCertificateStartDateChange = (date) => {
 		const value = date ? date.toISOString() : undefined;
 		updateStatus(validateCertificateEntry, status, setStatus, 'certificateIssuedDate', value);
-		dispatch(actions.updateCertificateStartDate({ value, index }));
+		dispatch(actions.updateCertificateIssuedDate({ value, index }));
 	};
 
 	const handleCertificateEndDateChange = (date) => {
