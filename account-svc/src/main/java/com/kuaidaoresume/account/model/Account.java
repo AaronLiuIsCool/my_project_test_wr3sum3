@@ -27,6 +27,6 @@ public class Account {
     private boolean support;
     //private String phoneNumber; not for phase I TODO:Woody
     private String photoUrl;
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "account")
-    private List<Resume> resumes;
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "account")
+    private List<Resume> resumes; // set tp EAGER or TODO OpenSessionInViewFilter filter
 }

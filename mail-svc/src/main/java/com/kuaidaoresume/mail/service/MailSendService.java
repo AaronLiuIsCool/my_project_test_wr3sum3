@@ -72,10 +72,10 @@ public class MailSendService {
         org.thymeleaf.context.Context tlContext = new org.thymeleaf.context.Context();
         tlContext.setVariables(req.getModel());
         // TODO: Aaron Liu switch to other templates as necessary
-        String html = templateEngine.process("welcome-email-template", tlContext);
+        //String html = templateEngine.process("welcome-email-template", tlContext);
 
         helper.setTo(req.getTo());
-        helper.setText(html, true);
+        helper.setText(req.getHtmlBody(), true);
         helper.setSubject(req.getSubject());
         helper.setFrom(req.getFrom());
 
