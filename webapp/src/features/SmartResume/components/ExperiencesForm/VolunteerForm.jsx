@@ -44,9 +44,10 @@ const VolunteerForm = ({ data, index, isLast = false, messages }) => {
 	const save = async () => {
 		let id;
 		try {
-			const response = (data.id === undefined) ?
-				await resumeServices.createVolunteer(resumeId, adaptVolunteer(data)) :
-				await resumeServices.updateVolunteer(data.id, adaptVolunteer(data));
+			const response =
+				data.id === undefined
+					? await resumeServices.createVolunteer(resumeId, adaptVolunteer(data))
+					: await resumeServices.updateVolunteer(data.id, adaptVolunteer(data));
 			const responseJson = await response.json();
 			id = responseJson.id;
 		} catch (exception) {
@@ -78,8 +79,8 @@ const VolunteerForm = ({ data, index, isLast = false, messages }) => {
 		updateStatus(validateVolunteerEntry, status, setStatus, 'currentVolunteerFlag', value);
 		dispatch(actions.updateCurrentVolunteerFlag({ value, index }));
 		// reset the end date value if current volunteer is true
-		if (value){
-			dispatch(actions.updateVolunteerEndDate({ value: "", index }));
+		if (value) {
+			dispatch(actions.updateVolunteerEndDate({ value: '', index }));
 		}
 	};
 
@@ -104,13 +105,13 @@ const VolunteerForm = ({ data, index, isLast = false, messages }) => {
 	const handleCityChange = (values) => {
 		const value = values.length === 0 ? null : values[0].city;
 		updateStatus(validateVolunteerEntry, status, setStatus, 'volunteerCity', value);
-		dispatch(actions.updateEduCity({ value, index }));
+		dispatch(actions.updateVolunteerCity({ value, index }));
 	};
 
 	const handleCountryChange = (event) => {
 		const value = event.target.value;
 		updateStatus(validateVolunteerEntry, status, setStatus, 'volunteerCountry', value);
-		dispatch(actions.updateCountry({ value, index }));
+		dispatch(actions.updateVolunteerCountry({ value, index }));
 	};
 
 	const handleVolunteerDescriptionChange = (event) => {
@@ -120,14 +121,16 @@ const VolunteerForm = ({ data, index, isLast = false, messages }) => {
 	};
 
 	const handleAssistantClick = () => {
-		dispatch(actions.toggleAssistant({
-			trigger: "volunteer",
-			context: { index, ...data }
-		}));
+		dispatch(
+			actions.toggleAssistant({
+				trigger: 'volunteer',
+				context: { index, ...data },
+			})
+		);
 	};
 	const assistantContainerClassNames = classNames({
-		'writeAssistantContainer': true,
-		'active': showAssistant && trigger === 'volunteer'
+		writeAssistantContainer: true,
+		active: showAssistant && trigger === 'volunteer',
 	});
 
 	return (
@@ -191,22 +194,24 @@ const VolunteerForm = ({ data, index, isLast = false, messages }) => {
 						isInvalid={status.volunteerStartDate.isInvalid}
 					/>
 				</Col>
-				{data.currentVolunteerFlag && (<Col>
-					<SingleDatePicker
-						label={messages.volunteerEndDate}
-						id="volunteer-graduate-date"
-						placeholder={messages.yymmdd}
-						value={data.volunteerEndDate}
-						allowPastDatesOnly={true}
-						readOnly={true}
-						monthFormat={messages.monthFormat}
-						displayFormat={messages.dateDisplayFormat}
-						onDateChange={handleVolunteerEndDateChange}
-						feedbackMessage={messages.entryIsInvalid}
-						isValid={status.volunteerEndDate.isValid}
-						isInvalid={status.volunteerEndDate.isInvalid}
-					/>
-				</Col>)}
+				{data.currentVolunteerFlag && (
+					<Col>
+						<SingleDatePicker
+							label={messages.volunteerEndDate}
+							id="volunteer-graduate-date"
+							placeholder={messages.yymmdd}
+							value={data.volunteerEndDate}
+							allowPastDatesOnly={true}
+							readOnly={true}
+							monthFormat={messages.monthFormat}
+							displayFormat={messages.dateDisplayFormat}
+							onDateChange={handleVolunteerEndDateChange}
+							feedbackMessage={messages.entryIsInvalid}
+							isValid={status.volunteerEndDate.isValid}
+							isInvalid={status.volunteerEndDate.isInvalid}
+						/>
+					</Col>
+				)}
 				<Col>
 					<DropdownGroup
 						label={messages.city}
@@ -245,9 +250,11 @@ const VolunteerForm = ({ data, index, isLast = false, messages }) => {
 							value={data.volunteerDescription}
 							onChange={handleVolunteerDescriptionChange}
 						/>
-						<span className='writeAssistant'>
+						<span className="writeAssistant">
 							<WrittenAssistIcon />
-							<Button variant="link" onClick={handleAssistantClick}>{messages.writeAssistant}</Button>
+							<Button variant="link" onClick={handleAssistantClick}>
+								{messages.writeAssistant}
+							</Button>
 						</span>
 					</div>
 				</Col>

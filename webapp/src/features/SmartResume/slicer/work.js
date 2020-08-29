@@ -67,6 +67,7 @@ export const work = {
     workCountry: "中国"
 };
 
+
 const initialState = {
     completed: false,
     data: [{ ...work }]

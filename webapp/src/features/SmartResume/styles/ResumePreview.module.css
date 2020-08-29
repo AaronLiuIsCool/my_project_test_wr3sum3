@@ -6,6 +6,7 @@
   overflow-y: auto;
   background: #f0f0f0;
   position: relative;
+  font-size:14px;
   z-index: -1;
 }
 
@@ -25,6 +26,8 @@
   background-color: #ffffff;
   width: 97%;
   height: auto;
+  min-height: 70%;
+  padding:30px 30px 40px;
   padding:30px;
   max-width: 720px;
   margin: 40px auto 0;
@@ -54,9 +57,31 @@
   border:none;
   padding:10px 28px;
 }
+.widgetContainer button:hover {
+  background-color: #0069d9;
+  border-color: #0062cc;
+}
 .widgetContainer button.whiteBtn{
   background-color: white;
   color: #3e89ec;
+}
+.widgetContainer button.whiteBtn:hover{
+  color: #0069d9;
+}
+.widgetContainer button.circle{
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+  padding: 0;
+  font-weight: bold;
+}
+.widgetContainer button:focus{
+  outline:none;
+}
+
+.widgetContainer button a{
+  color: white;
+  text-decoration: none;
 }
 
 .header{
@@ -84,7 +109,7 @@
 
 .headerContent{
   margin-left: 20px;
-  font-size: 12px;
+  font-size: 1rem;
   color: #8e94a7;
   min-width: 300px;
 }
@@ -99,7 +124,7 @@
 }
 
 .headerContentName{
-  font-size: 20px;
+  font-size: 1.67rem;
   font-weight: bold;
   letter-spacing: 2.4px;
   text-align: left;
@@ -131,17 +156,18 @@
 
 .section{
   margin-top:20px;
+  margin-bottom: 40px;
 }
 
 .sectionHeader{
   color: #333333;
   border-bottom:solid thin #333;
-  font-size:14px;
+  font-size:1.17rem;
   padding-bottom:15px;
 }
 
 .infoGroupHeader{
-  font-size: 12px;
+  font-size: 1rem;
   color: #8e94a7;
   padding-bottom:15px;
   display:flex;
@@ -155,10 +181,51 @@
 }
 
 .infoGroupItem{
-  font-size: 10px;
+  font-size: 0.83rem;
   color: #333333;
   display: list-item; 
   list-style-type: disc;
   margin-left: 17px;
   line-height: 2;
+}
+
+.pageBreaker{
+  height: 30px;
+  /* note: 30px is the padding  */
+  width: calc(100% + 60px);
+  box-shadow: inset 0px 40px 0px rgba(0,0,0,0.1), inset 0px 0px 0px white;
+  margin: 20px 0 20px -30px;
+}
+
+/* for printer  */
+@media print {
+  .container{
+    width: 100%;
+    background: white;
+    /* left: 0px;
+    top: 0px;
+    position:absolute; */
+    font-size: 14px;
+  }
+  .widgetContainer{
+    display: none;
+  }
+
+  .pageContainer{
+    box-shadow: none;
+    width: 100%;
+    height: auto;
+    padding:30px 30px 40px;
+    max-width: none;
+    margin: 0;
+    font-size: 14px;
+  }
+
+  .pageBreaker {
+    page-break-before: always;
+    page-break-after: always;
+    height: initial;
+    box-shadow: none;
+    margin: 0;
+  }
 }

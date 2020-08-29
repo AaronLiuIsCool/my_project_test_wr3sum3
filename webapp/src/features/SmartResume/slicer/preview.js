@@ -1,4 +1,3 @@
-
 export const preview = {
   header: 0,
   work: 0,
@@ -16,7 +15,6 @@ function updateField(state, field, value) {
 }
 
 const reducers = {
-  
   updatelineNum: (state, action) => {
       updateField(state, action.payload.section, action.payload.value);
   },

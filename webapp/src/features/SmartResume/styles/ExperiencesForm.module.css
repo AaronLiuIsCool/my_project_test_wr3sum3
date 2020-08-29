@@ -5,3 +5,9 @@
   margin: 0 240px 0 200px;
   position: relative;
 }
+
+@media print {
+  .container{
+    display: none;
+  }
+}

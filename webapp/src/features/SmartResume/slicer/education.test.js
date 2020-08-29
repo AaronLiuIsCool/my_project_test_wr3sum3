@@ -182,7 +182,7 @@ describe("test education related functionalities", () => {
     });
 
     const { education: updateCountry } = resumeReducer(initialState, {
-      type: "resume/updateCountry",
+      type: "resume/updateEduCountry",
       payload: {
         value: "CANADA",
         index: 0,

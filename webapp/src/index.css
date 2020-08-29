@@ -1,4 +1,5 @@
-html {
+html{
+  font-size:14px;
   width: 100%;
   height: 100%;
 }
@@ -18,6 +19,12 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.features {
+  padding-top: 56px;
+}
+
+
 
 #root {
   width: 100%;

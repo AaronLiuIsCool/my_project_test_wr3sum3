@@ -6,20 +6,19 @@ import { dateRangeBuilder } from './common';
 import { anyBasicChanges } from '../../slicer/basic';
 
 import styles from '../../styles/ResumePreview.module.css';
-
+import PhotoUploadIcon from '../../assets/photoupload.svg';
 
 const HeaderSection = ({ basicData, educationData }) => {
 	const dispatch = useDispatch();
 	const messages = useI8n();
 
 	const updateReduxLineNum = () => {
-		dispatch(actions.updatelineNum({ value: 5, section: "header" }));
-
+		dispatch(actions.updatelineNum({ value: 5, section: 'header' }));
 	};
 
 	const render_HeaderAvatar = () => {
 		const avatar = basicData.avatar;
-		return <img src={avatar ? avatar : process.env.PUBLIC_URL + '/images/photoupload.svg'} alt="avatar" />;
+		return <img src={avatar ? avatar : PhotoUploadIcon} alt="avatar" />;
 	};
 	const render_HeaderTop = () => {
 		return (

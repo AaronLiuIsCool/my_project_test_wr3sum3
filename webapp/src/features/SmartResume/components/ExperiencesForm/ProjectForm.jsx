@@ -26,7 +26,7 @@ const resumeServices = new ResumeServices();
 
 const ProjectForm = ({ data, index, isLast = false, messages }) => {
 	const trigger = useSelector(assistantSelectors.selectTrigger);
-    const showAssistant = useSelector(assistantSelectors.selectShow);
+	const showAssistant = useSelector(assistantSelectors.selectShow);
 	const resumeId = useSelector(selectId);
 	const [validated, setValidated] = useState(false);
 	const [status, setStatus] = useState({
@@ -42,24 +42,25 @@ const ProjectForm = ({ data, index, isLast = false, messages }) => {
 	const dispatch = useDispatch();
 
 	const save = async () => {
-        let id;
-        try {
-            const response = (data.id === undefined) ?
-                await resumeServices.createProject(resumeId, adaptProject(data)) :
-                await resumeServices.updateProject(data.id, adaptProject(data));
-            const responseJson = await response.json();
-            id = responseJson.id;
-        } catch(exception) {
-            logger.error(exception);
-        } finally {
-            dispatch(actions.updateProjectId({ index, id }));
-        }
-    };
+		let id;
+		try {
+			const response =
+				data.id === undefined
+					? await resumeServices.createProject(resumeId, adaptProject(data))
+					: await resumeServices.updateProject(data.id, adaptProject(data));
+			const responseJson = await response.json();
+			id = responseJson.id;
+		} catch (exception) {
+			logger.error(exception);
+		} finally {
+			dispatch(actions.updateProjectId({ index, id }));
+		}
+	};
 
-		const handleSubmit = (event) => {
+	const handleSubmit = (event) => {
 		event.preventDefault();
 		event.stopPropagation();
-		
+
 		if (!validateProject(data)) {
 			setValidated(false);
 			return;
@@ -80,8 +81,8 @@ const ProjectForm = ({ data, index, isLast = false, messages }) => {
 		dispatch(actions.updateCurrentProjectFlag({ value, index }));
 
 		// reset the end date value if current project is true
-		if (value){
-			dispatch(actions.updateProjectEndDate({ value: "", index }));
+		if (value) {
+			dispatch(actions.updateProjectEndDate({ value: '', index }));
 		}
 	};
 
@@ -120,19 +121,20 @@ const ProjectForm = ({ data, index, isLast = false, messages }) => {
 		updateStatus(validateProjectEntry, status, setStatus, 'projectCountry', value);
 		dispatch(actions.updateProjectCountry({ value, index }));
 	};
-
-    const handleAssistantClick = () => {
-        dispatch(actions.toggleAssistant({
-            trigger: "project", 
-            context: {index, ...data}
-        }));
+	const handleAssistantClick = () => {
+		dispatch(
+			actions.toggleAssistant({
+				trigger: 'project',
+				context: { index, ...data },
+			})
+		);
 	};
-	
+
 	const assistantContainerClassNames = classNames({
-        'writeAssistantContainer': true,
-        'active': showAssistant && trigger === 'project'
-    });
-	
+		writeAssistantContainer: true,
+		active: showAssistant && trigger === 'project',
+	});
+
 	return (
 		<Form validated={validated} onSubmit={handleSubmit}>
 			<Row>
@@ -195,22 +197,24 @@ const ProjectForm = ({ data, index, isLast = false, messages }) => {
 						isInvalid={status.projectStartDate.isInvalid}
 					/>
 				</Col>
-				{data.currentProjectFlag && (<Col>
-					<SingleDatePicker
-						label={messages.projectEndDate}
-						id="project-graduate-date"
-						placeholder={messages.yymmdd}
-						value={data.projectEndDate}
-						allowPastDatesOnly={true}
-						readOnly={true}
-						monthFormat={messages.monthFormat}
-						displayFormat={messages.dateDisplayFormat}
-						onDateChange={handleProjectEndDateChange}
-						feedbackMessage={messages.entryIsInvalid}
-						isValid={status.projectEndDate.isValid}
-						isInvalid={status.projectEndDate.isInvalid}
-					/>
-				</Col>)}
+				{data.currentProjectFlag && (
+					<Col>
+						<SingleDatePicker
+							label={messages.projectEndDate}
+							id="project-graduate-date"
+							placeholder={messages.yymmdd}
+							value={data.projectEndDate}
+							allowPastDatesOnly={true}
+							readOnly={true}
+							monthFormat={messages.monthFormat}
+							displayFormat={messages.dateDisplayFormat}
+							onDateChange={handleProjectEndDateChange}
+							feedbackMessage={messages.entryIsInvalid}
+							isValid={status.projectEndDate.isValid}
+							isInvalid={status.projectEndDate.isInvalid}
+						/>
+					</Col>
+				)}
 				<Col>
 					<DropdownGroup
 						label={messages.city}
@@ -239,9 +243,9 @@ const ProjectForm = ({ data, index, isLast = false, messages }) => {
 				</Col>
 			</Row>
 			<Row>
-                <Col lg="12">
-                    {/*todo: replace with rich text editor */}
-                    <div className={assistantContainerClassNames}>
+				<Col lg="12">
+					{/*todo: replace with rich text editor */}
+					<div className={assistantContainerClassNames}>
 						<TextArea
 							label={messages.projectDetailsDescription}
 							id="volunteer-description"
@@ -249,13 +253,15 @@ const ProjectForm = ({ data, index, isLast = false, messages }) => {
 							value={data.projectDescription}
 							onChange={handleProjectDescriptionChange}
 						/>
-                        <span className='writeAssistant'>
-                            <WrittenAssistIcon />
-                            <Button variant="link" onClick={handleAssistantClick}>{messages.writeAssistant}</Button>
-                        </span>
-                    </div>
-                </Col>
-            </Row>
+						<span className="writeAssistant">
+							<WrittenAssistIcon />
+							<Button variant="link" onClick={handleAssistantClick}>
+								{messages.writeAssistant}
+							</Button>
+						</span>
+					</div>
+				</Col>
+			</Row>
 			<Row className="form_buttons">
 				<Col className="space_betweens">
 					{/* just a placeholder so we do need to change the css */}

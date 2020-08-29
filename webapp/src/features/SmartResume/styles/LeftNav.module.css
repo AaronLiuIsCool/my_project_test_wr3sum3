@@ -30,3 +30,9 @@
   border-top-left-radius: 30px;
   border-bottom-left-radius: 30px;
 }
+
+@media print {
+  .container{
+    display:none;
+  }
+}

@@ -40,7 +40,7 @@ export const resumeSlice = createSlice({
         ...project.reducers,
         ...volunteer.reducers,
         ...certificate.reducers,
-        ...preview.reducers
+        ...preview.reducers,
     }
 });
 

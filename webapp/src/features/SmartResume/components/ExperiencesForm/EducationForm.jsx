@@ -111,7 +111,7 @@ const EducationForm = ({ data, index, isLast = false, messages }) => {
     const handleCountryChange = (event) => {
         const value = event.target.value;
         updateStatus(validateEducationEntry, status, setStatus, "country", value);
-        dispatch(actions.updateCountry({value, index}));
+        dispatch(actions.updateEduCountry({value, index}));
     };
 
     return (

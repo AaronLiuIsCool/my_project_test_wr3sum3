@@ -8,7 +8,7 @@ import { anyProjectChanges } from '../../slicer/project';
 
 import styles from '../../styles/ResumePreview.module.css';
 
-const WorkExperience = ({ workData, projectData }) => {
+const WorkExperience = ({ workData, projectData, pageBreakCount }) => {
 	let workLineCount = 0;
 	const dispatch = useDispatch();
 
@@ -23,7 +23,7 @@ const WorkExperience = ({ workData, projectData }) => {
 			dispatch(actions.updatelineNum({ value: workLineCount, section: 'work' }));
 		},
 		//run it once after component mounted.
-		[workData, projectData] // eslint-disable-line react-hooks/exhaustive-deps
+		[dispatch, workData, projectData, workLineCount]
 	);
 
 	const messages = useI8n();
@@ -45,8 +45,9 @@ const WorkExperience = ({ workData, projectData }) => {
 							</div>
 						</div>
 						{updateLineCountBy(1)}
-						{render_pageBreaker(workLineCount + headerLineCount)}
-						{render_Description(work.workDescription, workLineCount)}
+						{render_pageBreaker(workLineCount + headerLineCount, pageBreakCount, pageBreakCount)}
+						{/* {workLineCount + headerLineCount} */}
+						{render_Description(work.workDescription, workLineCount + headerLineCount, pageBreakCount)}
 						{updateLineCountBy(work.workDescription.split('\n').length)}
 					</React.Fragment>
 				))}
@@ -62,7 +63,10 @@ const WorkExperience = ({ workData, projectData }) => {
 								{dateRangeBuilder(project.projectStartDate, project.projectEndDate)} {project.projectCity} {project.projectCountry}
 							</div>
 						</div>
-						{render_Description(project.projectDescription)}
+						{updateLineCountBy(1)}
+						{render_pageBreaker(workLineCount + headerLineCount, pageBreakCount)}
+						{/* {workLineCount + headerLineCount} */}
+						{render_Description(project.projectDescription, workLineCount + headerLineCount, pageBreakCount)}
 					</React.Fragment>
 				))}
 			</div>

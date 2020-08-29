@@ -54,7 +54,6 @@ const initialState = {
     }]
 };
 
-
 function updateField(state, idx, field, value) {
     state.education.data[idx][field] = value;
 }
@@ -90,7 +89,7 @@ const reducers = {
     updateEduCity: (state, action) => {
         updateField(state, action.payload.index, "city", action.payload.value);
     },
-    updateCountry: (state, action) => {
+    updateEduCountry: (state, action) => {
         updateField(state, action.payload.index, "country", action.payload.value);
     },
     updateHighestAward: (state, action) => {

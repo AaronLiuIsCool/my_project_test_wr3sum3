@@ -34,7 +34,7 @@ export function validateProjectEntry(name, value) {
 export const project = {
     id: undefined,
     projectRole: "",
-    currentProjectFlag: false,
+    currentProjectFlag: true,
     projectCompanyName: "",
     projectStartDate: "",
     projectEndDate: "",

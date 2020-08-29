@@ -54,17 +54,6 @@ describe("test basic form related functionalities", () => {
       ["city", "北京", true],
       ["city", "", undefined],
 
-      ["linkedin", undefined, false],
-      ["linkedin", 123, false],
-      ["linkedin", "http://123", false],
-      ["linkedin", "http://123.com", true],
-      ["linkedin", "", true],
-
-      ["weblink", undefined, false],
-      ["weblink", 123, false],
-      ["weblink", "http://123", false],
-      ["weblink", "http://123.com", true],
-      ["weblink", "", true]
     ];
 
     tests.forEach((test, index) =>

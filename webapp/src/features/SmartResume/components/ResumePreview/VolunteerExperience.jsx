@@ -7,7 +7,7 @@ import { anyVolunteerChanges } from '../../slicer/volunteer';
 
 import styles from '../../styles/ResumePreview.module.css';
 
-const VolunteerExperience = ({ volunteerData }) => {
+const VolunteerExperience = ({ volunteerData, pageBreakCount }) => {
 	let volunteerLineCount = 0;
 	const dispatch = useDispatch();
 	let { header: headerLineCount } = useSelector(previewSelectors.selectPreview).data;
@@ -19,7 +19,7 @@ const VolunteerExperience = ({ volunteerData }) => {
 
 	useEffect(() => {
 		dispatch(actions.updatelineNum({ value: volunteerLineCount, section: 'volunteer' }));
-	}, [volunteerData]); // eslint-disable-line react-hooks/exhaustive-deps
+	}, [dispatch, volunteerData, volunteerLineCount]);
 
 	const messages = useI8n();
 	if (anyVolunteerChanges(volunteerData)) {
@@ -40,8 +40,8 @@ const VolunteerExperience = ({ volunteerData }) => {
 							</div>
 						</div>
 						{updateLineCountBy(1)}
-						{render_pageBreaker(volunteerLineCount + workLineCount + headerLineCount)}
-						{render_Description(volunteer.volunteerDescription, volunteerLineCount)}
+						{render_pageBreaker(volunteerLineCount + workLineCount + headerLineCount, pageBreakCount)}
+						{render_Description(volunteer.volunteerDescription, volunteerLineCount + workLineCount + headerLineCount, pageBreakCount)}
 						{updateLineCountBy(volunteer.volunteerDescription.split('\n').length)}
 					</React.Fragment>
 				))}
