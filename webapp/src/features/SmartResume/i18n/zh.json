@@ -109,5 +109,8 @@
     "downloadResume": "下载简历",
     "perparingResume": "生成中..",
     "downLoadResume": "下载简历"
+  },
+  "resumeTips": {
+    "resumeTips": "简历编写小帖士"
   }
 }

@@ -1,0 +1,65 @@
+.container{
+  position: absolute;
+  bottom: 100px;
+  right: 40px;
+  width: 360px;
+  height: 740px;
+  border-radius: 8px;
+  padding: 1.25rem;
+  box-shadow: 0 12px 24px 0 rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  color: #333;
+}
+.header{
+  font-size: 24px;
+  padding: 1.25rem 0;
+}
+
+.dropdown select{
+  height: 42px;
+  width:100%;
+  padding: 0.625rem;
+  border-radius: 8px;
+  border: solid 1px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.08);
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.card{
+  border:none;
+}
+.cardHader,
+.cardBody{
+  text-align:left;
+  color: #333;
+}
+.cardHader{
+  background:white;
+  border:none;
+  padding: 1.25rem 0;
+}
+.cardHader button{
+  font-size: 16px;
+  font-weight: bold;
+  border:none;
+  color: #333;
+  background:white;
+  text-align:left;
+  padding:0;
+}
+.cardHader button:hover{
+  text-decoration: none;
+}
+.cardHader button:active,
+.cardHader button:focus{
+  outline:none;
+  box-shadow: none;
+}
+
+.cardBody{
+  border-radius: 4px;
+  background-color: #f2f4f9;
+  font-size: 14px;
+  position:relative;
+}

@@ -25,20 +25,20 @@ const logger = getLogger('WorkForm');
 const resumeServices = new ResumeServices();
 
 const WorkForm = ({ data, index, isLast = false, messages }) => {
-    const trigger = useSelector(assistantSelectors.selectTrigger);
-    const showAssistant = useSelector(assistantSelectors.selectShow);
-    const resumeId = useSelector(selectId);
-    const [validated, setValidated] = useState(false);
-    const [status, setStatus] = useState({
-        workName: {},
-        workCompanyName: {},
-        workStartDate: {},
-        workEndDate: {},
-        workCity: {},
-        workCountry: {},
-        workDescription: {},
-    });
-    const dispatch = useDispatch();
+	const trigger = useSelector(assistantSelectors.selectTrigger);
+	const showAssistant = useSelector(assistantSelectors.selectShow);
+	const resumeId = useSelector(selectId);
+	const [validated, setValidated] = useState(false);
+	const [status, setStatus] = useState({
+		workName: {},
+		workCompanyName: {},
+		workStartDate: {},
+		workEndDate: {},
+		workCity: {},
+		workCountry: {},
+		workDescription: {},
+	});
+	const dispatch = useDispatch();
 
     const save = async () => {
         let id;
@@ -54,22 +54,22 @@ const WorkForm = ({ data, index, isLast = false, messages }) => {
         }
     };
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        if (!validateWork(data)) {
-            setValidated(false);
-            return;
-        }
-        setValidated(true);
-        save();
-    };
+	const handleSubmit = (event) => {
+		event.preventDefault();
+		event.stopPropagation();
+		if (!validateWork(data)) {
+			setValidated(false);
+			return;
+		}
+		setValidated(true);
+		save();
+	};
 
-    const handleWorkChange = (event) => {
-        const value = event.target.value;
-        updateStatus(validateWorkEntry, status, setStatus, 'workName', value);
-        dispatch(actions.updateWorkName({ value, index }));
-    };
+	const handleWorkChange = (event) => {
+		const value = event.target.value;
+		updateStatus(validateWorkEntry, status, setStatus, 'workName', value);
+		dispatch(actions.updateWorkName({ value, index }));
+	};
 
     const handleCurrentWorkFlagChange = (event) => {
         const value = event.target.value;
@@ -85,23 +85,23 @@ const WorkForm = ({ data, index, isLast = false, messages }) => {
         dispatch(actions.updateWorkCompanyName({ value, index }));
     };
 
-    const handleWorkStartDateChange = (date) => {
-        const value = date ? date.toISOString() : undefined;
-        updateStatus(validateWorkEntry, status, setStatus, 'workStartDate', value);
-        dispatch(actions.updateWorkStartDate({ value, index }));
-    };
+	const handleWorkStartDateChange = (date) => {
+		const value = date ? date.toISOString() : undefined;
+		updateStatus(validateWorkEntry, status, setStatus, 'workStartDate', value);
+		dispatch(actions.updateWorkStartDate({ value, index }));
+	};
 
-    const handleWorkEndDateChange = (date) => {
-        const value = date ? date.toISOString() : undefined;
-        updateStatus(validateWorkEntry, status, setStatus, 'workEndDate', value);
-        dispatch(actions.updateWorkEndDate({ value, index }));
-    };
+	const handleWorkEndDateChange = (date) => {
+		const value = date ? date.toISOString() : undefined;
+		updateStatus(validateWorkEntry, status, setStatus, 'workEndDate', value);
+		dispatch(actions.updateWorkEndDate({ value, index }));
+	};
 
-    const handleWorkCityChange = (values) => {
-        const value = values.length === 0 ? null : values[0].city;
-        updateStatus(validateWorkEntry, status, setStatus, 'workCity', value);
-        dispatch(actions.updateWorkCity({ value, index }));
-    };
+	const handleWorkCityChange = (values) => {
+		const value = values.length === 0 ? null : values[0].city;
+		updateStatus(validateWorkEntry, status, setStatus, 'workCity', value);
+		dispatch(actions.updateWorkCity({ value, index }));
+	};
 
     const handleWorkCountryChange = (event) => {
         const value = event.target.value;
@@ -127,69 +127,69 @@ const WorkForm = ({ data, index, isLast = false, messages }) => {
         'active': showAssistant && trigger === 'work'
     });
 
-    return (
-        <Form validated={validated} onSubmit={handleSubmit}>
-            <Row>
-                <Col>
-                    <h2 className="form_h2">{messages.enterNewExperience}</h2>
-                </Col>
-            </Row>
-            <Row>
-                <Col lg="4">
-                    <InputGroup
-                        label={messages.workName}
-                        id="work-name"
-                        placeholder={messages.enterWorkName}
-                        value={data.workName}
-                        onChange={handleWorkChange}
-                        feedbackMessage={messages.entryIsInvalid}
-                        isValid={status.workName.isValid}
-                        isInvalid={status.workName.isInvalid}
-                    />
-                </Col>
-                <Col lg="2">
-                    <RadioButtonGroup
-                        label={messages.stillAtWork}
-                        id="work-currentWorkFlag"
-                        values={[
-                            { label: messages.yes, value: true },
-                            { label: messages.no, value: false },
-                        ]}
-                        value={data.currentWorkFlag}
-                        onClickHandler={handleCurrentWorkFlagChange}
-                    />
-                </Col>
-                <Col lg="6">
-                    <InputGroup
-                        label={messages.companyName}
-                        id="work-company"
-                        placeholder={messages.enterCompanyName}
-                        value={data.workCompanyName}
-                        onChange={handleWorkCompanyNameChange}
-                        feedbackMessage={messages.entryIsInvalid}
-                        isValid={status.workCompanyName.isValid}
-                        isInvalid={status.workCompanyName.isInvalid}
-                    />
-                </Col>
-            </Row>
+	return (
+		<Form validated={validated} onSubmit={handleSubmit}>
+			<Row>
+				<Col>
+					<h2 className="form_h2">{messages.enterNewExperience}</h2>
+				</Col>
+			</Row>
+			<Row>
+				<Col lg="4">
+					<InputGroup
+						label={messages.workName}
+						id="work-name"
+						placeholder={messages.enterWorkName}
+						value={data.workName}
+						onChange={handleWorkChange}
+						feedbackMessage={messages.entryIsInvalid}
+						isValid={status.workName.isValid}
+						isInvalid={status.workName.isInvalid}
+					/>
+				</Col>
+				<Col lg="2">
+					<RadioButtonGroup
+						label={messages.stillAtWork}
+						id="work-currentWorkFlag"
+						values={[
+							{ label: messages.yes, value: true },
+							{ label: messages.no, value: false },
+						]}
+						value={data.currentWorkFlag}
+						onClickHandler={handleCurrentWorkFlagChange}
+					/>
+				</Col>
+				<Col lg="6">
+					<InputGroup
+						label={messages.companyName}
+						id="work-company"
+						placeholder={messages.enterCompanyName}
+						value={data.workCompanyName}
+						onChange={handleWorkCompanyNameChange}
+						feedbackMessage={messages.entryIsInvalid}
+						isValid={status.workCompanyName.isValid}
+						isInvalid={status.workCompanyName.isInvalid}
+					/>
+				</Col>
+			</Row>
 
-            <Row>
-                <Col>
-                    <SingleDatePicker
-                        label={messages.workStartDate}
-                        id="work-start-date"
-                        placeholder={messages.yymmdd}
-                        value={data.workStartDate}
-                        allowPastDatesOnly={true}
-                        readOnly={true}
-                        monthFormat={messages.monthFormat}
-                        displayFormat={messages.dateDisplayFormat}
-                        onDateChange={handleWorkStartDateChange}
-                        feedbackMessage={messages.entryIsInvalid}
-                        isValid={status.workStartDate.isValid}
-                        isInvalid={status.workStartDate.isInvalid}
-                    />
-                </Col>
+			<Row>
+				<Col>
+					<SingleDatePicker
+						label={messages.workStartDate}
+						id="work-start-date"
+						placeholder={messages.yymmdd}
+						value={data.workStartDate}
+						allowPastDatesOnly={true}
+						readOnly={true}
+						monthFormat={messages.monthFormat}
+						displayFormat={messages.dateDisplayFormat}
+						onDateChange={handleWorkStartDateChange}
+						feedbackMessage={messages.entryIsInvalid}
+						isValid={status.workStartDate.isValid}
+						isInvalid={status.workStartDate.isInvalid}
+					/>
+				</Col>
 
                 {data.currentWorkFlag && (
                     <Col>
@@ -270,10 +270,10 @@ const WorkForm = ({ data, index, isLast = false, messages }) => {
 };
 
 WorkForm.propTypes = {
-    data: PropTypes.object.isRequired,
-    index: PropTypes.number.isRequired,
-    isLast: PropTypes.bool,
-    messages: PropTypes.object.isRequired,
+	data: PropTypes.object.isRequired,
+	index: PropTypes.number.isRequired,
+	isLast: PropTypes.bool,
+	messages: PropTypes.object.isRequired,
 };
 
 export default WorkForm;

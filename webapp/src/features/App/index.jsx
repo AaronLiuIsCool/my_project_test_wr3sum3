@@ -24,9 +24,9 @@ import './styles/index.scss';
 import zh from './i18n/zh.json';
 import en from './i18n/en.json';
 
+
 const authServices = new AuthServices();
 const logger = getLogger('App');
-
 async function isAuthenticated(dispatch) {
   let authInfo = {}
   try {
@@ -41,7 +41,6 @@ async function isAuthenticated(dispatch) {
   }
   
 }
-
 const App = ({ waitForInit = true }) => {
   const [init, setInit] = useState(false);
   const language = useSelector(selectLanguage);

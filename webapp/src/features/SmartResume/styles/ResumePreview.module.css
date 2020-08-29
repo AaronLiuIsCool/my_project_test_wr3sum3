@@ -197,35 +197,23 @@
   margin: 20px 0 20px -30px;
 }
 
-/* for printer  */
-@media print {
-  .container{
-    width: 100%;
-    background: white;
-    /* left: 0px;
-    top: 0px;
-    position:absolute; */
-    font-size: 14px;
-  }
-  .widgetContainer{
-    display: none;
-  }
+/* resume tips style  */
+.modalCloseButton{
+  width: 40px;
+  height: 40px;
+  position:absolute;
+  top: 10px;
+  right: 40px;
+  z-index: 1;
+  cursor:pointer;
+}
 
-  .pageContainer{
-    box-shadow: none;
-    width: 100%;
-    height: auto;
-    padding:30px 30px 40px;
-    max-width: none;
-    margin: 0;
-    font-size: 14px;
-  }
-
-  .pageBreaker {
-    page-break-before: always;
-    page-break-after: always;
-    height: initial;
-    box-shadow: none;
-    margin: 0;
-  }
+.modalCloseButton:hover .closeImg{
+  display: none;
+}
+.modalCloseButton .closeImgOnHover{
+  display: none;
+}
+.modalCloseButton:hover .closeImgOnHover{
+  display: block;
 }

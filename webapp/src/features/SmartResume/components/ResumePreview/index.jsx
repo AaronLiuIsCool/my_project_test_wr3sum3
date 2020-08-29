@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { useI8n } from 'shell/i18n';
 import { basicSelectors, educationSelectors, workSelectors, projectSelectors, volunteerSelectors, previewSelectors } from './../../slicer/';
 
+import ResumeTips from './ResumeTips';
 import HeaderSection from './HeaderSection';
 import WorkExperience from './WorkExperience';
 import VolunteerExperience from './VolunteerExperience';
@@ -10,6 +11,8 @@ import { downloadPDF } from './resumeBuilder';
 
 import styles from '../../styles/ResumePreview.module.css';
 import DownloadIcon from '../../assets/download_white.svg';
+import CloseHoverIcon from '../../assets/close_hover.svg';
+import CloseRegularIcon from '../../assets/close_regular.svg';
 
 
 const ResumePreview = () => {
@@ -26,6 +29,7 @@ const ResumePreview = () => {
 
 	const [lineHeight, setLineHeight] = useState('1.5em');
 	const [fontSize, setFontSize] = useState('12px');
+	const [resumeTipsModal, setResumeTipsModal] = useState(false);//todo: update
 	const [pageBreakCount, setPageBreakCount] = useState(30);
 
 	const lineHeightStyle = {
@@ -35,7 +39,6 @@ const ResumePreview = () => {
 
 	const adjustToWholePage = () => {
 		const totalLineCount = headerLineCount + workLineCount + volunteerLineCount;
-		console.log('adjust', totalLineCount, pageBreakCount);
 		if (totalLineCount > pageBreakCount && totalLineCount < pageBreakCount * 1.5) {
 			setLineHeight('1em');
 			setFontSize('11px');
@@ -48,6 +51,8 @@ const ResumePreview = () => {
 			alert('Too big');
 		}
 	};
+
+
 
 	return (
 		<div className={styles.container}>
@@ -64,9 +69,15 @@ const ResumePreview = () => {
 					<button onClick={() => downloadPDF({basicData, educationData, workData, projectData, volunteerData, messagesRP:messages.RPreview})}>
 						<img src={DownloadIcon} alt="download" /> {messages.RPreview.downloadResume}
 					</button>
-					<button className={styles.circle}>?</button>
+					<button className={styles.circle} onClick={() => setResumeTipsModal(true)}>?</button>
 				</div>
 			</div>
+			{/* ResumeTips close button  */}
+			{resumeTipsModal &&<div className={styles.modalCloseButton} onClick={() => setResumeTipsModal(false)}>
+				<img src={CloseRegularIcon} alt="Close" className={styles.closeImg} />
+				<img src={CloseHoverIcon} alt="Close" className={styles.closeImgOnHover} />
+			</div>}
+			{resumeTipsModal && <ResumeTips />}
 		</div>
 	);
 };

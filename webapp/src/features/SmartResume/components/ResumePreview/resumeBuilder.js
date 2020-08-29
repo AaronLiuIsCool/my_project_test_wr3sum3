@@ -1,4 +1,6 @@
-import { jsPDF } from "jspdf";
+// todo: after this issue has been released, we can upgrade the version of jsPDF to the lastest version and import using the following way：
+// import { jsPDF } from "jspdf";
+import * as jsPDF from 'jspdf';
 import { dateRangeBuilder } from "./common";
 
 // static variable
@@ -7,8 +9,8 @@ const c_black = "#333333";
 const c_grey = "#8e94a7";
 
 // size
-const pdfPageWidth = 210; // width of A4 in mm
-// const pdfPageHeight = 320; // Height of A4 in mm
+var pdfPageWidth = 210; // width of A4 in mm
+// var pdfPageHeight = 320; // Height of A4 in mm
 const pdfTopPadding = 20;
 const pdfLeftPadding = 15;
 const titleFontSize = 19;
@@ -244,7 +246,7 @@ const _perpareWork = (workData, messagesRP) => {
           }
         }
 
-
+        
         // increment the height for the next print
         const height = doc.getTextDimensions(wrappedContent).h;
         _updateCurrentYPos(height + paragraphLineHeight / 2);
@@ -324,7 +326,7 @@ const _perpareProject = (projectData) => {
           }
         }
 
-
+        
         // increment the height for the next print
         const height = doc.getTextDimensions(wrappedContent).h;
         _updateCurrentYPos(height + paragraphLineHeight / 2);
@@ -415,7 +417,7 @@ const _perpareVolunteer = (volunteerData, messagesRP) => {
           }
         }
 
-
+        
         // increment the height for the next print
         const height = doc.getTextDimensions(wrappedContent).h;
         _updateCurrentYPos(height + paragraphLineHeight / 2);
