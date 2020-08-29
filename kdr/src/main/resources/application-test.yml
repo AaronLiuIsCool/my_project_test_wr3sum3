@@ -3,3 +3,7 @@ management:
     web:
       exposure:
         include: "*"
+kdr:
+  cors:
+    enabled: true
+    webapp_origin: http://app.kuaidaoresume-v2.local/

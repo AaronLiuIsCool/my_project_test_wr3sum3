@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import { BrowserRouter, Route, Switch  } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 
+import AuthServices from 'shell/services/AuthServices';
 import { I8nContext } from 'shell/i18n';
-import { selectLanguage } from './slicer';
+import { selectLanguage, updateAuthInfo } from './slicer';
 
+import PrivateRoute from './components/PrivateRoute';
 import Navigation from './components/Navigation';
 import ResumeHub from 'features/ResumeHub';
 import ResumeStarter from 'features/ResumeStarter';
@@ -20,8 +23,25 @@ import './styles/index.scss';
 import zh from './i18n/zh.json';
 import en from './i18n/en.json';
 
-const App = () => {
+const authServices = new AuthServices();
+
+async function isAuthenticated(dispatch) {
+  const response = await authServices.findWhoAmI();
+  const responseJson = await response.json();
+  console.log(responseJson); // TODO: Remove before we go out to prod
+  dispatch(updateAuthInfo(responseJson));
+}
+
+const App = ({ waitForInit = true }) => {
+  const [init, setInit] = useState(false);
   const language = useSelector(selectLanguage);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    isAuthenticated(dispatch).then(() => setInit(true));
+    const interval = window.setInterval(() => isAuthenticated(dispatch), 60 * 60 * 1000);
+    return () => clearInterval(interval);
+  }, []); // eslint-disable-line
 
   let messages = en;
   moment.locale('en');
@@ -30,16 +50,20 @@ const App = () => {
     moment.locale('zh-cn');
   }
 
+  if (waitForInit && !init) {
+    return <React.Fragment />;
+  }
+
   return (
     <I8nContext.Provider value={messages}>
       <BrowserRouter>
         <div className="App">
           <Navigation />
           <Switch>
-            <Route exact path="/" component={ResumeHub} />
-            <Route exact path="/resume" component={SmartResume} />
-            <Route path="/resume/new" component={ResumeStarter} />
-            <Route path="/jobs" component={JobsMatcher} />
+            <PrivateRoute exact path="/" component={ResumeHub} />
+            <PrivateRoute exact path="/resume" component={SmartResume} />
+            <PrivateRoute path="/resume/new" component={ResumeStarter} />
+            <PrivateRoute path="/jobs" component={JobsMatcher} />
             <Route component={Page404} />
             <Route path="/404" component={Page404} />
           </Switch>
@@ -48,5 +72,9 @@ const App = () => {
     </I8nContext.Provider>
   );
 };
+
+App.propTypes = {
+  waitForInit: PropTypes.bool
+}
 
 export default App;

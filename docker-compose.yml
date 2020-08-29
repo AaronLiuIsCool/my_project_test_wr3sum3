@@ -1,4 +1,4 @@
-version: '3.7'
+version: "3.7"
 
 services:
   account-service:
@@ -123,14 +123,14 @@ services:
       - internal_access
       - external_access
 
-#    app-service:
-#      build:
-#        context: ./webapp
-#        dockerfile: Dockerfile
-#      image: kuaidaoresume/app-spa
-#      networks:
-#        - internal_access
-#        - external_access #TBD
+  app-service:
+    build:
+      context: ./webapp
+      dockerfile: Dockerfile
+    image: kuaidaoresume/app-spa
+    networks:
+      - internal_access
+      - external_access #TBD
 
   kdr-service:
     build: ./kdr
@@ -148,7 +148,7 @@ services:
       - www-service
       - whoami-service
       - job-service
-#      - app-service
+      - app-service
     networks:
       - internal_access
       - external_access

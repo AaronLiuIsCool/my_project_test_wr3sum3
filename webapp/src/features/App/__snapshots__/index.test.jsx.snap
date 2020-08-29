@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renders App 1`] = `
+exports[`App tests renders App 1`] = `
 <div
   className="App"
 >
@@ -95,8 +95,5 @@ exports[`renders App 1`] = `
       </div>
     </div>
   </nav>
-  <div>
-    Loading...
-  </div>
 </div>
 `;

@@ -1,14 +1,14 @@
-FROM node:alpine as builder
-WORKDIR '/build'
-#SY please fill-out the copy as you want to architecture.
-COPY A ./A
+FROM node:12-alpine as builder
 
-WORKDIR '/build/A'
+WORKDIR '/usr/app'
 
+# install dependencies
+COPY package.json ./
+COPY yarn.lock ./
+RUN yarn install --silent
+
+# add app and run
+COPY . ./
 RUN yarn build
-#RUN TBD
 
-#SY please fill-out the copy as you want to architecture.
-RUN ls /build/A/dist
-
-# EXPOSE 80 as you want
+CMD ["yarn", "serve"]

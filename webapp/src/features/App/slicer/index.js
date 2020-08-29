@@ -11,13 +11,20 @@ const appSlicers = createSlice({
     },
     updatePath: (state, action) => {
       state.path = action.payload;
+    },
+    updateAuthInfo: (state, action) => {
+      const loginBypass = localStorage.getItem('kdr-login-bypass') === 'true'; // TODO: Remove before we go out to prod
+      const authInfo = action.payload;
+      state.authenticated = loginBypass || authInfo.success;
+      state.iam = authInfo.iam;
     }
   },
 });
 
-export const { updateLanguage, updatePath } = appSlicers.actions;
+export const { updateLanguage, updatePath, updateAuthInfo } = appSlicers.actions;
 
 export const selectLanguage = ({app}) => app.language;
 export const selectPath = ({app}) => app.path;
+export const selectAuthentication = ({app}) => app.authenticated;
 
 export default appSlicers.reducer;

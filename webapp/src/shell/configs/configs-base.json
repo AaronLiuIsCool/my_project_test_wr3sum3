@@ -1,10 +1,11 @@
 {
   "env": "preprod",
 
+  "login-url": "http://www.kuaidaoresume-v2.local/login",
+
   "services-account-baseUrl": "account.kuaidaoresume-v2.local",
 
-  "services-resume-baseUrl-real": "resume.kuaidaoresume-v2.local",
-  "services-resume-baseUrl": "localhost:8082",
+  "services-resume-baseUrl": "resume.kuaidaoresume-v2.local",
 
   "services-job-baseUrl": "job.kuaidaoresume-v2.local",
 
@@ -12,5 +13,5 @@
 
   "services-mail-baseUrl": "mail.kuaidaoresume-v2.local",
 
-  "services-whoami-baseUrl": "whoami.kuaidaoresume-v2.local"
+  "services-auth-baseUrl": "whoami.kuaidaoresume-v2.local"
 }

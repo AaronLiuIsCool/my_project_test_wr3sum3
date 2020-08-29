@@ -5,12 +5,15 @@ import renderer from 'react-test-renderer';
 import store from 'store';
 import App from '.';
 
-test('renders App', () => {
-  const app = renderer.create(
-    <Provider store={store}>
-      <App />
-    </Provider>
-  ).toJSON();
-
-  expect(app).toMatchSnapshot();
+describe("App tests", () => {
+  test('renders App', () => {
+    const app = renderer.create(
+      <Provider store={store}>
+        <App waitForInit={false} />
+      </Provider>
+    ).toJSON();
+  
+    expect(app).toMatchSnapshot();
+  });
+  
 });

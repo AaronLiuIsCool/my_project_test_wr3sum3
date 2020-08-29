@@ -37,6 +37,10 @@ kdr:
       name: www_route
       host: www.kuaidaoresume-v2.local
       destinations: localhost:8086
+    -
+      name: app_route
+      host: app.kuaidaoresume-v2.local
+      destinations: localhost:9102
 
 management:
   endpoints:

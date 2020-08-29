@@ -187,9 +187,17 @@ To run migration from maven cli:
 `mvn flyway:migrate`
 
 ## Web UI
+#### Run app locally
 1. `cd webapp`
 2. `yarn`
 3. For develop build use `yarn start`
+
+#### Run app via Docker
+- Follow the docker steps above, it will automatically create an image based on the code on your local
+- To update with changes, you do not need to restart all containers. Just need to run `docker-compose up --force-recreate --build -d app-service`
+
+#### Bypass login
+Login is enabled, to bypass that, please run `localStorage.setItem('kdr-login-bypass',true);` in your browser console
 
 Please see [guidelines for webapp](webapp/README.md) for more details
 

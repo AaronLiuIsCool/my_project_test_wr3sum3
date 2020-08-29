@@ -14,6 +14,7 @@ export function getServiceUrl(baseUrl, api) {
 export async function get(url,  options) {
   const headers = getHeaders();
   const request = new Request(url, {
+    credentials: 'include',
     method: 'GET',
     headers
   });
@@ -23,6 +24,7 @@ export async function get(url,  options) {
 export async function post(url, data, options) {
   const headers = getHeaders();
   const request = new Request(url, {
+    credentials: 'include',
     method: 'POST',
     headers,
     body: JSON.stringify(data)
@@ -33,6 +35,7 @@ export async function post(url, data, options) {
 export async function put(url, data, options) {
   const headers = getHeaders();
   const request = new Request(url, {
+    credentials: 'include',
     method: 'PUT',
     headers,
     body: JSON.stringify(data)
