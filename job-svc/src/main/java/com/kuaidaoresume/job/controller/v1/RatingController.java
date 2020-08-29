@@ -22,7 +22,6 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/v1")
 @RequiredArgsConstructor
-
 public class RatingController {
 
     static final ILogger logger = SLoggerFactory.getLogger(RatingController.class);
@@ -36,12 +35,10 @@ public class RatingController {
     @Autowired
     private final RatingRepresentationModelAssembler ratingRepresentationModelAssembler;
 
-
     @Authorize(value = {
         AuthConstant.AUTHORIZATION_WWW_SERVICE,
         AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
         AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
-        AuthConstant.AUTHORIZATION_BOT_SERVICE,
         AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
         AuthConstant.AUTHORIZATION_SUPPORT_USER,
         AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
@@ -62,7 +59,6 @@ public class RatingController {
             AuthConstant.AUTHORIZATION_WWW_SERVICE,
             AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
             AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
-            AuthConstant.AUTHORIZATION_BOT_SERVICE,
             AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
             AuthConstant.AUTHORIZATION_SUPPORT_USER,
             AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
@@ -83,7 +79,6 @@ public class RatingController {
             AuthConstant.AUTHORIZATION_WWW_SERVICE,
             AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
             AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
-            AuthConstant.AUTHORIZATION_BOT_SERVICE,
             AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
             AuthConstant.AUTHORIZATION_SUPPORT_USER,
             AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
@@ -106,7 +101,6 @@ public class RatingController {
             AuthConstant.AUTHORIZATION_WWW_SERVICE,
             AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
             AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
-            AuthConstant.AUTHORIZATION_BOT_SERVICE,
             AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
             AuthConstant.AUTHORIZATION_SUPPORT_USER,
             AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
@@ -127,7 +121,6 @@ public class RatingController {
             AuthConstant.AUTHORIZATION_WWW_SERVICE,
             AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
             AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
-            AuthConstant.AUTHORIZATION_BOT_SERVICE,
             AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
             AuthConstant.AUTHORIZATION_SUPPORT_USER,
             AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
@@ -148,7 +141,6 @@ public class RatingController {
             AuthConstant.AUTHORIZATION_WWW_SERVICE,
             AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
             AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
-            AuthConstant.AUTHORIZATION_BOT_SERVICE,
             AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
             AuthConstant.AUTHORIZATION_SUPPORT_USER,
             AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
@@ -171,7 +163,6 @@ public class RatingController {
             AuthConstant.AUTHORIZATION_WWW_SERVICE,
             AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
             AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
-            AuthConstant.AUTHORIZATION_BOT_SERVICE,
             AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
             AuthConstant.AUTHORIZATION_SUPPORT_USER,
             AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
@@ -192,7 +183,6 @@ public class RatingController {
             AuthConstant.AUTHORIZATION_WWW_SERVICE,
             AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
             AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
-            AuthConstant.AUTHORIZATION_BOT_SERVICE,
             AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
             AuthConstant.AUTHORIZATION_SUPPORT_USER,
             AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
@@ -209,6 +199,14 @@ public class RatingController {
         return ResponseEntity.badRequest().build();
     }
 
+    @Authorize(value = {
+            AuthConstant.AUTHORIZATION_WWW_SERVICE,
+            AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
+            AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
+            AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
+            AuthConstant.AUTHORIZATION_SUPPORT_USER,
+            AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
+    })
     @PostMapping("/ratings/major")
     public ResponseEntity<EntityModel<PersistedRatingDto>> createMajorRating(
             @Valid @RequestBody

@@ -66,7 +66,7 @@ public class LoginController {
 
         // if logged in - go away
         if (!StringUtils.isEmpty(AuthContext.getAuthz()) && !AuthConstant.AUTHORIZATION_ANONYMOUS_WEB.equals(AuthContext.getAuthz())) {
-            String url = HelperService.buildUrl("http", "myaccount." + envConfig.getExternalApex());
+            String url = HelperService.buildUrl("http", "app." + envConfig.getExternalApex());
             return "redirect:" + url;
         }
 
@@ -115,7 +115,7 @@ public class LoginController {
                     }
                     // sanitize
                     if (!isValidSub(returnTo)) {
-                        returnTo = HelperService.buildUrl(scheme, "myaccount." + envConfig.getExternalApex());
+                        returnTo = HelperService.buildUrl(scheme, "app." + envConfig.getExternalApex());
                     }
                 }
 

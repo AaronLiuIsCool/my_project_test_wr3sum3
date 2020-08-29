@@ -25,7 +25,6 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/v1")
 @RequiredArgsConstructor
-
 public class KeywordController {
 
     static final ILogger logger = SLoggerFactory.getLogger(KeywordController.class);
@@ -43,7 +42,6 @@ public class KeywordController {
             AuthConstant.AUTHORIZATION_WWW_SERVICE,
             AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
             AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
-            AuthConstant.AUTHORIZATION_BOT_SERVICE,
             AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
             AuthConstant.AUTHORIZATION_SUPPORT_USER,
             AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
@@ -61,7 +59,6 @@ public class KeywordController {
             AuthConstant.AUTHORIZATION_WWW_SERVICE,
             AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
             AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
-            AuthConstant.AUTHORIZATION_BOT_SERVICE,
             AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
             AuthConstant.AUTHORIZATION_SUPPORT_USER,
             AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
@@ -76,7 +73,6 @@ public class KeywordController {
             AuthConstant.AUTHORIZATION_WWW_SERVICE,
             AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
             AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
-            AuthConstant.AUTHORIZATION_BOT_SERVICE,
             AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
             AuthConstant.AUTHORIZATION_SUPPORT_USER,
             AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
@@ -91,7 +87,6 @@ public class KeywordController {
             AuthConstant.AUTHORIZATION_WWW_SERVICE,
             AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
             AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
-            AuthConstant.AUTHORIZATION_BOT_SERVICE,
             AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
             AuthConstant.AUTHORIZATION_SUPPORT_USER,
             AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
@@ -112,7 +107,6 @@ public class KeywordController {
             AuthConstant.AUTHORIZATION_WWW_SERVICE,
             AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
             AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
-            AuthConstant.AUTHORIZATION_BOT_SERVICE,
             AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
             AuthConstant.AUTHORIZATION_SUPPORT_USER,
             AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE

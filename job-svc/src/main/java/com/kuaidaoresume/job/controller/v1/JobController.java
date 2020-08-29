@@ -27,7 +27,6 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/v1")
 @RequiredArgsConstructor
-
 public class JobController {
 
     static final ILogger logger = SLoggerFactory.getLogger(JobController.class);
@@ -44,12 +43,10 @@ public class JobController {
     @Autowired
     private final ModelMapper modelMapper;
 
-
     @Authorize(value = {
             AuthConstant.AUTHORIZATION_WWW_SERVICE,
             AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
             AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
-            AuthConstant.AUTHORIZATION_BOT_SERVICE,
             AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
             AuthConstant.AUTHORIZATION_SUPPORT_USER,
             AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
@@ -67,7 +64,6 @@ public class JobController {
             AuthConstant.AUTHORIZATION_WWW_SERVICE,
             AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
             AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
-            AuthConstant.AUTHORIZATION_BOT_SERVICE,
             AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
             AuthConstant.AUTHORIZATION_SUPPORT_USER,
             AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
@@ -82,7 +78,6 @@ public class JobController {
             AuthConstant.AUTHORIZATION_WWW_SERVICE,
             AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
             AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
-            AuthConstant.AUTHORIZATION_BOT_SERVICE,
             AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
             AuthConstant.AUTHORIZATION_SUPPORT_USER,
             AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
@@ -116,7 +111,6 @@ public class JobController {
             AuthConstant.AUTHORIZATION_WWW_SERVICE,
             AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
             AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
-            AuthConstant.AUTHORIZATION_BOT_SERVICE,
             AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
             AuthConstant.AUTHORIZATION_SUPPORT_USER,
             AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
@@ -137,7 +131,6 @@ public class JobController {
             AuthConstant.AUTHORIZATION_WWW_SERVICE,
             AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
             AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
-            AuthConstant.AUTHORIZATION_BOT_SERVICE,
             AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
             AuthConstant.AUTHORIZATION_SUPPORT_USER,
             AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
@@ -159,7 +152,6 @@ public class JobController {
             AuthConstant.AUTHORIZATION_WWW_SERVICE,
             AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
             AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
-            AuthConstant.AUTHORIZATION_BOT_SERVICE,
             AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
             AuthConstant.AUTHORIZATION_SUPPORT_USER,
             AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
@@ -179,7 +171,6 @@ public class JobController {
             AuthConstant.AUTHORIZATION_WWW_SERVICE,
             AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
             AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
-            AuthConstant.AUTHORIZATION_BOT_SERVICE,
             AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
             AuthConstant.AUTHORIZATION_SUPPORT_USER,
             AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE

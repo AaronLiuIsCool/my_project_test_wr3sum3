@@ -95,7 +95,6 @@ public class AccountController {
             AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
             AuthConstant.AUTHORIZATION_RESUME_SERVICE,
             AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
-            AuthConstant.AUTHORIZATION_BOT_SERVICE,
             AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
             AuthConstant.AUTHORIZATION_SUPPORT_USER,
             AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
