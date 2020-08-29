@@ -187,17 +187,26 @@ To run migration from maven cli:
 `mvn flyway:migrate`
 
 ## Web UI
+
+#### One time setup
+
+Add `127.0.0.1 app.kuaidaoresume-v2.local` to `/etc/hosts` or use smarthost
+
 #### Run app locally
 1. `cd webapp`
 2. `yarn`
 3. For develop build use `yarn start`
+
+Note: 
+- run yarn start will try start the application on port 80 which if you have docker or k8s running for backend, you will not be able to get port 80 unless you change the backend or webapp to use a different port
+- You might need to run `sudo` to run on port 80
 
 #### Run app via Docker
 - Follow the docker steps above, it will automatically create an image based on the code on your local
 - To update with changes, you do not need to restart all containers. Just need to run `docker-compose up --force-recreate --build -d app-service`
 
 #### Bypass login
-Login is enabled, to bypass that, please run `localStorage.setItem('kdr-login-bypass',true);` in your browser console
+Login is enabled, to bypass that, please go to `/404` first and run `localStorage.setItem('kdr-login-bypass',true);` in your browser console.
 
 Please see [guidelines for webapp](webapp/README.md) for more details
 

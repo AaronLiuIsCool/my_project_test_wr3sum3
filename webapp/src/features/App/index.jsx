@@ -8,6 +8,7 @@ import 'moment/locale/zh-cn';
 
 import AuthServices from 'shell/services/AuthServices';
 import { I8nContext } from 'shell/i18n';
+import { getLogger } from 'shell/logger';
 import { selectLanguage, updateAuthInfo } from './slicer';
 
 import PrivateRoute from './components/PrivateRoute';
@@ -24,12 +25,21 @@ import zh from './i18n/zh.json';
 import en from './i18n/en.json';
 
 const authServices = new AuthServices();
+const logger = getLogger('App');
 
 async function isAuthenticated(dispatch) {
-  const response = await authServices.findWhoAmI();
-  const responseJson = await response.json();
-  console.log(responseJson); // TODO: Remove before we go out to prod
-  dispatch(updateAuthInfo(responseJson));
+  let authInfo = {}
+  try {
+    const response = await authServices.findWhoAmI();
+    if (response) {
+      authInfo = await response.json();
+    }
+  } catch (exception) {
+    logger.error(exception); // TODO: Remove before we go out to prod
+  } finally {
+    dispatch(updateAuthInfo(authInfo));
+  }
+  
 }
 
 const App = ({ waitForInit = true }) => {
