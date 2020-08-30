@@ -26,6 +26,7 @@ CREATE TABLE IF NOT EXISTS resume (
                                       PRIMARY KEY (id),
                                       account_id varchar(255) NOT NULL,
                                       thumbnail_uri VARCHAR(255),
+                                      created_at TIMESTAMP NOT NULL default current_timestamp,
                                       KEY fk_account (account_id),
                                       CONSTRAINT fk_account FOREIGN KEY (account_id) REFERENCES account (id)
 ) ENGINE=InnoDB;

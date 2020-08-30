@@ -6,7 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.time.Instant;
 
 @Data
 @NoArgsConstructor
@@ -27,4 +29,7 @@ public class Resume {
     private Account account;
 
     private String thumbnailUri;
+
+    @NotNull
+    private Instant createdAt;
 }
