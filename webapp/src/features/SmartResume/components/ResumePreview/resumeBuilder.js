@@ -1,6 +1,4 @@
-// todo: after this issue has been released, we can upgrade the version of jsPDF to the lastest version and import using the following way：
-// import { jsPDF } from "jspdf";
-import * as jsPDF from 'jspdf';
+import jsPDF from 'jspdf'
 import { dateRangeBuilder } from "./common";
 
 // static variable
@@ -34,7 +32,7 @@ const defaultPaddingRight = 2;
 
 // global data storage
 let data = [];
-var doc = new jsPDF();
+var doc = new jsPDF("A4");
 
 
 // define the fonts
