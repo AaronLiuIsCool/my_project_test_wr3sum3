@@ -121,7 +121,7 @@ public class EducationController {
 
         Education toUpdate = modelMapper.map(educationDto, Education.class);
         toUpdate.setId(id);
-        resumeService.save(toUpdate, Education.class);
+        resumeService.updateResumeContainable(toUpdate, Education.class);
         EntityModel<PersistedEducationDto> entityModel =
             educationAssembler.toModel(modelMapper.map(toUpdate, PersistedEducationDto.class));
         return ResponseEntity.noContent().location(educationAssembler.getSelfLink(entityModel).toUri()).build();

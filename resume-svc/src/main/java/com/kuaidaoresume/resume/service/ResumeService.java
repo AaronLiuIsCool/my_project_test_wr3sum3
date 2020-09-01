@@ -3,6 +3,7 @@ package com.kuaidaoresume.resume.service;
 import com.kuaidaoresume.resume.dto.ResumeScoreDto;
 import com.kuaidaoresume.resume.model.*;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -18,7 +19,7 @@ public interface ResumeService {
 
     <T extends ResumeContainable> Collection<T> findAllByResumeId(String resumeId, Class<? extends ResumeContainable> type);
 
-    <T extends ResumeContainable> void save(T toSave, Class<? extends ResumeContainable> type);
+    <T extends ResumeContainable> void updateResumeContainable(T toUpdate, Class<? extends ResumeContainable> type) throws EntityNotFoundException;
 
     void deleteById(Long id, Class<? extends ResumeContainable> type);
 

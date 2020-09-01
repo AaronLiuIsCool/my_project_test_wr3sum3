@@ -115,7 +115,7 @@ public class VolunteerExperienceController {
 
         VolunteerExperience toUpdate = modelMapper.map(experienceDto, VolunteerExperience.class);
         toUpdate.setId(id);
-        resumeService.save(toUpdate, VolunteerExperience.class);
+        resumeService.updateResumeContainable(toUpdate, VolunteerExperience.class);
         EntityModel<PersistedVolunteerExperienceDto> entityModel =
             assembler.toModel(modelMapper.map(toUpdate, PersistedVolunteerExperienceDto.class));
         return ResponseEntity.noContent().location(assembler.getSelfLink(entityModel).toUri()).build();

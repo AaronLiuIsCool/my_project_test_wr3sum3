@@ -115,7 +115,7 @@ public class ProjectExperienceController {
 
         ProjectExperience toUpdate = modelMapper.map(experienceDto, ProjectExperience.class);
         toUpdate.setId(id);
-        resumeService.save(toUpdate, ProjectExperience.class);
+        resumeService.updateResumeContainable(toUpdate, ProjectExperience.class);
         EntityModel<PersistedProjectExperienceDto> entityModel =
             assembler.toModel(modelMapper.map(toUpdate, PersistedProjectExperienceDto.class));
         return ResponseEntity.noContent().location(assembler.getSelfLink(entityModel).toUri()).build();

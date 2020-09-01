@@ -152,7 +152,7 @@ public class VolunteerExperienceControllerTest {
 
     @Test
     public void whenSave_thenReturn202() throws Exception {
-        doNothing().when(resumeService).save(volunteerExperience, VolunteerExperience.class);
+        doNothing().when(resumeService).updateResumeContainable(volunteerExperience, VolunteerExperience.class);
 
         mvc.perform(put("/v1/volunteer-experiences/{id}", VOLUNTEER_EXPERIENCE_ID)
             .content(objectMapper.writeValueAsString(persistedVolunteerExperienceDto))

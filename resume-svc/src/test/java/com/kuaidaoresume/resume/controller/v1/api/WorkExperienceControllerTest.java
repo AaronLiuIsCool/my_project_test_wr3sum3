@@ -152,7 +152,7 @@ public class WorkExperienceControllerTest {
 
     @Test
     public void whenSave_thenReturn202() throws Exception {
-        doNothing().when(resumeService).save(workExperience, WorkExperience.class);
+        doNothing().when(resumeService).updateResumeContainable(workExperience, WorkExperience.class);
 
         mvc.perform(put("/v1/work-experiences/{id}", WORK_EXPERIENCE_ID)
             .content(objectMapper.writeValueAsString(persistedWorkExperienceDto))

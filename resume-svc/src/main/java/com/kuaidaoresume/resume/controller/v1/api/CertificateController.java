@@ -115,7 +115,7 @@ public class CertificateController {
 
         Certificate toUpdate = modelMapper.map(certificateDto, Certificate.class);
         toUpdate.setId(id);
-        resumeService.save(toUpdate, Certificate.class);
+        resumeService.updateResumeContainable(toUpdate, Certificate.class);
         EntityModel<PersistedCertificateDto> entityModel =
             assembler.toModel(modelMapper.map(toUpdate, PersistedCertificateDto.class));
         return ResponseEntity.noContent().location(assembler.getSelfLink(entityModel).toUri()).build();

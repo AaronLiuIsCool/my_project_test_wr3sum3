@@ -134,7 +134,7 @@ public class CertificateControllerTest {
 
     @Test
     public void whenSave_thenReturn202() throws Exception {
-        doNothing().when(resumeService).save(certificate, Certificate.class);
+        doNothing().when(resumeService).updateResumeContainable(certificate, Certificate.class);
 
         mvc.perform(put("/v1/certificates/{id}", CERTIFICATE_ID)
             .content(objectMapper.writeValueAsString(persistedCertificateDto))

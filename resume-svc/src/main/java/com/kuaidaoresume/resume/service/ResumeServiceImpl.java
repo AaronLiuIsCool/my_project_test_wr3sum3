@@ -144,8 +144,16 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
-    public <T extends ResumeContainable> void save(T toSave, Class<? extends ResumeContainable> type) {
-        resumeContainableRepositoryFactory.getResumeContainableRepository(type).save(toSave);
+    public <T extends ResumeContainable> void updateResumeContainable(T toUpdate, Class<? extends ResumeContainable> type)
+        throws EntityNotFoundException {
+
+        ResumeContainableRepository<T> resumeContainableRepository =
+            resumeContainableRepositoryFactory.getResumeContainableRepository(type);
+        Long id = toUpdate.getId();
+        T existed = (T) resumeContainableRepository.findById(id).orElseThrow(() ->
+            new EntityNotFoundException((String.format("Entity Not Found with id %s", id))));
+        toUpdate.setResume(existed.getResume());
+        resumeContainableRepository.save(toUpdate);
     }
 
     @Override

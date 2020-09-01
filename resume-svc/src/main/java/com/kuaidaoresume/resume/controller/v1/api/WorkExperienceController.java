@@ -115,7 +115,7 @@ public class WorkExperienceController {
 
         WorkExperience toUpdate = modelMapper.map(experienceDto, WorkExperience.class);
         toUpdate.setId(id);
-        resumeService.save(toUpdate, WorkExperience.class);
+        resumeService.updateResumeContainable(toUpdate, WorkExperience.class);
         EntityModel<PersistedWorkExperienceDto> entityModel =
             assembler.toModel(modelMapper.map(toUpdate, PersistedWorkExperienceDto.class));
         return ResponseEntity.noContent().location(assembler.getSelfLink(entityModel).toUri()).build();
