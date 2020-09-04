@@ -6,6 +6,8 @@ COPY requirements.txt .
 
 COPY config.json .
 
+COPY mock_job_results.json .
+
 COPY JobFetcher.py .
 
 RUN pip install -r requirements.txt

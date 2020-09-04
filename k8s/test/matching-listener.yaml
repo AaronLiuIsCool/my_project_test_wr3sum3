@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: matching-listener-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: matching-listener
+  template:
+    metadata:
+      labels:
+        app: matching-listener
+        env: test
+    spec:
+      containers:
+        - name: matching-listener
+          image: kuaidaoresume/matching-listener
+          imagePullPolicy: Never
+          ports:
+            - name: additional-port
+              containerPort: 5672
+          envFrom:
+            - configMapRef:
+                name: common-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: matching-listener
+spec:
+  selector:
+    app: matching-listener
+    env: test
+  ports:
+    - protocol: TCP
+      port: 5672
+      targetPort: 5672

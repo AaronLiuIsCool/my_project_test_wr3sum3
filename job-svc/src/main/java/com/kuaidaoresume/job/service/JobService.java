@@ -12,6 +12,8 @@ public interface JobService {
 
     public List<JobDto> findAll();
 
+    public void deleteAllJobs();
+
 //    List<JobDto> findJobsByKeywords(List<KeywordDto> Keywords);
 //
 //    List<JobDto> findJobsByLocation(LocationDto locationDto);

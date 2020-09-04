@@ -82,6 +82,21 @@ public class JobController {
             AuthConstant.AUTHORIZATION_SUPPORT_USER,
             AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
     })
+    @DeleteMapping("/jobs")
+    public ResponseEntity<?> deleteAllJobs() {
+        jobService.deleteAllJobs();
+        return ResponseEntity.accepted().build();
+    }
+
+    @Authorize(value = {
+            AuthConstant.AUTHORIZATION_WWW_SERVICE,
+            AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
+            AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
+            AuthConstant.AUTHORIZATION_BOT_SERVICE,
+            AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
+            AuthConstant.AUTHORIZATION_SUPPORT_USER,
+            AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
+    })
     @PostMapping("/jobs")
     public ResponseEntity<EntityModel<PersistedJobDto>> createJob(
             @Valid @RequestBody

@@ -2,7 +2,8 @@
     "queue": {
         "name": "jobQueue",
         "key": "jobQueue",
-        "host": "rabbitmq3",
-        "retryWaitSecs" : 5
+        "host": "amqp://guest:guest@rabbitmq3/",
+        "retryWaitSecs" : 2,
+        "retries": 3
     }
 }

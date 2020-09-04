@@ -23,7 +23,7 @@ public class Keyword {
     private long id;
     private String name;
 
-    @OneToMany(mappedBy = "keyword", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "keyword", cascade = CascadeType.DETACH, orphanRemoval = true)
     @Builder.Default
     private Set<JobHasKeyword> jobHasKeywords = new HashSet<>();
 

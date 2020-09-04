@@ -1,6 +1,6 @@
--- CREATE DATABASE `kuaidaoresume_job`;
+-- CREATE DATABASE `kuaidaoresume-job`;
 
-CREATE TABLE IF NOT EXISTS `kuaidaoresume_job`.`location` (
+CREATE TABLE IF NOT EXISTS `kuaidaoresume-job`.`location` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
   `country` NVARCHAR(45) NOT NULL,
   `state` NVARCHAR(45) NULL,
@@ -11,19 +11,19 @@ CREATE TABLE IF NOT EXISTS `kuaidaoresume_job`.`location` (
   INDEX `city_idx` (`city` ASC))
 ENGINE = InnoDB;
 
-CREATE TABLE IF NOT EXISTS `kuaidaoresume_job`.`major` (
+CREATE TABLE IF NOT EXISTS `kuaidaoresume-job`.`major` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
   `name` NVARCHAR(75) NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
-CREATE TABLE IF NOT EXISTS `kuaidaoresume_job`.`keyword` (
+CREATE TABLE IF NOT EXISTS `kuaidaoresume-job`.`keyword` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
   `name` NVARCHAR(45) NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
-CREATE TABLE IF NOT EXISTS `kuaidaoresume_job`.`job` (
+CREATE TABLE IF NOT EXISTS `kuaidaoresume-job`.`job` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
   `post_date` DATETIME NOT NULL,
   `position_title` NVARCHAR(75) NOT NULL,
@@ -49,12 +49,12 @@ CREATE TABLE IF NOT EXISTS `kuaidaoresume_job`.`job` (
   INDEX `company_name_idx` (`company_name` ASC),
   CONSTRAINT `fk_job_location1`
     FOREIGN KEY (`location_id`)
-    REFERENCES `kuaidaoresume_job`.`location` (`id`)
+    REFERENCES `kuaidaoresume-job`.`location` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-CREATE TABLE IF NOT EXISTS `kuaidaoresume_job`.`job_has_required_major` (
+CREATE TABLE IF NOT EXISTS `kuaidaoresume-job`.`job_has_required_major` (
   `job_id` BIGINT NOT NULL,
   `major_id` BIGINT NOT NULL,
   PRIMARY KEY (`job_id`, `major_id`),
@@ -62,17 +62,17 @@ CREATE TABLE IF NOT EXISTS `kuaidaoresume_job`.`job_has_required_major` (
   INDEX `fk_job_has_major_job1_idx` (`job_id` ASC),
   CONSTRAINT `fk_job_has_major_job1`
     FOREIGN KEY (`job_id`)
-    REFERENCES `kuaidaoresume_job`.`job` (`id`)
-    ON DELETE NO ACTION
+    REFERENCES `kuaidaoresume-job`.`job` (`id`)
+    ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_job_has_major_major1`
     FOREIGN KEY (`major_id`)
-    REFERENCES `kuaidaoresume_job`.`major` (`id`)
+    REFERENCES `kuaidaoresume-job`.`major` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-CREATE TABLE IF NOT EXISTS `kuaidaoresume_job`.`job_has_keyword` (
+CREATE TABLE IF NOT EXISTS `kuaidaoresume-job`.`job_has_keyword` (
   `job_id` BIGINT NOT NULL,
   `keyword_id` BIGINT NOT NULL,
   `rating` DOUBLE NULL,
@@ -82,17 +82,17 @@ CREATE TABLE IF NOT EXISTS `kuaidaoresume_job`.`job_has_keyword` (
   INDEX `rating_idx` (`rating` ASC),
   CONSTRAINT `fk_job_has_keyword_job1`
     FOREIGN KEY (`job_id`)
-    REFERENCES `kuaidaoresume_job`.`job` (`id`)
-    ON DELETE NO ACTION
+    REFERENCES `kuaidaoresume-job`.`job` (`id`)
+    ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_job_has_keyword_keyword1`
     FOREIGN KEY (`keyword_id`)
-    REFERENCES `kuaidaoresume_job`.`keyword` (`id`)
+    REFERENCES `kuaidaoresume-job`.`keyword` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-CREATE TABLE IF NOT EXISTS `kuaidaoresume_job`.`location_has_keyword` (
+CREATE TABLE IF NOT EXISTS `kuaidaoresume-job`.`location_has_keyword` (
   `location_id` BIGINT NOT NULL,
   `keyword_id` BIGINT NOT NULL,
   `rating` DOUBLE NULL,
@@ -102,17 +102,17 @@ CREATE TABLE IF NOT EXISTS `kuaidaoresume_job`.`location_has_keyword` (
   INDEX `rating_idx` (`rating` ASC),
   CONSTRAINT `fk_location_has_keyword_location1`
     FOREIGN KEY (`location_id`)
-    REFERENCES `kuaidaoresume_job`.`location` (`id`)
+    REFERENCES `kuaidaoresume-job`.`location` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_location_has_keyword_keyword1`
     FOREIGN KEY (`keyword_id`)
-    REFERENCES `kuaidaoresume_job`.`keyword` (`id`)
+    REFERENCES `kuaidaoresume-job`.`keyword` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-CREATE TABLE IF NOT EXISTS `kuaidaoresume_job`.`major_has_keyword` (
+CREATE TABLE IF NOT EXISTS `kuaidaoresume-job`.`major_has_keyword` (
   `major_id` BIGINT NOT NULL,
   `keyword_id` BIGINT NOT NULL,
   `rating` DOUBLE NULL,
@@ -122,12 +122,12 @@ CREATE TABLE IF NOT EXISTS `kuaidaoresume_job`.`major_has_keyword` (
   INDEX `rating_idx` (`rating` ASC),
   CONSTRAINT `fk_major_has_keyword_major1`
     FOREIGN KEY (`major_id`)
-    REFERENCES `kuaidaoresume_job`.`major` (`id`)
+    REFERENCES `kuaidaoresume-job`.`major` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_major_has_keyword_keyword1`
     FOREIGN KEY (`keyword_id`)
-    REFERENCES `kuaidaoresume_job`.`keyword` (`id`)
+    REFERENCES `kuaidaoresume-job`.`keyword` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

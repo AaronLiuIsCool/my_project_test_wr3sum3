@@ -71,7 +71,7 @@
                 <groupId>org.flywaydb</groupId>
                 <artifactId>flyway-maven-plugin</artifactId>
                 <configuration>
-                    <url>jdbc:mysql://kuaidaoresume-job.cm27uwrvuert.ca-central-1.rds.amazonaws.com:3306/kuaidaoresume_job</url>
+                    <url>jdbc:mysql://kuaidaoresume-job.cm27uwrvuert.ca-central-1.rds.amazonaws.com:3306/kuaidaoresume-job</url>
                     <user>root</user>
                     <password>mysqlroot</password>
                 </configuration>

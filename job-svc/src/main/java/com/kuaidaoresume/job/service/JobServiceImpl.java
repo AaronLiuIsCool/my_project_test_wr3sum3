@@ -52,6 +52,9 @@ public class JobServiceImpl implements JobService{
     }
 
     @Override
+    public void deleteAllJobs() { jobRepository.deleteAll(); }
+
+    @Override
     public List<JobDto> findAll(){
         List<Job> jobs = jobRepository.findAll();
         List<JobDto> jobDtos = jobs.stream()

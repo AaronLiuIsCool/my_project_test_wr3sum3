@@ -94,15 +94,19 @@ public class JobInfoExtractionServiceImpl implements JobInfoExtractionService{
                     .build();
 
             for(Keyword keyword : keywords) {
-                if(!keywordRepository.findByName(keyword.getName()).isPresent()) {
-                    JobHasKeyword rating = JobHasKeyword
-                            .builder()
-                            .job(job).keyword(keyword)
-                            .rating(1.0)
-                            .build();
-                    job.getJobHasKeywords().add(rating);
+                Optional<Keyword> keywordOptional = keywordRepository.findByName(keyword.getName());
+                if(keywordOptional.isPresent()) {
+                    keyword = keywordOptional.get();
+                }
+                else {
                     keywordRepository.save(keyword);
                 }
+                JobHasKeyword rating = JobHasKeyword
+                        .builder()
+                        .job(job).keyword(keyword)
+                        .rating(1.0)
+                        .build();
+                job.getJobHasKeywords().add(rating); //set
             }
             jobRepository.save(job);
         }

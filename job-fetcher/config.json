@@ -3,14 +3,15 @@
         "name": "jobQueue",
         "key": "jobQueue",
         "host": "rabbitmq3",
-        "retryWaitSecs" : 5
+        "retryWaitSecs" : 2,
+        "retries": 3,
+        "heartbeat": 600,
+        "blocked_connection_timeout": 300
     },
 
     "cronjob": {
-        "every": {
-            "days": 3,
-            "when": "00:00"
-        }
+        "afterClearJobs": 20,
+        "scheduleInSecs": 75
     },
 
     "serpParams": {
