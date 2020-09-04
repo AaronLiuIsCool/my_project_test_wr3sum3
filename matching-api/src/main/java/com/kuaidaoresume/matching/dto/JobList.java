@@ -7,7 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotBlank;
+import java.util.Collection;
 
 @Data
 @AllArgsConstructor
@@ -15,14 +15,12 @@ import javax.validation.constraints.NotBlank;
 @Builder
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CompensationDto {
+public class JobList {
+    private Collection<JobDto> jobs;
+    private int limit;
+    private int offset;
 
-    @NotBlank
-    private String currency;
-    @NotBlank
-    private String type;
-    @NotBlank
-    private String lowBound;
-    @NotBlank
-    private String highBound;
+    public JobList(Collection<JobDto> jobs) {
+        this.jobs = jobs;
+    }
 }

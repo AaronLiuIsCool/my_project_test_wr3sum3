@@ -34,6 +34,6 @@ public class Profile {
     private BasicInfo basicInfo;
 
     public enum ProfileType {
-        LINKEDIN, GITHUB, OTHER
+        LINKEDIN, GITHUB, OTHER;
     }
 }

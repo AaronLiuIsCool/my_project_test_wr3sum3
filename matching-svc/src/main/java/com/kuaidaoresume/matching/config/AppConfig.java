@@ -1,8 +1,10 @@
 package com.kuaidaoresume.matching.config;
 
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.plugin.core.SimplePluginRegistry;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -21,6 +23,8 @@ import java.util.ArrayList;
 @Configuration
 @EnableAsync
 @Import(value = {KuaidaoresumeRestConfig.class})
+@EnableMongoRepositories(basePackages = "com.kuaidaoresume.matching.repo")
+@EnableAutoConfiguration
 @SuppressWarnings(value = "Duplicates")
 public class AppConfig {
 
@@ -56,3 +60,5 @@ public class AppConfig {
         return new BCryptPasswordEncoder();
     }
 }
+
+

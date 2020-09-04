@@ -4,13 +4,10 @@ spring:
     active: dev
   application:
     name: matching-service
-  datasource:
-    url: ${MATCHING_DATASOURCE_URL}
-    username: ${MATCHING_DATASOURCE_USERNAME}
-    password: ${MATCHING_DATASOURCE_PASSWORD}
-    tomcat:
-      test-while-idle: true
-      validation-query: TBD
+  data:
+    mongodb:
+      uri: ${MATCHING_DATASOURCE_URL:mongodb://localhost:27017}
+      database: kuaidaoresume_matching
 
 kuaidaoresume:
   common:

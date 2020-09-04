@@ -4,10 +4,8 @@ package com.kuaidaoresume.matching.client;
 import com.kuaidaoresume.common.api.BaseResponse;
 import com.kuaidaoresume.common.auth.AuthConstant;
 import com.kuaidaoresume.matching.MatchingConstant;
-import com.kuaidaoresume.matching.dto.CreateMatchingRequest;
 import com.kuaidaoresume.matching.dto.GenericMatchingResponse;
-
-import com.kuaidaoresume.matching.dto.ListMatchingResponse;
+import com.kuaidaoresume.matching.dto.JobListResponse;
 import com.kuaidaoresume.matching.dto.MatchingDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
@@ -26,8 +24,8 @@ public interface MatchingClient {
     GenericMatchingResponse getMatching(@RequestHeader(AuthConstant.AUTHORIZATION_HEADER) String authz, @RequestParam @NotBlank String matchingId);
 
     @GetMapping(path = "/matchings/list")
-    ListMatchingResponse listMatching(@RequestHeader(AuthConstant.AUTHORIZATION_HEADER) String authz, @RequestParam int offset, @RequestParam @Min(0) int limit,
-                                          @RequestParam String location, @RequestParam String major, @RequestParam String[] keywords);
+    JobListResponse listMatching(@RequestHeader(AuthConstant.AUTHORIZATION_HEADER) String authz, @RequestParam int offset, @RequestParam @Min(0) int limit,
+                                 @RequestParam String location, @RequestParam String major, @RequestParam String[] keywords);
 
     @GetMapping(path = "/resumes")
     GenericMatchingResponse getMatchingByResume(@RequestHeader(AuthConstant.AUTHORIZATION_HEADER) String authz, @RequestParam int offset, @RequestParam @Min(0) int limit,

@@ -7,7 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Data
 @AllArgsConstructor
@@ -15,14 +15,14 @@ import javax.validation.constraints.NotBlank;
 @Builder
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CompensationDto {
+public class LocationDto {
+    @NotNull
+    private String country;
 
-    @NotBlank
-    private String currency;
-    @NotBlank
-    private String type;
-    @NotBlank
-    private String lowBound;
-    @NotBlank
-    private String highBound;
+    private String state;
+
+    @NotNull
+    private String city;
+
+    private String postCode;
 }

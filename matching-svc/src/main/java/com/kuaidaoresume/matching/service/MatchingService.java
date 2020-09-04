@@ -3,29 +3,21 @@ package com.kuaidaoresume.matching.service;
 import com.github.structlog4j.ILogger;
 import com.github.structlog4j.SLoggerFactory;
 import com.kuaidaoresume.common.api.ResultCode;
-import com.kuaidaoresume.common.auditlog.LogEntry;
-import com.kuaidaoresume.common.auth.AuthContext;
-import com.kuaidaoresume.common.env.EnvConfig;
 import com.kuaidaoresume.common.error.ServiceException;
-import com.kuaidaoresume.matching.dto.MatchingDto;
-import com.kuaidaoresume.matching.dto.MatchingList;
-import com.kuaidaoresume.matching.model.Matching;
-import com.kuaidaoresume.matching.repo.MatchingRepo;
+import com.kuaidaoresume.matching.dto.JobDto;
+import com.kuaidaoresume.matching.dto.LocationDto;
+import com.kuaidaoresume.matching.dto.ResumeDto;
+import com.kuaidaoresume.matching.model.*;
+import com.kuaidaoresume.matching.repo.*;
 import com.kuaidaoresume.matching.service.helper.ServiceHelper;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import java.util.List;
-import java.util.Optional;
-
-import static java.util.stream.Collectors.toList;
+import java.time.Instant;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -34,176 +26,183 @@ public class MatchingService {
     static ILogger logger = SLoggerFactory.getLogger(MatchingService.class);
 
     @Autowired
-    private final MatchingRepo matchingRepo;
+    private final JobRepository jobRepository;
 
     @Autowired
-    private final EnvConfig envConfig;
+    private final ResumeRepository resumeRepository;
 
     @Autowired
-    private ModelMapper modelMapper;
+    private final MatchedResumeRepository matchedResumeRepository;
 
     @Autowired
-    private ServiceHelper serviceHelper;
+    private final TailoredResumeRepository tailoredResumeRepository;
 
-    @PersistenceContext
-    private EntityManager entityManager;
+    @Autowired
+    private final TailoredJobRepository tailoredJobRepository;
 
-    public MatchingDto createMatching(MatchingDto matchingDto) {
-        Matching matching = convertToModel(matchingDto);
+    @Autowired
+    private final ModelMapper modelMapper;
 
-        Matching savedMatching = null;
-        try {
-            savedMatching = matchingRepo.save(matching);
-        } catch (Exception ex) {
-            String errMsg = "could not create matching";
-            serviceHelper.handleErrorAndThrowException(logger, ex, errMsg);
-        }
+    @Autowired
+    private final ServiceHelper serviceHelper;
 
-        LogEntry auditLog = LogEntry.builder()
-                .currentUserId(AuthContext.getUserId())
-                .authorization(AuthContext.getAuthz())
-                .targetType("matching")
-                //.targetId(matching.getId()) TODO: Aaron Liu after repo donw.
-                //.matchingId(matching.getId())
-                .updatedContents(matching.toString())
-                .build();
-        logger.info("created matching", auditLog);
-        serviceHelper.trackEventAsync("matching_created");
-        return convertToDto(savedMatching);
+//    public String inactiveMatching(String matchingId) {
+//        Optional<Matching> existingMatching = matchingRepo.findById(Long.parseLong(matchingId));
+//        if (!existingMatching.isPresent()) {
+//            throw new ServiceException(ResultCode.NOT_FOUND, "Matching not found");
+//        }
+//        Matching updatedMatching = null;
+//        // TODO: After Matching repo setup from TAIL-130
+//        // existingg matching query update.
+//        try {
+//            updatedMatching = matchingRepo.save(existingMatching.get());
+//        } catch (Exception ex) {
+//            String errMsg = "could not update the matchingDto";
+//            serviceHelper.handleErrorAndThrowException(logger, ex, errMsg);
+//        }
+//        LogEntry auditLog = LogEntry.builder()
+//                .currentUserId(AuthContext.getUserId())
+//                .authorization(AuthContext.getAuthz())
+//                .targetType("matching")
+//                //.targetId(matchingToUpdate.getId())
+//                //.matchingId(matchingToUpdate.getId())
+//                .originalContents(existingMatching.toString())
+//                .updatedContents(updatedMatching.toString())
+//                .build();
+//        logger.info("inactive matching", auditLog);
+//        serviceHelper.trackEventAsync("matching_inactive");
+//
+//        return updatedMatching.getId();
+//    }
+
+    public void addJob(JobDto jobDto) {
+        Job job = modelMapper.map(jobDto, Job.class);
+        job.setActive(true);
+        job.setCreatedAt(Instant.now());
+        jobRepository.save(job);
     }
 
-    public MatchingDto getMatching(String matchingId) {
-        Optional<Matching> matching = matchingRepo.findById(Long.parseLong(matchingId));
-        if (!matching.isPresent()) {
-            throw new ServiceException(ResultCode.NOT_FOUND, "Matching Job not found");
-        }
-        return convertToDto(matching.get());
+    public void addResume(ResumeDto resumeDto) {
+        Resume resume = modelMapper.map(resumeDto, Resume.class);
+        resumeRepository.save(resume);
     }
 
-    public MatchingList listMatchings(int offset, int limit, String location, String major, String[] keywords) {
-        Pageable pageRequest = PageRequest.of(offset, limit);
-        Page<Matching> matchingPage = null;
-        try {
-            matchingPage = matchingRepo.findAll(pageRequest);
-            //TODO: After Matching repo setup from TAIL-130 by fetching localtion, major and keywords
-        } catch (Exception ex) {
-            String errMsg = "fail to query database for matching list";
-            serviceHelper.handleErrorAndThrowException(logger, ex, errMsg);
-        }
-        List<MatchingDto> matchingDtoList = matchingPage.getContent()
-                .stream()
-                .map(matching -> convertToDto(matching))
-                .collect(toList());
-
-        return MatchingList.builder()
-            .limit(limit)
-            .offset(offset)
-            .matchings(matchingDtoList)
-            .build();
+    public Collection<JobDto> findMatchedJobs(ResumeDto resumeDto) {
+        Collection<Job> matchedJobs = getMatchedJobs(resumeDto);
+        return matchedJobs.stream().map(job -> modelMapper.map(job, JobDto.class)).collect(Collectors.toList());
     }
 
-    public MatchingDto getMatchingByResumeId(String resumeId) {
-        Optional<Matching> matching = Optional.empty();
-        //TODO: After Matching repo setup from TAIL-130
-        if (!matching.isPresent()) {
-            throw new ServiceException(ResultCode.NOT_FOUND, "Matching Job not found");
-        }
-        return convertToDto(matching.get());
+    public Collection<JobDto> findMatchedJobs(ResumeDto resumeDto, int offset, int limit) {
+        Collection<Job> matchedJobs = getMatchedJobs(resumeDto);
+        return matchedJobs.stream().skip(offset).limit(limit)
+            .map(job -> modelMapper.map(job, JobDto.class)).collect(Collectors.toList());
     }
 
-    public MatchingDto updateMatching(MatchingDto matchingDto) {
-        Optional<Matching> existingMatching = matchingRepo.findById(Long.parseLong(matchingDto.getId()));
-        if (!existingMatching.isPresent()) {
-            throw new ServiceException(ResultCode.NOT_FOUND, "Matching not found");
-        }
-        entityManager.detach(existingMatching);
+    private Collection<Job> getMatchedJobs(ResumeDto resumeDto) {
+        String resumeUuid = resumeDto.getResumeUuid();
 
-        Matching matchingToUpdate = convertToModel(matchingDto);
-        Matching updatedMatching = null;
-        try {
-            updatedMatching = matchingRepo.save(matchingToUpdate);
-        } catch (Exception ex) {
-            String errMsg = "could not update the matchingDto";
-            serviceHelper.handleErrorAndThrowException(logger, ex, errMsg);
-        }
+        saveResumeAsync(resumeDto, resumeUuid);
 
-        LogEntry auditLog = LogEntry.builder()
-                .currentUserId(AuthContext.getUserId())
-                .authorization(AuthContext.getAuthz())
-                .targetType("matching")
-                //.targetId(matchingToUpdate.getId())
-                //.matchingId(matchingToUpdate.getId())
-                .originalContents(existingMatching.toString())
-                .updatedContents(updatedMatching.toString())
-                .build();
-        logger.info("updated matching", auditLog);
-        serviceHelper.trackEventAsync("matching_updated");
-        return this.convertToDto(updatedMatching);
+        MatchedResume matchedResume = matchedResumeRepository.findByResumeUuid(resumeUuid).orElseGet(() ->
+            MatchedResume.builder().resumeUuid(resumeUuid).build());
+        Job lastAddedJob = jobRepository.findTopByOrderByCreatedAtDesc().orElse(Job.builder()
+            .createdAt(Instant.now())
+            .build());
+        Instant lastMatchedAt = matchedResume.getLastMatchedAt();
+        Collection<Job> matchedJobs;
+        if (lastMatchedAt != null && lastMatchedAt.isAfter(lastAddedJob.getCreatedAt())) {
+            matchedJobs = matchedResume.getMatchedJobs();
+        } else {
+            LocationDto resumeLocation = resumeDto.getLocation();
+            Collection<String> majors = resumeDto.getMajors() != null ? resumeDto.getMajors() : new ArrayList<>();
+            Collection<String> keywords = resumeDto.getKeywords() != null ? resumeDto.getKeywords() : new ArrayList<>();
+            matchedJobs = jobRepository.findMatchedJobs(
+                resumeLocation.getCountry(), resumeLocation.getCity(), majors, keywords);
+
+            saveMatchedResumeAsync(matchedResume, matchedJobs);
+        }
+        return matchedJobs;
     }
 
-    public MatchingDto updateMatching(String matchingId, String resumeId, String userId) {
-        Optional<Matching> existingMatching = matchingRepo.findById(Long.parseLong(matchingId));
-        if (!existingMatching.isPresent()) {
-            throw new ServiceException(ResultCode.NOT_FOUND, "Matching not found");
-        }
-        Matching updatedMatching = null;
-        // TODO: After Matching repo setup from TAIL-130
-        // existingg matching query update.
-        try {
-            updatedMatching = matchingRepo.save(existingMatching.get());
-        } catch (Exception ex) {
-            String errMsg = "could not update the matchingDto";
-            serviceHelper.handleErrorAndThrowException(logger, ex, errMsg);
-        }
-        LogEntry auditLog = LogEntry.builder()
-                .currentUserId(userId)
-                .authorization(AuthContext.getAuthz())
-                .targetType("matching")
-                //.targetId(matchingToUpdate.getId())
-                //.matchingId(matchingToUpdate.getId())
-                .originalContents(existingMatching.toString())
-                .updatedContents(updatedMatching.toString())
-                .build();
-        logger.info("updated matching", auditLog);
-        serviceHelper.trackEventAsync("matching_updated");
-
-        return this.convertToDto(updatedMatching); // here should be matching-resume DTO?
+    private void saveMatchedResumeAsync(MatchedResume matchedResume, Collection<Job> matchedJobs) {
+        serviceHelper.executeAsync(() -> {
+            matchedResume.setMatchedJobs(matchedJobs);
+            matchedResume.setLastMatchedAt(Instant.now());
+            matchedResumeRepository.save(matchedResume);
+        });
     }
 
-    public String inactiveMatching(String matchingId) {
-        Optional<Matching> existingMatching = matchingRepo.findById(Long.parseLong(matchingId));
-        if (!existingMatching.isPresent()) {
-            throw new ServiceException(ResultCode.NOT_FOUND, "Matching not found");
-        }
-        Matching updatedMatching = null;
-        // TODO: After Matching repo setup from TAIL-130
-        // existingg matching query update.
-        try {
-            updatedMatching = matchingRepo.save(existingMatching.get());
-        } catch (Exception ex) {
-            String errMsg = "could not update the matchingDto";
-            serviceHelper.handleErrorAndThrowException(logger, ex, errMsg);
-        }
-        LogEntry auditLog = LogEntry.builder()
-                .currentUserId(AuthContext.getUserId())
-                .authorization(AuthContext.getAuthz())
-                .targetType("matching")
-                //.targetId(matchingToUpdate.getId())
-                //.matchingId(matchingToUpdate.getId())
-                .originalContents(existingMatching.toString())
-                .updatedContents(updatedMatching.toString())
-                .build();
-        logger.info("inactive matching", auditLog);
-        serviceHelper.trackEventAsync("matching_inactive");
-
-        return updatedMatching.getId();
+    private void saveResumeAsync(ResumeDto resumeDto, String resumeUuid) {
+        serviceHelper.executeAsync(() -> {
+            String resumeId = resumeRepository.findByResumeUuid(resumeUuid).orElse(new Resume()).getId();
+            Resume resumeToSave = modelMapper.map(resumeDto, Resume.class);
+            resumeToSave.setId(resumeId);
+            resumeRepository.save(resumeToSave);
+        });
     }
 
-    private Matching convertToModel(MatchingDto matchingDto) {
-        return modelMapper.map(matchingDto, Matching.class);
+    public Collection<ResumeDto> findMatchedResumes(JobDto jobDto) {
+        LocationDto location = jobDto.getLocation();
+        List<Resume> matchedResumes = resumeRepository.findMatchedResumes(location.getCountry(), location.getCity(),
+            jobDto.getRelevantMajors(), jobDto.getKeywords());
+        return matchedResumes.stream().map(resume -> modelMapper.map(resume, ResumeDto.class)).collect(Collectors.toList());
     }
 
-    private MatchingDto convertToDto(Matching matching) {
-        return modelMapper.map(matching, MatchingDto.class);
+    public Collection<ResumeDto> findMatchedResumes(JobDto jobDto, int page, int pageSize) {
+        LocationDto location = jobDto.getLocation();
+        List<Resume> matchedResumes = resumeRepository.findMatchedResumes(location.getCountry(), location.getCity(),
+            jobDto.getRelevantMajors(), jobDto.getKeywords(), page, pageSize);
+        return matchedResumes.stream().map(resume -> modelMapper.map(resume, ResumeDto.class)).collect(Collectors.toList());
+    }
+
+    public void addTailoredResume(String resumeUuid, String jobUuid) {
+        Resume resume = resumeRepository.findByResumeUuid(resumeUuid).orElseThrow(() ->
+            new ServiceException(ResultCode.NOT_FOUND, String.format("Resume Not Found with uuid %s", resumeUuid)));
+        Job job = jobRepository.findByJobUuid(jobUuid).orElseThrow(() ->
+            new ServiceException(ResultCode.NOT_FOUND, String.format("Job Not Found with uuid %s", jobUuid)));
+
+        TailoredJob tailoredJob = buildTailoredJob(jobUuid, resume);
+        tailoredJobRepository.save(tailoredJob);
+
+        TailoredResume tailoredResume = buildTailoredResume(resumeUuid, job);
+        tailoredResumeRepository.save(tailoredResume);
+    }
+
+    private TailoredJob buildTailoredJob(String jobUuid, Resume resume) {
+        Set<Resume> resumesSet = new TreeSet<>(Comparator.comparing(Resume::getResumeUuid));
+        TailoredJob tailoredJob = tailoredJobRepository.findByJobUuid(jobUuid).orElse(TailoredJob.builder()
+            .jobUuid(jobUuid)
+            .tailoredResumes(new ArrayList<>())
+            .build());
+        resumesSet.addAll(tailoredJob.getTailoredResumes());
+        resumesSet.add(resume);
+        tailoredJob.setTailoredResumes(resumesSet);
+        return tailoredJob;
+    }
+
+    private TailoredResume buildTailoredResume(String resumeUuid, Job job) {
+        TailoredResume tailoredResume = tailoredResumeRepository.findByResumeUuid(resumeUuid).orElse(TailoredResume.builder()
+            .resumeUuid(resumeUuid)
+            .build());
+        tailoredResume.setTargetJob(job);
+        return tailoredResume;
+    }
+
+    public JobDto getResumeTailoredJob(String resumeUuid) {
+        TailoredResume tailoredResume = tailoredResumeRepository.findByResumeUuid(resumeUuid).orElseThrow(() ->
+            new ServiceException(ResultCode.NOT_FOUND, String.format("Resume %s has no tailored job", resumeUuid)));
+        return modelMapper.map(tailoredResume.getTargetJob(), JobDto.class);
+    }
+
+    public Collection<ResumeDto> getTailoredResumesByJob(String jobUuid) {
+        TailoredJob tailoredJob = tailoredJobRepository.findByJobUuid(jobUuid).orElseThrow(() ->
+            new ServiceException(ResultCode.NOT_FOUND, String.format("Job %s has not been tailored by any resumes", jobUuid)));
+        return tailoredJob.getTailoredResumes().stream()
+            .map(resume -> modelMapper.map(resume, ResumeDto.class)).collect(Collectors.toList());
+    }
+
+    public Collection<ResumeDto> getTailoredResumesByJob(String jobUuid, int offset, int limit) {
+        Collection<Resume> tailoredResumes = tailoredJobRepository.findTailoredResumesWithLimit(jobUuid, offset, limit);
+        return tailoredResumes.stream().map(resume -> modelMapper.map(resume, ResumeDto.class)).collect(Collectors.toList());
     }
 }

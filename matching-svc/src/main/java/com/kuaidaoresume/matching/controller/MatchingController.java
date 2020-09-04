@@ -5,11 +5,7 @@ import com.github.structlog4j.SLoggerFactory;
 import com.kuaidaoresume.common.api.BaseResponse;
 import com.kuaidaoresume.common.auth.AuthConstant;
 import com.kuaidaoresume.common.auth.Authorize;
-import com.kuaidaoresume.common.env.EnvConfig;
-import com.kuaidaoresume.matching.dto.GenericMatchingResponse;
-import com.kuaidaoresume.matching.dto.ListMatchingResponse;
-import com.kuaidaoresume.matching.dto.MatchingDto;
-import com.kuaidaoresume.matching.dto.MatchingList;
+import com.kuaidaoresume.matching.dto.*;
 import com.kuaidaoresume.matching.service.MatchingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -17,10 +13,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
+import java.util.Collection;
 
 @RestController
-@RequestMapping("/v1")
+@RequestMapping("/v1/matching")
 @Validated
 public class MatchingController {
 
@@ -29,100 +25,168 @@ public class MatchingController {
     @Autowired
     private MatchingService matchingService;
 
-    @Autowired
-    private EnvConfig envConfig;
-
-    @PostMapping(path = "/matchings")
     @Authorize(value = {
-            AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
-            AuthConstant.AUTHORIZATION_SUPPORT_USER
+        AuthConstant.AUTHORIZATION_WWW_SERVICE,
+        AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
+        //AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
+        //AuthConstant.AUTHORIZATION_BOT_SERVICE,
+        AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
+        AuthConstant.AUTHORIZATION_SUPPORT_USER,
+        AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
     })
-    public GenericMatchingResponse createMatching(@RequestBody @Valid MatchingDto matchingDto) {
-        MatchingDto aMatchingDTO = matchingService.createMatching(matchingDto);
-        return new GenericMatchingResponse(aMatchingDTO);
+    @PostMapping("/jobs")
+    public BaseResponse addJob(@RequestBody @Valid JobDto jobDto) {
+        matchingService.addJob(jobDto);
+        BaseResponse baseResponse = new BaseResponse();
+        baseResponse.setMessage("job added");
+
+        return baseResponse;
     }
 
-    @GetMapping(path = "/matchings/{matchingId}")
     @Authorize(value = {
-            AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
-            AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
-            AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
-            AuthConstant.AUTHORIZATION_SUPPORT_USER,
-            AuthConstant.AUTHORIZATION_WWW_SERVICE
+        AuthConstant.AUTHORIZATION_WWW_SERVICE,
+        AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
+        //AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
+        //AuthConstant.AUTHORIZATION_BOT_SERVICE,
+        AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
+        AuthConstant.AUTHORIZATION_SUPPORT_USER,
+        AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
     })
-    GenericMatchingResponse getMatching(@RequestParam @NotBlank String matchingId) {
-        MatchingDto matchingDto = matchingService.getMatching(matchingId);
-        GenericMatchingResponse genericMatchingResponse = new GenericMatchingResponse(matchingDto);
-        return genericMatchingResponse;
+    @PostMapping("/resumes")
+    public BaseResponse addResume(@RequestBody @Valid ResumeDto resumeDto) {
+        matchingService.addResume(resumeDto);
+
+        BaseResponse baseResponse = new BaseResponse();
+        baseResponse.setMessage("resume added");
+
+        return baseResponse;
     }
 
-    @GetMapping(path = "/matchings/list")
     @Authorize(value = {
-            AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
-            AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
-            AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
-            AuthConstant.AUTHORIZATION_SUPPORT_USER,
-            AuthConstant.AUTHORIZATION_WWW_SERVICE
+        AuthConstant.AUTHORIZATION_WWW_SERVICE,
+        AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
+        //AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
+        //AuthConstant.AUTHORIZATION_BOT_SERVICE,
+        AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
+        AuthConstant.AUTHORIZATION_SUPPORT_USER,
+        AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
     })
-    ListMatchingResponse listMatching(@RequestParam int offset, @RequestParam @Min(0) int limit,
-                                          @RequestParam String location, @RequestParam String major,
-                                          @RequestParam String[] keywords) {
-        MatchingList matchingList = matchingService.listMatchings(offset, limit, location, major, keywords);
-        ListMatchingResponse listMatchingResponse = new ListMatchingResponse(matchingList);
-        return listMatchingResponse;
+    @GetMapping("/jobs/match")
+    public JobListResponse findMatchedJobs(@RequestBody @Valid ResumeDto resumeDto) {
+        Collection<JobDto> matchedJobs = matchingService.findMatchedJobs(resumeDto);
+        return new JobListResponse(new JobList(matchedJobs));
     }
 
-    @GetMapping(path = "/matchings/resumes")
     @Authorize(value = {
-            AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
-            AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
-            AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
-            AuthConstant.AUTHORIZATION_SUPPORT_USER,
-            AuthConstant.AUTHORIZATION_WWW_SERVICE
+        AuthConstant.AUTHORIZATION_WWW_SERVICE,
+        AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
+        //AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
+        //AuthConstant.AUTHORIZATION_BOT_SERVICE,
+        AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
+        AuthConstant.AUTHORIZATION_SUPPORT_USER,
+        AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
     })
-    GenericMatchingResponse getMatchingByResume(@RequestParam int offset, @RequestParam @Min(0) int  limit,
-                                             @RequestParam @NotBlank String resumeId) {
-        MatchingDto matchingDto = matchingService.getMatchingByResumeId(resumeId);
-        return new GenericMatchingResponse(matchingDto);
+    @GetMapping("/jobs/paging-match")
+    public JobListResponse findMatchedJobs(@RequestBody @Valid ResumeDto resumeDto,
+                                           @RequestParam @Min(0) int offset, @RequestParam @Min(1) int limit) {
+
+        Collection<JobDto> matchedJobs = matchingService.findMatchedJobs(resumeDto, offset, limit);
+        return new JobListResponse(new JobList(matchedJobs, offset, limit));
     }
 
-    @PutMapping(path = "/matchings")
     @Authorize(value = {
-            AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
-            AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
-            AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
-            AuthConstant.AUTHORIZATION_SUPPORT_USER
+        AuthConstant.AUTHORIZATION_WWW_SERVICE,
+        AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
+        //AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
+        //AuthConstant.AUTHORIZATION_BOT_SERVICE,
+        AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
+        AuthConstant.AUTHORIZATION_SUPPORT_USER,
+        AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
     })
-    GenericMatchingResponse updateMatching(@RequestBody @Valid MatchingDto matchingDto) {
-        MatchingDto updateMatchingDto = matchingService.updateMatching(matchingDto);
-        return new GenericMatchingResponse(updateMatchingDto);
+    @GetMapping("/resumes/match")
+    public ResumeListResponse findMatchedResumes(@RequestBody @Valid JobDto jobDto) {
+        Collection<ResumeDto> resumeDtos = matchingService.findMatchedResumes(jobDto);
+        return new ResumeListResponse(new ResumeList(resumeDtos));
     }
 
-    @PatchMapping(path = "/matchings/{matchingId}/resumes")
     @Authorize(value = {
-            AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
-            AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
-            AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
-            AuthConstant.AUTHORIZATION_SUPPORT_USER,
-            AuthConstant.AUTHORIZATION_WWW_SERVICE
+        AuthConstant.AUTHORIZATION_WWW_SERVICE,
+        AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
+        //AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
+        //AuthConstant.AUTHORIZATION_BOT_SERVICE,
+        AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
+        AuthConstant.AUTHORIZATION_SUPPORT_USER,
+        AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
     })
-    GenericMatchingResponse updateMatchingByResume(@RequestParam @NotBlank String matchingId,
-                                                   @RequestParam @NotBlank String resumeId,
-                                                   @RequestParam @NotBlank String userId) {
-        MatchingDto updateMatchingDto = matchingService.updateMatching(matchingId, resumeId, userId);
-        return new GenericMatchingResponse(updateMatchingDto);
+    @GetMapping("/resumes/paging-match")
+    public ResumeListResponse findMatchedResumes(@RequestBody @Valid JobDto jobDto,
+                                                 @RequestParam @Min(0) int page, @RequestParam  @Min(1) int pageSize) {
+
+        Collection<ResumeDto> resumeDtos = matchingService.findMatchedResumes(jobDto, page, pageSize);
+        return new ResumeListResponse(new ResumeList(resumeDtos, page, pageSize));
     }
 
-    @PatchMapping(path = "/matchings/{matchingId}/inactive")
     @Authorize(value = {
-            AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
-            AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
-            AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
-            AuthConstant.AUTHORIZATION_SUPPORT_USER
+        AuthConstant.AUTHORIZATION_WWW_SERVICE,
+        AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
+        //AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
+        //AuthConstant.AUTHORIZATION_BOT_SERVICE,
+        AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
+        AuthConstant.AUTHORIZATION_SUPPORT_USER,
+        AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
     })
-    BaseResponse inactiveMatching(@RequestParam @NotBlank String matchingId) {
-        matchingId = matchingService.inactiveMatching(matchingId);
-        return BaseResponse.builder().message("Matching <" + matchingId + "> has been inactive.").build();
+    @PostMapping("/resumes/tailor")
+    public BaseResponse addTailoredResume(@RequestParam String resumeUuid, @RequestParam String jobUuid) {
+        matchingService.addTailoredResume(resumeUuid, jobUuid);
+
+        BaseResponse baseResponse = new BaseResponse();
+        baseResponse.setMessage("Tailored resume saved");
+
+        return baseResponse;
     }
 
+    @Authorize(value = {
+        AuthConstant.AUTHORIZATION_WWW_SERVICE,
+        AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
+        //AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
+        //AuthConstant.AUTHORIZATION_BOT_SERVICE,
+        AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
+        AuthConstant.AUTHORIZATION_SUPPORT_USER,
+        AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
+    })
+    @GetMapping("/jobs/tailored")
+    public GenericJobResponse getTailoredJob(@RequestParam String resumeUuid) {
+        JobDto job = matchingService.getResumeTailoredJob(resumeUuid);
+        return new GenericJobResponse(job);
+    }
+
+    @Authorize(value = {
+        AuthConstant.AUTHORIZATION_WWW_SERVICE,
+        AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
+        //AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
+        //AuthConstant.AUTHORIZATION_BOT_SERVICE,
+        AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
+        AuthConstant.AUTHORIZATION_SUPPORT_USER,
+        AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
+    })
+    @GetMapping("/resumes/tailored")
+    public ResumeListResponse getTailoredResumes(@RequestParam String jobUuid) {
+        Collection<ResumeDto> resumeDtos = matchingService.getTailoredResumesByJob(jobUuid);
+        return new ResumeListResponse(new ResumeList(resumeDtos));
+    }
+
+    @Authorize(value = {
+        AuthConstant.AUTHORIZATION_WWW_SERVICE,
+        AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
+        //AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
+        //AuthConstant.AUTHORIZATION_BOT_SERVICE,
+        AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
+        AuthConstant.AUTHORIZATION_SUPPORT_USER,
+        AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
+    })
+    @GetMapping("/resumes/paging-tailored")
+    public ResumeListResponse getTailoredResumes(@RequestParam String jobUuid, @RequestParam int offset, @RequestParam int limit) {
+        Collection<ResumeDto> resumeDtos = matchingService.getTailoredResumesByJob(jobUuid, offset, limit);
+        return new ResumeListResponse(new ResumeList(resumeDtos, offset, limit));
+    }
 }
