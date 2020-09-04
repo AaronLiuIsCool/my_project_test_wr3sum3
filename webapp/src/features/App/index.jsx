@@ -24,18 +24,18 @@ import './styles/index.scss';
 import zh from './i18n/zh.json';
 import en from './i18n/en.json';
 
-
 const authServices = new AuthServices();
 const logger = getLogger('App');
+
 async function isAuthenticated(dispatch) {
-  let authInfo = {}
+  let authInfo = {};
   try {
     const response = await authServices.findWhoAmI();
     if (response) {
       authInfo = await response.json();
     }
   } catch (exception) {
-    logger.error(exception); // TODO: Remove before we go out to prod
+    logger.error(exception);
   } finally {
     dispatch(updateAuthInfo(authInfo));
   }
@@ -70,8 +70,10 @@ const App = ({ waitForInit = true }) => {
           <Navigation />
           <Switch>
             <PrivateRoute exact path="/" component={ResumeHub} />
+            <PrivateRoute exact path="/resumes" component={ResumeHub} />
+            <PrivateRoute path="/resumes/new" component={ResumeStarter} />
             <PrivateRoute exact path="/resume" component={SmartResume} />
-            <PrivateRoute path="/resume/new" component={ResumeStarter} />
+            <PrivateRoute exact path="/resume/:resumeId" component={SmartResume} />
             <PrivateRoute path="/jobs" component={JobsMatcher} />
             <Route component={Page404} />
             <Route path="/404" component={Page404} />

@@ -42,14 +42,14 @@ const ProjectForm = ({ data, index, isLast = false, messages }) => {
 	const dispatch = useDispatch();
 
 	const save = async () => {
-		let id;
+		let id = data.id;
 		try {
 			const response =
-				data.id === undefined
+				id === undefined
 					? await resumeServices.createProject(resumeId, adaptProject(data))
 					: await resumeServices.updateProject(data.id, adaptProject(data));
 			const responseJson = await response.json();
-			id = responseJson.id;
+			id = id || responseJson.id;
 		} catch (exception) {
 			logger.error(exception);
 		} finally {

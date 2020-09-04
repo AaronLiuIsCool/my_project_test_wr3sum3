@@ -10,18 +10,30 @@ export default class AccountServices extends BaseServices {
     this.configsPrefix = ACCOUNT_SERVICE_CONFIGS_PREFIX;
   }
 
-  // TODO: All the urls below are not working, need to update to correct ones once get Swagger to work
-  async getUser() {
+  async getAccountInfo(userId) {
     try {
-      return await this.get('v1/user');
+      return await this.get(`v1/account/get?userId=${userId}`);
     } catch(err) {
       logger.error(err);
     }
   }
 
-  async updateUser() {
+  async addResume(userId, resumeId) {
     try {
-      return await this.post('v1/user', {"test": true});
+      return await this.post(`v1/account/${userId}/resumes`, {
+        "alias": "<Resume Name>",
+        "createdAt": new Date().toISOString(),
+        "resumeId": resumeId,
+        "thumbnailUri": "thumbnailUri"
+      });
+    } catch(err) {
+      logger.error(err);
+    }
+  }
+
+  async deleteResume(userId, resume) {
+    try {
+      return await this.delete(`v1/account/${userId}/resumes`, resume);
     } catch(err) {
       logger.error(err);
     }

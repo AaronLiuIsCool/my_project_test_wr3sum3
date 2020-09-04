@@ -43,6 +43,17 @@ export async function put(url, data, options) {
   return await fetch(request);
 }
 
+export async function deletion(url, data, options) {
+  const headers = getHeaders();
+  const request = new Request(url, {
+    credentials: 'include',
+    method: 'DELETE',
+    headers,
+    body: JSON.stringify(data)
+  });
+  return await fetch(request);
+}
+
 export default class BaseServices {
   getURL(api) {
     return getServiceUrl(configs[`${this.configsPrefix}-baseUrl`], api);
@@ -61,5 +72,10 @@ export default class BaseServices {
   async put(api, data) {
     const url = this.getURL(api);
     return await put(url, data);
+  }
+
+  async delete(api, data) {
+    const url = this.getURL(api);
+    return await deletion(url, data);
   }
 }

@@ -6,4 +6,4 @@ management:
 kdr:
   cors:
     enabled: true
-    webapp_origin: http://app.kuaidaoresume-v2.local/
+    webapp_origin: http://localhost:3000,http://app.kuaidaoresume-v2.local:3000,http://app.kuaidaoresume-v2.local:30001,http://app.kuaidaoresume-v2.local

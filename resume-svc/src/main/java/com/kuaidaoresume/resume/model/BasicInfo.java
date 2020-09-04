@@ -26,7 +26,7 @@ public class BasicInfo implements ResumeContainable {
     private Long id;
 
     @NotNull
-    @Size(min = 3, max = 50)
+    @Size(min = 2, max = 50)
     @Column(length = 50)
     private String fullName;
 

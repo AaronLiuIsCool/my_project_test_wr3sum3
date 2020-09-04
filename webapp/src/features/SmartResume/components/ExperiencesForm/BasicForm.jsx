@@ -37,13 +37,13 @@ const BasicForm = ({ data, completed, messages }) => {
 	const dispatch = useDispatch();
 
 	const save = async () => {
-		let id;
+		let id = data.id;
 		try {
-			const response = (data.id === undefined) ? 
+			const response = (id === undefined) ? 
 				await resumeServices.createBasics(resumeId, adaptBasics({completed: true, data})) : 
 				await resumeServices.updateBasics(resumeId, adaptBasics({completed: true, data}));
 			const responseJson = await response.json();
-			id = responseJson.id;
+			id = id || responseJson.id;
 		} catch (exception) {
 			logger.error(exception);
 		} finally {

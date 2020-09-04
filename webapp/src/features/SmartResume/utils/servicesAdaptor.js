@@ -18,14 +18,14 @@ export function adaptBasics(basics) {
         phoneNumber: phone
     };
     if (typeof linkedin === 'string' && linkedin.length > 0) {
-        data.profiles = data.profile || [];
+        data.profiles = data.profiles || [];
         data.profiles.push({
             type: 'LINKEDIN',
             url: linkedin
         });
     }
     if (typeof linkedin === 'string' && weblink.length > 0) {
-        data.profiles = data.profile || [];
+        data.profiles = data.profiles || [];
         data.profiles.push({
             type: 'OTHER',
             url: weblink

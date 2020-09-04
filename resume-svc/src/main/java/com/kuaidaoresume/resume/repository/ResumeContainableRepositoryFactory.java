@@ -24,6 +24,9 @@ public class ResumeContainableRepositoryFactory {
     @Autowired
     private VolunteerExperienceRepository volunteerExperienceRepository;
 
+    @Autowired
+    private CertificateRepository certificateRepository;
+
     public ResumeContainableRepository getResumeContainableRepository(Class<? extends ResumeContainable> type) {
         if (type.equals(BasicInfo.class)) {
             return basicInfoRepository;
@@ -35,6 +38,8 @@ public class ResumeContainableRepositoryFactory {
             return projectExperienceRepository;
         } else if (type.equals(VolunteerExperience.class)) {
             return volunteerExperienceRepository;
+        } else if (type.equals(Certificate.class)) {
+            return certificateRepository;
         } else {
             throw new IllegalArgumentException("Invalid class type");
         }

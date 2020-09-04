@@ -31,14 +31,14 @@ const CertificateForm = ({ data, index, isLast = false, messages }) => {
 	const dispatch = useDispatch();
 
 	const save = async () => {
-		let id;
+		let id = data.id;
 		try {
 			const response =
 				data.id === undefined
 					? await resumeServices.createCertificate(resumeId, adaptCertificate(data))
 					: await resumeServices.updateCertificate(data.id, adaptCertificate(data));
 			const responseJson = await response.json();
-			id = responseJson.id;
+			id = id || responseJson.id;
 		} catch (exception) {
 			logger.error(exception);
 		} finally {

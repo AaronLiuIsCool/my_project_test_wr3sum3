@@ -8,6 +8,7 @@ import project from "./project";
 import volunteer from "./volunteer";
 import certificate from "./certificate";
 import preview from "./preview";
+import { resumeAdaptor } from "../utils/slicerAdaptor";
 
 export const resumeSlice = createSlice({
     name: "resume",
@@ -27,6 +28,11 @@ export const resumeSlice = createSlice({
     reducers: {
         setId: (state, action) => {
             state.id = action.payload;
+        },
+
+        setResume: (state, action) => {
+            const resume = action.payload;
+            return {...state, ...resumeAdaptor(resume)};
         },
 
         moveStep: (state, action) => {

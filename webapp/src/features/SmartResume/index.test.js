@@ -10,7 +10,7 @@ import SmartResume from './index';
 test('renders lazy loaded component for SmartResume', () => {
   const smartResume = renderer.create(
     <Provider store={store}>
-      <SmartResume />
+      <SmartResume match={{params: {}}} />
     </Provider>
   ).toJSON();
 

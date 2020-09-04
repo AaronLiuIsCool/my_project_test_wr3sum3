@@ -16,6 +16,14 @@ export default class ResumeServices extends BaseServices {
         this.configsPrefix = PREFIX;
     }
 
+    async getResume(resumeId) {
+        try {
+            return await this.get(`v1/resumes/${resumeId}`);
+        } catch (exception) {
+            logger.error(exception);
+        }
+    }
+
     async createResume(resume) {
         try {
             return await this.post('v1/resumes', resume);
@@ -50,7 +58,7 @@ export default class ResumeServices extends BaseServices {
 
     async updateEducation(eduId, education) {
         try {
-            return await this.put(`/v1/educations/${eduId}`, education);
+            return await this.put(`v1/educations/${eduId}`, education);
         } catch (exception) {
             logger.error(exception);
         }
@@ -58,7 +66,7 @@ export default class ResumeServices extends BaseServices {
 
     async createWork(resumeId, work) {
         try {
-            return await this.post(`/v1/resumes/${resumeId}/work-experiences`, work);
+            return await this.post(`v1/resumes/${resumeId}/work-experiences`, work);
         } catch (exception) {
             logger.error(exception);
         }
@@ -66,7 +74,7 @@ export default class ResumeServices extends BaseServices {
 
     async updateWork(id, work) {
         try {
-            return await this.put(`/v1/work-experiences/${id}`, work);
+            return await this.put(`v1/work-experiences/${id}`, work);
         } catch (exception) {
             logger.error(exception);
         }
@@ -74,7 +82,7 @@ export default class ResumeServices extends BaseServices {
 
     async createProject(resumeId, project) {
         try {
-            return await this.post(`/v1/resumes/${resumeId}/project-experiences`, project);
+            return await this.post(`v1/resumes/${resumeId}/project-experiences`, project);
         } catch (exception) {
             logger.error(exception);
         }
@@ -82,7 +90,7 @@ export default class ResumeServices extends BaseServices {
 
     async updateProject(id, project) {
         try {
-            return await this.put(`/v1/project-experiences/${id}`, project);
+            return await this.put(`v1/project-experiences/${id}`, project);
         } catch (exception) {
             logger.error(exception);
         }
@@ -90,7 +98,7 @@ export default class ResumeServices extends BaseServices {
 
     async createVolunteer(resumeId, volunteer) {
         try {
-            return await this.post(`/v1/resumes/${resumeId}/volunteer-experiences`, volunteer);
+            return await this.post(`v1/resumes/${resumeId}/volunteer-experiences`, volunteer);
         } catch (exception) {
             logger.error(exception);
         }
@@ -98,7 +106,7 @@ export default class ResumeServices extends BaseServices {
 
     async updateVolunteer(id, volunteer) {
         try {
-            return await this.put(`/v1/volunteer-experiences/${id}`, volunteer);
+            return await this.put(`v1/volunteer-experiences/${id}`, volunteer);
         } catch (exception) {
             logger.error(exception);
         }
@@ -106,7 +114,7 @@ export default class ResumeServices extends BaseServices {
 
     async createCertificate(resumeId, certificate) {
         try {
-            return await this.post(`/v1/resumes/${resumeId}/certificates`, certificate);
+            return await this.post(`v1/resumes/${resumeId}/certificates`, certificate);
         } catch (exception) {
             logger.error(exception);
         }
@@ -114,7 +122,7 @@ export default class ResumeServices extends BaseServices {
 
     async updateCertificate(id, certificate) {
         try {
-            return await this.put(`/v1/certificates/${id}`, certificate);
+            return await this.put(`v1/certificates/${id}`, certificate);
         } catch (exception) {
             logger.error(exception);
         }

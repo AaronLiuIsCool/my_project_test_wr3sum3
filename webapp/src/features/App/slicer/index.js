@@ -26,5 +26,6 @@ export const { updateLanguage, updatePath, updateAuthInfo } = appSlicers.actions
 export const selectLanguage = ({app}) => app.language;
 export const selectPath = ({app}) => app.path;
 export const selectAuthentication = ({app}) => app.authenticated;
+export const selectUserId = ({app}) => app.iam && app.iam.userId;
 
 export default appSlicers.reducer;

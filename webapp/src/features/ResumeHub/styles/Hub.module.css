@@ -1,0 +1,102 @@
+.container {
+  margin: auto;
+  width: 1000px;
+}
+
+.header {
+  height: 66px;
+  margin: 28px 0;
+}
+
+span.title {
+  height: 2.5rem;
+  font-size: 1.875rem;
+  color: #333333;
+}
+
+a.action {
+  height: 1.625rem;
+  font-size: 1.25rem;
+  font-weight: bold;
+  line-height: 50px;
+  color: #3e89ec;
+  float: right;
+}
+
+.itemContainer {
+  width: 480px;
+  height: 350px;
+  border-radius: 8px;
+  box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  display: inline-block;
+  margin-bottom: 40px;
+  padding: 40px;
+}
+.itemContainer:nth-child(2n+1) {
+  margin-right: 40px;
+}
+
+.itemContent {
+  margin-bottom: 20px;
+}
+
+.matchingBtn {
+  width: 25rem;
+  height: 2.563rem;
+  font-size: 1rem;
+  line-height: 1.88;
+  text-align: center;
+  color: #ffffff;
+}
+
+.right {
+  float: right;
+  width: 200px;
+}
+
+.name {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #333333;
+}
+
+.time {
+  margin-top: 1.25em;
+  height: 1.188rem;
+  font-size: 0.875rem;
+  line-height: 2.14;
+  color: #bfc4d3;
+}
+
+.links {
+  margin: 20px 0;
+}
+
+.link {
+  height: 21px;
+  border: 0px;
+  font-size: 0.875rem;
+  font-weight: bold;
+  color: #3e89ec;
+  padding: 0;
+}
+.link:nth-child(2n+1) {
+  margin-right: 40px;
+}
+.link:nth-child(3), .link:nth-child(4) {
+  margin-top: 18px;
+}
+.link:hover {
+  text-decoration: none;
+}
+
+.delete {
+  padding: 0;
+  font-size: 0.875rem;
+  font-weight: bold;
+  color: #d5d9e6;
+}
+.delete:hover {
+  text-decoration: none;
+}

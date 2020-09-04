@@ -41,13 +41,13 @@ const EducationForm = ({ data, index, isLast = false, messages }) => {
     const dispatch = useDispatch();
 
     const save = async () => {
-        let id;
+        let id = data.id;
         try {
-            const response = (data.id === undefined) ?
+            const response = (id === undefined) ?
                 await resumeServices.createEducation(resumeId, adaptEducation(data)) :
                 await resumeServices.updateEducation(data.id, adaptEducation(data));
             const responseJson = await response.json();
-            id = responseJson.id;
+            id = id || responseJson.id;
         } catch(exception) {
             logger.error(exception);
         } finally {

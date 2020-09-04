@@ -41,12 +41,12 @@ const WorkForm = ({ data, index, isLast = false, messages }) => {
 	const dispatch = useDispatch();
 
     const save = async () => {
-        let id;
+        let id = data.id;
         try {
             const response =
-                data.id === undefined ? await resumeServices.createWork(resumeId, adaptWork(data)) : await resumeServices.updateWork(data.id, adaptWork(data));
+                id === undefined ? await resumeServices.createWork(resumeId, adaptWork(data)) : await resumeServices.updateWork(data.id, adaptWork(data));
             const responseJson = await response.json();
-            id = responseJson.id;
+            id = id || responseJson.id;
         } catch (exception) {
             logger.error(exception);
         } finally {

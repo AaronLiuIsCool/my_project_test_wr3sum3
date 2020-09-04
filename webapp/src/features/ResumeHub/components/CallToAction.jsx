@@ -7,7 +7,7 @@ import { useI8n } from 'shell/i18n';
 
 import styles from '../styles/CallToAction.module.css';
 
-const New = () => {
+const CallToAction = () => {
     const messages = useI8n();
     return (
         <div className={styles.container}>
@@ -18,7 +18,7 @@ const New = () => {
                 <p className={styles.description}>
                     {messages['new_resume_description']}
                 </p>
-                <Button className={styles.action} href='/resume/new'>
+                <Button className={styles.action} href='/resumes/new'>
                     {messages['new_resume_start']}
                 </Button>
             </div>
@@ -26,4 +26,4 @@ const New = () => {
     );
 };
 
-export default New;
+export default CallToAction;

@@ -5,9 +5,9 @@ import './styles/index.scss';
 
 const SmartResume = React.lazy(() => import('./components/SmartResume'));
 
-const LazyLoadSmartResume = () => (
+const LazyLoadSmartResume = ({ match }) => (
   <Suspense fallback={<LoadFallbackComponent />}>
-    <SmartResume useObserver={true} />
+    <SmartResume useObserver={true} resumeId={match.params.resumeId} />
   </Suspense>
 );
 

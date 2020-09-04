@@ -155,9 +155,11 @@ rest of them are same as docker-compose
 ```kubectl get deployments```
 
 ### Clean up 
-```kubectl delete deployments --all```
-```kubectl delete services --all```
-```kubectl delete configmaps --all```
+```
+kubectl delete deployments --all
+kubectl delete services --all
+kubectl delete configmaps --all
+```
 
 ## Run uat (It's on AWS EKS CA central region)
 1. Go to k8s/uat folder
