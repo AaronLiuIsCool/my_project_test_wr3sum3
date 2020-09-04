@@ -1,5 +1,6 @@
 package com.kuaidaoresume.resume.service;
 
+import com.kuaidaoresume.resume.dto.ResumeMatchingDto;
 import com.kuaidaoresume.resume.dto.ResumeScoreDto;
 import com.kuaidaoresume.resume.model.*;
 
@@ -50,4 +51,6 @@ public interface ResumeService {
     void saveKeywords(Iterable<Keyword> keywords);
 
     Optional<ResumeScoreDto> getResumeScore(String resumeId);
+
+    Optional<ResumeMatchingDto> getResumeMatching(String resumeId);
 }

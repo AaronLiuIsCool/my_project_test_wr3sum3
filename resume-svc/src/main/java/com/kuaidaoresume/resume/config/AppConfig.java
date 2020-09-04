@@ -8,9 +8,7 @@ import com.kuaidaoresume.common.matching.InMemoryKeywordMatcher;
 import com.kuaidaoresume.common.matching.KeywordMatcher;
 import com.kuaidaoresume.common.matching.NumericWordMatcher;
 import com.kuaidaoresume.common.matching.NumericWordMatcherImpl;
-import com.kuaidaoresume.resume.model.Keyword;
-import com.kuaidaoresume.resume.repository.KeywordRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.kuaidaoresume.common.utils.FileUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -27,7 +25,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.Executor;
-import java.util.stream.Collectors;
 
 import static com.github.pemistahl.lingua.api.IsoCode639_1.EN;
 import static com.github.pemistahl.lingua.api.IsoCode639_1.ZH;
@@ -38,9 +35,6 @@ import static com.github.pemistahl.lingua.api.IsoCode639_1.ZH;
 public class AppConfig {
 
     public static final String ASYNC_EXECUTOR_NAME = "asyncExecutor";
-
-    @Autowired
-    private KeywordRepository keywordRepository;
 
     @Bean(name = ASYNC_EXECUTOR_NAME)
     public Executor asyncExecutor() {
@@ -75,8 +69,8 @@ public class AppConfig {
 
     @Bean
     public KeywordMatcher keywordMatcher() {
-        Collection<Keyword> keywords = keywordRepository.findByLanguage("en");
-        return new InMemoryKeywordMatcher(keywords.stream().map(Keyword::getValue).collect(Collectors.toSet()));
+        Collection<String> keywords = FileUtil.getKeywordsFromExcel("matching/keywords.xlsx");
+        return new InMemoryKeywordMatcher(keywords);
     }
 
     @Bean

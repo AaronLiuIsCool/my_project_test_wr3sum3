@@ -2,7 +2,7 @@ package com.kuaidaoresume.resume.service.score;
 
 import com.kuaidaoresume.common.matching.NameMatcher;
 import com.kuaidaoresume.resume.model.WorkExperience;
-import com.kuaidaoresume.resume.utils.FileUtil;
+import com.kuaidaoresume.common.utils.FileUtil;
 import org.springframework.stereotype.Component;
 
 import static com.kuaidaoresume.resume.service.score.ScoreConstants.*;

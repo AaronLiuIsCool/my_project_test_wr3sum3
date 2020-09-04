@@ -1,6 +1,7 @@
 package com.kuaidaoresume.resume.controller.v1.api;
 
 import com.kuaidaoresume.resume.config.ResumeApplicationTestConfig;
+import com.kuaidaoresume.resume.controller.v1.assembler.ResumeMatchingRepresentationModelAssembler;
 import com.kuaidaoresume.resume.controller.v1.assembler.ResumeRepresentationModelAssembler;
 import com.kuaidaoresume.resume.controller.v1.assembler.ResumeScoreRepresentationModelAssembler;
 import com.kuaidaoresume.resume.model.*;
@@ -32,7 +33,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(ResumeController.class)
-@Import({ ResumeRepresentationModelAssembler.class, ResumeScoreRepresentationModelAssembler.class, ResumeApplicationTestConfig.class })
+@Import({
+    ResumeRepresentationModelAssembler.class,
+    ResumeScoreRepresentationModelAssembler.class,
+    ResumeApplicationTestConfig.class,
+    ResumeMatchingRepresentationModelAssembler.class})
 public class ResumeControllerTest {
 
     private static final String RESUME_ID = "aUUID";

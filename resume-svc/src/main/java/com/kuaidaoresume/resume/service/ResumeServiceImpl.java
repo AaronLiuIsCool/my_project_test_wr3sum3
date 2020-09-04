@@ -1,5 +1,8 @@
 package com.kuaidaoresume.resume.service;
 
+import com.kuaidaoresume.common.dto.LocationDto;
+import com.kuaidaoresume.common.matching.KeywordMatcher;
+import com.kuaidaoresume.resume.dto.ResumeMatchingDto;
 import com.kuaidaoresume.resume.dto.ResumeScoreDto;
 import com.kuaidaoresume.resume.model.*;
 import com.kuaidaoresume.resume.repository.KeywordRepository;
@@ -17,6 +20,7 @@ import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -33,6 +37,9 @@ public class ResumeServiceImpl implements ResumeService {
 
     @Autowired
     private final ResumeScoreBuilder resumeScoreBuilder;
+
+    @Autowired
+    private final KeywordMatcher keywordMatcher;
 
     @Override
     public BasicInfo saveBasicInfo(String resumeId, BasicInfo basicInfoToSave) {
@@ -175,6 +182,34 @@ public class ResumeServiceImpl implements ResumeService {
     @Override
     public Optional<ResumeScoreDto> getResumeScore(String resumeId) {
         return resumeRepository.findById(resumeId).map(resumeScoreBuilder::getResumeScoreDto);
+    }
+
+    @Override
+    public Optional<ResumeMatchingDto> getResumeMatching(String resumeId) {
+        return resumeRepository.findById(resumeId).map(resume -> {
+            Set<String> majors = resume.getEducations().stream().map(Education::getMajor).collect(Collectors.toSet());
+            Set<String> keywords = new HashSet<>();
+            extractKeywordsFromExperience(keywords, resume.getWorkExperiences());
+            extractKeywordsFromExperience(keywords, resume.getProjectExperiences());
+            extractKeywordsFromExperience(keywords, resume.getVolunteerExperiences());
+            BasicInfo basicInfo = resume.getBasicInfo();
+            LocationDto location = LocationDto.builder()
+                .country(basicInfo.getCountry())
+                .state(basicInfo.getProvince())
+                .city(basicInfo.getCity())
+                .build();
+            return ResumeMatchingDto.builder()
+                .location(location)
+                .majors(majors)
+                .keywords(keywords)
+                .build();
+        });
+    }
+
+    private <T extends Experience> void extractKeywordsFromExperience(Set<String> keywords, Collection<T> experiences) {
+        experiences.forEach(experience -> {
+            keywords.addAll(keywordMatcher.getMatches(experience.getDescription()));
+        });
     }
 
     private <T extends ResumeContainable> BiFunction<String, T, Resume> saveResumeWithItemUpdate(

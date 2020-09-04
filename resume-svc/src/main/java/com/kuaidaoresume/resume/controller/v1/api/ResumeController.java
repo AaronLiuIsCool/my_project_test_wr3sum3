@@ -2,10 +2,12 @@ package com.kuaidaoresume.resume.controller.v1.api;
 
 import com.kuaidaoresume.common.auth.AuthConstant;
 import com.kuaidaoresume.common.auth.Authorize;
+import com.kuaidaoresume.resume.controller.v1.assembler.ResumeMatchingRepresentationModelAssembler;
 import com.kuaidaoresume.resume.controller.v1.assembler.ResumeRepresentationModelAssembler;
 import com.kuaidaoresume.resume.controller.v1.assembler.ResumeScoreRepresentationModelAssembler;
 import com.kuaidaoresume.resume.dto.PersistedResumeDto;
 import com.kuaidaoresume.resume.dto.ResumeDto;
+import com.kuaidaoresume.resume.dto.ResumeMatchingDto;
 import com.kuaidaoresume.resume.dto.ResumeScoreDto;
 import com.kuaidaoresume.resume.model.Resume;
 import com.kuaidaoresume.resume.service.ResumeService;
@@ -31,6 +33,9 @@ public class ResumeController {
 
     @Autowired
     private final ResumeScoreRepresentationModelAssembler resumeScoreAssembler;
+
+    @Autowired
+    private final ResumeMatchingRepresentationModelAssembler resumeMatchingAssembler;
 
     @Autowired
     private final ModelMapper modelMapper;
@@ -86,5 +91,22 @@ public class ResumeController {
         Resume saved = resumeService.saveResume(toSave);
         EntityModel<PersistedResumeDto> entityModel = resumeAssembler.toModel(modelMapper.map(saved, PersistedResumeDto.class));
         return ResponseEntity.created(resumeAssembler.getSelfLink(entityModel).toUri()).body(entityModel);
+    }
+
+    @Authorize(value = {
+        AuthConstant.AUTHORIZATION_WWW_SERVICE,
+        AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
+        //AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
+        //AuthConstant.AUTHORIZATION_BOT_SERVICE,
+        AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
+        AuthConstant.AUTHORIZATION_SUPPORT_USER,
+        AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
+    })
+    @GetMapping("/resumes/{id}/matching")
+    public ResponseEntity<EntityModel<ResumeMatchingDto>> getResumeMatching(@PathVariable String id) {
+        return resumeService.getResumeMatching(id)
+            .map(resumeMatchingAssembler::toModel)
+            .map(ResponseEntity::ok)
+            .orElse(ResponseEntity.notFound().build());
     }
 }
