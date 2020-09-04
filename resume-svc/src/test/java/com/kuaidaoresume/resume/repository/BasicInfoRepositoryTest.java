@@ -47,6 +47,8 @@ public class BasicInfoRepositoryTest {
 
     @BeforeEach
     public void setup() {
+        basicInfoRepository.deleteAll();
+        testProfileRepository.deleteAll();
         resume = resumeRepository.save(Resume.builder().language("en").build());
         resumeId = resume.getId();
         basicInfo = BasicInfo.builder()
@@ -58,6 +60,12 @@ public class BasicInfoRepositoryTest {
             .phoneNumber("123456789")
             .resume(resume)
             .build();
+        profile = Profile.builder()
+            .type(Profile.ProfileType.LINKEDIN)
+            .url("https://www.linkedin.com/mcga")
+            .basicInfo(basicInfo)
+            .build();
+        basicInfo.setProfiles(Arrays.asList(profile));
         basicInfoRepository.save(basicInfo);
     }
 
@@ -69,12 +77,6 @@ public class BasicInfoRepositoryTest {
 
     @Test
     public void whenSaved_thenFindProfile() {
-        profile = Profile.builder()
-            .type(Profile.ProfileType.LINKEDIN)
-            .url("https://www.linkedin.com/mcga")
-            .basicInfo(basicInfo)
-            .build();
-        basicInfo.setProfiles(Arrays.asList(profile));
         basicInfoRepository.save(basicInfo);
         assertTrue(testProfileRepository.findAll().iterator().hasNext());
     }

@@ -19,6 +19,9 @@ import javax.validation.constraints.NotNull;
 public class Profile {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @NotNull
     @URL
     private String url;

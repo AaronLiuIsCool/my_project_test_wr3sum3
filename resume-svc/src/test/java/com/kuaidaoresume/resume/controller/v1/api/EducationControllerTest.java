@@ -171,7 +171,7 @@ public class EducationControllerTest {
 
     @Test
     public void whenSave_thenReturn202() throws Exception {
-        doNothing().when(resumeService).updateResumeContainable(education, Education.class);
+        doNothing().when(resumeService).updateResumeContainable(any(Education.class), eq(Education.class));
 
         mvc.perform(put("/v1/educations/{id}", EDUCATION_ID)
             .content(objectMapper.writeValueAsString(persistedEducationDto))

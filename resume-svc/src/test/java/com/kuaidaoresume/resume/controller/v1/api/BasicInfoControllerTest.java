@@ -171,14 +171,15 @@ public class BasicInfoControllerTest {
     }
 
     @Test
-    public void whenSave_thenReturn202() throws Exception {
+    public void whenSave_thenReturn200() throws Exception {
+        given(resumeService.findByResumeId(RESUME_ID, BasicInfo.class)).willReturn(Optional.of(basicInfo));
         given(resumeService.saveBasicInfo(eq(RESUME_ID), any(BasicInfo.class))).willReturn(basicInfo);
 
         mvc.perform(put("/v1/resumes/{resumeId}/basic-info", RESUME_ID)
             .content(objectMapper.writeValueAsString(persistedBasicInfoDto))
             .contentType(MediaType.APPLICATION_JSON))
             .andDo(print())
-            .andExpect(status().isNoContent())
+            .andExpect(status().isOk())
             .andReturn();
     }
 }

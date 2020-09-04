@@ -38,10 +38,11 @@ CREATE TABLE `basic_info` (
 
 DROP TABLE IF EXISTS `profile`;
 CREATE TABLE `profile` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
   `type` varchar(255) NOT NULL,
   `url` varchar(255) NOT NULL,
   `basic_info_id` bigint NOT NULL,
-  PRIMARY KEY (`url`),
+  PRIMARY KEY (`id`),
   KEY `FKtg6mox52p5qvmp46fo95vn8yy` (`basic_info_id`),
   CONSTRAINT `FKtg6mox52p5qvmp46fo95vn8yy` FOREIGN KEY (`basic_info_id`) REFERENCES `basic_info` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

@@ -113,10 +113,19 @@ public class BasicInfoController {
             @RequestBody
             PersistedBasicInfoDto basicInfoDto) {
 
-        BasicInfo basicInfo = modelMapper.map(basicInfoDto, BasicInfo.class);
-        BasicInfo savedBasicInfo = resumeService.saveBasicInfo(resumeId, basicInfo);
-        EntityModel<PersistedBasicInfoDto> entityModel =
-            basicInfoAssembler.toModel(modelMapper.map(savedBasicInfo, PersistedBasicInfoDto.class));
-        return ResponseEntity.noContent().location(basicInfoAssembler.getSelfLink(entityModel).toUri()).build();
+        return resumeService.findByResumeId(resumeId, BasicInfo.class)
+            .map(existed -> {
+                BasicInfo basicInfo = modelMapper.map(basicInfoDto, BasicInfo.class);
+                basicInfo.setId(existed.getId());
+                return resumeService.saveBasicInfo(resumeId, basicInfo);
+            })
+            .map(basicInfo -> modelMapper.map(basicInfo, PersistedBasicInfoDto.class))
+            .map(basicInfoAssembler::toModel)
+            .map(entityModel -> {
+                Links links = entityModel.getLinks().merge(Links.MergeMode.REPLACE_BY_REL,
+                    linkTo(methodOn(BasicInfoController.class).findByResumeId(resumeId)).withSelfRel());
+                return ResponseEntity.ok(EntityModel.of(entityModel.getContent(), links));
+            })
+            .orElse(ResponseEntity.notFound().build());
     }
 }

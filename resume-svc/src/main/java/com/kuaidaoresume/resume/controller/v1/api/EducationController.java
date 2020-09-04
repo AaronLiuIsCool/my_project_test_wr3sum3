@@ -95,6 +95,7 @@ public class EducationController {
         EducationDto educationDto) {
 
         Education education = modelMapper.map(educationDto, Education.class);
+        bindAwardToEducation(education);
         Education saved = resumeService.newEducation(resumeId, education);
         EntityModel<PersistedEducationDto> entityModel =
             educationAssembler.toModel(modelMapper.map(saved, PersistedEducationDto.class));
@@ -120,6 +121,7 @@ public class EducationController {
 
         Education toUpdate = modelMapper.map(educationDto, Education.class);
         toUpdate.setId(id);
+        bindAwardToEducation(toUpdate);
         resumeService.updateResumeContainable(toUpdate, Education.class);
         EntityModel<PersistedEducationDto> entityModel =
             educationAssembler.toModel(modelMapper.map(toUpdate, PersistedEducationDto.class));
@@ -146,6 +148,7 @@ public class EducationController {
         Iterable<Education> batchToUpdate = educationDtoBatch.stream()
             .map(educationDto -> modelMapper.map(educationDto, Education.class))
             .collect(Collectors.toList());
+        batchToUpdate.forEach(this::bindAwardToEducation);
         Collection<Education> saved = resumeService.saveEducations(resumeId, batchToUpdate);
         CollectionModel<EntityModel<PersistedEducationDto>> collectionModel = educationAssembler
             .toCollectionModel(saved.stream().map(education -> modelMapper.map(education, PersistedEducationDto.class))
@@ -182,5 +185,9 @@ public class EducationController {
     public ResponseEntity<?> deleteAllByResumeId(@PathVariable String resumeId) {
         resumeService.deleteAllByResumeId(resumeId, Education.class);
         return ResponseEntity.noContent().build();
+    }
+
+    private void bindAwardToEducation(Education education) {
+        education.getAwards().forEach(award -> award.setEducation(education));
     }
 }
