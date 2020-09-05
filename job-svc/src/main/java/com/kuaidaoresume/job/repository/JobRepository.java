@@ -15,6 +15,8 @@ public interface JobRepository extends JpaRepository<Job, Long> {
 
 // TODO:List<Job> findJobsByKeywords(List<String> Keywords);
 
+        List<Job> findByLocationInAndMajorsIn(List<Location> locations, List<Major> majors);
+
         List<Job> findByLocationIn(List<Location> locations);
 
         List<Job> findByMajorsIn(List<Major> majors);

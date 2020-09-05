@@ -104,6 +104,12 @@ public class JobRepositoryTest {
     }
 
     @Test
+    public void whenSaved_thenFindByLocationInAndMajorsIn() {
+        assertThat(jobRepository.findByLocationInAndMajorsIn(Arrays.asList(location), majors).size(), is(1));
+        assertThat(jobRepository.findByLocationInAndMajorsIn(Arrays.asList(location), majors).get(0).getId(), is(job.getId()));
+    }
+
+    @Test
     public void whenSaved_thenFindByLocationIn() {
         assertThat(jobRepository.findByLocationIn(Arrays.asList(location)).size(), is(1));
         assertThat(jobRepository.findByLocationIn(Arrays.asList(location)).get(0).getId(), is(job.getId()));

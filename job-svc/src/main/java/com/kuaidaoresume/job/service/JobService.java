@@ -16,11 +16,11 @@ public interface JobService {
 
 //    List<JobDto> findJobsByKeywords(List<KeywordDto> Keywords);
 //
-//    List<JobDto> findJobsByLocation(LocationDto locationDto);
-
     public List<JobDto> findJobByLocation(List<LocationDto> locationDtos);
 
     public List<JobDto> findJobByMajor(List<MajorDto> majorDtos);
+
+    public List<JobDto> findJobByLocationAndMajor(List<LocationDto> locationDtos, List<MajorDto> majorDtos);
 
     public Optional<JobDto> createJob(JobDto jobDto);
 

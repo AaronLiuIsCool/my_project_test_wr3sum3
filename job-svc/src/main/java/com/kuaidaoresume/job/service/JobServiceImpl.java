@@ -64,6 +64,28 @@ public class JobServiceImpl implements JobService{
     }
 
     @Override
+    public List<JobDto> findJobByLocationAndMajor(List<LocationDto> locationDtos, List<MajorDto> majorDtos) {
+        List<Location> locations = locationDtos.stream()
+                .map(x -> locationRepository.findByCountryIgnoreCaseAndCityIgnoreCaseAndPostCodeIgnoreCase(x.getCountry(), x.getCity(), x.getPostCode()))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .collect(Collectors.toList());
+
+        List<Major> majors = majorDtos.stream()
+                .map(x -> majorRepository.findByNameIgnoreCase(x.getName()))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .collect(Collectors.toList());
+
+        List<Job> jobs = jobRepository.findByLocationInAndMajorsIn(locations, majors);
+
+        List<JobDto> jobDtos = jobs.stream()
+                .map(x -> modelMapper.map(x, JobDto.class))
+                .collect(Collectors.toList());
+        return jobDtos;
+    }
+
+    @Override
     public List<JobDto> findJobByLocation(List<LocationDto> locationDtos) {
         List<Location> locations = locationDtos.stream()
                 .map(x -> locationRepository.findByCountryIgnoreCaseAndCityIgnoreCaseAndPostCodeIgnoreCase(x.getCountry(), x.getCity(), x.getPostCode()))

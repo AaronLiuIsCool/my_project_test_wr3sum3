@@ -171,29 +171,19 @@ public class JobController {
             AuthConstant.AUTHORIZATION_SUPPORT_USER,
             AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
     })
-    @PostMapping("/jobs/job-search/location")
-    public ResponseEntity<CollectionModel<EntityModel<PersistedJobDto>>> findJobByLocation(@RequestBody List<LocationDto> locations) {
-        logger.info("location = " + locations);
-        List<JobDto> foundJobs = jobService.findJobByLocation(locations);
-        if(foundJobs != null && foundJobs.size() > 0) {
-            return ResponseEntity.ok(jobRepresentationModelAssembler.toCollectionModel(foundJobs.stream().map(jobDto -> modelMapper.map(jobDto, PersistedJobDto.class))
-                    .collect(Collectors.toList())));
+    @PostMapping("/jobs/job-search")
+    public ResponseEntity<CollectionModel<EntityModel<PersistedJobDto>>> findByLocationAndMajor(@RequestBody JobSearchDto searchDto) {
+        logger.info("major = " + searchDto.getMajors() +  " locations = " + searchDto.getLocations());
+        List<JobDto> foundJobs = null;
+        if(searchDto.getLocations() != null && searchDto.getMajors() != null) {
+           foundJobs = jobService.findJobByLocationAndMajor(searchDto.getLocations(), searchDto.getMajors());
         }
-        return ResponseEntity.notFound().build();
-    }
-
-    @Authorize(value = {
-            AuthConstant.AUTHORIZATION_WWW_SERVICE,
-            AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
-            AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
-            AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
-            AuthConstant.AUTHORIZATION_SUPPORT_USER,
-            AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
-    })
-    @PostMapping("/jobs/job-search/major")
-    public ResponseEntity<CollectionModel<EntityModel<PersistedJobDto>>> findJobByMajor(@RequestBody List<MajorDto> majors) {
-        logger.info("major = " + majors);
-        List<JobDto> foundJobs = jobService.findJobByMajor(majors);
+        else if(searchDto.getLocations() != null) {
+            foundJobs = jobService.findJobByLocation(searchDto.getLocations());
+        }
+        else if(searchDto.getMajors() != null) {
+            foundJobs = jobService.findJobByMajor(searchDto.getMajors());
+        }
         if(foundJobs != null && foundJobs.size() > 0) {
             return ResponseEntity.ok(jobRepresentationModelAssembler.toCollectionModel((foundJobs.stream().map(jobDto -> modelMapper.map(jobDto, PersistedJobDto.class))
                     .collect(Collectors.toList()))));
