@@ -4,11 +4,13 @@ import com.kuaidaoresume.common.matching.KeywordMatcher;
 import com.kuaidaoresume.job.dto.JobFetcherRequest;
 import com.kuaidaoresume.job.dto.JobFetcherResponse;
 import com.kuaidaoresume.job.model.Job;
+import com.kuaidaoresume.job.model.Major;
 import com.kuaidaoresume.job.model.JobHasKeyword;
 import com.kuaidaoresume.job.model.Keyword;
 import com.kuaidaoresume.job.model.Location;
 import com.kuaidaoresume.job.repository.JobRepository;
 import com.kuaidaoresume.job.repository.KeywordRepository;
+import com.kuaidaoresume.job.repository.MajorRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import com.kuaidaoresume.job.dto.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.Date;
 import java.util.stream.*;
@@ -23,6 +26,12 @@ import java.util.stream.*;
 @Service
 @RequiredArgsConstructor
 public class JobInfoExtractionServiceImpl implements JobInfoExtractionService{
+    @Autowired
+    MajorExtractionService majorExtractionService;
+
+    @Autowired
+    MajorRepository majorRepository;
+
     @Autowired
     KeywordMatcher keywordMatcher;
 
@@ -50,12 +59,19 @@ public class JobInfoExtractionServiceImpl implements JobInfoExtractionService{
         String[] locationData = jobFetcherRequest.getLocation().split(",");
 
         LocationDto locationDto = LocationDto.builder()
-                .country(locationData[locationData.length - 1]) //last one is always country
-                .city(locationData[0]) //first one is always state
-                .state(locationData.length == 3 ? "" : locationData[1])
+                .country(locationData[locationData.length - 1].trim()) //last one is always country
+                .city(locationData[0].trim()) //first one is always state
+                .state(locationData.length == 3 ? "" : locationData[1].trim())
                 .build();
 
         Location location = modelMapper.map(locationDto, Location.class);
+
+        List<MajorDto> majorDtos = majorExtractionService.extract(jobFetcherRequest.getDescription());
+        List<Major> majors = majorDtos.stream().map
+                ( majorDto ->
+                        majorRepository.findByNameIgnoreCase(majorDto.getName()).isPresent() ?
+                                majorRepository.findByNameIgnoreCase(majorDto.getName()).get() : modelMapper.map(majorDto, Major.class)
+        ).collect(Collectors.toList());
 
         List<String> extensions = jobFetcherRequest.getExtensions();
 
@@ -91,6 +107,7 @@ public class JobInfoExtractionServiceImpl implements JobInfoExtractionService{
                     .jobDescription(jobFetcherRequest.getDescription())
                     .jobPostId(jobFetcherRequest.getJobPostId())
                     .location(location)
+                    .majors(majors)
                     .build();
 
             for(Keyword keyword : keywords) {

@@ -127,8 +127,8 @@ public class RatingServiceImpl implements RatingService{
 
         LocationDto locationDto = locationHasKeywordDto.getLocation();
         Optional<Location> existing =
-                locationRepository.findByCountryIgnoreCaseAndCityIgnoreCaseAndPostCodeIgnoreCase(
-                        locationDto.getCountry(), locationDto.getCity(), locationDto.getPostCode());
+                locationRepository.findByCountryIgnoreCaseAndCityIgnoreCase(
+                        locationDto.getCountry(), locationDto.getCity());
 
 
         Location toUpdate = modelMapper.map(locationDto, Location.class);
@@ -156,8 +156,8 @@ public class RatingServiceImpl implements RatingService{
 
         LocationDto locationDto = locationHasKeywordDto.getLocation();
         Optional<Location> existing =
-                locationRepository.findByCountryIgnoreCaseAndCityIgnoreCaseAndPostCodeIgnoreCase(
-                        locationDto.getCountry(), locationDto.getCity(), locationDto.getPostCode());
+                locationRepository.findByCountryIgnoreCaseAndCityIgnoreCase(
+                        locationDto.getCountry(), locationDto.getCity());
 
 
         Location toUpdate = modelMapper.map(locationDto, Location.class);

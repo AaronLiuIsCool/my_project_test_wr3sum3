@@ -38,7 +38,7 @@ public class JobDto {
     private int yearExperienceRequired;
     private String certificateRequired;
     private String educationRequired;
-    private int jobPostId;
+    private String jobPostId;
     private String jobDescription;
     public LocationDto location;
     public List<MajorDto> majors;
