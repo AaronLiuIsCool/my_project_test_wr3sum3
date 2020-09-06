@@ -2,6 +2,7 @@ package com.kuaidaoresume.job.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 @Getter
@@ -13,6 +14,7 @@ import lombok.*;
 @JsonIgnoreProperties(ignoreUnknown = true)
 
 public class JobHasKeywordDto {
+    @JsonIgnore
     private JobDto job;
 
     private KeywordDto keyword;

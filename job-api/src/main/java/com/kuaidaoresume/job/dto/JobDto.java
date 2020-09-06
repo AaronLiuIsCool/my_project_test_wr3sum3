@@ -4,7 +4,7 @@ import lombok.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.validation.constraints.NotNull;
 
 import java.util.HashSet;
@@ -38,7 +38,8 @@ public class JobDto {
     private int yearExperienceRequired;
     private String certificateRequired;
     private String educationRequired;
-    private String jobPostId;
+    @JsonProperty("jobPostId")
+    private String jobPostIdentifier;
     private String jobDescription;
     public LocationDto location;
     public List<MajorDto> majors;

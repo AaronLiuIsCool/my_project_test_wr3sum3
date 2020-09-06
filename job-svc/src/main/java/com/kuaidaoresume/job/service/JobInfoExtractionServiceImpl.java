@@ -105,7 +105,7 @@ public class JobInfoExtractionServiceImpl implements JobInfoExtractionService{
                     .jobType(jobType)
                     .agency(jobFetcherRequest.getAgency())
                     .jobDescription(jobFetcherRequest.getDescription())
-                    .jobPostId(jobFetcherRequest.getJobPostId())
+                    .jobPostIdentifier(jobFetcherRequest.getJobPostId())
                     .location(location)
                     .majors(majors)
                     .build();

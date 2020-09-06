@@ -56,7 +56,7 @@ public class Job {
     @Column(name = "education_required", nullable = true, updatable = false)
     private String educationRequired;
     @Column(name = "job_post_id", nullable = true, updatable = false)
-    private String jobPostId;
+    private String jobPostIdentifier;
     @Column(name = "job_description", nullable = true, updatable = false)
     private String jobDescription;
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
