@@ -1,10 +1,8 @@
 spring:
   datasource:
     url: jdbc:mysql://kuaidaoresume-resume.cm27uwrvuert.ca-central-1.rds.amazonaws.com:3306/kuaidaoresume-resume?useUnicode=true&characterEncoding=utf-8
-#    url: jdbc:mysql://localhost:3306/kuaidao_resume?useUnicode=true&characterEncoding=utf-8&serverTimezone=PST
     username: root
     password: mysqlroot
-#    password:
     driverClassName: com.mysql.cj.jdbc.Driver
   jpa:
     show-sql: true
@@ -29,5 +27,5 @@ kuaidaoresume:
     sentry-dsn: ${SENTRY_DSN:https://270864132b0845e4a9ae4f68f96c77c2@o434398.ingest.sentry.io/5391423}
     deploy-env: ${DEPLOY:V2}
   signing-secret: ${SIGNING_SECRET}
-  resume-service-endpoint: ${RESUME_SERVICE_ENDPOINT:http://resume-service:8080}
+  #bot-service-endpoint: ${BOT_SERVICE_ENDPOINT:http://bot-service:8080}
   intercom-access-token: ${INTERCOM_ACCESS_TOKEN}

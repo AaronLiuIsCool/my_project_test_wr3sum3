@@ -15,9 +15,3 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
-
-kuaidaoresume:
-  common:
-    sentry-dsn: ${SENTRY_DSN}
-    deploy-env: ${DEPLOY:V2}
-  signing-secret: ${SIGNING_SECRET}

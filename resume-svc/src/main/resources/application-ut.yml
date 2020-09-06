@@ -1,0 +1,16 @@
+spring:
+  profiles:
+    ut
+  jpa:
+    show-sql: true
+    hibernate.ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+  flyway:
+    enabled: false
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

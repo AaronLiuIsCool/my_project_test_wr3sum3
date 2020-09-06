@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
-@ActiveProfiles("test")
+@ActiveProfiles("ut")
 @TestExecutionListeners({
     DependencyInjectionTestExecutionListener.class
 })
