@@ -174,6 +174,9 @@ Run ```kubectl get pods -o wide```
 2.7 check deployment status
 Run ```kubectl get deployments```
 
+NOTE: Each time apply UAT k8s, please double check your k8s/uat/config folder's config.yaml.
+If you have questions, please ask in wechat group before apply -f config.
+
 Run Prod
 TBD
 

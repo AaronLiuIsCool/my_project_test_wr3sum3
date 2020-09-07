@@ -18,12 +18,12 @@ data:
   AWS_ACCESS_SECRET: <AWS_ACCESS_SECRET>
   RECAPTCHA_PUBLIC: test-recaptcha-public
   RECAPTCHA_PRIVATE: test-recaptcha-private
-  ACCOUNT_DATASOURCE_URL: jdbc:mysql://kuaidaoresume-uat.cm27uwrvuert.ca-central-1.rds.amazonaws.com:3306/kuaidaoresume-account?useUnicode=true&characterEncoding=utf-8
-  ACCOUNT_DATASOURCE_USERNAME: root
-  ACCOUNT_DATASOURCE_PASSWORD: mysqlroot
-  RESUME_DATASOURCE_URL: jdbc:mysql://kuaidaoresume-uat.cm27uwrvuert.ca-central-1.rds.amazonaws.com:3306/kuaidaoresume-resume?useUnicode=true&characterEncoding=utf-8
-  RESUME_DATASOURCE_USERNAME: root
-  RESUME_DATASOURCE_PASSWORD: mysqlroot
-  JOB_DATASOURCE_URL: jdbc:mysql://kuaidaoresume-uat.cm27uwrvuert.ca-central-1.rds.amazonaws.com:3306/kuaidaoresume-job?useUnicode=true&characterEncoding=utf-8
-  JOB_DATASOURCE_USERNAME: root
-  JOB_DATASOURCE_PASSWORD: mysqlroot
+  ACCOUNT_DATASOURCE_URL: jdbc:mysql://kuaidaoresume-uat1.cm27uwrvuert.ca-central-1.rds.amazonaws.com:3306/kuaidaoresume_account?useUnicode=true&characterEncoding=utf-8
+  ACCOUNT_DATASOURCE_USERNAME: <Ask Aaron>
+  ACCOUNT_DATASOURCE_PASSWORD: <check wechat msg>
+  RESUME_DATASOURCE_URL: jdbc:mysql://kuaidaoresume-uat1.cm27uwrvuert.ca-central-1.rds.amazonaws.com:3306/kuaidaoresume_resume?useUnicode=true&characterEncoding=utf-8
+  RESUME_DATASOURCE_USERNAME: <Ask Aaron>
+  RESUME_DATASOURCE_PASSWORD: <check wechat msg>
+  JOB_DATASOURCE_URL: jdbc:mysql://kuaidaoresume-uat1.cm27uwrvuert.ca-central-1.rds.amazonaws.com:3306/kuaidaoresume_job?useUnicode=true&characterEncoding=utf-8
+  JOB_DATASOURCE_USERNAME: <Ask Aaron>
+  JOB_DATASOURCE_PASSWORD: <check wechat msg>
