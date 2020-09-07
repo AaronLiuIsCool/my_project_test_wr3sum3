@@ -20,6 +20,7 @@ public class Account {
     @GenericGenerator(name = "system-uuid", strategy = "uuid")
     @GeneratedValue(generator = "system-uuid")
     private String id;
+    private String openid;
     private String name;
     private String email;
     private boolean confirmedAndActive;
@@ -27,6 +28,7 @@ public class Account {
     private boolean support;
     //private String phoneNumber; not for phase I TODO:Woody
     private String photoUrl;
+    private String loginType;
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "account")
     private List<Resume> resumes; // set tp EAGER or TODO OpenSessionInViewFilter filter
 }

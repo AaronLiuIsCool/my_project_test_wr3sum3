@@ -1,7 +1,6 @@
 package com.kuaidaoresume.account.client;
 
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.kuaidaoresume.account.AccountConstant;
 import com.kuaidaoresume.account.dto.*;
@@ -26,6 +25,9 @@ public interface AccountClient {
 
     @PostMapping(path = "/sync_user")
     BaseResponse syncUser(@RequestBody @Valid SyncUserRequest request);
+
+    @PostMapping(path = "/sync_wechat_user")
+    BaseResponse syncWechatUser(@RequestHeader(AuthConstant.AUTHORIZATION_HEADER) String authz, @RequestBody @Valid WechatAccountDto newWechatAccount);
 
     @GetMapping(path = "/list")
     ListAccountResponse listAccounts(@RequestHeader(AuthConstant.AUTHORIZATION_HEADER) String authz, @RequestParam int offset, @RequestParam @Min(0) int limit);

@@ -24,6 +24,7 @@ import java.util.List;
 public class AccountDto {
     @NotBlank
     private String id;
+    private String openid;
     private String name;
     @Email(message = "Invalid email")
     private String email;
@@ -35,5 +36,6 @@ public class AccountDto {
     //private String phoneNumber; not for phase I TODO:Woody
     @NotEmpty
     private String photoUrl;
+    private String loginType;
     private List<ResumeDto> resumes;
 }

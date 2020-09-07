@@ -2,6 +2,7 @@ package com.kuaidaoresume.account.service;
 
 import com.github.structlog4j.ILogger;
 import com.github.structlog4j.SLoggerFactory;
+import com.kuaidaoresume.account.dto.WechatAccountDto;
 import com.kuaidaoresume.account.dto.ResumeDto;
 import com.kuaidaoresume.account.model.Resume;
 import com.kuaidaoresume.account.repo.ResumeRepo;
@@ -30,7 +31,6 @@ import com.kuaidaoresume.common.auth.AuthContext;
 import com.kuaidaoresume.common.crypto.Sign;
 import com.kuaidaoresume.common.env.EnvConfig;
 import com.kuaidaoresume.common.error.ServiceException;
-import com.kuaidaoresume.common.utils.Helper;
 import com.kuaidaoresume.mail.client.MailClient;
 import com.kuaidaoresume.mail.dto.EmailRequest;
 
@@ -39,7 +39,6 @@ import javax.persistence.PersistenceContext;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -109,20 +108,12 @@ public class AccountService {
         // if (phoneNumber == null) { phoneNumber = ""; } not for phase I TODO:Woody
 
         Account account = Account.builder()
-                .email(email).name(name) // not for phase I TODO:Woody .phoneNumber(phoneNumber)
+                .email(email).name(name).loginType("normal") // not for phase I TODO:Woody .phoneNumber(phoneNumber)
                 .build();
         //account.setPhotoUrl(Helper.generateGravatarUrl(account.getEmail())); //TODO: Aaron Liu add wechat/fb avator sync
         account.setMemberSince(Instant.now());
 
-        try {
-            accountRepo.save(account);
-        } catch (Exception ex) {
-            String errMsg = "Could not create user account";
-            serviceHelper.handleException(logger, ex, errMsg);
-            throw new ServiceException(errMsg, ex);
-        }
-
-        serviceHelper.syncUserAsync(account.getId());
+        storeAccountAndSyncUser(account);
 
         if (StringUtils.hasText(email)) {
             // Email confirmation
@@ -146,6 +137,29 @@ public class AccountService {
 
         logger.info("created account", auditLog);
 
+        AccountDto accountDto = this.convertToDto(account);
+        return accountDto;
+    }
+
+    public AccountDto createWechatTypeAccount(WechatAccountDto weChatAccountDto) {
+        if (StringUtils.hasText(weChatAccountDto.getEmail())) {
+            // Check to see if account exists
+            Account foundAccount = accountRepo.findAccountByEmail(weChatAccountDto.getEmail());
+            if (foundAccount != null) {
+                throw new ServiceException("A wechat user with that email already exists. Try to not use wechat login.");
+            }
+        }
+        Account account = Account.builder()
+                .email(weChatAccountDto.getEmail())
+                .name(weChatAccountDto.getNickname())
+                .openid(weChatAccountDto.getOpenid())
+                .photoUrl(weChatAccountDto.getHeadimgurl())
+                .loginType("wechat")
+                .build();
+
+        account.setMemberSince(Instant.now());
+        storeAccountAndSyncUser(account);
+        logCreateAccountInfo(account);
         AccountDto accountDto = this.convertToDto(account);
         return accountDto;
     }
@@ -498,5 +512,28 @@ public class AccountService {
         }
 
         this.trackEvent(userId, eventName);
+    }
+
+    private void storeAccountAndSyncUser(Account account) {
+        try {
+            accountRepo.save(account);
+        } catch (Exception ex) {
+            String errMsg = "Could not create user account";
+            serviceHelper.handleException(logger, ex, errMsg);
+            throw new ServiceException(errMsg, ex);
+        }
+
+        serviceHelper.syncUserAsync(account.getId());
+    }
+
+    private void logCreateAccountInfo(Account account) {
+        LogEntry auditLog = LogEntry.builder()
+                .authorization(AuthContext.getAuthz())
+                .currentUserId(AuthContext.getUserId())
+                .targetType("account")
+                .targetId(account.getId())
+                .updatedContents(account.toString())
+                .build();
+        logger.info("created account", auditLog);
     }
 }

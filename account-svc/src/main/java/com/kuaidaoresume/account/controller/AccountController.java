@@ -67,6 +67,18 @@ public class AccountController {
         return genericAccountResponse;
     }
 
+    @PostMapping(path = "/create_account_by_wechat")
+    @Authorize(value = {
+            AuthConstant.AUTHORIZATION_SUPPORT_USER,
+            AuthConstant.AUTHORIZATION_WWW_SERVICE,
+            AuthConstant.AUTHORIZATION_RESUME_SERVICE
+    })
+    public GenericAccountResponse createAccountByWechat(@RequestBody @Valid WechatAccountDto newWechatAccountDto) {
+        AccountDto accountDto = accountService.createWechatTypeAccount(newWechatAccountDto);
+        GenericAccountResponse genericAccountResponse = new GenericAccountResponse(accountDto);
+        return genericAccountResponse;
+    }
+
     @GetMapping(path = "/get_account_by_phonenumber")
     @Authorize(value = {
             AuthConstant.AUTHORIZATION_SUPPORT_USER,
