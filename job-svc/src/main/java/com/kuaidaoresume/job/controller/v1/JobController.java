@@ -60,6 +60,15 @@ public class JobController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/jobs/uuid/{uuid}")
+    public ResponseEntity<EntityModel<PersistedJobDto>> findJob(@PathVariable String uuid) {
+        return jobService.findJobByUuid(uuid)
+                .map(job -> modelMapper.map(job, PersistedJobDto.class))
+                .map(jobRepresentationModelAssembler::toModel)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @Authorize(value = {
             AuthConstant.AUTHORIZATION_WWW_SERVICE,
             AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,

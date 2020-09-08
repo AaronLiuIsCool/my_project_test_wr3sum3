@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Date;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -29,6 +30,9 @@ public class Job {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Column(name = "uuid", nullable = false, updatable = false, unique = true)
+    @Builder.Default
+    private String uuid = UUID.randomUUID().toString();
     @Column(name = "post_date", nullable = false, updatable = false, unique = true)
     private Date postDate;
     @Column(name = "position_title", nullable = false, updatable = false, unique = true)

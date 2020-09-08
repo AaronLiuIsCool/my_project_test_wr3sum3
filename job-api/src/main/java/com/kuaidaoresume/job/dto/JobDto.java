@@ -23,6 +23,7 @@ import java.util.Set;
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JobDto {
+    private String uuid;
     @NotNull
     private Date postDate;
     @NotNull

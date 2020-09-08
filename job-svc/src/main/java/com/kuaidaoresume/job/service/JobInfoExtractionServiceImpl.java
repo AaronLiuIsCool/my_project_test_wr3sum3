@@ -18,10 +18,10 @@ import com.kuaidaoresume.job.dto.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Arrays;
 import java.util.Optional;
 import java.util.Date;
 import java.util.stream.*;
+import java.time.*;
 
 @Service
 @RequiredArgsConstructor
@@ -125,16 +125,18 @@ public class JobInfoExtractionServiceImpl implements JobInfoExtractionService{
                         .build();
                 job.getJobHasKeywords().add(rating); //set
             }
-            jobRepository.save(job);
+            job = jobRepository.save(job);
         }
 
         JobFetcherResponse jobFetcherResponse = JobFetcherResponse.builder()
-                .jobId(String.valueOf(job.getId()))
+                .uuid(job.getUuid())
+                .postDate(LocalDateTime.ofInstant(createdAt.toInstant(), ZoneId.systemDefault()))
                 .title(jobFetcherRequest.getTitle())
                 .companyName(jobFetcherRequest.getCompanyName())
                 .location(locationDto)
                 .jobType(jobType)
-                .keywords(keywordDtos)
+                .relevantMajors(majorDtos.stream().map(majorDto -> majorDto.getName()).collect(Collectors.toList()))
+                .keywords(keywordDtos.stream().map(keywordDto -> keywordDto.getName()).collect(Collectors.toList()))
                 .build();
 
         return jobFetcherResponse;

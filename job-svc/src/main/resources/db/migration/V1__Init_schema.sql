@@ -25,6 +25,7 @@ ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS `kuaidaoresume-job`.`job` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `uuid` VARCHAR(36) NOT NULL,
   `post_date` DATETIME NOT NULL,
   `position_title` NVARCHAR(75) NOT NULL,
   `company_name` NVARCHAR(75) NOT NULL,

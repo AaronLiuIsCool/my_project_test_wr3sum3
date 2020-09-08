@@ -32,6 +32,7 @@ import static org.mockito.ArgumentMatchers.any;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Optional;
+import java.util.UUID;
 
 @Import({ JobRepresentationModelAssembler.class, JobApplicationTestConfig.class })
 @ExtendWith(SpringExtension.class)
@@ -71,6 +72,28 @@ public class JobControllerTest {
                 .andExpect(jsonPath("$.companyName", is("ABC")))
                 .andReturn();
         verify(jobService, times(1)).findJobById(1L);
+        verifyNoMoreInteractions(jobService);
+    }
+
+    @Test
+    public void whenFindByUuid_thenReturn200() throws Exception {
+        String uuid = UUID.randomUUID().toString();
+        Job job = Job.builder()
+                .uuid(uuid)
+                .postDate(new Date(System.currentTimeMillis()))
+                .positionTitle("SDE")
+                .companyName("ABC")
+                .build();
+        when(jobService.findJobByUuid(uuid)).thenReturn(Optional.of(modelMapper.map(job, JobDto.class)));
+
+        mvc.perform(get("/v1/jobs/uuid/{uuid}", uuid).header(HttpHeaders.AUTHORIZATION, AuthConstant.AUTHORIZATION_SUPPORT_USER).accept(MediaTypes.HAL_JSON_VALUE))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaTypes.HAL_JSON_VALUE))
+                .andExpect(jsonPath("$.positionTitle", is("SDE")))
+                .andExpect(jsonPath("$.companyName", is("ABC")))
+                .andReturn();
+        verify(jobService, times(1)).findJobByUuid(uuid);
         verifyNoMoreInteractions(jobService);
     }
 

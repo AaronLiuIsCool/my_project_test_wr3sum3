@@ -21,5 +21,7 @@ public interface JobRepository extends JpaRepository<Job, Long> {
 
         List<Job> findByMajorsIn(List<Major> majors);
 
+        Optional<Job> findByUuid(String uuid);
+
         Optional<Job> findByUrl(String Url);
 }

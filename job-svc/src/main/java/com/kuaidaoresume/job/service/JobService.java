@@ -8,6 +8,8 @@ public interface JobService {
 
     public Optional<JobDto> findJobById(long id);
 
+    public Optional<JobDto> findJobByUuid(String uuid);
+
     public void deleteJobById(long id);
 
     public List<JobDto> findAll();

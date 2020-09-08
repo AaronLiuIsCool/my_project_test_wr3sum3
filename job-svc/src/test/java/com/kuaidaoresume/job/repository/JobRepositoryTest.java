@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Date;
+import java.util.UUID;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -40,6 +41,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class JobRepositoryTest {
 
     private static final Long id = 1L;
+    private static final String uuid = UUID.randomUUID().toString();
     private static final Date postDate = new Date(System.currentTimeMillis());
     private static final String positionTitle = "SDE";
     private static final String companyName = "ABC";
@@ -80,6 +82,7 @@ public class JobRepositoryTest {
 
         job = Job.builder()
                 .id(id)
+                .uuid(uuid)
                 .postDate(postDate)
                 .positionTitle(positionTitle)
                 .companyName(companyName)
@@ -100,6 +103,12 @@ public class JobRepositoryTest {
     @Test
     public void whenSaved_thenFindByJobId() {
         Optional<Job> savedJob = jobRepository.findById(id);
+        assertTrue(savedJob.isPresent());
+    }
+
+    @Test
+    public void whenSaved_thenFindByJobUuid() {
+        Optional<Job> savedJob = jobRepository.findByUuid(uuid);
         assertTrue(savedJob.isPresent());
     }
 
