@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: job-svc-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: job-svc
+  template:
+    metadata:
+      labels:
+        app: job-svc
+        env: prod
+    spec:
+      containers:
+        - name: job-svc
+          image: kuaidaoresume/job-svc
+          ports:
+            - name: http-port
+              containerPort: 80
+          envFrom:
+            - configMapRef:
+                name: common-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: job-service
+spec:
+  selector:
+    app: job-svc
+    env: prod
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80

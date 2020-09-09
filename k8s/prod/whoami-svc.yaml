@@ -1,0 +1,38 @@
+# https://matthewpalmer.net/kubernetes-app-developer/articles/kubernetes-apiversion-definition-guide.html
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: whoami-svc-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: whoami-svc
+  template:
+    metadata:
+      labels:
+        app: whoami-svc
+        env: prod
+    spec:
+      containers:
+        - name: whoami-svc
+          image: kuaidaoresume/whoami-svc
+          ports:
+            - name: http-port
+              containerPort: 80
+          envFrom:
+            - configMapRef:
+                name: common-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: whoami-service
+spec:
+  selector:
+    app: whoami-svc
+    env: prod
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
