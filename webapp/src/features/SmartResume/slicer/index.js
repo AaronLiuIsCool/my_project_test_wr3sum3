@@ -23,7 +23,8 @@ export const resumeSlice = createSlice({
         project: project.initialState,
         certificate: certificate.initialState,
         volunteer: volunteer.initialState,
-        preview: preview.initialState
+        preview: preview.initialState,
+        ratings: ratings.initialState,
     },
     reducers: {
         setId: (state, action) => {
@@ -47,6 +48,7 @@ export const resumeSlice = createSlice({
         ...volunteer.reducers,
         ...certificate.reducers,
         ...preview.reducers,
+        ...ratings.reducers,
     }
 });
 
@@ -64,5 +66,6 @@ export const projectSelectors = project.selectors;
 export const volunteerSelectors = volunteer.selectors;
 export const certificateSelectors = certificate.selectors;
 export const previewSelectors = preview.selectors;
+export const ratingsSelectors = ratings.selectors;
 
 export default resumeSlice.reducer;
