@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useI8n } from 'shell/i18n';
+
 import { 
 	selectResume, 
 	basicSelectors, 
@@ -10,8 +11,11 @@ import {
 	volunteerSelectors, 
 	previewSelectors 
 } from './../../slicer/';
+import { selectUserId } from 'features/App/slicer';
+
 import { getLogger } from 'shell/logger';
 import ResumeServices from 'shell/services/ResumeServices';
+import AccountServices from 'shell/services/AccountServices';
 import AppServices from 'shell/services/AppServices';
 
 import ResumeTips from './ResumeTips';
@@ -28,12 +32,14 @@ import { resumeAdaptor } from '../../utils/servicesAdaptor';
 import { flatten, reconstruct } from '../../utils/resume';
 
 const logger = getLogger('SmartResume');
+const accountServices = new AccountServices();
 const resumeServices = new ResumeServices();
 const appServices = new AppServices();
 
 const ResumePreview = () => {
 	const messages = useI8n();
 
+	const userId = useSelector(selectUserId);
 	const resume = useSelector(selectResume);
 	const { data: basicData } = useSelector(basicSelectors.selectBasic);
 	let { data: educationData } = useSelector(educationSelectors.selectEducation);
@@ -80,8 +86,13 @@ const ResumePreview = () => {
 			const translatedResume = reconstruct(parsedResume);
 			response = await resumeServices.createResume(translatedResume);
 			const data = await response.json();
-			// redirect to data.id
-			window.open(`resume/${data.id}`, '_blank'); 
+			if (!data.success) {
+				logger.error(data.message);
+				return;
+			}
+			const resumeId = data.id;
+			window.open(`${resumeId}`, '_blank'); // open translated resume in a new tab
+			accountServices.addResume(userId, resumeId);
 		} catch (exception) {
 			logger.error(exception);
 		}

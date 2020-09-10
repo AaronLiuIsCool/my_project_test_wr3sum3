@@ -8,6 +8,7 @@ import project from "./project";
 import volunteer from "./volunteer";
 import certificate from "./certificate";
 import preview from "./preview";
+import ratings from "./ratings";
 import { resumeAdaptor } from "../utils/slicerAdaptor";
 
 export const resumeSlice = createSlice({
