@@ -13,23 +13,24 @@ import aiohttp
 
 init(dsn=os.getenv('SENTRY_DSN', 'https://270864132b0845e4a9ae4f68f96c77c2@o434398.ingest.sentry.io/5391423'))
 
-def callJobService(job):
+def callService(endpoint, payload):
     for retry in range(config["queue"]["retries"]):
         try:
             headers = {'Authorization': 'Basic'}
-            r = requests.post("http://job-service/v1/jobs/jobFetcher", json = job, headers=headers) 
+            r = requests.post(endpoint, json = payload, headers=headers) 
             return r.json()
         except Exception as e:
             capture_exception(e)
             time.sleep(config["queue"]["retryWaitSecs"])
-    return None
+    return None    
 
 async def on_message(message: IncomingMessage):
     headers = {'Authorization': 'Basic'}
     jobs = json.loads(message.body)
 
     for job in jobs:
-        matching = callJobService(job)
+        processedJob = callService(endpoint="http://job-service/v1/jobs/jobFetcher", payload=job)
+        matching = callService(endpoint="http://matching-service/v1/matching/jobs", payload=processedJob)
         print("matching", matching)
 
 async def main(loop, config):

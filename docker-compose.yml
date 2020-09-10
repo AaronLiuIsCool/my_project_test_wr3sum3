@@ -78,6 +78,19 @@ services:
       - rabbitmq3
       - job-fetcher
 
+  matching-service:
+      build: ./matching-svc
+      image: kuaidaoresume/matching-svc
+      environment:
+        - SPRING_PROFILES_ACTIVE
+        - SERVER_PORT
+        - SENTRY_DSN
+        - SIGNING_SECRET
+        - MATCHING_DATASOURCE_URL
+      networks:
+        - internal_access
+        - external_access # db access  
+
   email-service:
     build: ./mail-svc
     image: kuaidaoresume/mail-svc

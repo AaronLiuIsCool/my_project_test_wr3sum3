@@ -124,7 +124,7 @@ def createJobFetcher():
             time.sleep(config["queue"]["retryWaitSecs"])
 
 def cronJob(jobFetcher):
-    clearJobs()
+    #clearJobs()
     time.sleep(jobFetcher.config["cronjob"]["afterClearJobs"])
     jobFetcher.getJobResults()
 
