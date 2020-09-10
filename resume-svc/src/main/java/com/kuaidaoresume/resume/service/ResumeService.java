@@ -48,8 +48,6 @@ public interface ResumeService {
 
     Collection<Certificate> saveCertificates(String resumeId, Iterable<Certificate> certificates);
 
-    void saveKeywords(Iterable<Keyword> keywords);
-
     Optional<ResumeScoreDto> getResumeScore(String resumeId);
 
     Optional<ResumeMatchingDto> getResumeMatching(String resumeId);

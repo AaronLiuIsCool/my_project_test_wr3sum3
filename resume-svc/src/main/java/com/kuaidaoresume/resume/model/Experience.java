@@ -47,8 +47,8 @@ public abstract class Experience implements ResumeContainable {
     private Date endDate;
 
     @NotNull
-    @Size(min = 3, max = 500)
-    @Column(length = 500)
+    @Size(min = 3, max = 2000)
+    @Column(length = 2000)
     private String description;
 
     public abstract Resume getResume();

@@ -5,7 +5,6 @@ import com.kuaidaoresume.common.matching.KeywordMatcher;
 import com.kuaidaoresume.resume.dto.ResumeMatchingDto;
 import com.kuaidaoresume.resume.dto.ResumeScoreDto;
 import com.kuaidaoresume.resume.model.*;
-import com.kuaidaoresume.resume.repository.KeywordRepository;
 import com.kuaidaoresume.resume.repository.ResumeContainableRepository;
 import com.kuaidaoresume.resume.repository.ResumeContainableRepositoryFactory;
 import com.kuaidaoresume.resume.repository.ResumeRepository;
@@ -31,9 +30,6 @@ public class ResumeServiceImpl implements ResumeService {
 
     @Autowired
     private final ResumeContainableRepositoryFactory resumeContainableRepositoryFactory;
-
-    @Autowired
-    private final KeywordRepository keywordRepository;
 
     @Autowired
     private final ResumeScoreBuilder resumeScoreBuilder;
@@ -132,6 +128,37 @@ public class ResumeServiceImpl implements ResumeService {
 
     @Override
     public Resume saveResume(Resume resume) {
+        BasicInfo basicInfo = resume.getBasicInfo();
+        if (Objects.nonNull(basicInfo)) {
+            basicInfo.setResume(resume);
+            basicInfo.getProfiles().forEach(profile -> profile.setBasicInfo(basicInfo));
+        }
+
+        Collection<Education> educations = resume.getEducations();
+        if (Objects.nonNull(educations)) {
+            educations.forEach(education -> education.setResume(resume));
+        }
+
+        Collection<WorkExperience> workExperiences = resume.getWorkExperiences();
+        if (Objects.nonNull(workExperiences)) {
+            workExperiences.forEach(workExperience -> workExperience.setResume(resume));
+        }
+
+        Collection<ProjectExperience> projectExperiences = resume.getProjectExperiences();
+        if (Objects.nonNull(projectExperiences)) {
+            projectExperiences.forEach(projectExperience -> projectExperience.setResume(resume));
+        }
+
+        Collection<VolunteerExperience> volunteerExperiences = resume.getVolunteerExperiences();
+        if (Objects.nonNull(volunteerExperiences)) {
+            volunteerExperiences.forEach(volunteerExperience -> volunteerExperience.setResume(resume));
+        }
+
+        Collection<Certificate> certificates = resume.getCertificates();
+        if (Objects.nonNull(certificates)) {
+            certificates.forEach(certificate -> certificate.setResume(resume));
+        }
+
         return resumeRepository.save(resume);
     }
 
@@ -172,11 +199,6 @@ public class ResumeServiceImpl implements ResumeService {
     public void deleteAllByResumeId(String resumeId, Class<? extends ResumeContainable> type) {
         ResumeContainableRepository resumeContainableRepository = resumeContainableRepositoryFactory.getResumeContainableRepository(type);
         resumeContainableRepository.deleteAll(resumeContainableRepository.findAllByResumeId(resumeId));
-    }
-
-    @Override
-    public void saveKeywords(Iterable<Keyword> keywords) {
-        keywordRepository.saveAll(keywords);
     }
 
     @Override
