@@ -1,6 +1,5 @@
 package com.kuaidaoresume.matching.repo;
 
-import com.kuaidaoresume.matching.config.MatchingApplicationTestConfig;
 import com.kuaidaoresume.matching.model.Job;
 import com.kuaidaoresume.matching.model.Location;
 import com.kuaidaoresume.matching.model.TailoredResume;
@@ -8,8 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Import;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.Instant;
@@ -22,8 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(SpringExtension.class)
-@ActiveProfiles("test")
-@Import(value = {MatchingApplicationTestConfig.class})
+@DataMongoTest
 public class TailoredResumeRepositoryTest {
 
     private static final String RESUME_UUID = "resume uuid";

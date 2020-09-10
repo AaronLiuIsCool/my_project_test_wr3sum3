@@ -23,7 +23,7 @@ public class ResumeDto {
     @NotNull
     private String userId;
 
-    private String alias;
+    private String resumeName;
 
     @NotNull
     private LocationDto location;

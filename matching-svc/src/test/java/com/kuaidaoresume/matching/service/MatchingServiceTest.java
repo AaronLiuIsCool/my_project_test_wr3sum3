@@ -52,6 +52,18 @@ public class MatchingServiceTest {
     private TailoredJobRepository tailoredJobRepository;
 
     @Mock
+    private BookmarkedResumeRepository bookmarkedResumeRepository;
+
+    @Mock
+    private BookmarkedJobRepository bookmarkedJobRepository;
+
+    @Mock
+    private VisitedResumeRepository visitedResumeRepository;
+
+    @Mock
+    private VisitedJobRepository visitedJobRepository;
+
+    @Mock
     private MatchedResume matchedResume;
 
     @Mock
@@ -64,13 +76,13 @@ public class MatchingServiceTest {
     private ResumeDto resumeDto;
 
     @Mock
-    private LocationDto locationDtoMock;
+    private LocationDto locationDto;
 
     @Mock
-    private ModelMapper modelMapperMock;
+    private ModelMapper modelMapper;
 
     @Mock
-    private ServiceHelper serviceHelperMock;
+    private ServiceHelper serviceHelper;
 
     @BeforeEach
     public void setup() {
@@ -78,7 +90,8 @@ public class MatchingServiceTest {
         earlier = now.minusSeconds(1L);
 
         matchingService = new MatchingService(jobRepository, resumeRepository, matchedResumeRepository,
-            tailoredResumeRepository, tailoredJobRepository, modelMapperMock, serviceHelperMock);
+            tailoredResumeRepository, tailoredJobRepository, bookmarkedResumeRepository, bookmarkedJobRepository,
+            visitedResumeRepository, visitedJobRepository, modelMapper, serviceHelper);
     }
 
     private void setupMatchedResumeMocks() {
@@ -101,9 +114,9 @@ public class MatchingServiceTest {
     @Test
     public void test_findMatchedJobsShouldMatchWhenLastJobAddedIsLaterThanLastMatched() {
         setupMatchedResumeMocks();
-        when(locationDtoMock.getCountry()).thenReturn(COUNTRY);
-        when(locationDtoMock.getCity()).thenReturn(CITY);
-        when(resumeDto.getLocation()).thenReturn(locationDtoMock);
+        when(locationDto.getCountry()).thenReturn(COUNTRY);
+        when(locationDto.getCity()).thenReturn(CITY);
+        when(resumeDto.getLocation()).thenReturn(locationDto);
         when(resumeDto.getMajors()).thenReturn(Arrays.asList(MAJOR));
         when(resumeDto.getKeywords()).thenReturn(Arrays.asList(KEYWORD));
         when(jobRepository.findMatchedJobs(COUNTRY, CITY, Arrays.asList(MAJOR), Arrays.asList(KEYWORD))).thenReturn(Arrays.asList(job));
@@ -119,9 +132,9 @@ public class MatchingServiceTest {
     @Test
     public void test_findMatchedJobsShouldMatchWhenNoPreviousMatch() {
         setupMatchedResumeMocks();
-        when(locationDtoMock.getCountry()).thenReturn(COUNTRY);
-        when(locationDtoMock.getCity()).thenReturn(CITY);
-        when(resumeDto.getLocation()).thenReturn(locationDtoMock);
+        when(locationDto.getCountry()).thenReturn(COUNTRY);
+        when(locationDto.getCity()).thenReturn(CITY);
+        when(resumeDto.getLocation()).thenReturn(locationDto);
         when(resumeDto.getMajors()).thenReturn(Arrays.asList(MAJOR));
         when(resumeDto.getKeywords()).thenReturn(Arrays.asList(KEYWORD));
         when(jobRepository.findMatchedJobs(anyString(), anyString(), anyList(), anyList())).thenReturn(Arrays.asList(job));
@@ -139,7 +152,7 @@ public class MatchingServiceTest {
         when(resumeRepository.findByResumeUuid(RESUME_UUID)).thenReturn(Optional.of(resume));
         when(jobRepository.findByJobUuid(JOB_UUID)).thenReturn(Optional.of(job));
 
-        matchingService.addTailoredResume(RESUME_UUID, JOB_UUID);
+        matchingService.addTailoredResume(RESUME_UUID, JOB_UUID, true);
 
         Collection<Resume> tailoredResumes = new TreeSet<>(Comparator.comparing(Resume::getResumeUuid));
         tailoredResumes.add(resume);
@@ -157,13 +170,39 @@ public class MatchingServiceTest {
     @Test
     public void test_addTailoredResumeThrowMatchingServiceExceptionWhenResumeNotExists() {
         when(resumeRepository.findByResumeUuid(RESUME_UUID)).thenReturn(Optional.empty());
-        assertThrows(ServiceException.class, () -> matchingService.addTailoredResume(RESUME_UUID, JOB_UUID));
+        assertThrows(ServiceException.class, () -> matchingService.addTailoredResume(RESUME_UUID, JOB_UUID, true));
     }
 
     @Test
     public void test_addTailoredResumeThrowMatchingServiceExceptionWhenJobNotExists() {
         when(resumeRepository.findByResumeUuid(RESUME_UUID)).thenReturn(Optional.of(resume));
         when(jobRepository.findByJobUuid(JOB_UUID)).thenReturn(Optional.empty());
-        assertThrows(ServiceException.class, () -> matchingService.addTailoredResume(RESUME_UUID, JOB_UUID));
+        assertThrows(ServiceException.class, () -> matchingService.addTailoredResume(RESUME_UUID, JOB_UUID, true));
+    }
+
+    @Test
+    public void test_bookmarkJob() {
+        when(resume.getResumeUuid()).thenReturn(RESUME_UUID);
+        when(job.getJobUuid()).thenReturn(JOB_UUID);
+        when(resumeRepository.findByResumeUuid(RESUME_UUID)).thenReturn(Optional.of(resume));
+        when(jobRepository.findByJobUuid(JOB_UUID)).thenReturn(Optional.of(job));
+
+        matchingService.bookmarkJob(RESUME_UUID, JOB_UUID);
+
+        verify(bookmarkedResumeRepository).save(any(BookmarkedResume.class));
+        verify(bookmarkedJobRepository).save(any(BookmarkedJob.class));
+    }
+
+    @Test
+    public void test_markJobVisited() {
+        when(resume.getResumeUuid()).thenReturn(RESUME_UUID);
+        when(job.getJobUuid()).thenReturn(JOB_UUID);
+        when(resumeRepository.findByResumeUuid(RESUME_UUID)).thenReturn(Optional.of(resume));
+        when(jobRepository.findByJobUuid(JOB_UUID)).thenReturn(Optional.of(job));
+
+        matchingService.markJobVisited(RESUME_UUID, JOB_UUID);
+
+        verify(visitedResumeRepository).save(any(VisitedResume.class));
+        verify(visitedJobRepository).save(any(VisitedJob.class));
     }
 }

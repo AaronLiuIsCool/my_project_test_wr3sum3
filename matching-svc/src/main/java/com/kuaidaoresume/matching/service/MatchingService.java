@@ -2,6 +2,7 @@ package com.kuaidaoresume.matching.service;
 
 import com.github.structlog4j.ILogger;
 import com.github.structlog4j.SLoggerFactory;
+import com.google.common.collect.Lists;
 import com.kuaidaoresume.common.api.ResultCode;
 import com.kuaidaoresume.common.error.ServiceException;
 import com.kuaidaoresume.matching.dto.JobDto;
@@ -14,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.*;
@@ -41,39 +43,23 @@ public class MatchingService {
     private final TailoredJobRepository tailoredJobRepository;
 
     @Autowired
+    private final BookmarkedResumeRepository bookmarkedResumeRepository;
+
+    @Autowired
+    private final BookmarkedJobRepository bookmarkedJobRepository;
+
+    @Autowired
+    private final VisitedResumeRepository visitedResumeRepository;
+
+    @Autowired
+    private final VisitedJobRepository visitedJobRepository;
+
+
+    @Autowired
     private final ModelMapper modelMapper;
 
     @Autowired
     private final ServiceHelper serviceHelper;
-
-//    public String inactiveMatching(String matchingId) {
-//        Optional<Matching> existingMatching = matchingRepo.findById(Long.parseLong(matchingId));
-//        if (!existingMatching.isPresent()) {
-//            throw new ServiceException(ResultCode.NOT_FOUND, "Matching not found");
-//        }
-//        Matching updatedMatching = null;
-//        // TODO: After Matching repo setup from TAIL-130
-//        // existingg matching query update.
-//        try {
-//            updatedMatching = matchingRepo.save(existingMatching.get());
-//        } catch (Exception ex) {
-//            String errMsg = "could not update the matchingDto";
-//            serviceHelper.handleErrorAndThrowException(logger, ex, errMsg);
-//        }
-//        LogEntry auditLog = LogEntry.builder()
-//                .currentUserId(AuthContext.getUserId())
-//                .authorization(AuthContext.getAuthz())
-//                .targetType("matching")
-//                //.targetId(matchingToUpdate.getId())
-//                //.matchingId(matchingToUpdate.getId())
-//                .originalContents(existingMatching.toString())
-//                .updatedContents(updatedMatching.toString())
-//                .build();
-//        logger.info("inactive matching", auditLog);
-//        serviceHelper.trackEventAsync("matching_inactive");
-//
-//        return updatedMatching.getId();
-//    }
 
     public void addJob(JobDto jobDto) {
         Job job = modelMapper.map(jobDto, Job.class);
@@ -114,8 +100,8 @@ public class MatchingService {
             matchedJobs = matchedResume.getMatchedJobs();
         } else {
             LocationDto resumeLocation = resumeDto.getLocation();
-            Collection<String> majors = resumeDto.getMajors() != null ? resumeDto.getMajors() : new ArrayList<>();
-            Collection<String> keywords = resumeDto.getKeywords() != null ? resumeDto.getKeywords() : new ArrayList<>();
+            Collection<String> majors = resumeDto.getMajors() != null ? resumeDto.getMajors() : Lists.newArrayList();
+            Collection<String> keywords = resumeDto.getKeywords() != null ? resumeDto.getKeywords() : Lists.newArrayList();
             matchedJobs = jobRepository.findMatchedJobs(
                 resumeLocation.getCountry(), resumeLocation.getCity(), majors, keywords);
 
@@ -143,36 +129,59 @@ public class MatchingService {
 
     public Collection<ResumeDto> findMatchedResumes(JobDto jobDto) {
         LocationDto location = jobDto.getLocation();
+        Collection<String> relevantMajors = jobDto.getRelevantMajors() != null ? jobDto.getRelevantMajors() : Lists.newArrayList();
+        Collection<String> keywords = jobDto.getKeywords() != null ? jobDto.getKeywords() : Lists.newArrayList();
         List<Resume> matchedResumes = resumeRepository.findMatchedResumes(location.getCountry(), location.getCity(),
-            jobDto.getRelevantMajors(), jobDto.getKeywords());
+            relevantMajors, keywords);
         return matchedResumes.stream().map(resume -> modelMapper.map(resume, ResumeDto.class)).collect(Collectors.toList());
     }
 
     public Collection<ResumeDto> findMatchedResumes(JobDto jobDto, int page, int pageSize) {
         LocationDto location = jobDto.getLocation();
+        Collection<String> relevantMajors = jobDto.getRelevantMajors() != null ? jobDto.getRelevantMajors() : Lists.newArrayList();
+        Collection<String> keywords = jobDto.getKeywords() != null ? jobDto.getKeywords() : Lists.newArrayList();
         List<Resume> matchedResumes = resumeRepository.findMatchedResumes(location.getCountry(), location.getCity(),
-            jobDto.getRelevantMajors(), jobDto.getKeywords(), page, pageSize);
+            relevantMajors, keywords, page, pageSize);
         return matchedResumes.stream().map(resume -> modelMapper.map(resume, ResumeDto.class)).collect(Collectors.toList());
     }
 
-    public void addTailoredResume(String resumeUuid, String jobUuid) {
-        Resume resume = resumeRepository.findByResumeUuid(resumeUuid).orElseThrow(() ->
-            new ServiceException(ResultCode.NOT_FOUND, String.format("Resume Not Found with uuid %s", resumeUuid)));
-        Job job = jobRepository.findByJobUuid(jobUuid).orElseThrow(() ->
-            new ServiceException(ResultCode.NOT_FOUND, String.format("Job Not Found with uuid %s", jobUuid)));
+    @Transactional
+    public void addTailoredResume(String resumeUuid, String jobUuid, boolean addBookmark) {
+        Resume resume = getResumeByUuid(resumeUuid);
+        Job job = getJobByUuid(jobUuid);
 
         TailoredJob tailoredJob = buildTailoredJob(jobUuid, resume);
         tailoredJobRepository.save(tailoredJob);
 
         TailoredResume tailoredResume = buildTailoredResume(resumeUuid, job);
         tailoredResumeRepository.save(tailoredResume);
+
+        if (addBookmark) {
+            bookmarkJobAsync(resumeUuid, jobUuid, resume, job);
+        }
+    }
+
+    private void bookmarkJobAsync(String resumeUuid, String jobUuid, Resume resume, Job job) {
+        serviceHelper.executeAsync(() -> {
+            bookmarkJob(resumeUuid, jobUuid, resume, job);
+        });
+    }
+
+    private Job getJobByUuid(String jobUuid) {
+        return jobRepository.findByJobUuid(jobUuid).orElseThrow(() ->
+            new ServiceException(ResultCode.NOT_FOUND, String.format("Job Not Found with uuid %s", jobUuid)));
+    }
+
+    private Resume getResumeByUuid(String resumeUuid) {
+        return resumeRepository.findByResumeUuid(resumeUuid).orElseThrow(() ->
+            new ServiceException(ResultCode.NOT_FOUND, String.format("Resume Not Found with uuid %s", resumeUuid)));
     }
 
     private TailoredJob buildTailoredJob(String jobUuid, Resume resume) {
         Set<Resume> resumesSet = new TreeSet<>(Comparator.comparing(Resume::getResumeUuid));
         TailoredJob tailoredJob = tailoredJobRepository.findByJobUuid(jobUuid).orElse(TailoredJob.builder()
             .jobUuid(jobUuid)
-            .tailoredResumes(new ArrayList<>())
+            .tailoredResumes(Lists.newArrayList())
             .build());
         resumesSet.addAll(tailoredJob.getTailoredResumes());
         resumesSet.add(resume);
@@ -188,15 +197,16 @@ public class MatchingService {
         return tailoredResume;
     }
 
-    public JobDto getResumeTailoredJob(String resumeUuid) {
-        TailoredResume tailoredResume = tailoredResumeRepository.findByResumeUuid(resumeUuid).orElseThrow(() ->
-            new ServiceException(ResultCode.NOT_FOUND, String.format("Resume %s has no tailored job", resumeUuid)));
-        return modelMapper.map(tailoredResume.getTargetJob(), JobDto.class);
+    public Optional<JobDto> getResumeTailoredJob(String resumeUuid) {
+        return tailoredResumeRepository.findByResumeUuid(resumeUuid).map(tailoredResume ->
+            modelMapper.map(tailoredResume.getTargetJob(), JobDto.class));
     }
 
     public Collection<ResumeDto> getTailoredResumesByJob(String jobUuid) {
-        TailoredJob tailoredJob = tailoredJobRepository.findByJobUuid(jobUuid).orElseThrow(() ->
-            new ServiceException(ResultCode.NOT_FOUND, String.format("Job %s has not been tailored by any resumes", jobUuid)));
+        TailoredJob tailoredJob = tailoredJobRepository.findByJobUuid(jobUuid).orElse(TailoredJob.builder()
+            .tailoredResumes(Lists.newArrayList())
+            .build()
+        );
         return tailoredJob.getTailoredResumes().stream()
             .map(resume -> modelMapper.map(resume, ResumeDto.class)).collect(Collectors.toList());
     }
@@ -204,5 +214,135 @@ public class MatchingService {
     public Collection<ResumeDto> getTailoredResumesByJob(String jobUuid, int offset, int limit) {
         Collection<Resume> tailoredResumes = tailoredJobRepository.findTailoredResumesWithLimit(jobUuid, offset, limit);
         return tailoredResumes.stream().map(resume -> modelMapper.map(resume, ResumeDto.class)).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void bookmarkJob(String resumeUuid, String jobUuid) {
+        Resume resume = getResumeByUuid(resumeUuid);
+        Job job = getJobByUuid(jobUuid);
+
+        bookmarkJob(resumeUuid, jobUuid, resume, job);
+    }
+
+    private void bookmarkJob(String resumeUuid, String jobUuid, Resume resume, Job job) {
+        BookmarkedResume bookmarkedResume = buildBookmarkedResume(resumeUuid, job);
+        bookmarkedResumeRepository.save(bookmarkedResume);
+
+        BookmarkedJob bookmarkedJob = buildBookmarkedJob(jobUuid, resume);
+        bookmarkedJobRepository.save(bookmarkedJob);
+    }
+
+    private BookmarkedResume buildBookmarkedResume(String resumeUuid, Job job) {
+        Set<Job> jobsSet = new TreeSet<>(Comparator.comparing(Job::getJobUuid));
+        BookmarkedResume bookmarkedResume = bookmarkedResumeRepository.findByResumeUuid(resumeUuid).orElse(
+            BookmarkedResume.builder()
+                .resumeUuid(resumeUuid)
+                .bookmarkedJobs(Lists.newArrayList())
+                .build());
+        jobsSet.addAll(bookmarkedResume.getBookmarkedJobs());
+        jobsSet.add(job);
+        bookmarkedResume.setBookmarkedJobs(jobsSet);
+        return bookmarkedResume;
+    }
+
+    private BookmarkedJob buildBookmarkedJob(String jobUuid, Resume resume) {
+        Set<Resume> resumesSet = new TreeSet<>(Comparator.comparing(Resume::getResumeUuid));
+        BookmarkedJob bookmarkedJob = bookmarkedJobRepository.findByJobUuid(jobUuid).orElse(BookmarkedJob.builder()
+            .jobUuid(jobUuid)
+            .bookmarkedResumes(Lists.newArrayList())
+            .build());
+        resumesSet.addAll(bookmarkedJob.getBookmarkedResumes());
+        resumesSet.add(resume);
+        bookmarkedJob.setBookmarkedResumes(resumesSet);
+        return bookmarkedJob;
+    }
+
+    @Transactional
+    public void markJobVisited(String resumeUuid, String jobUuid) {
+        Resume resume = getResumeByUuid(resumeUuid);
+        Job job = getJobByUuid(jobUuid);
+
+        VisitedResume visitedResume = buildVisitedResume(resumeUuid, job);
+        visitedResumeRepository.save(visitedResume);
+
+        VisitedJob visitedJob = buildVisitedJob(jobUuid, resume);
+        visitedJobRepository.save(visitedJob);
+    }
+
+    private VisitedResume buildVisitedResume(String resumeUuid, Job job) {
+        Set<Job> jobsSet = new TreeSet<>(Comparator.comparing(Job::getJobUuid));
+        VisitedResume visitedResume = visitedResumeRepository.findByResumeUuid(resumeUuid).orElse(
+            VisitedResume.builder()
+                .resumeUuid(resumeUuid)
+                .visitedJobs(Lists.newArrayList())
+                .build()
+        );
+        jobsSet.addAll(visitedResume.getVisitedJobs());
+        jobsSet.add(job);
+        visitedResume.setVisitedJobs(jobsSet);
+        return visitedResume;
+    }
+
+    private VisitedJob buildVisitedJob(String jobUuid, Resume resume) {
+        Set<Resume> resumesSet = new TreeSet<>(Comparator.comparing(Resume::getResumeUuid));
+        VisitedJob visitedJob = visitedJobRepository.findByJobUuid(jobUuid).orElse(VisitedJob.builder()
+            .jobUuid(jobUuid)
+            .visitedResumes(Lists.newArrayList())
+            .build()
+        );
+        resumesSet.addAll(visitedJob.getVisitedResumes());
+        resumesSet.add(resume);
+        visitedJob.setVisitedResumes(resumesSet);
+        return visitedJob;
+    }
+
+    public Collection<JobDto> getResumeBookmarkedJobs(String resumeUuid) {
+        BookmarkedResume bookmarkedResume = bookmarkedResumeRepository.findByResumeUuid(resumeUuid).orElse(
+            BookmarkedResume.builder().bookmarkedJobs(Lists.newArrayList()).build()
+        );
+        return bookmarkedResume.getBookmarkedJobs().stream().map(job -> modelMapper.map(job, JobDto.class))
+            .collect(Collectors.toList());
+    }
+
+    public Collection<JobDto> getResumeBookmarkedJobs(String resumeUuid, int offset, int limit) {
+        return bookmarkedResumeRepository.findBookmarkedJobs(resumeUuid, offset, limit).stream().map(job ->
+            modelMapper.map(job, JobDto.class)).collect(Collectors.toList());
+    }
+
+    public Collection<ResumeDto> getResumesBookmarkedByJob(String jobUuid) {
+        BookmarkedJob bookmarkedJob = bookmarkedJobRepository.findByJobUuid(jobUuid).orElse(
+            BookmarkedJob.builder().bookmarkedResumes(Lists.newArrayList()).build());
+        return bookmarkedJob.getBookmarkedResumes().stream().map(resume -> modelMapper.map(resume, ResumeDto.class))
+            .collect(Collectors.toList());
+    }
+
+    public Collection<ResumeDto> getResumesBookmarkedByJob(String jobUuid, int offset, int limit) {
+        return bookmarkedJobRepository.findResumesBookmarkedByJob(jobUuid, offset, limit).stream().map(resume ->
+            modelMapper.map(resume, ResumeDto.class)).collect(Collectors.toList());
+    }
+
+    public Collection<JobDto> getResumeVisitedJobs(String resumeUuid) {
+        VisitedResume visitedResume = visitedResumeRepository.findByResumeUuid(resumeUuid).orElse(
+            VisitedResume.builder().visitedJobs(Lists.newArrayList()).build()
+        );
+        return visitedResume.getVisitedJobs().stream().map(job -> modelMapper.map(job, JobDto.class))
+            .collect(Collectors.toList());
+    }
+
+    public Collection<JobDto> getResumeVisitedJobs(String resumeUuid, int offset, int limit) {
+        return visitedResumeRepository.findVisitedJobs(resumeUuid, offset, limit).stream().map(job ->
+            modelMapper.map(job, JobDto.class)).collect(Collectors.toList());
+    }
+
+    public Collection<ResumeDto> getResumesVisitedByJob(String jobUuid) {
+        VisitedJob visitedJob = visitedJobRepository.findByJobUuid(jobUuid).orElse(
+            VisitedJob.builder().visitedResumes(Lists.newArrayList()).build());
+        return visitedJob.getVisitedResumes().stream().map(resume -> modelMapper.map(resume, ResumeDto.class))
+            .collect(Collectors.toList());
+    }
+
+    public Collection<ResumeDto> getResumesVisitedByJob(String jobUuid, int offset, int limit) {
+        return visitedJobRepository.findVisitedResumes(jobUuid, offset, limit).stream().map(resume ->
+            modelMapper.map(resume, ResumeDto.class)).collect(Collectors.toList());
     }
 }

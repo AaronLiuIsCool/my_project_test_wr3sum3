@@ -17,8 +17,8 @@ import java.util.Collection;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JobList {
     private Collection<JobDto> jobs;
-    private int limit;
     private int offset;
+    private int limit;
 
     public JobList(Collection<JobDto> jobs) {
         this.jobs = jobs;

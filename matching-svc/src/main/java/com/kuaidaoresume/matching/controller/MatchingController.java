@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import java.util.Collection;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/v1/matching")
@@ -136,8 +137,10 @@ public class MatchingController {
         AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
     })
     @PostMapping("/resumes/tailor")
-    public BaseResponse addTailoredResume(@RequestParam String resumeUuid, @RequestParam String jobUuid) {
-        matchingService.addTailoredResume(resumeUuid, jobUuid);
+    public BaseResponse addTailoredResume(@RequestParam String resumeUuid, @RequestParam String jobUuid,
+        @RequestParam boolean addBookmark) {
+
+        matchingService.addTailoredResume(resumeUuid, jobUuid, addBookmark);
 
         BaseResponse baseResponse = new BaseResponse();
         baseResponse.setMessage("Tailored resume saved");
@@ -155,9 +158,16 @@ public class MatchingController {
         AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
     })
     @GetMapping("/jobs/tailored")
-    public GenericJobResponse getTailoredJob(@RequestParam String resumeUuid) {
-        JobDto job = matchingService.getResumeTailoredJob(resumeUuid);
-        return new GenericJobResponse(job);
+    public BaseResponse getTailoredJob(@RequestParam String resumeUuid) {
+        Optional<JobDto> jobDtoOptional = matchingService.getResumeTailoredJob(resumeUuid);
+        if (jobDtoOptional.isPresent()) {
+            return new GenericJobResponse(jobDtoOptional.get());
+        } else {
+            BaseResponse baseResponse = new BaseResponse();
+            baseResponse.setMessage("No tailored job with resume " + resumeUuid);
+
+            return baseResponse;
+        }
     }
 
     @Authorize(value = {
@@ -185,8 +195,182 @@ public class MatchingController {
         AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
     })
     @GetMapping("/resumes/paging-tailored")
-    public ResumeListResponse getTailoredResumes(@RequestParam String jobUuid, @RequestParam int offset, @RequestParam int limit) {
+    public ResumeListResponse getTailoredResumes(
+        @RequestParam String jobUuid,
+        @RequestParam @Min(0) int offset,
+        @RequestParam @Min(1) int limit) {
+
         Collection<ResumeDto> resumeDtos = matchingService.getTailoredResumesByJob(jobUuid, offset, limit);
         return new ResumeListResponse(new ResumeList(resumeDtos, offset, limit));
+    }
+
+    @Authorize(value = {
+        AuthConstant.AUTHORIZATION_WWW_SERVICE,
+        AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
+        //AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
+        //AuthConstant.AUTHORIZATION_BOT_SERVICE,
+        AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
+        AuthConstant.AUTHORIZATION_SUPPORT_USER,
+        AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
+    })
+    @PostMapping("/resumes/bookmark")
+    public BaseResponse bookmarkJob(@RequestParam String resumeUuid, @RequestParam String jobUuid) {
+        matchingService.bookmarkJob(resumeUuid, jobUuid);
+        BaseResponse baseResponse = new BaseResponse();
+        baseResponse.setMessage(String.format("Job %s is bookmarked by resume %s", jobUuid, resumeUuid));
+        return baseResponse;
+    }
+
+    @Authorize(value = {
+        AuthConstant.AUTHORIZATION_WWW_SERVICE,
+        AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
+        //AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
+        //AuthConstant.AUTHORIZATION_BOT_SERVICE,
+        AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
+        AuthConstant.AUTHORIZATION_SUPPORT_USER,
+        AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
+    })
+    @GetMapping("/jobs/bookmarked")
+    public JobListResponse getBookmarkedJobs(@RequestParam String resumeUuid) {
+        Collection<JobDto> bookmarkedJobs = matchingService.getResumeBookmarkedJobs(resumeUuid);
+        return new JobListResponse(new JobList(bookmarkedJobs));
+    }
+
+    @Authorize(value = {
+        AuthConstant.AUTHORIZATION_WWW_SERVICE,
+        AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
+        //AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
+        //AuthConstant.AUTHORIZATION_BOT_SERVICE,
+        AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
+        AuthConstant.AUTHORIZATION_SUPPORT_USER,
+        AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
+    })
+    @GetMapping("/jobs/paging-bookmarked")
+    public JobListResponse getBookmarkedJobs(
+        @RequestParam String resumeUuid,
+        @RequestParam @Min(0) int offset,
+        @RequestParam @Min(1) int limit) {
+
+        Collection<JobDto> bookmarkedJobs = matchingService.getResumeBookmarkedJobs(resumeUuid, offset, limit);
+        return new JobListResponse(new JobList(bookmarkedJobs, offset, limit));
+    }
+
+    @Authorize(value = {
+        AuthConstant.AUTHORIZATION_WWW_SERVICE,
+        AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
+        //AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
+        //AuthConstant.AUTHORIZATION_BOT_SERVICE,
+        AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
+        AuthConstant.AUTHORIZATION_SUPPORT_USER,
+        AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
+    })
+    @GetMapping("/resumes/bookmarked")
+    public ResumeListResponse getBookmarkedResumes(@RequestParam String jobUuid) {
+        Collection<ResumeDto> bookmarkedResumes = matchingService.getResumesBookmarkedByJob(jobUuid);
+        return new ResumeListResponse(new ResumeList(bookmarkedResumes));
+    }
+
+    @Authorize(value = {
+        AuthConstant.AUTHORIZATION_WWW_SERVICE,
+        AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
+        //AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
+        //AuthConstant.AUTHORIZATION_BOT_SERVICE,
+        AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
+        AuthConstant.AUTHORIZATION_SUPPORT_USER,
+        AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
+    })
+    @GetMapping("/resumes/paging-bookmarked")
+    public ResumeListResponse getBookmarkedResumes(
+        @RequestParam String jobUuid,
+        @RequestParam @Min(0) int offset,
+        @RequestParam @Min(1) int limit) {
+
+        Collection<ResumeDto> bookmarkedResumes = matchingService.getResumesBookmarkedByJob(jobUuid, offset, limit);
+        return new ResumeListResponse(new ResumeList(bookmarkedResumes, offset, limit));
+    }
+
+    @Authorize(value = {
+        AuthConstant.AUTHORIZATION_WWW_SERVICE,
+        AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
+        //AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
+        //AuthConstant.AUTHORIZATION_BOT_SERVICE,
+        AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
+        AuthConstant.AUTHORIZATION_SUPPORT_USER,
+        AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
+    })
+    @PostMapping("/resumes/visit")
+    public BaseResponse visitJob(@RequestParam String resumeUuid, @RequestParam String jobUuid) {
+        matchingService.markJobVisited(resumeUuid, jobUuid);
+        BaseResponse baseResponse = new BaseResponse();
+        baseResponse.setMessage(String.format("Job %s is marked as visited by resume %s", jobUuid, resumeUuid));
+        return baseResponse;
+    }
+
+    @Authorize(value = {
+        AuthConstant.AUTHORIZATION_WWW_SERVICE,
+        AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
+        //AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
+        //AuthConstant.AUTHORIZATION_BOT_SERVICE,
+        AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
+        AuthConstant.AUTHORIZATION_SUPPORT_USER,
+        AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
+    })
+    @GetMapping("/jobs/visited")
+    public JobListResponse getVisitedJobs(@RequestParam String resumeUuid) {
+        Collection<JobDto> visitedJobs = matchingService.getResumeVisitedJobs(resumeUuid);
+        return new JobListResponse(new JobList(visitedJobs));
+    }
+
+    @Authorize(value = {
+        AuthConstant.AUTHORIZATION_WWW_SERVICE,
+        AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
+        //AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
+        //AuthConstant.AUTHORIZATION_BOT_SERVICE,
+        AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
+        AuthConstant.AUTHORIZATION_SUPPORT_USER,
+        AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
+    })
+    @GetMapping("/jobs/paging-visited")
+    public JobListResponse getVisitedJobs(
+        @RequestParam String resumeUuid,
+        @RequestParam @Min(0) int offset,
+        @RequestParam @Min(1) int limit) {
+
+        Collection<JobDto> visitedJobs = matchingService.getResumeVisitedJobs(resumeUuid, offset, limit);
+        return new JobListResponse(new JobList(visitedJobs, offset, limit));
+    }
+
+    @Authorize(value = {
+        AuthConstant.AUTHORIZATION_WWW_SERVICE,
+        AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
+        //AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
+        //AuthConstant.AUTHORIZATION_BOT_SERVICE,
+        AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
+        AuthConstant.AUTHORIZATION_SUPPORT_USER,
+        AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
+    })
+    @GetMapping("/resumes/visited")
+    public ResumeListResponse getVisitedResumes(@RequestParam String jobUuid) {
+        Collection<ResumeDto> visitedResumes = matchingService.getResumesVisitedByJob(jobUuid);
+        return new ResumeListResponse(new ResumeList(visitedResumes));
+    }
+
+    @Authorize(value = {
+        AuthConstant.AUTHORIZATION_WWW_SERVICE,
+        AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
+        //AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
+        //AuthConstant.AUTHORIZATION_BOT_SERVICE,
+        AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
+        AuthConstant.AUTHORIZATION_SUPPORT_USER,
+        AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
+    })
+    @GetMapping("/resumes/paging-visited")
+    public ResumeListResponse getVisitedResumes(
+        @RequestParam String jobUuid,
+        @RequestParam @Min(0) int offset,
+        @RequestParam @Min(1) int limit) {
+
+        Collection<ResumeDto> visitedResumes = matchingService.getResumesVisitedByJob(jobUuid, offset, limit);
+        return new ResumeListResponse(new ResumeList(visitedResumes, offset, limit));
     }
 }
