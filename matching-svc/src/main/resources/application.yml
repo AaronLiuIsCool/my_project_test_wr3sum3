@@ -6,7 +6,7 @@ spring:
     name: matching-service
   data:
     mongodb:
-      uri: ${MATCHING_DATASOURCE_URL:mongodb://localhost:27017}
+      uri: ${MATCHING_DATASOURCE_URL:mongodb+srv://root:mongodbroot@kuaidaoresume-uat1.kxcvj.mongodb.net}
       database: kuaidaoresume_matching
 
 kuaidaoresume:
