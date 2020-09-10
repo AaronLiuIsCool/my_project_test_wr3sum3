@@ -1,0 +1,27 @@
+name: Docker Hub CI
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  dockerHub-CI:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up JDK 1.8
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+    - name: Build with Maven
+      run: mvn clean && mvn install
+    - name: docker login
+      run: |
+        docker login -u tengr -p EyesHigh2020!   
+    - name: docker-compose build
+      run: |
+        docker-compose build --no-cache
+    - name: docker-compose push
+      run: |
+        docker-compose push
