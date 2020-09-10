@@ -12,7 +12,7 @@ const Jobs = ({ data, pageNumber, onPageChange }) => {
         <div className={styles.container}>
             <JobsList data={data} pageNumber={pageNumber} onPageChange={onPageChange}
                 onSelect={setSelection} selection={selection} />
-            <JobDetails data={data && data.results && data.results[selection]} />
+            <JobDetails data={data && data.content && data.content[selection]} />
         </div>
     )
 };

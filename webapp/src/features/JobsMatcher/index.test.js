@@ -10,7 +10,7 @@ import JobsMatcher from './index';
 test('renders lazy loaded component for JobsMatcher', () => {
   const jobsMatcher = renderer.create(
     <Provider store={store}>
-      <JobsMatcher />
+      <JobsMatcher location={{}} />
     </Provider>
   ).toJSON();
 

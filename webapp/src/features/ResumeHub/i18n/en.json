@@ -1,4 +1,14 @@
 {
   "new_resume_description": "You do not have a resume yet, spend five minutes to creat one?",
-  "new_resume_start": "Build resume"
+  "new_resume_start": "Build resume",
+
+  "hub_title": "My resumes",
+  "hub_action": "+ Add new resume",
+
+  "hub_item_edit": "Edit",
+  "hub_item_download": "Download",
+  "hub_item_share": "Share",
+  "hub_item_duplicate": "Duplicate",
+  "hub_item_delete": "Delete",
+  "hub_item_match": "Match a job"
 }

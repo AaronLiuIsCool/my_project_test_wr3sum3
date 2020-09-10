@@ -50,14 +50,9 @@ export function adaptEducation(edu) {
         endDate: moment(graduateDate).format(JDBC_DATE_FORMAT)
     };
 
-    if (typeof highestAward === 'string' && highestAward.length > 0) {
-        data.awards = data.awards || [];
-        data.awards.push({ name: highestAward });
-    }
-    if (typeof otherAward === 'string' && otherAward.length > 0) {
-        data.awards = data.awards || [];
-        data.awards.push({ name: otherAward });
-    }
+    data.awards = data.awards || [];
+    data.awards.push({ name: highestAward || '' });
+    data.awards.push({ name: otherAward || '' });
 
     return data;
 }

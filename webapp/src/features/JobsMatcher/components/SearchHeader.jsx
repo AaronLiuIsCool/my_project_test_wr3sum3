@@ -7,11 +7,11 @@ import { useI8n } from 'shell/i18n';
 
 import styles from '../styles/SearchHeader.module.css';
 
-const SearchHeader = ({ onSearch }) => {
+const SearchHeader = ({ onSearch, initial = {} }) => {
     const messages = useI8n();
-    const [query, setQuery] = useState("");
-    const [country, setCountry] = useState("");
-    const [city, setCity] = useState("");
+    const [query, setQuery] = useState(initial.query);
+    const [country, setCountry] = useState(initial.country);
+    const [city, setCity] = useState(initial.city);
 
     return (
         <Form className={styles.container}>

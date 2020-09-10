@@ -40,7 +40,7 @@ const getPaginationItems = (pageNumber, maxPages, onPageChange) => {
         <Pagination>
             {shouldShowPrev ? <Pagination.Prev onClick={() => onPageChange(pageNumber-1)}/> : null}
             {items}
-            {shouldShowNext ? <Pagination.Next onClick={() => onPageChange(pageNumber+11)}/> : null}
+            {shouldShowNext ? <Pagination.Next onClick={() => onPageChange(pageNumber+1)}/> : null}
         </Pagination>
     );
 }
@@ -53,7 +53,7 @@ const JobsList = ({ data, pageNumber, onPageChange, selection, onSelect }) => {
             <span className={styles["list-summary"]}>
                 {messages["job_list_summary"].replace('{0}', data.total || 0)}
             </span>
-            {data && data.results && data.results.map((job, index) => (
+            {data && data.content && data.content.map((job, index) => (
                 <Job data={job} key={`job-${index}`}
                     onClick={() => onSelect(index)}
                     selected={selection === index} />

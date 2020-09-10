@@ -28,7 +28,7 @@ const DetailContent = ({ data }) => {
                 <div className={styles['job-details-description-label']}>
                     {messages['job_details_description']}
                 </div>
-                {data.description.split('\n').map(text => <p>{text}</p>)}
+                {data.jobDescription.split('\n').map(text => <p>{text}</p>)}
             </div>
         </div>
     );

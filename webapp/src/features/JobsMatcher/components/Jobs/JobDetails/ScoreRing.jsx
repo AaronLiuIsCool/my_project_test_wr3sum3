@@ -15,7 +15,7 @@ export default class ScoreRing extends React.PureComponent {
         const strokeDashoffset = this.circumference - progress / 100 * this.circumference;
 
         return (
-            <svg class="score-ring" height={radius * 2} width={radius * 2}>
+            <svg className="score-ring" height={radius * 2} width={radius * 2}>
                 <circle
                     stroke={color}
                     fill="transparent"

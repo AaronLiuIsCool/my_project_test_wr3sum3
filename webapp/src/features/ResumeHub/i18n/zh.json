@@ -1,4 +1,14 @@
 {
   "new_resume_description": "看似您还没有简历，花5分钟创造一份吧",
-  "new_resume_start": "开始创建"
+  "new_resume_start": "开始创建",
+
+  "hub_title": "我的简历",
+  "hub_action": "+ 添加新的简历",
+
+  "hub_item_edit": "编辑内容",
+  "hub_item_download": "下载简历",
+  "hub_item_share": "链接分享",
+  "hub_item_duplicate": "复制简历",
+  "hub_item_delete": "删除",
+  "hub_item_match": "工作匹配"
 }

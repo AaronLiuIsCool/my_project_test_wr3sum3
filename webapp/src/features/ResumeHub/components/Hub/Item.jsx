@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link } from "react-router-dom";
 
 import Button from 'react-bootstrap/Button';
 import thumbnail from '../../assets/thumbnail@2x.png'; 
@@ -15,6 +14,7 @@ import { selectUserId } from 'features/App/slicer';
 import { deleteResume } from 'features/App/slicer/account';
 import AccountServices from 'shell/services/AccountServices';
 import { getLogger } from 'shell/logger';
+import { useI8n } from 'shell/i18n';
 
 import styles from '../../styles/Hub.module.css';
 
@@ -22,6 +22,7 @@ const logger = getLogger('ResumeHubItem');
 const accountServices = new AccountServices();
 
 const Grid = ({ resume }) => {
+    const messages = useI8n();
     const dispatch = useDispatch();
     const userId = useSelector(selectUserId);
 
@@ -50,27 +51,27 @@ const Grid = ({ resume }) => {
                         {new Date(resume.createdAt).toLocaleDateString()}
                     </div>
                     <div className={styles.links}>
-                        <Link to={`/resume/${resume.resumeId}`} className={styles.link} >
-                            <EditIcon /> 编辑内容
-                        </Link>
-                        <Button variant="link" className={styles.link}>
-                            <Download /> 下载简历
+                        <Button variant="link" href={`/resume/${resume.resumeId}`} className={styles.link} >
+                            <EditIcon /> {messages['hub_item_edit']}
                         </Button>
                         <Button variant="link" className={styles.link}>
-                            <ShareIcon /> 链接分享
+                            <Download /> {messages['hub_item_download']}
                         </Button>
                         <Button variant="link" className={styles.link}>
-                            <DuplicateIcon /> 复制简历
+                            <ShareIcon /> {messages['hub_item_share']}
+                        </Button>
+                        <Button variant="link" className={styles.link}>
+                            <DuplicateIcon /> {messages['hub_item_duplicate']}
                         </Button>
                     </div>
                     <Button variant="link" className={styles.delete}
                         onClick={handleDelete} >
-                        <DeleteIcon /> 删除
+                        <DeleteIcon /> {messages['hub_item_delete']}
                     </Button>
                 </div>
             </div>
-            <Button className={styles.matchingBtn}>
-                工作匹配
+            <Button href={`/jobs?resume=${resume.resumeId}`} className={styles.matchingBtn} >
+                {messages['hub_item_match']}
             </Button>
         </div>
     );

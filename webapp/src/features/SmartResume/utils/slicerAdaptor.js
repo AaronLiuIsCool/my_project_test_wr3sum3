@@ -50,8 +50,8 @@ export function adaptEducation(edu = {}) {
         degree,
         city,
         country,
-        highestAward: '',
-        otherAward: ''
+        highestAward: awards[0] && awards[0].name,
+        otherAward: awards[1] && awards[1].name
     }
 
     return data;

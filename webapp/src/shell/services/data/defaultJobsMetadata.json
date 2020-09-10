@@ -1,0 +1,14 @@
+{
+  "locations": {
+    "中国": [
+      "北京", "上海", "广州", "深圳", "杭州", "天津", "重庆"
+    ],
+    "Canada": [
+      "Toronto", "Vancouver", "Calgary", "Edmonton", "Montreal", "Ottawa"
+    ],
+    "US": [
+      "New York", "Los Angeles", "Chicago", "Houston", "Phoenix", "Philadelphia", "San Antonio", "San Diego", "Dallas", "Austin",
+      "San Francisco", "Mountain View", "Santa Clara", "Palo Alto", "San Jose", "Bay Area"
+    ]
+  }
+}
