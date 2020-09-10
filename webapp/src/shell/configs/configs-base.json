@@ -13,5 +13,7 @@
 
   "services-mail-baseUrl": "mail.kuaidaoresume-v2.local",
 
-  "services-auth-baseUrl": "whoami.kuaidaoresume-v2.local"
+  "services-auth-baseUrl": "whoami.kuaidaoresume-v2.local",
+
+  "services-app-baseUrl": "app.kuaidaoresume-v2.local"
 }

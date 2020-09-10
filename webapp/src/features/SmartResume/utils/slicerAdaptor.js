@@ -18,7 +18,7 @@ export function adaptBasics(basics = {}) {
     })
 
     const state = {
-        completed: false,
+        completed: true,
         data: {
             id,
             avatar: '',
@@ -60,7 +60,7 @@ export function adaptEducation(edu = {}) {
 export function adaptEducations(educations = []) {
     const data = educations.length === 0 ? [adaptEducation()] : educations.map(adaptEducation);
     const state = {
-        completed: false,
+        completed: true,
         data
     };
     return state;
@@ -87,7 +87,7 @@ export function adaptWork(work = {}) {
 export function adaptWorks(works = []) {
     const data = works.length === 0 ? [adaptWork()] : works.map(adaptWork);
     const state = {
-        completed: false,
+        completed: true,
         data
     };
 
@@ -115,7 +115,7 @@ export function adaptProject(project = {}) {
 export function adaptProjects(projects = []) {
     const data = projects.length === 0 ? [adaptProject()] : projects.map(adaptProject);
     const state = {
-        completed: false,
+        completed: true,
         data
     };
     return state;
@@ -137,7 +137,7 @@ export function adaptCertificate(cert = {}) {
 export function adaptCertificates(certificates = []) {
     const data = certificates.length === 0 ? [adaptCertificate()] : certificates.map(adaptCertificate);
     const state = {
-        completed: false,
+        completed: true,
         data
     };
     return state;
@@ -164,7 +164,7 @@ export function adaptVolunteer(volunteer = {}) {
 export function adaptVolunteers(volunteers = []) {
     const data = volunteers.length === 0 ? [adaptVolunteer()] : volunteers.map(adaptVolunteer);
     const state = {
-        completed: false,
+        completed: true,
         data
     };
     return state;

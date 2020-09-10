@@ -1,7 +1,18 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useI8n } from 'shell/i18n';
-import { basicSelectors, educationSelectors, workSelectors, projectSelectors, volunteerSelectors, previewSelectors } from './../../slicer/';
+import { 
+	selectResume, 
+	basicSelectors, 
+	educationSelectors, 
+	workSelectors, 
+	projectSelectors, 
+	volunteerSelectors, 
+	previewSelectors 
+} from './../../slicer/';
+import { getLogger } from 'shell/logger';
+import ResumeServices from 'shell/services/ResumeServices';
+import AppServices from 'shell/services/AppServices';
 
 import ResumeTips from './ResumeTips';
 import HeaderSection from './HeaderSection';
@@ -13,11 +24,17 @@ import styles from '../../styles/ResumePreview.module.css';
 import DownloadIcon from '../../assets/download_white.svg';
 import CloseHoverIcon from '../../assets/close_hover.svg';
 import CloseRegularIcon from '../../assets/close_regular.svg';
+import { resumeAdaptor } from '../../utils/servicesAdaptor';
+import { flatten, reconstruct } from '../../utils/resume';
 
+const logger = getLogger('SmartResume');
+const resumeServices = new ResumeServices();
+const appServices = new AppServices();
 
 const ResumePreview = () => {
 	const messages = useI8n();
 
+	const resume = useSelector(selectResume);
 	const { data: basicData } = useSelector(basicSelectors.selectBasic);
 	let { data: educationData } = useSelector(educationSelectors.selectEducation);
 	const { data: workData } = useSelector(workSelectors.selectWork);
@@ -52,6 +69,23 @@ const ResumePreview = () => {
 		}
 	};
 
+	const handleTranslate = async () => {
+		try {
+			const parsedResume = flatten(resumeAdaptor(resume));
+			let response = await appServices.translate(Object.values(parsedResume));
+			const translations = await response.json();
+			Object.keys(parsedResume).forEach((key, index) => {
+				parsedResume[key] = translations[index];
+			});
+			const translatedResume = reconstruct(parsedResume);
+			response = await resumeServices.createResume(translatedResume);
+			const data = await response.json();
+			// redirect to data.id
+			window.open(`resume/${data.id}`, '_blank'); 
+		} catch (exception) {
+			logger.error(exception);
+		}
+	};
 
 
 	return (
@@ -64,7 +98,7 @@ const ResumePreview = () => {
 			<div className={styles.widgetContainer}>
 				<div>
 					<button className={styles.whiteBtn}>{messages.RPreview.editThemeColor} </button>
-					<button>{messages.RPreview.smartTranslation}</button>
+					<button onClick={handleTranslate} >{messages.RPreview.smartTranslation}</button>
 					<button onClick={adjustToWholePage}>{messages.RPreview.oneClickWholePage}</button>
 					<button onClick={() => downloadPDF({basicData, educationData, workData, projectData, volunteerData, messagesRP:messages.RPreview})}>
 						<img src={DownloadIcon} alt="download" /> {messages.RPreview.downloadResume}
