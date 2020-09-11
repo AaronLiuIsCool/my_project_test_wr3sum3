@@ -132,3 +132,13 @@ CREATE TABLE IF NOT EXISTS `kuaidaoresume-job`.`major_has_keyword` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS `kuaidaoresume-job`.`suggestion` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `industry` NVARCHAR(75) NOT NULL,
+  `position_title` NVARCHAR(75) NOT NULL,
+  `texts` NVARCHAR(5000) NOT NULL,
+  `suggestion_keywords` NVARCHAR(3000) NULL COMMENT 'there are 3000 char job suggestion keywords CSV format',
+  PRIMARY KEY (`id`),
+  INDEX `industry_position_idx`(`industry`, `position_title`))
+ENGINE = InnoDB;
