@@ -2,11 +2,11 @@
   float: right;
   width: calc(100% - 1080px);
   /* navigation height = 56px; */
-  height: calc(100vh - 56px); 
+  height: calc(100vh - 56px);
   overflow-y: auto;
   background: #f0f0f0;
   position: relative;
-  font-size:14px;
+  font-size: 14px;
   z-index: -1;
 }
 
@@ -16,204 +16,205 @@
   display: none;
 }
 .container {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
-
-.pageContainer{
+.pageContainer {
   box-shadow: 0 12px 24px 0 rgba(0, 0, 0, 0.1);
   background-color: #ffffff;
-  width: 97%;
   height: auto;
-  min-height: 70%;
-  padding:30px 30px 40px;
-  padding:30px;
-  max-width: 720px;
+  width: 720px;
+  min-height: 1018px;
+  padding: 30px 30px 40px;
+  padding: 30px;
   margin: 40px auto 0;
 }
 
-.widgetContainer{
+.widgetContainer {
   padding: 15px;
   position: fixed;
   background: #f0f0f0;
   width: calc(100% - 1080px);
-  bottom:0;
+  bottom: 0;
 }
-.widgetContainer div{
+.widgetContainer div {
   max-width: 720px;
-  margin:0 auto;
+  margin: 0 auto;
   justify-content: space-between;
-  display:flex;
+  display: flex;
 }
 
-
-
-.widgetContainer button{
+.widgetContainer button {
   height: 42px;
   border-radius: 4px;
   background-color: #3e89ec;
   color: white;
-  border:none;
-  padding:10px 28px;
+  border: none;
+  padding: 10px 28px;
 }
 .widgetContainer button:hover {
   background-color: #0069d9;
   border-color: #0062cc;
 }
-.widgetContainer button.whiteBtn{
+.widgetContainer button.whiteBtn {
   background-color: white;
   color: #3e89ec;
 }
-.widgetContainer button.whiteBtn:hover{
+.widgetContainer button.whiteBtn:hover {
   color: #0069d9;
 }
-.widgetContainer button.circle{
+.widgetContainer button.circle {
   border-radius: 50%;
   height: 40px;
   width: 40px;
   padding: 0;
   font-weight: bold;
 }
-.widgetContainer button:focus{
-  outline:none;
+.widgetContainer button:focus {
+  outline: none;
 }
 
-.widgetContainer button a{
+.widgetContainer button a {
   color: white;
   text-decoration: none;
 }
 
-.header{
-  display:flex;
+.header {
+  display: flex;
   align-items: center;
 }
 
-.pageBreaker{
+.pageBreaker {
   height: 30px;
   /* note: 30px is the padding  */
   width: calc(100% + 60px);
   margin-left: -30px;
-  box-shadow: inset 0px 40px 0px rgba(0,0,0,0.1), inset 0px 0px 0px white;
+  box-shadow: inset 0px 40px 0px rgba(0, 0, 0, 0.1), inset 0px 0px 0px white;
   margin: 20px 0 20px -30px;
 }
 
-
-
-.avatar img{
+.avatar img {
   width: 70px;
   height: 70px;
   border-radius: 80px;
   background-color: #f2f4f9;
 }
 
-.headerContent{
+.headerContent {
   margin-left: 20px;
   font-size: 1rem;
   color: #8e94a7;
   min-width: 300px;
 }
 
-
-.headerContentTop{
-  display:flex;
+.headerContentTop {
+  display: flex;
   align-items: center;
 }
-.headerContentTop > div{
+.headerContentTop > div {
   margin-right: 15px;
 }
 
-.headerContentName{
+.headerContentName {
   font-size: 1.67rem;
   font-weight: bold;
   letter-spacing: 2.4px;
   text-align: left;
   color: #333333;
 }
-.headerContentSchool{
+.headerContentSchool {
   font-weight: bold;
   color: #3e89ec;
 }
 
-.headerContentContact{
-  display:flex;
+.headerContentContact {
+  display: flex;
   border-radius: 13px;
   background-color: #f2f4f9;
   color: #8e94a7;
   justify-content: space-around;
-  margin-top:10px;
+  margin-top: 10px;
   padding: 5px;
 }
-.headerContentContact > div{
+.headerContentContact > div {
   padding: 0 5px;
 }
 
-.headerLink a{
+.headerLink a {
   color: #3e89ec;
   font-weight: bold;
   padding-right: 5px;
 }
 
-.section{
-  margin-top:20px;
+.section {
+  margin-top: 20px;
   margin-bottom: 40px;
 }
 
-.sectionHeader{
+.sectionHeader {
   color: #333333;
-  border-bottom:solid thin #333;
-  font-size:1.17rem;
-  padding-bottom:15px;
+  border-bottom: solid thin #333;
+  font-size: 1.17rem;
+  padding-bottom: 15px;
 }
 
-.infoGroupHeader{
+.infoGroupHeader {
   font-size: 1rem;
   color: #8e94a7;
-  padding-bottom:15px;
-  display:flex;
+  padding-bottom: 15px;
+  display: flex;
   justify-content: space-between;
-  margin-top:15px;
+  margin-top: 15px;
 }
-.infoGroupTitle{
+.infoGroupTitle {
   color: #3e89ec;
   font-weight: bold;
-  margin-right:15px;
+  margin-right: 15px;
 }
 
-.infoGroupItem{
+.infoGroupItem {
   font-size: 0.83rem;
   color: #333333;
-  display: list-item; 
+  display: list-item;
   list-style-type: disc;
   margin-left: 17px;
   line-height: 2;
 }
 
-.pageBreaker{
+.pageBreaker {
   height: 30px;
   /* note: 30px is the padding  */
   width: calc(100% + 60px);
-  box-shadow: inset 0px 40px 0px rgba(0,0,0,0.1), inset 0px 0px 0px white;
+  box-shadow: inset 0px 40px 0px rgba(0, 0, 0, 0.1), inset 0px 0px 0px white;
   margin: 20px 0 20px -30px;
+}
+.iframeWrapper {
+  padding-bottom: 50px;
+}
+.iframeWrapper,
+.iframeStyle {
+  width: 100%;
+  height: 100%;
 }
 
 /* resume tips style  */
-.modalCloseButton{
+.modalCloseButton {
   width: 40px;
   height: 40px;
-  position:absolute;
+  position: absolute;
   top: 10px;
   right: 40px;
   z-index: 1;
-  cursor:pointer;
+  cursor: pointer;
 }
 
-.modalCloseButton:hover .closeImg{
+.modalCloseButton:hover .closeImg {
   display: none;
 }
-.modalCloseButton .closeImgOnHover{
+.modalCloseButton .closeImgOnHover {
   display: none;
 }
-.modalCloseButton:hover .closeImgOnHover{
+.modalCloseButton:hover .closeImgOnHover {
   display: block;
 }

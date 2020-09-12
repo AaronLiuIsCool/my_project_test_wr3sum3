@@ -9,7 +9,7 @@ import { timeSince } from '../../../utils/time';
 
 import styles from '../../../styles/JobDetails.module.css';
 
-const DetailHeader = ({ data }) => {
+const DetailHeader = ({ data, showExtraInfo=true }) => {
     const messages = useI8n();
 
     return (
@@ -23,7 +23,7 @@ const DetailHeader = ({ data }) => {
                 <span className={styles["job-details-subtitle-location"]}>{`${data.location.country} ${data.location.city}`}</span>
                 <span className={styles["job-details-subtitle-salary"]}>{`${data.salaryMin} ~ ${data.salaryMax}`}</span>
             </div>
-            <div className={styles["job-details-actions"]}>
+            {showExtraInfo && (<div className={styles["job-details-actions"]}>
                 <div className={styles["job-details-actions-left"]}>
                     <span className={styles["job-details-action"]}>
                         <BookmarkIcon className={styles["job-details-action-icon"]} />
@@ -39,7 +39,7 @@ const DetailHeader = ({ data }) => {
                         {messages["job-details-apply"]}
                     </Button>
                 </div>
-            </div>
+            </div>)}
         </div>
     );
 };

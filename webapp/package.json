@@ -18,7 +18,7 @@
     "helmet": "^4.1.0",
     "html2canvas": "^1.0.0-rc.7",
     "jest-canvas-mock": "^2.2.0",
-    "jspdf": "1.5.3",
+    "jspdf": "2.1.1",
     "moment": "^2.27.0",
     "node-sass": "^4.14.1",
     "react": "^16.13.1",

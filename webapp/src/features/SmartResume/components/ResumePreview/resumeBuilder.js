@@ -1,52 +1,68 @@
-import jsPDF from 'jspdf'
+// todo: after this issue has been released, we can upgrade the version of jsPDF to the lastest version and import using the following way：
+import { jsPDF } from "jspdf";
 import { dateRangeBuilder } from "./common";
+import * as Constants from "./Constants";
 
-// static variable
-const c_blue = "#3e89ec";
-const c_black = "#333333";
-const c_grey = "#8e94a7";
+import store from 'store';
 
-// size
-var pdfPageWidth = 210; // width of A4 in mm
-// var pdfPageHeight = 320; // Height of A4 in mm
-const pdfTopPadding = 20;
-const pdfLeftPadding = 15;
-const titleFontSize = 19;
-const h1FontSize = 13;
-const h2FontSize = 11;
-const h3FontSize = 11;
-const pFontSize = 9; // text height = 3.175
-const headingLineHeight = 10;
-const paragraphLineHeight = 7;
-
-const imageWidth = 20;
-const imageHeight = 20;
-
-// positions + paddings
-const startY = pdfTopPadding;
-const endY = 280;
-const startX = pdfLeftPadding;
-const endX = pdfPageWidth - pdfLeftPadding;
-const h1Padding = headingLineHeight / 2;
-const defaultPaddingRight = 2;
-
-// global data storage
+// global data storage for download PDF
 let data = [];
-var doc = new jsPDF("A4");
+let doc;
+let currentPage = 1;
 
-
-// define the fonts
-// add the font to jsPDF
-if (process.env.NODE_ENV !== 'test'){
-  doc.addFont(process.env.PUBLIC_URL + "/fonts/FZHTJW.TTF", "FZHTJW", "normal");
-  doc.addFont(process.env.PUBLIC_URL + "/fonts/FZDHTJW.TTF", "FZDHTJW", "bold");
-  doc.setFont("FZHTJW", "normal"); // set font
-}
+let scaleFactor = 1; // deafult scale factor
+// some scaled variables
+let headingLineHeight = scaleFactor * Constants.headingLineHeight;
+let paragraphLineHeight = scaleFactor * Constants.paragraphLineHeight;
+let h1Padding = scaleFactor * Constants.h1Padding;
+let pFontSize = scaleFactor * Constants.pFontSize;
+let startY = scaleFactor * Constants.pdfTopPadding;
+let pdfTopPadding = scaleFactor * Constants.pdfTopPadding;
 
 // global config
-let currentXPos = pdfLeftPadding;
-let currentYPos = pdfTopPadding;
+let currentXPos = Constants.startX;
+let currentYPos = startY;
 
+// 一键整页
+export const adjustToWholePage = (resumeDataSet) => {
+  const lastLineHeight = data[data.length - 1].y;
+  const lastLinePageAt = data[data.length - 1].page;
+
+  const accumulateY = Constants.endY * (lastLinePageAt - 1) + lastLineHeight;
+
+  if (accumulateY > Constants.endY * 2) {
+    alert("Your resume are too long!"); // todo: designer need to decide
+  } else if (accumulateY > Constants.endY * 1.5) {
+    // make it to two page
+    // scaleFactor = (Constants.endY * 2) / accumulateY;
+    scaleFactor = (Constants.endY ) / lastLineHeight;
+  } else if (accumulateY > Constants.endY * 1) {
+    // make it to single page
+    scaleFactor = Constants.endY / accumulateY;
+  } else if (accumulateY > Constants.endY * 0.75) {
+    // make it to single page
+    scaleFactor = Constants.endY / accumulateY;
+  }
+  previewResume();
+};
+
+// do some small adjustments to fit the content into one page
+const dataAdjustAfterBuild = (dataSet) => {
+  // if a new page start with only a few line (15mm or less)
+  // reduce the top padding
+  if (data.length > 0) {
+    const lastLineHeight = data[data.length - 1].y;
+    const lastLinePageAt = data[data.length - 1].page;
+    if(lastLinePageAt > 1 && lastLineHeight < 40) {
+      scaleFactor = scaleFactor * 0.95;
+      prepareData(dataSet);
+    }
+    // if pageBreak happend at the the last item, remove
+    else if (data[data.length - 1].type === "pageBreak") {
+      data.pop();
+    }
+  }
+};
 
 /**
  * read from Redux and prepare Data object
@@ -55,17 +71,71 @@ let currentYPos = pdfTopPadding;
  * the data format looks like sample_data.js
  */
 export const prepareData = ({
-  basicData,
-  educationData,
-  workData,
-  projectData,
-  volunteerData,
+  basic,
+  education,
+  work,
+  project,
+  volunteer,
   messagesRP,
 }) => {
+  const basicData = basic.data;
+  const educationData = education.data;
+  const workData = work.data;
+  const projectData = project.data;
+  const volunteerData = volunteer.data;
+  // variable reset
+  data = [];
+  doc = new jsPDF("A4");
+  // define the fonts
+  // add the font to jsPDF
+  if (process.env.NODE_ENV !== "test") {
+    doc.addFont(
+      process.env.PUBLIC_URL + "/fonts/FZHTJW.TTF",
+      "FZHTJW",
+      "normal"
+    );
+    doc.addFont(
+      process.env.PUBLIC_URL + "/fonts/FZDHTJW.TTF",
+      "FZDHTJW",
+      "bold"
+    );
+    doc.setFont("FZHTJW", "normal"); // set font
+  }
+
+  // reset scaled variables
+  pdfTopPadding = scaleFactor * pdfTopPadding;
+  headingLineHeight = scaleFactor * headingLineHeight;
+  // scaleFactor should have small effect to paragraphLineHeight:
+  if (scaleFactor > 1){
+    paragraphLineHeight = scaleFactor * 0.9 * paragraphLineHeight;
+  }
+  else{
+    paragraphLineHeight = scaleFactor * 1.11 * paragraphLineHeight;
+  }
+  
+  h1Padding = scaleFactor * h1Padding;
+  // note change p font since this will break line wrap
+  // pFontSize = scaleFactor * Constants.pFontSize;
+
+  currentXPos = Constants.startX;
+  startY = pdfTopPadding;
+  currentYPos = startY;
+  currentPage = 1;
+
   _perpareDataHeader(basicData, educationData);
   _perpareWork(workData, messagesRP);
   _perpareProject(projectData);
   _perpareVolunteer(volunteerData, messagesRP);
+
+  dataAdjustAfterBuild({
+    basic,
+    education,
+    work,
+    project,
+    volunteer,
+    messagesRP,
+  });
+
   return data;
 };
 
@@ -75,10 +145,11 @@ export const prepareData = ({
  * @param increment the increment on Y
  */
 const _updateCurrentYPos = (increment) => {
-  if (currentYPos + increment >= endY) {
+  if (currentYPos + increment >= Constants.endY) {
     // insert page break
     currentYPos = startY;
     data.push({ type: "pageBreak" });
+    currentPage += 1;
   } else {
     currentYPos += increment;
   }
@@ -88,14 +159,15 @@ const _perpareDataHeader = (basicData, educationData) => {
   // build image
   const img = {
     type: "img",
-    y: startY - imageHeight / 2,
-    x: startX,
-    width: imageWidth,
-    height: imageHeight,
+    y: startY - Constants.imageHeight / 2,
+    x: Constants.startX,
+    width: Constants.imageWidth,
+    height: Constants.imageHeight,
     src: basicData.avatar,
     format: "PNG",
+    page: currentPage,
   };
-  currentXPos += imageWidth;
+  currentXPos += Constants.imageWidth;
   data.push(img);
 
   // build line 1
@@ -103,101 +175,140 @@ const _perpareDataHeader = (basicData, educationData) => {
     type: "title",
     y: startY,
     x: currentXPos,
-    content: basicData.nameCn,
-    fontSize: titleFontSize,
+    content: basicData.nameCn ? basicData.nameCn : "",
+    fontSize: Constants.titleFontSize,
+    page: currentPage,
   };
   // need to set font size in order to get correct width
-  doc.setFontSize(titleFontSize);
-  currentXPos += doc.getTextWidth(basicData.nameCn) + defaultPaddingRight * 2;
+  doc.setFontSize(Constants.titleFontSize);
+  currentXPos +=
+    doc.getTextWidth(basicData.nameCn) + Constants.defaultPaddingRight * 2;
   data.push(title);
 
+  const schoolName = educationData.schoolName ? educationData.schoolName : "";
   const school = {
     type: "h2",
     y: startY,
     x: currentXPos,
-    content: educationData.schoolName,
+    content: schoolName,
+    page: currentPage,
   };
 
   // need to set font size in order to get correct width
-  doc.setFontSize(h2FontSize);
+  doc.setFontSize(Constants.h2FontSize);
   currentXPos +=
-    doc.getTextWidth(educationData.schoolName) + defaultPaddingRight * 2;
+    doc.getTextWidth(schoolName) +
+    Constants.defaultPaddingRight * 2;
   data.push(school);
 
   const major = {
     type: "h3",
     y: startY,
     x: currentXPos,
-    content: `${educationData.major} ${dateRangeBuilder(
-      educationData.startDate,
-      educationData.graduateDate
-    )}`,
+    content: `${
+      educationData.major ? educationData.major : ""
+    } ${dateRangeBuilder(educationData.startDate, educationData.graduateDate)}`,
+    page: currentPage,
   };
   // reset currentXPos
-  currentXPos = pdfLeftPadding;
+  currentXPos = Constants.startX;
   data.push(major);
 
   // build line #2
-  currentXPos += imageWidth;
+  currentXPos += Constants.imageWidth;
+
   _updateCurrentYPos((headingLineHeight * 1) / 3);
-  data.push({
-    type: "background",
-    y: currentYPos,
-    x: currentXPos,
-    color: "#f2f4f9",
-  });
-  _updateCurrentYPos((headingLineHeight * 2) / 3);
+
+  if (basicData.email || basicData.phone || basicData.linkedin) {
+    data.push({
+      type: "background",
+      y: currentYPos,
+      x: currentXPos,
+      color: "#f2f4f9",
+      page: currentPage,
+    });
+    _updateCurrentYPos((headingLineHeight * 2) / 3);
+  }
 
   // add some padding left
-  currentXPos += defaultPaddingRight;
+  currentXPos += Constants.defaultPaddingRight;
   const contact = {
     type: "h3",
     y: currentYPos,
     x: currentXPos,
-    content: `${basicData.phone},  ${basicData.email}`,
+    content:
+      basicData.phone || basicData.email
+        ? `${basicData.phone} ${basicData.email}`
+        : "",
+    page: currentPage,
   };
 
-  doc.setFontSize(h3FontSize);
+  doc.setFontSize(Constants.h3FontSize);
   currentXPos +=
     doc.getTextWidth(`${basicData.phone},  ${basicData.email}`) +
-    defaultPaddingRight * 2;
+    Constants.defaultPaddingRight * 2;
   data.push(contact);
 
   const link = {
     type: "link",
     y: currentYPos,
     x: currentXPos,
-    content: "linkedIn",
+    content: basicData.linkedin ? "linkedIn" : "",
     url: basicData.linkedin,
+    page: currentPage,
   };
   data.push(link);
 };
 
 const _perpareWork = (workData, messagesRP) => {
-  // draw work title
   _updateCurrentYPos(h1Padding * 2);
-  data.push({ type: "h1", y: currentYPos, content: messagesRP.workExperience });
-  _updateCurrentYPos(h1Padding);
-  data.push({ type: "underline", y: currentYPos, color: c_grey });
-  _updateCurrentYPos(h1Padding);
+  // draw work title
+  if (
+    workData.length > 0 &&
+    (workData[0].workName || workData[0].workCompanyName)
+  ) {
+    data.push({
+      type: "h1",
+      y: currentYPos,
+      content: messagesRP.workExperience,
+      page: currentPage,
+    });
+    _updateCurrentYPos(h1Padding);
+    data.push({
+      type: "underline",
+      y: currentYPos,
+      color: Constants.c_grey,
+      page: currentPage,
+    });
+    _updateCurrentYPos(h1Padding);
+  }
 
   workData.forEach((work) => {
+    _updateCurrentYPos(h1Padding * 0.5);
     // draw work detail title line
-    data.push({ type: "h2", y: currentYPos, content: work.workName });
+    if (work.workName) {
+      data.push({
+        type: "h2",
+        y: currentYPos,
+        content: work.workName,
+        page: currentPage,
+      });
+    }
 
     // company name
     if (work.workCompanyName) {
-      doc.setFontSize(h2FontSize);
+      doc.setFontSize(Constants.h2FontSize);
       currentXPos =
-        pdfLeftPadding +
+        Constants.startX +
         (work.workName
-          ? doc.getTextWidth(work.workName) + defaultPaddingRight
+          ? doc.getTextWidth(work.workName) + Constants.defaultPaddingRight
           : 0);
       data.push({
         type: "h3",
         y: currentYPos,
         x: currentXPos,
         content: work.workCompanyName,
+        page: currentPage,
       });
     }
 
@@ -207,20 +318,23 @@ const _perpareWork = (workData, messagesRP) => {
       work.workEndDate ||
       work.workCity ||
       work.workCountry
-    )
-      doc.setFontSize(h3FontSize);
-    currentXPos += work.workCompanyName
-      ? doc.getTextWidth(work.workCompanyName) + defaultPaddingRight
-      : 0;
-    data.push({
-      type: "h3",
-      y: currentYPos,
-      x: currentXPos,
-      content: `${dateRangeBuilder(work.workStartDate, work.workEndDate)} (${
-        work.workCity
-      } ${work.workCountry})`,
-      alignment: "right",
-    });
+    ) {
+      doc.setFontSize(Constants.h3FontSize);
+      currentXPos += work.workCompanyName
+        ? doc.getTextWidth(work.workCompanyName) + Constants.defaultPaddingRight
+        : 0;
+      data.push({
+        type: "h3",
+        y: currentYPos,
+        x: currentXPos,
+        content: `${dateRangeBuilder(work.workStartDate, work.workEndDate)}  ${
+          work.workCity
+        } ${work.workCountry}`,
+        alignment: "right",
+        page: currentPage,
+      });
+    }
+    _updateCurrentYPos(h1Padding * 0.75);
 
     // work details
     if (work.workDescription) {
@@ -230,11 +344,13 @@ const _perpareWork = (workData, messagesRP) => {
       // also handle the line height and bullet point alignment
       doc.setFontSize(pFontSize);
       const descriptionList = work.workDescription.split("\n");
+      
       descriptionList.forEach((content) => {
         const wrappedContent = doc.splitTextToSize(
           content,
-          pdfPageWidth - pdfLeftPadding * 2 - 4
+          Constants.pdfPageWidth - Constants.pdfLeftPadding * 2 - 4
         ); // delete 2 extra characters (bullets point)
+
         for (let i = 0; i < wrappedContent.length; i++) {
           if (i === 0) {
             wrappedContent[i] = "- " + wrappedContent[i];
@@ -244,16 +360,16 @@ const _perpareWork = (workData, messagesRP) => {
           }
         }
 
-        
-        // increment the height for the next print
-        const height = doc.getTextDimensions(wrappedContent).h;
-        _updateCurrentYPos(height + paragraphLineHeight / 2);
-
         data.push({
           type: "list",
           y: currentYPos,
           content: wrappedContent,
+          page: currentPage,
         });
+
+        // increment the height for the next print
+        const height = doc.getTextDimensions(wrappedContent).h;
+        _updateCurrentYPos(height + paragraphLineHeight / 2);
       });
     }
   });
@@ -261,22 +377,27 @@ const _perpareWork = (workData, messagesRP) => {
 
 const _perpareProject = (projectData) => {
   projectData.forEach((project) => {
-    // draw project detail title line
-    data.push({ type: "h2", y: currentYPos, content: project.projectRole });
+    _updateCurrentYPos(h1Padding * 0.5);
+    if (project.projectRole) {
+      // draw project detail title line
+      data.push({ type: "h2", y: currentYPos, content: project.projectRole });
+    }
 
     // project company name
     if (project.projectCompanyName) {
-      doc.setFontSize(h2FontSize);
+      doc.setFontSize(Constants.h2FontSize);
       currentXPos =
-        pdfLeftPadding +
+        Constants.startX +
         (project.projectRole
-          ? doc.getTextWidth(project.projectRole) + defaultPaddingRight
+          ? doc.getTextWidth(project.projectRole) +
+            Constants.defaultPaddingRight
           : 0);
       data.push({
         type: "h3",
         y: currentYPos,
         x: currentXPos,
         content: project.projectCompanyName,
+        page: currentPage,
       });
     }
 
@@ -286,21 +407,25 @@ const _perpareProject = (projectData) => {
       project.projectEndDate ||
       project.projectCity ||
       project.projectCountry
-    )
-      doc.setFontSize(h3FontSize);
-    currentXPos += project.projectCompanyName
-      ? doc.getTextWidth(project.projectCompanyName) + defaultPaddingRight
-      : 0;
-    data.push({
-      type: "h3",
-      y: currentYPos,
-      x: currentXPos,
-      content: `${dateRangeBuilder(
-        project.projectStartDate,
-        project.projectEndDate
-      )} (${project.projectCity} ${project.projectCountry})`,
-      alignment: "right",
-    });
+    ) {
+      doc.setFontSize(Constants.h3FontSize);
+      currentXPos += project.projectCompanyName
+        ? doc.getTextWidth(project.projectCompanyName) +
+          Constants.defaultPaddingRight
+        : 0;
+      data.push({
+        type: "h3",
+        y: currentYPos,
+        x: currentXPos,
+        content: `${dateRangeBuilder(
+          project.projectStartDate,
+          project.projectEndDate
+        )} ${project.projectCity} ${project.projectCountry}`,
+        alignment: "right",
+        page: currentPage,
+      });
+    }
+    _updateCurrentYPos(h1Padding * 0.75);
 
     // project details
     if (project.projectDescription) {
@@ -313,7 +438,7 @@ const _perpareProject = (projectData) => {
       descriptionList.forEach((content) => {
         const wrappedContent = doc.splitTextToSize(
           content,
-          pdfPageWidth - pdfLeftPadding * 2 - 4
+          Constants.pdfPageWidth - Constants.pdfLeftPadding * 2 - 4
         ); // delete 2 extra characters (bullets point)
         for (let i = 0; i < wrappedContent.length; i++) {
           if (i === 0) {
@@ -324,50 +449,71 @@ const _perpareProject = (projectData) => {
           }
         }
 
-        
-        // increment the height for the next print
-        const height = doc.getTextDimensions(wrappedContent).h;
-        _updateCurrentYPos(height + paragraphLineHeight / 2);
-
         data.push({
           type: "list",
           y: currentYPos,
           content: wrappedContent,
+          page: currentPage,
         });
+        // increment the height for the next print
+        const height = doc.getTextDimensions(wrappedContent).h;
+        _updateCurrentYPos(height + paragraphLineHeight / 2);
       });
     }
   });
 };
 
 const _perpareVolunteer = (volunteerData, messagesRP) => {
-  // draw work title
   _updateCurrentYPos(h1Padding * 2);
-  data.push({
-    type: "h1",
-    y: currentYPos,
-    content: messagesRP.studentWorkAndVolunteer,
-  });
-  _updateCurrentYPos(h1Padding);
-  data.push({ type: "underline", y: currentYPos, color: c_grey });
-  _updateCurrentYPos(h1Padding);
+
+  // draw Volunteer title
+  if (
+    volunteerData.length > 0 &&
+    (volunteerData[0].volunteerRole || volunteerData[0].volunteerCompanyName)
+  ) {
+    data.push({
+      type: "h1",
+      y: currentYPos,
+      content: messagesRP.studentWorkAndVolunteer,
+      page: currentPage,
+    });
+    _updateCurrentYPos(h1Padding);
+    data.push({
+      type: "underline",
+      y: currentYPos,
+      color: Constants.c_grey,
+      page: currentPage,
+    });
+    _updateCurrentYPos(h1Padding);
+  }
 
   volunteerData.forEach((volunteer) => {
-    // draw volunteer detail title line
-    data.push({ type: "h2", y: currentYPos, content: volunteer.volunteerName });
-
+    _updateCurrentYPos(h1Padding * 0.5);
+    if (volunteer.volunteerName){
+      // draw volunteer detail title line
+    data.push({
+      type: "h2",
+      y: currentYPos,
+      content: volunteer.volunteerName,
+      page: currentPage,
+    });
+    }
+    
     // volunteer company name
     if (volunteer.volunteerRole) {
-      doc.setFontSize(h2FontSize);
+      doc.setFontSize(Constants.h2FontSize);
       currentXPos =
-        pdfLeftPadding +
+        Constants.startX +
         (volunteer.volunteerName
-          ? doc.getTextWidth(volunteer.volunteerName) + defaultPaddingRight
+          ? doc.getTextWidth(volunteer.volunteerName) +
+            Constants.defaultPaddingRight
           : 0);
       data.push({
         type: "h3",
         y: currentYPos,
         x: currentXPos,
         content: volunteer.volunteerRole,
+        page: currentPage,
       });
     }
 
@@ -377,21 +523,26 @@ const _perpareVolunteer = (volunteerData, messagesRP) => {
       volunteer.volunteerEndDate ||
       volunteer.volunteerCity ||
       volunteer.volunteerCountry
-    )
-      doc.setFontSize(h3FontSize);
-    currentXPos += volunteer.volunteerRole
-      ? doc.getTextWidth(volunteer.volunteerRole) + defaultPaddingRight
-      : 0;
-    data.push({
-      type: "h3",
-      y: currentYPos,
-      x: currentXPos,
-      content: `${dateRangeBuilder(
-        volunteer.volunteerStartDate,
-        volunteer.volunteerEndDate
-      )} (${volunteer.volunteerCity} ${volunteer.volunteerCountry})`,
-      alignment: "right",
-    });
+    ) {
+      doc.setFontSize(Constants.h3FontSize);
+      currentXPos += volunteer.volunteerRole
+        ? doc.getTextWidth(volunteer.volunteerRole) +
+          Constants.defaultPaddingRight
+        : 0;
+      data.push({
+        type: "h3",
+        y: currentYPos,
+        x: currentXPos,
+        content: `${dateRangeBuilder(
+          volunteer.volunteerStartDate,
+          volunteer.volunteerEndDate
+        )} ${volunteer.volunteerCity} ${volunteer.volunteerCountry}`,
+        alignment: "right",
+        page: currentPage,
+      });
+    }
+
+    _updateCurrentYPos(h1Padding * 0.75);
 
     // volunteer details
     if (volunteer.volunteerDescription) {
@@ -404,7 +555,7 @@ const _perpareVolunteer = (volunteerData, messagesRP) => {
       descriptionList.forEach((content) => {
         const wrappedContent = doc.splitTextToSize(
           content,
-          pdfPageWidth - pdfLeftPadding * 2 - 4
+          Constants.pdfPageWidth - Constants.pdfLeftPadding * 2 - 4
         ); // delete 2 extra characters (bullets point)
         for (let i = 0; i < wrappedContent.length; i++) {
           if (i === 0) {
@@ -415,15 +566,15 @@ const _perpareVolunteer = (volunteerData, messagesRP) => {
           }
         }
 
-        
-        // increment the height for the next print
-        const height = doc.getTextDimensions(wrappedContent).h;
-        _updateCurrentYPos(height + paragraphLineHeight / 2);
         data.push({
           type: "list",
           y: currentYPos,
           content: wrappedContent,
+          page: currentPage,
         });
+        // increment the height for the next print
+        const height = doc.getTextDimensions(wrappedContent).h;
+        _updateCurrentYPos(height + paragraphLineHeight / 2);
       });
     }
   });
@@ -431,10 +582,10 @@ const _perpareVolunteer = (volunteerData, messagesRP) => {
 
 const drawText = ({
   content = "",
-  x = startX,
+  x = Constants.startX,
   y = startY,
   fontSize = pFontSize,
-  color = c_black,
+  color = Constants.c_black,
   bold: isBold = false,
   alignment = "left",
 }) => {
@@ -443,10 +594,8 @@ const drawText = ({
   if (isBold) {
     doc.setFont("FZDHTJW", "bold"); // set font
   }
-  // .text (text, x, y, flags, angle, align);
   if (alignment === "right") {
-    // x = endX - doc.getTextWidth(content);
-    x = endX;
+    x = Constants.endX;
   }
   doc.text(content, x, y, null, null, alignment);
   if (isBold) {
@@ -454,7 +603,7 @@ const drawText = ({
   }
 };
 
-export const downloadPDF = (resumeDataSet) => {
+const buildResume = (resumeDataSet) => {
   prepareData(resumeDataSet);
   data.forEach((d) => {
     d.doc = doc;
@@ -463,34 +612,34 @@ export const downloadPDF = (resumeDataSet) => {
         if (d.src) doc.addImage(d.src, d.format, d.x, d.y, d.width, d.height);
         break;
       case "title":
-        d.color = c_black;
-        d.fontSize = titleFontSize;
+        d.color = Constants.c_black;
+        d.fontSize = Constants.titleFontSize;
         drawText(d);
         break;
       case "h1":
-        d.color = c_black;
-        d.fontSize = h1FontSize;
+        d.color = Constants.c_black;
+        d.fontSize = Constants.h1FontSize;
         drawText(d);
         break;
       case "underline":
         doc.setDrawColor(d.color);
-        doc.line(startX, d.y, endX, d.y);
+        doc.line(Constants.startX, d.y, Constants.endX, d.y);
         break;
       case "h2":
         // apply h2 style
-        d.color = c_blue;
-        d.fontSize = h2FontSize;
+        d.color = Constants.c_blue;
+        d.fontSize = Constants.h2FontSize;
         d.bold = true;
         drawText(d);
         break;
       case "h3":
         // apply h3 style
-        d.color = c_grey;
-        d.fontSize = h3FontSize;
+        d.color = Constants.c_grey;
+        d.fontSize = Constants.h3FontSize;
         drawText(d);
         break;
       case "link":
-        d.color = c_blue;
+        d.color = Constants.c_blue;
         doc.setTextColor(d.color);
         doc.textWithLink(d.content, d.x, d.y, { url: d.url });
         // text underline
@@ -498,7 +647,7 @@ export const downloadPDF = (resumeDataSet) => {
         doc.line(d.x, d.y, d.x + doc.getTextWidth(d.content), d.y);
         break;
       case "list":
-        d.color = c_black;
+        d.color = Constants.c_black;
         d.fontSize = pFontSize;
         drawText(d);
         break;
@@ -510,11 +659,27 @@ export const downloadPDF = (resumeDataSet) => {
         doc.setFillColor(d.color);
         // http://raw.githack.com/MrRio/jsPDF/master/docs/jsPDF.html#roundedRect
         const height = headingLineHeight;
-        doc.roundedRect(d.x, d.y, endX - d.x, height, 4, 4, "FD");
+        doc.roundedRect(d.x, d.y, Constants.endX - d.x, height, 4, 4, "FD");
         break;
       default:
         console.log("default type");
     }
   });
+  // console.log('data', data);
+};
+
+export const downloadPDF = (resumeDataSet) => {
+  buildResume(resumeDataSet);
   doc.save("resume.pdf");
+};
+
+export const previewResume = () => {
+  const resumeDataSet = store.getState().resume;
+  buildResume(resumeDataSet);
+  const iframe = document.createElement("iframe");
+  iframe.setAttribute("style", "height:100%; width:100%;");
+  document
+    .getElementById("displayPDF")
+    .replaceChild(iframe, document.querySelector("#displayPDF iframe"));
+  iframe.src = doc.output("datauristring") + "#zoom=FitH";
 };

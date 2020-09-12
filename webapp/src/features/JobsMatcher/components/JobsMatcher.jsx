@@ -8,6 +8,7 @@ import JobsServices from 'shell/services/JobsServices';
 import { I8nContext } from 'shell/i18n';
 import { selectLanguage } from 'features/App/slicer';
 
+import JobRefinement from './Jobs/JobRefinement';
 import SearchHeader from './SearchHeader';
 import Jobs from './Jobs';
 
@@ -41,10 +42,13 @@ const JobMatcher = ({ resume }) => {
     const [city, setCity] = useState('');
     const [ready, setReady] = useState(false);
 
+    const [modalOpened, setModalOpened] = useState(false); 
+
     const search = async (query, country, city, pageNumber) => {
         try {
             const response = await jobsServices.getJobs(query, country, city, pageNumber);
             const data = await response.json();
+            
             setSearchResults(data);
         } catch (exception) {
             logger.error(exception);
@@ -96,7 +100,8 @@ const JobMatcher = ({ resume }) => {
             <div className="features job-matcher">
                 <SearchHeader onSearch={handleSearch} initial={{query, country, city}} />
                 <Jobs data={searchResults} pageNumber={resultsPageNumber}
-                    onPageChange={handlePageChange} />
+                    onPageChange={handlePageChange} modalOpenHandler={setModalOpened}/>
+                {modalOpened && <JobRefinement data={searchResults} modalOpenHandler={setModalOpened} />}
             </div>
         </I8nContext.Provider>
     );

@@ -25,9 +25,9 @@ const AvatarUpload = () => {
 			<div className={`${styles.modal} ${modalOpen ? styles.modalOpen : styles.modalClosed}`}>
 				<h2>{messages.addPhoto}</h2>
 				<AvatarEdit imagePreview={avatar} setImagePreview={setAvatar} closeModalHandler={() => setModalOpen(false)} />
-				<div className={styles.modalCloseButton} onClick={() => setModalOpen(false)}>
-					<img src={CloseRegularIcon} alt="Close" className={styles.closeImg} />
-					<img src={CloseHoverIcon} alt="Close" className={styles.closeImgOnHover} />
+				<div className="closeIconContainer" style={{bottom: "5px", right: "10px"}} onClick={() => setModalOpen(false)}>
+					<img src={CloseRegularIcon} alt="Close" className="closeIcon" />
+					<img src={CloseHoverIcon} alt="Close" className="closeIconHover" />
 				</div>
 			</div>
 		</div>

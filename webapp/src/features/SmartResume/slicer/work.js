@@ -42,31 +42,17 @@ export function validateWorkEntry(name, value) {
     }
 }
 
-// export const work = {
-//     id: undefined,
-//     workName: "",
-//     currentWorkFlag: false,
-//     workCompanyName: "",
-//     workStartDate: "",
-//     workEndDate: "",
-//     workDescription: "",
-//     workCity: "",
-//     workCountry: ""
-// };
-
-// for testing
 export const work = {
     id: undefined,
-    workName: "金融分析师",
+    workName: "",
     currentWorkFlag: false,
-    workCompanyName: "金沙江创投，远程实习",
+    workCompanyName: "",
     workStartDate: "",
     workEndDate: "",
-    workDescription: "在1个月内阅读超过2000页的中英文材料，并对资料进行整合和总结，向上司汇报核心内容。\n习期间独立完成了30页的船舶公司上市风险分析报告，并根据上司的反馈对报告进行修改和完善。\n对客户公司的内部政策进行风险评估，为客户设计并改进内部风险管控体系，对风险较高的领域提出相应建议。\n运用Excel VBA建立风险分析模型，对客户提供的数据进行量化分析，并绘制统计图表，制作PPT向客户展示。\n在1个月内阅读超过2000页的中英文材料，并对资料进行整合和总结，向上司汇报核心内容。\n习期间独立完成了30页的船舶公司上市风险分析报告，并根据上司的反馈对报告进行修改和完善。\n对客户公司的内部政策进行风险评估，为客户设计并改进内部风险管控体系，对风险较高的领域提出相应建议。\n运用Excel VBA建立风险分析模型，对客户提供的数据进行量化分析，并绘制统计图表，制作PPT向客户展示。",
-    workCity: "北京",
-    workCountry: "中国"
+    workDescription: "",
+    workCity: "",
+    workCountry: ""
 };
-
 
 const initialState = {
     completed: false,

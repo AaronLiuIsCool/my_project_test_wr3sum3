@@ -75,13 +75,12 @@ const VolunteerForm = ({ data, index, isLast = false, messages }) => {
 	};
 
 	const handleCurrentVolunteerFlagChange = (event) => {
+		event.preventDefault();
 		const value = event.target.value;
 		updateStatus(validateVolunteerEntry, status, setStatus, 'currentVolunteerFlag', value);
 		dispatch(actions.updateCurrentVolunteerFlag({ value, index }));
 		// reset the end date value if current volunteer is true
-		if (value) {
-			dispatch(actions.updateVolunteerEndDate({ value: '', index }));
-		}
+		dispatch(actions.updateVolunteerEndDate({ value: '', index }));
 	};
 
 	const handleVolunteerCompanyNameChange = (event) => {

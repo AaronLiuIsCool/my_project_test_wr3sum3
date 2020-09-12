@@ -64,6 +64,7 @@ const CertificateForm = ({ data, index, isLast = false, messages }) => {
 	};
 
 	const handleValidCertificateFlag = (event) => {
+		event.preventDefault();
 		const value = event.target.value;
 		dispatch(actions.updateCurrentCertificateFlag({ value, index }));
 	};

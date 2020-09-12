@@ -1,6 +1,7 @@
 import moment from 'moment';
 
 export function validateDate(date) {
+  if (date==="") return true; //allow date validation to pass on empty date
   return moment(date).isValid();
 }
 

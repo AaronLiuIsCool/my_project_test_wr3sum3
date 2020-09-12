@@ -76,14 +76,13 @@ const ProjectForm = ({ data, index, isLast = false, messages }) => {
 	};
 
 	const handleCurrentProjectFlagChange = (event) => {
+		event.preventDefault();
 		const value = event.target.value;
 		updateStatus(validateProjectEntry, status, setStatus, 'currentProjectFlag', value);
 		dispatch(actions.updateCurrentProjectFlag({ value, index }));
 
 		// reset the end date value if current project is true
-		if (value) {
-			dispatch(actions.updateProjectEndDate({ value: '', index }));
-		}
+		dispatch(actions.updateProjectEndDate({ value: '', index }));
 	};
 
 	const handleProjectCompanyNameChange = (event) => {
@@ -139,14 +138,14 @@ const ProjectForm = ({ data, index, isLast = false, messages }) => {
 		<Form validated={validated} onSubmit={handleSubmit}>
 			<Row>
 				<Col>
-					<h2 className="form_h2">{messages.enterNewExperience}</h2>
+					<h2 className='form_h2'>{messages.enterNewExperience}</h2>
 				</Col>
 			</Row>
 			<Row>
-				<Col lg="4">
+				<Col lg='4'>
 					<InputGroup
 						label={messages.participateRole}
-						id="project-name"
+						id='project-name'
 						placeholder={messages.enterParticipateRole}
 						value={data.projectRole}
 						onChange={handleProjectRoleChange}
@@ -155,10 +154,10 @@ const ProjectForm = ({ data, index, isLast = false, messages }) => {
 						isInvalid={status.projectRole.isInvalid}
 					/>
 				</Col>
-				<Col lg="2">
+				<Col lg='2'>
 					<RadioButtonGroup
 						label={messages.endOrNot}
-						id="project-currentProjectFlag"
+						id='project-currentProjectFlag'
 						values={[
 							{ label: messages.yes, value: true },
 							{ label: messages.no, value: false },
@@ -170,7 +169,7 @@ const ProjectForm = ({ data, index, isLast = false, messages }) => {
 				<Col>
 					<InputGroup
 						label={messages.companyName}
-						id="project-company"
+						id='project-company'
 						placeholder={messages.enterCompanyName}
 						value={data.projectCompanyName}
 						onChange={handleProjectCompanyNameChange}
@@ -184,7 +183,7 @@ const ProjectForm = ({ data, index, isLast = false, messages }) => {
 				<Col>
 					<SingleDatePicker
 						label={messages.projectStartDate}
-						id="project-enter-date"
+						id='project-enter-date'
 						placeholder={messages.yymmdd}
 						value={data.projectStartDate}
 						allowPastDatesOnly={true}
@@ -201,7 +200,7 @@ const ProjectForm = ({ data, index, isLast = false, messages }) => {
 					<Col>
 						<SingleDatePicker
 							label={messages.projectEndDate}
-							id="project-graduate-date"
+							id='project-graduate-date'
 							placeholder={messages.yymmdd}
 							value={data.projectEndDate}
 							allowPastDatesOnly={true}
@@ -218,9 +217,9 @@ const ProjectForm = ({ data, index, isLast = false, messages }) => {
 				<Col>
 					<DropdownGroup
 						label={messages.city}
-						id="project-city"
+						id='project-city'
 						placeholder={messages.projectCity}
-						searchKey="city"
+						searchKey='city'
 						options={cityOptions}
 						value={data.projectCity}
 						onChange={handleCityChange}
@@ -232,7 +231,7 @@ const ProjectForm = ({ data, index, isLast = false, messages }) => {
 				<Col>
 					<InputGroup
 						label={messages.country}
-						id="project-country"
+						id='project-country'
 						placeholder={messages.projectCountry}
 						value={data.projectCountry}
 						onChange={handleCountryChange}
@@ -243,30 +242,30 @@ const ProjectForm = ({ data, index, isLast = false, messages }) => {
 				</Col>
 			</Row>
 			<Row>
-				<Col lg="12">
+				<Col lg='12'>
 					{/*todo: replace with rich text editor */}
 					<div className={assistantContainerClassNames}>
 						<TextArea
 							label={messages.projectDetailsDescription}
-							id="volunteer-description"
+							id='volunteer-description'
 							placeholder={messages.enterProjectDetailsDescription}
 							value={data.projectDescription}
 							onChange={handleProjectDescriptionChange}
 						/>
-						<span className="writeAssistant">
+						<span className='writeAssistant'>
 							<WrittenAssistIcon />
-							<Button variant="link" onClick={handleAssistantClick}>
+							<Button variant='link' onClick={handleAssistantClick}>
 								{messages.writeAssistant}
 							</Button>
 						</span>
 					</div>
 				</Col>
 			</Row>
-			<Row className="form_buttons">
-				<Col className="space_betweens">
+			<Row className='form_buttons'>
+				<Col className='space_betweens'>
 					{/* just a placeholder so we do need to change the css */}
-					<p className="hidden"></p>
-					<Button variant="primary" type="submit">
+					<p className='hidden'></p>
+					<Button variant='primary' type='submit'>
 						{messages.save}
 					</Button>
 				</Col>

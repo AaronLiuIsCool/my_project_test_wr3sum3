@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col, Form, Button } from 'react-bootstrap';
 
-import {GAEvent} from "utils/GATracking"
+import { GAEvent } from 'utils/GATracking';
 
 import SingleDatePicker from 'components/SingleDatePicker';
 import InputGroup from 'components/InputGroup';
@@ -20,6 +20,7 @@ import { validateWork, validateWorkEntry } from '../../slicer/work';
 import { updateStatus } from '../../slicer/common';
 import ResumeServices from 'shell/services/ResumeServices';
 import { getLogger } from 'shell/logger';
+import { previewResume } from '../ResumePreview/resumeBuilder';
 
 import cityOptions from 'data/city.json';
 
@@ -42,20 +43,20 @@ const WorkForm = ({ data, index, isLast = false, messages }) => {
 	});
 	const dispatch = useDispatch();
 
-    const save = async () => {
-		GAEvent("Resume Edit", "Save work form"); // call GA on save
-        let id = data.id;
-        try {
-            const response =
-                id === undefined ? await resumeServices.createWork(resumeId, adaptWork(data)) : await resumeServices.updateWork(data.id, adaptWork(data));
-            const responseJson = await response.json();
-            id = id || responseJson.id;
-        } catch (exception) {
-            logger.error(exception);
-        } finally {
-            dispatch(actions.updateWorkId({ index, id }));
-        }
-    };
+	const save = async () => {
+		GAEvent('Resume Edit', 'Save work form'); // call GA on save
+		let id = data.id;
+		try {
+			const response =
+				id === undefined ? await resumeServices.createWork(resumeId, adaptWork(data)) : await resumeServices.updateWork(data.id, adaptWork(data));
+			const responseJson = await response.json();
+			id = id || responseJson.id;
+		} catch (exception) {
+			logger.error(exception);
+		} finally {
+			dispatch(actions.updateWorkId({ index, id }));
+		}
+	};
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
@@ -74,19 +75,18 @@ const WorkForm = ({ data, index, isLast = false, messages }) => {
 		dispatch(actions.updateWorkName({ value, index }));
 	};
 
-    const handleCurrentWorkFlagChange = (event) => {
-        const value = event.target.value;
-        dispatch(actions.updateCurrentWorkFlag({ value, index }));
-        // reset the end date value if current work is true
-        if (value) {
-            dispatch(actions.updateWorkEndDate({ value: '', index }));
-        }
-    };
-    const handleWorkCompanyNameChange = (event) => {
-        const value = event.target.value;
-        updateStatus(validateWorkEntry, status, setStatus, 'workCompanyName', value);
-        dispatch(actions.updateWorkCompanyName({ value, index }));
-    };
+	const handleCurrentWorkFlagChange = (event) => {
+		event.preventDefault();
+		const value = event.target.value;
+		dispatch(actions.updateCurrentWorkFlag({ value, index }));
+		// reset the end date value if current work is true
+		dispatch(actions.updateWorkEndDate({ value: '', index }));
+	};
+	const handleWorkCompanyNameChange = (event) => {
+		const value = event.target.value;
+		updateStatus(validateWorkEntry, status, setStatus, 'workCompanyName', value);
+		dispatch(actions.updateWorkCompanyName({ value, index }));
+	};
 
 	const handleWorkStartDateChange = (date) => {
 		const value = date ? date.toISOString() : undefined;
@@ -106,42 +106,44 @@ const WorkForm = ({ data, index, isLast = false, messages }) => {
 		dispatch(actions.updateWorkCity({ value, index }));
 	};
 
-    const handleWorkCountryChange = (event) => {
-        const value = event.target.value;
-        updateStatus(validateWorkEntry, status, setStatus, 'workCountry', value);
-        dispatch(actions.updateWorkCountry({ value, index }));
-    };
+	const handleWorkCountryChange = (event) => {
+		const value = event.target.value;
+		updateStatus(validateWorkEntry, status, setStatus, 'workCountry', value);
+		dispatch(actions.updateWorkCountry({ value, index }));
+	};
 
-    const handleWorkDescriptionChange = (event) => {
-        const value = event.target.value;
-        updateStatus(validateWorkEntry, status, setStatus, 'workDescription', value);
-        dispatch(actions.updateWorkDescription({ value, index }));
-    };
+	const handleWorkDescriptionChange = (event) => {
+		const value = event.target.value;
+		updateStatus(validateWorkEntry, status, setStatus, 'workDescription', value);
+		dispatch(actions.updateWorkDescription({ value, index }));
+	};
 
-    const handleAssistantClick = () => {
-        dispatch(actions.toggleAssistant({
-            trigger: "work",
-            context: { index, ...data }
-        }));
-    };
+	const handleAssistantClick = () => {
+		dispatch(
+			actions.toggleAssistant({
+				trigger: 'work',
+				context: { index, ...data },
+			})
+		);
+	};
 
-    const assistantContainerClassNames = classNames({
-        'writeAssistantContainer': true,
-        'active': showAssistant && trigger === 'work'
-    });
+	const assistantContainerClassNames = classNames({
+		writeAssistantContainer: true,
+		active: showAssistant && trigger === 'work',
+	});
 
 	return (
 		<Form validated={validated} onSubmit={handleSubmit}>
 			<Row>
 				<Col>
-					<h2 className="form_h2">{messages.enterNewExperience}</h2>
+					<h2 className='form_h2'>{messages.enterNewExperience}</h2>
 				</Col>
 			</Row>
 			<Row>
-				<Col lg="4">
+				<Col lg='4'>
 					<InputGroup
 						label={messages.workName}
-						id="work-name"
+						id='work-name'
 						placeholder={messages.enterWorkName}
 						value={data.workName}
 						onChange={handleWorkChange}
@@ -150,10 +152,10 @@ const WorkForm = ({ data, index, isLast = false, messages }) => {
 						isInvalid={status.workName.isInvalid}
 					/>
 				</Col>
-				<Col lg="2">
+				<Col lg='2'>
 					<RadioButtonGroup
 						label={messages.stillAtWork}
-						id="work-currentWorkFlag"
+						id='work-currentWorkFlag'
 						values={[
 							{ label: messages.yes, value: true },
 							{ label: messages.no, value: false },
@@ -162,10 +164,10 @@ const WorkForm = ({ data, index, isLast = false, messages }) => {
 						onClickHandler={handleCurrentWorkFlagChange}
 					/>
 				</Col>
-				<Col lg="6">
+				<Col lg='6'>
 					<InputGroup
 						label={messages.companyName}
-						id="work-company"
+						id='work-company'
 						placeholder={messages.enterCompanyName}
 						value={data.workCompanyName}
 						onChange={handleWorkCompanyNameChange}
@@ -180,7 +182,7 @@ const WorkForm = ({ data, index, isLast = false, messages }) => {
 				<Col>
 					<SingleDatePicker
 						label={messages.workStartDate}
-						id="work-start-date"
+						id='work-start-date'
 						placeholder={messages.yymmdd}
 						value={data.workStartDate}
 						allowPastDatesOnly={true}
@@ -194,82 +196,84 @@ const WorkForm = ({ data, index, isLast = false, messages }) => {
 					/>
 				</Col>
 
-                {data.currentWorkFlag && (
-                    <Col>
-                        <SingleDatePicker
-                            label={messages.workEndDate}
-                            id="work-end-date"
-                            placeholder={messages.yymmdd}
-                            value={data.workEndDate}
-                            allowPastDatesOnly={true}
-                            readOnly={true}
-                            monthFormat={messages.monthFormat}
-                            displayFormat={messages.dateDisplayFormat}
-                            onDateChange={handleWorkEndDateChange}
-                            feedbackMessage={messages.entryIsInvalid}
-                            isValid={status.workEndDate.isValid}
-                            isInvalid={status.workEndDate.isInvalid}
-                        />
-                    </Col>
-                )}
+				{data.currentWorkFlag && (
+					<Col>
+						<SingleDatePicker
+							label={messages.workEndDate}
+							id='work-end-date'
+							placeholder={messages.yymmdd}
+							value={data.workEndDate}
+							allowPastDatesOnly={true}
+							readOnly={true}
+							monthFormat={messages.monthFormat}
+							displayFormat={messages.dateDisplayFormat}
+							onDateChange={handleWorkEndDateChange}
+							feedbackMessage={messages.entryIsInvalid}
+							isValid={status.workEndDate.isValid}
+							isInvalid={status.workEndDate.isInvalid}
+						/>
+					</Col>
+				)}
 
-                <Col>
-                    <DropdownGroup
-                        label={messages.city}
-                        id="work-city"
-                        placeholder={messages.workCity}
-                        searchKey="city"
-                        options={cityOptions}
-                        value={data.workCity}
-                        onChange={handleWorkCityChange}
-                        feedbackMessage={messages.entryIsInvalid}
-                        isValid={status.workCity.isValid}
-                        isInvalid={status.workCity.isInvalid}
-                    />
-                </Col>
-                <Col>
-                    <InputGroup
-                        label={messages.country}
-                        id="work-country"
-                        placeholder={messages.workCountry}
-                        value={data.workCountry}
-                        onChange={handleWorkCountryChange}
-                        feedbackMessage={messages.entryIsInvalid}
-                        isValid={status.workCountry.isValid}
-                        isInvalid={status.workCountry.isInvalid}
-                    />
-                </Col>
-            </Row>
+				<Col>
+					<DropdownGroup
+						label={messages.city}
+						id='work-city'
+						placeholder={messages.workCity}
+						searchKey='city'
+						options={cityOptions}
+						value={data.workCity}
+						onChange={handleWorkCityChange}
+						feedbackMessage={messages.entryIsInvalid}
+						isValid={status.workCity.isValid}
+						isInvalid={status.workCity.isInvalid}
+					/>
+				</Col>
+				<Col>
+					<InputGroup
+						label={messages.country}
+						id='work-country'
+						placeholder={messages.workCountry}
+						value={data.workCountry}
+						onChange={handleWorkCountryChange}
+						feedbackMessage={messages.entryIsInvalid}
+						isValid={status.workCountry.isValid}
+						isInvalid={status.workCountry.isInvalid}
+					/>
+				</Col>
+			</Row>
 
-            <Row>
-                <Col lg="12">
-                    {/*todo: replace with rich text editor */}
-                    <div className={assistantContainerClassNames}>
-                        <TextArea
-                            label={messages.workDetailsDescription}
-                            id="work-country"
-                            placeholder={messages.workCountry}
-                            value={data.workDescription}
-                            onChange={handleWorkDescriptionChange}
-                        />
-                        <span className='writeAssistant'>
-                            <WrittenAssistIcon />
-                            <Button variant="link" onClick={handleAssistantClick}>{messages.writeAssistant}</Button>
-                        </span>
-                    </div>
-                </Col>
-            </Row>
-            <Row className="form_buttons">
-                <Col className="space_betweens">
-                    {/* just a placeholder so we do need to change the css */}
-                    <p className="hidden"></p>
-                    <KButton variant="primary" type="submit">
-                        {messages.save}
-                    </KButton>
-                </Col>
-            </Row>
-        </Form>
-    );
+			<Row>
+				<Col lg='12'>
+					{/*todo: replace with rich text editor */}
+					<div className={assistantContainerClassNames}>
+						<TextArea
+							label={messages.workDetailsDescription}
+							id='work-country'
+							placeholder={messages.workCountry}
+							value={data.workDescription}
+							onChange={handleWorkDescriptionChange}
+						/>
+						<span className='writeAssistant'>
+							<WrittenAssistIcon />
+							<Button variant='link' onClick={handleAssistantClick}>
+								{messages.writeAssistant}
+							</Button>
+						</span>
+					</div>
+				</Col>
+			</Row>
+			<Row className='form_buttons'>
+				<Col className='space_betweens'>
+					{/* just a placeholder so we do need to change the css */}
+					<p className='hidden'></p>
+					<KButton variant='primary' type='submit'>
+						{messages.save}
+					</KButton>
+				</Col>
+			</Row>
+		</Form>
+	);
 };
 
 WorkForm.propTypes = {

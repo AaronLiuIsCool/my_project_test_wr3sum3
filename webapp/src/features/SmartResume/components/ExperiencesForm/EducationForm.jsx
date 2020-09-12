@@ -20,6 +20,8 @@ import majorOptions from 'data/major.json';
 import univOptions from 'data/university.json';
 import cityOptions from 'data/city.json';
 
+import { previewResume } from '../ResumePreview/resumeBuilder';
+
 const logger = getLogger('EducationForm');
 const resumeServices = new ResumeServices();
 
@@ -40,8 +42,9 @@ const EducationForm = ({ data, index, isLast = false, messages }) => {
     });
     const dispatch = useDispatch();
 
-    const save = async () => {
-        let id = data.id;
+	const save = async () => {
+		previewResume();
+        let id;
         try {
             const response = (id === undefined) ?
                 await resumeServices.createEducation(resumeId, adaptEducation(data)) :
