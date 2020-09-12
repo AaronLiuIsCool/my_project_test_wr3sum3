@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col, Form, Button } from 'react-bootstrap';
 
+import {GAEvent} from "utils/GATracking"
+
 import SingleDatePicker from 'components/SingleDatePicker';
 import InputGroup from 'components/InputGroup';
 import RadioButtonGroup from 'components/RadioButtonGroup';
@@ -41,6 +43,7 @@ const WorkForm = ({ data, index, isLast = false, messages }) => {
 	const dispatch = useDispatch();
 
     const save = async () => {
+		GAEvent("Resume Edit", "Save work form"); // call GA on save
         let id = data.id;
         try {
             const response =

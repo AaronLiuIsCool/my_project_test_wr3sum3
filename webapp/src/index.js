@@ -6,11 +6,14 @@ import App from 'features/App';
 import store from 'store';
 
 import * as serviceWorker from './serviceWorker';
+import { GAInitialize } from './utils/GATracking';
 
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import './index.css';
+
+GAInitialize(); // init google analytics
 
 ReactDOM.render(
   <React.StrictMode>

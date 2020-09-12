@@ -39,3 +39,34 @@ Your app is ready to be deployed!
 - [React documentation](https://reactjs.org/).
 - [React hooks intro](https://reactjs.org/docs/hooks-intro.html)
 - [Redux and React hooks](https://react-redux.js.org/api/hooks)
+
+
+
+
+## Google Analytics Tracking
+We have some Google Analytics tracking functions under `utils/GATracking.js`
+
+### To install
+
+`yarn add react-ga`
+
+### To use
+
+`import { funcName } from 'path/to/utils/GATracking'`
+
+ - Initialization:
+
+        // In the root component, initialize by running:
+        GAInitialize()
+
+        // Note: We only need to called once (Called in App/index.jsx)
+
+ - To report page view:
+
+        GApageView()
+
+ - Add custom tracking event.
+
+        GAEvent(category, action)
+        // Note: Category is one of four apps, example: "Resume Edit", 
+        // Note: Action example: "Save work form"

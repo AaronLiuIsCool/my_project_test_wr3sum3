@@ -1,6 +1,5 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
-
 // import { selectLanguage, selectUserId } from 'features/App/slicer';
 
 import '../styles/index.scss';
@@ -11,6 +10,7 @@ function createNewResumeWithData() {
 }
 
 const New = () => {
+    
     return (
         <div className='features resume-starter m-auto'>
             <Button href='/resume'>

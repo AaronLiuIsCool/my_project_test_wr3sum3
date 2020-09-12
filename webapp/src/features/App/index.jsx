@@ -6,6 +6,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 
+import { GApageView } from 'utils/GATracking';
+
 import AuthServices from 'shell/services/AuthServices';
 import { I8nContext } from 'shell/i18n';
 import { getLogger } from 'shell/logger';
@@ -23,6 +25,8 @@ import './styles/index.scss';
 
 import zh from './i18n/zh.json';
 import en from './i18n/en.json';
+
+
 
 const authServices = new AuthServices();
 const logger = getLogger('App');
@@ -47,6 +51,7 @@ const App = ({ waitForInit = true }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    GApageView(); // call GA for page viewed
     isAuthenticated(dispatch).then(() => setInit(true));
     const interval = window.setInterval(() => isAuthenticated(dispatch), 60 * 60 * 1000);
     return () => clearInterval(interval);
