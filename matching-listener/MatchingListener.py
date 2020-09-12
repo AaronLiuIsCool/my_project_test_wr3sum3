@@ -18,7 +18,7 @@ def callService(endpoint, payload):
         try:
             headers = {'Authorization': 'Basic'}
             r = requests.post(endpoint, json = payload, headers=headers) 
-            return r.json()
+            return r
         except Exception as e:
             capture_exception(e)
             time.sleep(config["queue"]["retryWaitSecs"])
@@ -30,7 +30,9 @@ async def on_message(message: IncomingMessage):
 
     for job in jobs:
         processedJob = callService(endpoint="http://job-service/v1/jobs/jobFetcher", payload=job)
-        matching = callService(endpoint="http://matching-service/v1/matching/jobs", payload=processedJob)
+        if len(processedJob.content) == 0: #duplicate
+            continue
+        matching = callService(endpoint="http://matching-service/v1/matching/jobs", payload=processedJob.json())
         print("matching", matching)
 
 async def main(loop, config):

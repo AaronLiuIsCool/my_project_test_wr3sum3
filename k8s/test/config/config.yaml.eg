@@ -20,5 +20,5 @@ data:
   RESUME_DATASOURCE_PASSWORD: mysqlroot
   JOB_DATASOURCE_URL: jdbc:mysql://kuaidaoresume-job.cm27uwrvuert.ca-central-1.rds.amazonaws.com:3306/kuaidaoresume-job?useUnicode=true&characterEncoding=utf-8
   JOB_DATASOURCE_USERNAME: root
-  JOB_DATASOURCE_PASSWORD: mysqlroot
+  JOB_DATASOURCE_PASSWORD: ~Youkn0wit)
   MATCHING_DATASOURCE_URL:mongodb+srv://root:mongodbroot@kuaidaoresume-uat1.kxcvj.mongodb.net

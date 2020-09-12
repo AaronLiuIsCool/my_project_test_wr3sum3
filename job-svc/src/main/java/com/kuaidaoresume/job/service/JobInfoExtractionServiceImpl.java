@@ -18,6 +18,7 @@ import com.kuaidaoresume.job.dto.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Date;
 import java.util.stream.*;
@@ -48,13 +49,10 @@ public class JobInfoExtractionServiceImpl implements JobInfoExtractionService{
     public JobFetcherResponse extractAndPersist(JobFetcherRequest jobFetcherRequest) {
         String url = jobFetcherRequest.getJobLink();
 
-        List<Keyword> keywords = keywordMatcher.getMatches(jobFetcherRequest.getDescription())
-                .stream().map(x -> Keyword.builder()
+        List<KeywordDto> keywordDtos = keywordMatcher.getMatches(jobFetcherRequest.getDescription())
+                .stream().map(x -> KeywordDto.builder()
                         .name(x)
                         .build()).collect(Collectors.toList());
-
-        List<KeywordDto> keywordDtos = keywords.stream().map(keyword -> modelMapper.map(keyword, KeywordDto.class))
-                .collect(Collectors.toList());
 
         String[] locationData = jobFetcherRequest.getLocation().split(",");
 
@@ -93,40 +91,45 @@ public class JobInfoExtractionServiceImpl implements JobInfoExtractionService{
 
         Optional<Job> jobOptional = jobRepository.findByUrl(url);
 
-        Job job;
         if (jobOptional.isPresent()) {
-            job = jobOptional.get();
+            return null;
         }
-        else {
-            job = Job.builder().postDate(createdAt)
-                    .positionTitle(jobFetcherRequest.getTitle())
-                    .companyName(jobFetcherRequest.getCompanyName())
-                    .url(url)
-                    .jobType(jobType)
-                    .agency(jobFetcherRequest.getAgency())
-                    .jobDescription(jobFetcherRequest.getDescription())
-                    .jobPostIdentifier(jobFetcherRequest.getJobPostId())
-                    .location(location)
-                    .majors(majors)
-                    .build();
+        Job job = Job.builder().postDate(createdAt)
+                .positionTitle(jobFetcherRequest.getTitle())
+                .companyName(jobFetcherRequest.getCompanyName())
+                .url(url)
+                .jobType(jobType)
+                .agency(jobFetcherRequest.getAgency())
+                .jobDescription(jobFetcherRequest.getDescription())
+                .jobPostIdentifier(jobFetcherRequest.getJobPostId())
+                .location(location)
+                .majors(majors)
+                .build();
 
-            for(Keyword keyword : keywords) {
-                Optional<Keyword> keywordOptional = keywordRepository.findByName(keyword.getName());
-                if(keywordOptional.isPresent()) {
-                    keyword = keywordOptional.get();
-                }
-                else {
-                    keywordRepository.save(keyword);
-                }
-                JobHasKeyword rating = JobHasKeyword
-                        .builder()
-                        .job(job).keyword(keyword)
-                        .rating(1.0)
-                        .build();
-                job.getJobHasKeywords().add(rating); //set
+        List<Keyword> keywordsToSave = new ArrayList<>();
+
+        for(KeywordDto keywordDto : keywordDtos) {
+            Optional<Keyword> keywordOptional = keywordRepository.findByName(keywordDto.getName());
+            Keyword keyword;
+            if(keywordOptional.isPresent()) {
+                keyword = keywordOptional.get();
             }
-            job = jobRepository.save(job);
+            else {
+                keyword = modelMapper.map(keywordDto, Keyword.class);
+                keywordsToSave.add(keyword);
+            }
+            JobHasKeyword rating = JobHasKeyword
+                    .builder()
+                    .job(job).keyword(keyword)
+                    .rating(1.0)
+                    .build();
+            job.getJobHasKeywords().add(rating); //set
         }
+        if(keywordsToSave.size() > 0) {
+            keywordRepository.saveAll(keywordsToSave);
+        }
+        job = jobRepository.save(job);
+
 
         JobFetcherResponse jobFetcherResponse = JobFetcherResponse.builder()
                 .uuid(job.getUuid())
