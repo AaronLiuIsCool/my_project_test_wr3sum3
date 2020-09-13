@@ -20,7 +20,6 @@ import { validateWork, validateWorkEntry } from '../../slicer/work';
 import { updateStatus } from '../../slicer/common';
 import ResumeServices from 'shell/services/ResumeServices';
 import { getLogger } from 'shell/logger';
-import { previewResume } from '../ResumePreview/resumeBuilder';
 
 import cityOptions from 'data/city.json';
 

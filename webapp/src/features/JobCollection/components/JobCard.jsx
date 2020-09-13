@@ -7,11 +7,11 @@ const JobCard = ({ applied, title, company, date, location, id }) => {
     const messages = useI8n();
 
     const handleRemove = (event) => {
-        const { id } = event.currentTarget.dataset;
+        // const { id } = event.currentTarget.dataset;
     };
 
     const handleApply = (event) => {
-        const { id } = event.currentTarget.dataset;
+        // const { id } = event.currentTarget.dataset;
     };
 
     return (
