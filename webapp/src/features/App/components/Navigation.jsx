@@ -28,6 +28,7 @@ const Navigation = ({ location }) => {
                 <Nav className="mr-auto" activeKey={location.pathname}>
                     <Nav.Link href='/'>{messages["nav_item_resumehub"]}</Nav.Link>
                     <Nav.Link href='/jobs'>{messages["nav_item_jobmatcher"]}</Nav.Link>
+                    <Nav.Link href='/job-collection'>{messages["nav_item_jobcollction"]}</Nav.Link>
                 </Nav>
 
                 <ToggleButtonGroup type="radio" name="languageSelect" defaultValue={language}

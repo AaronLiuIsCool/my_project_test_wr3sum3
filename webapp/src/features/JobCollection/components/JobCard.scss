@@ -1,0 +1,57 @@
+.job-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+  .content {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem 1.68rem;
+    border-radius: 8px;
+    border: solid 1px #f0f0f0;
+    h2 {
+      font-weight: bold;
+      font-size: 20px;
+      margin-bottom: 0.35rem;
+      span {
+          margin-left: 1.25rem;
+          font-size: 16px;
+          color: #2abc6e;
+          img {
+            vertical-align: unset;
+            margin-left: 0.25rem;
+          }
+      }
+    }
+    .company {
+      font-size: 14px;
+      font-weight: bold;
+      color: #3e89ec;
+    }
+    .location,
+    .date {
+      font-size: 14px;
+      color: #bababa;
+    }
+    .date {
+      margin: 0 1.25rem;
+    }
+    .apply-btn {
+      width: 160px;
+    }
+  }
+  .remove {
+    box-sizing: border-box;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    border: solid 1px #f0f0f0;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 1.25rem;
+  }
+}

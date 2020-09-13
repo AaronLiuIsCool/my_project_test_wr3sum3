@@ -19,6 +19,7 @@ import ResumeHub from 'features/ResumeHub';
 import ResumeStarter from 'features/ResumeStarter';
 import SmartResume from 'features/SmartResume';
 import JobsMatcher from 'features/JobsMatcher';
+import JobCollection from 'features/JobCollection';
 import Page404 from 'features/SpecialPages/Page404';
 
 import './styles/index.scss';
@@ -76,6 +77,7 @@ const App = ({ waitForInit = true }) => {
             <PrivateRoute exact path="/resume" component={SmartResume} />
             <PrivateRoute exact path="/resume/:resumeId" component={SmartResume} />
             <PrivateRoute path="/jobs" component={JobsMatcher} />
+            <PrivateRoute path="/job-collection" component={JobCollection} />
             <Route component={Page404} />
             <Route path="/404" component={Page404} />
           </Switch>
