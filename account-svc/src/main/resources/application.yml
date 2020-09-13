@@ -21,5 +21,4 @@ kuaidaoresume:
     deploy-env: ${DEPLOY:V2}
   signing-secret: ${SIGNING_SECRET}
   email-service-endpoint: ${EMAIL_SERVICE_ENDPOINT:http://email-service:8080}
-  #bot-service-endpoint: ${BOT_SERVICE_ENDPOINT:http://bot-service:8080}
   intercom-access-token: ${INTERCOM_ACCESS_TOKEN}
