@@ -53,6 +53,15 @@ exports[`App tests renders App 1`] = `
         >
           工作搜索
         </a>
+        <a
+          className="nav-link"
+          data-rb-event-key="/job-collection"
+          href="/job-collection"
+          onClick={[Function]}
+          onKeyDown={[Function]}
+        >
+          我的岗位
+        </a>
       </div>
       <div
         className="btn-group btn-group-toggle"

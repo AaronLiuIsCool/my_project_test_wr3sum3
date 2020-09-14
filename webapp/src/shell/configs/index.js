@@ -1,12 +1,17 @@
 import baseConfigs from './configs-base.json';
+import uatConfigs from './configs-uat.json';
+import prodConfigs from './configs-prod.json';
 
 let overrides = {};
 
+console.log(`Build configs for ${process.env.NODE_ENV}`)
+
 switch (process.env.NODE_ENV) {
   case 'production':
-    overrides = {
-      "env": "production"
-    };
+    overrides = prodConfigs;
+    break;
+  case 'uat':
+    overrides = uatConfigs;
     break;
   case 'test':
     overrides = {

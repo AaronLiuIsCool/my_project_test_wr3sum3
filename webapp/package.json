@@ -47,7 +47,7 @@
     "serve:dev": "PORT=3000 nodemon server.js",
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "build:prod": "NODE_ENV=production CI=true react-scripts build",
+    "build:ci": "CI=true react-scripts build",
     "test": "NODE_ENV=test react-scripts test",
     "test:nowatch": "NODE_ENV=test CI=true react-scripts test",
     "eject": "react-scripts eject"

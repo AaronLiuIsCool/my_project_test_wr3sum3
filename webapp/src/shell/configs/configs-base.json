@@ -1,6 +1,4 @@
 {
-  "env": "preprod",
-
   "login-url": "http://www.kuaidaoresume-v2.local/login",
 
   "services-account-baseUrl": "account.kuaidaoresume-v2.local",

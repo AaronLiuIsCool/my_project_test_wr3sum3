@@ -66,6 +66,7 @@ const EducationForm = ({ data, index, isLast = false, messages }) => {
             return;
         }
         setValidated(true);
+        dispatch(actions.completeEducation());
         save();
     };
 

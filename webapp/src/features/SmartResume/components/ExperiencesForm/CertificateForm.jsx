@@ -54,6 +54,7 @@ const CertificateForm = ({ data, index, isLast = false, messages }) => {
 			return;
 		}
 		setValidated(true);
+        dispatch(actions.completeCertificates());
 		save();
 	};
 

@@ -1,0 +1,17 @@
+{
+  "login-url": "http://www.<prod url>/login",
+
+  "services-account-baseUrl": "account.<prod url>",
+
+  "services-resume-baseUrl": "resume.<prod url>",
+
+  "services-job-baseUrl": "job.<prod url>",
+
+  "services-kdr-baseUrl": "kdr.<prod url>",
+
+  "services-mail-baseUrl": "mail.<prod url>",
+
+  "services-auth-baseUrl": "whoami.<prod url>",
+
+  "services-app-baseUrl": "app.<prod url>"
+}

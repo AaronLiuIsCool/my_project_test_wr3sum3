@@ -25,5 +25,5 @@ jobs:
       run: |
         cd webapp
         yarn
-        yarn build:prod
+        yarn build:ci
         yarn test:nowatch

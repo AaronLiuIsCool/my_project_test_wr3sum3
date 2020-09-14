@@ -65,6 +65,7 @@ const VolunteerForm = ({ data, index, isLast = false, messages }) => {
 			return;
 		}
 		setValidated(true);
+        dispatch(actions.completeVolunteer());
 		save();
 	};
 

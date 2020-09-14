@@ -17,7 +17,7 @@ EOF
 
 CI=true
 yarn
-yarn build:prod
+yarn build
 yarn test:nowatch
 cd ..
 mvn clean install

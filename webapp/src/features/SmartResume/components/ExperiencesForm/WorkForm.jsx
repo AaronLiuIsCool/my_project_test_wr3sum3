@@ -65,6 +65,7 @@ const WorkForm = ({ data, index, isLast = false, messages }) => {
 			return;
 		}
 		setValidated(true);
+        dispatch(actions.completeWork());
 		save();
 	};
 
