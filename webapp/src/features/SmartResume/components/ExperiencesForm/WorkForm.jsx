@@ -21,6 +21,8 @@ import { updateStatus } from '../../slicer/common';
 import ResumeServices from 'shell/services/ResumeServices';
 import { getLogger } from 'shell/logger';
 
+import DraftEditor from '../../../../components/DraftEditor/index'
+
 import cityOptions from 'data/city.json';
 
 const logger = getLogger('WorkForm');
@@ -67,8 +69,19 @@ const WorkForm = ({ data, index, isLast = false, messages }) => {
 		setValidated(true);
         dispatch(actions.completeWork());
 		save();
-	};
-
+    };
+    
+    const handleWorkDescriptionEditorChange = (value) => {
+        updateStatus(
+            validateWorkEntry,
+            status,
+            setStatus,
+            'workDescription',
+            value
+        );
+        dispatch(actions.updateWorkDescription({ value, index }));
+    }
+    
 	const handleWorkChange = (event) => {
 		const value = event.target.value;
 		updateStatus(validateWorkEntry, status, setStatus, 'workName', value);
@@ -243,37 +256,44 @@ const WorkForm = ({ data, index, isLast = false, messages }) => {
 				</Col>
 			</Row>
 
-			<Row>
-				<Col lg='12'>
-					{/*todo: replace with rich text editor */}
-					<div className={assistantContainerClassNames}>
-						<TextArea
-							label={messages.workDetailsDescription}
-							id='work-country'
-							placeholder={messages.workCountry}
-							value={data.workDescription}
-							onChange={handleWorkDescriptionChange}
-						/>
-						<span className='writeAssistant'>
-							<WrittenAssistIcon />
-							<Button variant='link' onClick={handleAssistantClick}>
-								{messages.writeAssistant}
-							</Button>
-						</span>
-					</div>
-				</Col>
-			</Row>
-			<Row className='form_buttons'>
-				<Col className='space_betweens'>
-					{/* just a placeholder so we do need to change the css */}
-					<p className='hidden'></p>
-					<KButton variant='primary' type='submit'>
-						{messages.save}
-					</KButton>
-				</Col>
-			</Row>
-		</Form>
-	);
+            <Row>
+                <Col lg="12">
+                    {/*todo: replace with rich text editor */}
+                    <div className={assistantContainerClassNames}>
+                           {/**
+                        <TextArea
+                            label={messages.workDetailsDescription}
+                            id="work-country"
+                            placeholder={messages.workCountry}
+                            value={data.workDescription}
+                            onChange={handleWorkDescriptionChange}
+                        />
+                        */}
+                        <DraftEditor 
+                            label={messages.workDetailsDescription}
+                            handleChangeCallback={handleWorkDescriptionEditorChange}
+                            texts={data.workDescription} 
+                            eventName={`work-${index}`}
+                        /> 
+                        
+                        <span className='writeAssistant'>
+                            <WrittenAssistIcon />
+                            <Button variant="link" onClick={handleAssistantClick}>{messages.writeAssistant}</Button>
+                        </span>
+                    </div>
+                </Col>
+            </Row>
+            <Row className="form_buttons">
+                <Col className="space_betweens">
+                    {/* just a placeholder so we do need to change the css */}
+                    <p className="hidden"></p>
+                    <KButton variant="primary" type="submit">
+                        {messages.save}
+                    </KButton>
+                </Col>
+            </Row>
+        </Form>
+    );
 };
 
 WorkForm.propTypes = {

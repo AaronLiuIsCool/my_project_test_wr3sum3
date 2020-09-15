@@ -128,7 +128,7 @@ const reducers = {
       const value = state.work.data[index].workDescription.length === 0 ?
         action.payload.value : `${state.work.data[index].workDescription}\n${action.payload.value}`;
       updateField( state, index, "workDescription", value);
-    }
+    },
 };
 
 const selectors = {

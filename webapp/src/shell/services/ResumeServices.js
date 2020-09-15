@@ -135,4 +135,20 @@ export default class ResumeServices extends BaseServices {
             logger.error(exception);
         }
     }
+    
+    // TODO: Update this fetch to UAT endpoint later 
+    async getSuggestions(industry, title) {
+        try {
+            const res = await fetch(`/v1/get_suggestions_by_industry_position?industry=${industry}&limit=50&offset=0&position=${title}`)
+            const {suggestions} = await res.json()
+            return {
+                suggestions
+            }
+        } catch (error) {
+            console.error(error)
+            return {
+                suggestions: []
+            }
+        }        
+    }
 }

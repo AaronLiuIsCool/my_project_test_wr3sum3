@@ -18,4 +18,11 @@
         }
       }
     }
+    .tips-container {
+        height: calc(100vh - 160px);
+        overflow-y: auto;
+    }
+    .tips-container::-webkit-scrollbar {
+        display: none;
+    }
 }
