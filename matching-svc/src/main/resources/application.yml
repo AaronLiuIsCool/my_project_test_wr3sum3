@@ -7,7 +7,7 @@ spring:
   data:
     mongodb:
       uri: ${MATCHING_DATASOURCE_URL:mongodb+srv://root:mongodbroot@kuaidaoresume-uat1.kxcvj.mongodb.net}
-      database: kuaidaoresume_matching
+      database: kuaidaoresume-matching
 
 kuaidaoresume:
   common:
