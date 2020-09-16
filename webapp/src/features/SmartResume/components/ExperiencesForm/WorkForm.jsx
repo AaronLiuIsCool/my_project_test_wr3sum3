@@ -10,7 +10,6 @@ import SingleDatePicker from 'components/SingleDatePicker';
 import InputGroup from 'components/InputGroup';
 import RadioButtonGroup from 'components/RadioButtonGroup';
 import DropdownGroup from 'components/DropdownGroup';
-import TextArea from 'components/TextArea';
 import KButton from 'components/KButton';
 import { ReactComponent as WrittenAssistIcon } from '../../assets/writing_assit.svg';
 
@@ -125,11 +124,6 @@ const WorkForm = ({ data, index, isLast = false, messages }) => {
 		dispatch(actions.updateWorkCountry({ value, index }));
 	};
 
-	const handleWorkDescriptionChange = (event) => {
-		const value = event.target.value;
-		updateStatus(validateWorkEntry, status, setStatus, 'workDescription', value);
-		dispatch(actions.updateWorkDescription({ value, index }));
-	};
 
 	const handleAssistantClick = () => {
 		dispatch(

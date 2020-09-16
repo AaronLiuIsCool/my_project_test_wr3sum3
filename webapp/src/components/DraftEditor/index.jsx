@@ -1,11 +1,11 @@
 import {
     Editor,
     EditorState,
-    Modifier,
-    SelectionState,
+    // Modifier,
+    // SelectionState,
     convertToRaw,
     convertFromRaw,
-    ContentBlock,
+    // ContentBlock,
     genKey
 } from 'draft-js';
 import React, { useEffect, useState, useRef } from 'react';
@@ -55,36 +55,28 @@ const DraftEditor = ({ texts, handleChangeCallback, label, eventName }) => {
     const didMount = useRef(false);
 
     useEffect(() => {
-        const lines = texts.split('\n');
-        init(lines);
-
-        return () => {
-            window.removeEventListener(eventName, eventListenerCallback);
-        };
-    }, []);
-
-    const init = (lines) => {
-        const rawContentState = {
-            entityMap: {},
-            blocks: lines.map((line) => ({
-                key: genKey(),
-                text: line,
-                type: 'unordered-list-item',
-                depth: 0,
-                inlineStyleRanges: [],
-                entityRanges: []
-            }))
-        };
-        setLocalState(
-            EditorState.createWithContent(convertFromRaw(rawContentState))
-        );
-        didMount.current = true;
-
-        window.addEventListener(eventName, eventListenerCallback);
-    };
-
-    const eventListenerCallback = (e) => {
-        {
+        if (!didMount.current) {
+            const lines = texts.split('\n');
+            const rawContentState = {
+                entityMap: {},
+                blocks: lines.map((line) => ({
+                    key: genKey(),
+                    text: line,
+                    type: 'unordered-list-item',
+                    depth: 0,
+                    inlineStyleRanges: [],
+                    entityRanges: []
+                }))
+            };
+            setLocalState(
+                EditorState.createWithContent(convertFromRaw(rawContentState))
+            );
+            didMount.current = true;
+        }
+    }, [texts]);
+    
+    useEffect(() => {
+        const eventListenerCallback = (e) => {
             const { data, type } = e.detail;
             const blocks = convertToRaw(
                 localStateRef.current.getCurrentContent()
@@ -93,7 +85,7 @@ const DraftEditor = ({ texts, handleChangeCallback, label, eventName }) => {
 
             switch (type) {
                 case 'highlight-keyword':
-                    const { offsets, text } = data
+                    const { offsets, text } = data;
                     if (blockLength === 1 && blocks[0].text === '') {
                         const rawContentState = {
                             entityMap: {},
@@ -140,9 +132,12 @@ const DraftEditor = ({ texts, handleChangeCallback, label, eventName }) => {
                 default:
                     break;
             }
-        }
-    };
-
+        };
+        window.addEventListener(eventName, eventListenerCallback);
+        return () => {
+            window.removeEventListener(eventName, eventListenerCallback);
+        };
+    }, [eventName, handleChangeCallback]);
     const handleChange = (editorState) => {
         // update local state
         setLocalState(removeStylesForSelection(addBulletPoint(editorState)));
