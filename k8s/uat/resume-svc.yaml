@@ -18,7 +18,7 @@ spec:
       containers:
         - name: resume-svc
           image: kuaidaoresume/resume-svc
-          imagePullPolicy: Never
+          imagePullPolicy: Always
           ports:
             - name: http-port
               containerPort: 80

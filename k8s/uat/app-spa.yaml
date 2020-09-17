@@ -16,6 +16,7 @@ spec:
       containers:
         - name: app-spa
           image: kuaidaoresume/app-spa
+          imagePullPolicy: Always
           ports:
             - name: http-port
               containerPort: 80

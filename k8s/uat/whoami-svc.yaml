@@ -18,7 +18,7 @@ spec:
       containers:
         - name: whoami-svc
           image: kuaidaoresume/whoami-svc
-          imagePullPolicy: Never
+          imagePullPolicy: Always
           ports:
             - name: http-port
               containerPort: 80

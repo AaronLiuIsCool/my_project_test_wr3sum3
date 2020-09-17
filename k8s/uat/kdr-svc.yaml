@@ -19,7 +19,7 @@ spec:
       containers:
         - name: kdr-svc
           image: kuaidaoresume/kdr-svc
-          #imagePullPolicy: Never
+          imagePullPolicy: Always
           ports:
             - name: http-port
               containerPort: 80

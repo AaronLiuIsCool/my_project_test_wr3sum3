@@ -19,7 +19,7 @@ spec:
       containers:
         - name: www-svc
           image: kuaidaoresume/www-svc
-          #imagePullPolicy: Never
+          imagePullPolicy: Always
           ports:
             - name: http-port
               containerPort: 80

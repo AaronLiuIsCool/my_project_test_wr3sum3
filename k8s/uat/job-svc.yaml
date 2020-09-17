@@ -18,7 +18,7 @@ spec:
       containers:
         - name: job-svc
           image: kuaidaoresume/job-svc
-          #imagePullPolicy: Never
+          imagePullPolicy: Always
           ports:
             - name: http-port
               containerPort: 80
