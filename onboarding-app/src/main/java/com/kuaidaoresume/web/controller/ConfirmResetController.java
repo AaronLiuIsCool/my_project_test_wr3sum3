@@ -6,7 +6,6 @@ import com.github.structlog4j.SLoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,7 +21,7 @@ import com.kuaidaoresume.common.env.EnvConfig;
 import com.kuaidaoresume.common.error.ServiceException;
 import com.kuaidaoresume.web.props.AppProps;
 import com.kuaidaoresume.web.service.HelperService;
-import com.kuaidaoresume.web.view.ActivatePage;
+import com.kuaidaoresume.web.view.ConfirmResetPage;
 import com.kuaidaoresume.web.view.Constant;
 import com.kuaidaoresume.web.view.PageFactory;
 
@@ -31,10 +30,9 @@ import javax.servlet.http.HttpServletResponse;
 
 @SuppressWarnings("Duplicates")
 @Controller
-public class ActivateController {
-    static final ILogger logger = SLoggerFactory.getLogger(ActivateController.class);
+public class ConfirmResetController {
 
-    static final String DEFAULT_PHOTO_URL = "https://miro.medium.com/max/720/1*W35QUSvGpcLuxPo3SRTH4w.png"; // Update to one from our own CDN
+    static final ILogger logger = SLoggerFactory.getLogger(ConfirmResetController.class);
 
     @Autowired
     private PageFactory pageFactory;
@@ -51,18 +49,13 @@ public class ActivateController {
     @Autowired
     private AccountClient accountClient;
 
-    @RequestMapping(value = "/activate/{token}")
-    public String activate(@PathVariable String token,
-                           @RequestParam(value="password", required = false) String password,
-                           @RequestParam(value="password-verify", required = false) String passwordVerify,
-                           @RequestParam(value="name", required = false) String name,
-                           @RequestParam(value="tos", required = false) String tos,
-                           @RequestParam(value="phonenumber", required = false) String phonenumber,
-                           Model model,
-                           HttpServletRequest request,
-                           HttpServletResponse response) {
-
-        ActivatePage page = pageFactory.buildActivatePage();
+    @RequestMapping(value = "/reset/{token}")
+    public String reset(@PathVariable String token,
+                        @RequestParam(value="password", required = false) String password,
+                        Model model,
+                        HttpServletRequest request,
+                        HttpServletResponse response) {
+        ConfirmResetPage page = pageFactory.buildConfirmResetPage();
         page.setToken(token);
 
         String email = null;
@@ -77,6 +70,18 @@ public class ActivateController {
             return "redirect:" + ResetController.PASSWORD_RESET_PATH;
         }
 
+        if (!HelperService.isPost(request)) {
+            model.addAttribute(Constant.ATTRIBUTE_NAME_PAGE, page);
+            return Constant.VIEW_CONFIRM_RESET;
+        }
+
+        // isPost
+        if (password.length() < 6) {
+            page.setErrorMessage("Your password must be at least 6 characters long");
+            model.addAttribute(Constant.ATTRIBUTE_NAME_PAGE, page);
+            return Constant.VIEW_CONFIRM_RESET;
+        }
+
         GenericAccountResponse genericAccountResponse1 = null;
         try {
             genericAccountResponse1 = accountClient.getAccount(AuthConstant.AUTHORIZATION_WWW_SERVICE, userId);
@@ -89,56 +94,22 @@ public class ActivateController {
             helperService.logError(logger, genericAccountResponse1.getMessage());
             throw new ServiceException(genericAccountResponse1.getMessage());
         }
+
         AccountDto account = genericAccountResponse1.getAccount();
 
-        page.setEmail(email);
-        page.setName(account.getName());
-        // page.setPhonenumber(account.getPhoneNumber()); not for phase I TODO:Woody
-
-        if (!HelperService.isPost(request)) {
-            model.addAttribute(Constant.ATTRIBUTE_NAME_PAGE, page);
-            return Constant.VIEW_ACTIVATE;
-        }
-
-        // POST
-        // update form in case we fail
-        page.setName(name);
-        page.setPhonenumber(phonenumber);
-
-        if (password.length() < 6) {
-            page.setErrorMessage("请输入最少6位数的密码.");
-        } else if (!password.equals(passwordVerify)) {
-            page.setErrorMessage("密码不一样, 请重试.");
-        } else if (StringUtils.isEmpty(tos) || !tos.equals("on")) {
-            page.setErrorMessage("请阅读并同意快刀简历的使用条款.");
-        }
-
-        if (page.getErrorMessage() != null) {
-            model.addAttribute(Constant.ATTRIBUTE_NAME_PAGE, page);
-            return Constant.VIEW_ACTIVATE;
-        }
-
-        account.setConfirmedAndActive(true);
         account.setEmail(email);
-        account.setName(email); // Use email to bypass the DB side not null check, given name is a not a required field at activation page
-        account.setPhotoUrl(DEFAULT_PHOTO_URL);
-        //account.setPhoneNumber(phonenumber); not for phase I TODO:Woody
-
+        account.setConfirmedAndActive(true);
         GenericAccountResponse genericAccountResponse2 = null;
         try {
             genericAccountResponse2 = accountClient.updateAccount(AuthConstant.AUTHORIZATION_WWW_SERVICE, account);
         } catch (Exception ex) {
             String errMsg = "fail to update user account";
             helperService.logException(logger, ex, errMsg);
-            page.setErrorMessage(errMsg);
-            model.addAttribute(Constant.ATTRIBUTE_NAME_PAGE, page);
-            return Constant.VIEW_ACTIVATE;
+            throw new ServiceException(errMsg, ex);
         }
         if (!genericAccountResponse2.isSuccess()) {
             helperService.logError(logger, genericAccountResponse2.getMessage());
-            page.setErrorMessage(genericAccountResponse2.getMessage());
-            model.addAttribute(Constant.ATTRIBUTE_NAME_PAGE, page);
-            return Constant.VIEW_ACTIVATE;
+            throw new ServiceException(genericAccountResponse2.getMessage());
         }
 
         // Update password
@@ -152,15 +123,11 @@ public class ActivateController {
         } catch (Exception ex) {
             String errMsg = "fail to update password";
             helperService.logException(logger, ex, errMsg);
-            page.setErrorMessage(errMsg);
-            model.addAttribute(Constant.ATTRIBUTE_NAME_PAGE, page);
-            return Constant.VIEW_ACTIVATE;
+            throw new ServiceException(errMsg, ex);
         }
         if (!baseResponse.isSuccess()) {
             helperService.logError(logger, baseResponse.getMessage());
-            page.setErrorMessage(baseResponse.getMessage());
-            model.addAttribute(Constant.ATTRIBUTE_NAME_PAGE, page);
-            return Constant.VIEW_ACTIVATE;
+            throw new ServiceException(baseResponse.getMessage());
         }
 
         // login user
@@ -172,17 +139,14 @@ public class ActivateController {
                 response);
         logger.info("user activated account and logged in", "user_id", account.getId());
 
-        // Smart redirection - for onboarding purposes
         String destination = null;
         if (account.isSupport()) {
-            // TODO: CRM page for internall support
-            destination = helperService.buildUrl("http", "support." + envConfig.getExternalApex());
+            destination = HelperService.buildUrl("http", "app." + envConfig.getExternalApex());
         }
         else {
-            model.addAttribute(Constant.ATTRIBUTE_NAME_PAGE, pageFactory.buildCompletionPage());
-            return Constant.VIEW_COMPLETE;
+            // onboard TODO YS, please feel free to up the redirect url here.
+            destination = HelperService.buildUrl("http", "www." + envConfig.getExternalApex());
         }
-
         return "redirect:" + destination;
     }
 }

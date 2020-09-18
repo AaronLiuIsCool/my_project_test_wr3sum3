@@ -120,7 +120,6 @@ public class LoginController {
                 }
 
                 return "redirect:" + returnTo;
-
             } else {
                 logger.info("Login attempt denied", "email", email);
                 loginPage.setDenied(true);

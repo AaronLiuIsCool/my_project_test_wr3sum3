@@ -64,4 +64,36 @@ public class PageFactory {
                 .version(kuaidaoresumeProps.getDeployEnv())
                 .build();
     }
+
+    public ResetPage buildResetPage() {
+        return ResetPage.childBuilder()
+                .title("Password Reset")
+                .cssId("sign-up")
+                .templateName("reset")
+                .description("Reset the password for your Kuaidaoresume account.")
+                .recaptchaPublic(appProps.getRecaptchaPublic())
+                .version(kuaidaoresumeProps.getDeployEnv())
+                .build();
+    }
+
+    public Page buildResetConfirmPage() {
+        return Page.builder()
+                .title("Please check your email for a reset link!")
+                .description("Check your email and click the link for next steps.")
+                .templateName("confirm")
+                .cssId("confirm")
+                .version(kuaidaoresumeProps.getDeployEnv())
+                .build();
+
+    }
+
+    public ConfirmResetPage buildConfirmResetPage() {
+        return ConfirmResetPage.childBuilder()
+                .title("Reset your Kuaidaoresume password")
+                .description("Follow steps to reset your Kuaidaoresume password.")
+                .cssId("sign-up")
+                .templateName("confirmreset")
+                .version(kuaidaoresumeProps.getDeployEnv())
+                .build();
+    }
 }
