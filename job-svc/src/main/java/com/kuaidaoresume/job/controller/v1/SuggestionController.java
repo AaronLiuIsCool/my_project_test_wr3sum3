@@ -39,13 +39,13 @@ public class SuggestionController {
         return new SuggestionGenericResponse(suggestionService.getSuggestionById(id));
     }
 
-    /*@Authorize(value = {
+    @Authorize(value = {
             AuthConstant.AUTHORIZATION_WWW_SERVICE,
             AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
             AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
             AuthConstant.AUTHORIZATION_SUPPORT_USER,
             AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
-    })*/
+    })
     @GetMapping("/get_suggestions_by_industry_position")
     public SuggestionListDto getAListByIndustryAndPosition(
             @RequestParam String industry,
@@ -56,30 +56,31 @@ public class SuggestionController {
         return suggestionListDto;
     }
 
-    /*@Authorize(value = {
+    @Authorize(value = {
             AuthConstant.AUTHORIZATION_SUPPORT_USER,
             AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
-    })*/
+    })
     @PostMapping("/suggestion")
     public SuggestionGenericResponse addSuggestion(@RequestBody @Valid SuggestionCreateRequest req) {
-        SuggestionDto suggestionDto = suggestionService.addSuggestion(req.getIndustry(), req.getPositionTitle(), req.getTexts(), req.getSuggestionKeywords());
+        SuggestionDto suggestionDto = suggestionService.addSuggestion(
+                req.getIndustry(), req.getPositionTitle(), req.getTexts(), req.getSuggestionKeywords());
         return new SuggestionGenericResponse(suggestionDto);
     }
 
-    /*@Authorize(value = {
+    @Authorize(value = {
             AuthConstant.AUTHORIZATION_SUPPORT_USER,
             AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
-    })*/
+    })
     @PutMapping("/suggestion/{id}")
     public SuggestionGenericResponse updateSuggestion(@PathVariable long id, @RequestBody @Valid SuggestionDto newSuggestionDto) {
         SuggestionDto suggestionDto = suggestionService.updateSuggestion(newSuggestionDto);
         return new SuggestionGenericResponse(suggestionDto);
     }
 
-    /**@Authorize(value = {
+    @Authorize(value = {
             AuthConstant.AUTHORIZATION_SUPPORT_USER,
             AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
-    })*/
+    })
     @DeleteMapping("/suggestion/{id}")
     public BaseResponse deleteASuggestion(@PathVariable long id) {
         suggestionService.deleteASuggestion(id);

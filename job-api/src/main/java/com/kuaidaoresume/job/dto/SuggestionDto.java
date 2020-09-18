@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 public class SuggestionDto {
 
-    @NotBlank
+    @NotNull
     private long id;
 
     @NotNull
