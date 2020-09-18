@@ -72,7 +72,7 @@ public class MatchingController {
         AuthConstant.AUTHORIZATION_SUPPORT_USER,
         AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
     })
-    @GetMapping("/jobs/match")
+    @PostMapping("/jobs/match")
     public JobListResponse findMatchedJobs(@RequestBody @Valid ResumeDto resumeDto) {
         Collection<JobDto> matchedJobs = matchingService.findMatchedJobs(resumeDto);
         return new JobListResponse(new JobList(matchedJobs));
@@ -87,7 +87,7 @@ public class MatchingController {
         AuthConstant.AUTHORIZATION_SUPPORT_USER,
         AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
     })
-    @GetMapping("/jobs/paging-match")
+    @PostMapping("/jobs/paging-match")
     public JobListResponse findMatchedJobs(@RequestBody @Valid ResumeDto resumeDto,
                                            @RequestParam @Min(0) int offset, @RequestParam @Min(1) int limit) {
 
@@ -104,7 +104,7 @@ public class MatchingController {
         AuthConstant.AUTHORIZATION_SUPPORT_USER,
         AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
     })
-    @GetMapping("/resumes/match")
+    @PostMapping("/resumes/match")
     public ResumeListResponse findMatchedResumes(@RequestBody @Valid JobDto jobDto) {
         Collection<ResumeDto> resumeDtos = matchingService.findMatchedResumes(jobDto);
         return new ResumeListResponse(new ResumeList(resumeDtos));
@@ -119,7 +119,7 @@ public class MatchingController {
         AuthConstant.AUTHORIZATION_SUPPORT_USER,
         AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
     })
-    @GetMapping("/resumes/paging-match")
+    @PostMapping("/resumes/paging-match")
     public ResumeListResponse findMatchedResumes(@RequestBody @Valid JobDto jobDto,
                                                  @RequestParam @Min(0) int page, @RequestParam  @Min(1) int pageSize) {
 
