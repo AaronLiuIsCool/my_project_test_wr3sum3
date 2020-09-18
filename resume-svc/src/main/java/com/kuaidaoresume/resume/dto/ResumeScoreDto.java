@@ -45,6 +45,8 @@ public class ResumeScoreDto implements PersistedEntityDto<String> {
     private Collection<ProjectExperienceDurationScoreDto> projectExperienceDurationScores;
     @NotNull
     private int certificatesScore;
+    @NotNull
+    private int totalScore;
 
     @Override
     public String getId() {

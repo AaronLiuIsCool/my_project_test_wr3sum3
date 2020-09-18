@@ -2,21 +2,20 @@ package com.kuaidaoresume.resume.service.score;
 
 import com.kuaidaoresume.common.matching.NameMatcher;
 import com.kuaidaoresume.resume.model.Education;
-import com.kuaidaoresume.common.utils.FileUtil;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import static com.kuaidaoresume.resume.service.score.ScoreConstants.*;
 
 @Component
+@RequiredArgsConstructor
 public class UniversityRankScoreCalculator implements ScoreCalculationStrategy<Education> {
 
+    @Autowired
     private final NameMatcher topTierUniversitiesMatcher;
+    @Autowired
     private final NameMatcher secondTierUniversitiesMatcher;
-
-    public UniversityRankScoreCalculator() {
-        topTierUniversitiesMatcher = new NameMatcher(FileUtil.loadLinesFromTextFile("matching/top-tier-universities.txt"));
-        secondTierUniversitiesMatcher = new NameMatcher(FileUtil.loadLinesFromTextFile("matching/second-tier-universities.txt"));
-    }
 
     @Override
     public int calculateScore(Education education) {

@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Component
-public class ResumeScoreBuilder {
+public class ResumeScoreFacade {
 
     @Autowired
     private final CompletenessScoreCalculator completenessScoreCalculator;
@@ -41,7 +41,7 @@ public class ResumeScoreBuilder {
     @Autowired
     private final CertificatesScoreCalculator certificatesScoreCalculator;
 
-    public ResumeScoreDto getResumeScoreDto(Resume resume) {
+    public ResumeScoreDto getResumeScore(Resume resume) {
         Collection<Education> educations = resume.getEducations();
         Collection<WorkExperience> workExperiences = resume.getWorkExperiences();
         Collection<ProjectExperience> projectExperiences = resume.getProjectExperiences();
@@ -60,6 +60,7 @@ public class ResumeScoreBuilder {
             .projectExperiencesScore(projectExperiencesScoreCalculator.calculateScore(resume))
             .projectExperienceDurationScores(getProjectExperienceDurationScores(projectExperiences))
             .certificatesScore(certificatesScoreCalculator.calculateScore(resume))
+            .totalScore(this.getTotalScore(resume))
             .build();
     }
 
@@ -106,5 +107,36 @@ public class ResumeScoreBuilder {
                 .score(projectExperienceDurationScoreCalculator.calculateScore(projectExperience))
                 .build())
             .collect(Collectors.toList());
+    }
+
+    public int getTotalScore(Resume resume) {
+        Collection<Education> educations = resume.getEducations();
+        Collection<WorkExperience> workExperiences = resume.getWorkExperiences();
+
+        int totalScore = 0;
+        totalScore += completenessScoreCalculator.calculateScore(resume);
+        totalScore += photoScoreCalculator.calculateScore(resume);
+        totalScore += experienceKeywordScoreCalculator.calculateScore(resume);
+        totalScore += experienceNumericWordScoreCalculator.calculateScore(resume);
+        totalScore += educations.stream()
+            .map(universityRankScoreCalculator::calculateScore)
+            .reduce(0, (acc, cur) -> acc + cur);
+        totalScore += educations.stream()
+            .map(gpaScoreCalculator::calculateScore)
+            .reduce(0, (acc, cur) -> acc + cur);
+        totalScore += workExperiences.stream()
+            .map(companyRankScoreCalculator::calculateScore)
+            .reduce(0, (acc, cur) -> acc + cur);
+        totalScore += workExperiencesScoreCalculator.calculateScore(resume);
+        totalScore += workExperiences.stream()
+            .map(workExperienceDurationScoreCalculator::calculateScore)
+            .reduce(0, (acc, cur) -> acc + cur);
+        totalScore += projectExperiencesScoreCalculator.calculateScore(resume);
+        totalScore += resume.getProjectExperiences().stream()
+            .map(projectExperienceDurationScoreCalculator::calculateScore)
+            .reduce(0, (acc, cur) -> acc + cur);
+        totalScore += certificatesScoreCalculator.calculateScore(resume);
+
+        return totalScore;
     }
 }

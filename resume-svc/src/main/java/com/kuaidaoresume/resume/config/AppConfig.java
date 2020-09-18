@@ -4,10 +4,7 @@ import com.github.pemistahl.lingua.api.LanguageDetector;
 import com.github.pemistahl.lingua.api.LanguageDetectorBuilder;
 import com.kuaidaoresume.common.async.ContextCopyingDecorator;
 import com.kuaidaoresume.common.config.KuaidaoresumeRestConfig;
-import com.kuaidaoresume.common.matching.InMemoryKeywordMatcher;
-import com.kuaidaoresume.common.matching.KeywordMatcher;
-import com.kuaidaoresume.common.matching.NumericWordMatcher;
-import com.kuaidaoresume.common.matching.NumericWordMatcherImpl;
+import com.kuaidaoresume.common.matching.*;
 import com.kuaidaoresume.common.utils.FileUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -75,6 +72,26 @@ public class AppConfig {
 
     @Bean
     public NumericWordMatcher numericWordMatcher() {
-        return new NumericWordMatcherImpl();
+        return new NumericWordMatcherImpl(false);
+    }
+
+    @Bean
+    public NameMatcher topTierUniversitiesMatcher() {
+        return new NameMatcher(FileUtil.loadLinesFromTextFile("matching/top-tier-universities.txt"));
+    }
+
+    @Bean
+    public NameMatcher secondTierUniversitiesMatcher() {
+        return new NameMatcher(FileUtil.loadLinesFromTextFile("matching/second-tier-universities.txt"));
+    }
+
+    @Bean
+    public NameMatcher topTierCompaniesMatcher() {
+        return new NameMatcher(FileUtil.loadLinesFromTextFile("matching/top-tier-companies.txt"));
+    }
+
+    @Bean
+    public NameMatcher secondTierCompaniesMatcher() {
+        return new NameMatcher(FileUtil.loadLinesFromTextFile("matching/second-tier-companies.txt"));
     }
 }

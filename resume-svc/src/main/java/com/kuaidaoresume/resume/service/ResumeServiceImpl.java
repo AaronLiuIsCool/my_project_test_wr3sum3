@@ -3,12 +3,14 @@ package com.kuaidaoresume.resume.service;
 import com.kuaidaoresume.common.dto.LocationDto;
 import com.kuaidaoresume.common.matching.KeywordMatcher;
 import com.kuaidaoresume.resume.dto.ResumeMatchingDto;
+import com.kuaidaoresume.resume.dto.ResumeRatingDto;
 import com.kuaidaoresume.resume.dto.ResumeScoreDto;
 import com.kuaidaoresume.resume.model.*;
 import com.kuaidaoresume.resume.repository.ResumeContainableRepository;
 import com.kuaidaoresume.resume.repository.ResumeContainableRepositoryFactory;
 import com.kuaidaoresume.resume.repository.ResumeRepository;
-import com.kuaidaoresume.resume.service.score.ResumeScoreBuilder;
+import com.kuaidaoresume.resume.service.rating.ResumeRatingFacade;
+import com.kuaidaoresume.resume.service.score.ResumeScoreFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,7 +34,10 @@ public class ResumeServiceImpl implements ResumeService {
     private final ResumeContainableRepositoryFactory resumeContainableRepositoryFactory;
 
     @Autowired
-    private final ResumeScoreBuilder resumeScoreBuilder;
+    private final ResumeScoreFacade resumeScoreFacade;
+
+    @Autowired
+    private final ResumeRatingFacade resumeRatingFacade;
 
     @Autowired
     private final KeywordMatcher keywordMatcher;
@@ -203,7 +208,7 @@ public class ResumeServiceImpl implements ResumeService {
 
     @Override
     public Optional<ResumeScoreDto> getResumeScore(String resumeId) {
-        return resumeRepository.findById(resumeId).map(resumeScoreBuilder::getResumeScoreDto);
+        return resumeRepository.findById(resumeId).map(resumeScoreFacade::getResumeScore);
     }
 
     @Override
@@ -226,6 +231,11 @@ public class ResumeServiceImpl implements ResumeService {
                 .keywords(keywords)
                 .build();
         });
+    }
+
+    @Override
+    public Optional<ResumeRatingDto> getResumeRating(String resumeId) {
+        return resumeRepository.findById(resumeId).map(resumeRatingFacade::getResumeRating);
     }
 
     private <T extends Experience> void extractKeywordsFromExperience(Set<String> keywords, Collection<T> experiences) {

@@ -2,21 +2,20 @@ package com.kuaidaoresume.resume.service.score;
 
 import com.kuaidaoresume.common.matching.NameMatcher;
 import com.kuaidaoresume.resume.model.WorkExperience;
-import com.kuaidaoresume.common.utils.FileUtil;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import static com.kuaidaoresume.resume.service.score.ScoreConstants.*;
 
+@RequiredArgsConstructor
 @Component
 public class CompanyRankScoreCalculator implements ScoreCalculationStrategy<WorkExperience> {
 
+    @Autowired
     private final NameMatcher topTierCompaniesMatcher;
+    @Autowired
     private final NameMatcher secondTierCompaniesMatcher;
-
-    public CompanyRankScoreCalculator() {
-        topTierCompaniesMatcher = new NameMatcher(FileUtil.loadLinesFromTextFile("matching/top-tier-companies.txt"));
-        secondTierCompaniesMatcher = new NameMatcher(FileUtil.loadLinesFromTextFile("matching/second-tier-companies.txt"));
-    }
 
     @Override
     public int calculateScore(WorkExperience workExperience) {

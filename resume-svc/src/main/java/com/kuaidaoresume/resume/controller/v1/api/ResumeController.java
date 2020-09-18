@@ -3,12 +3,10 @@ package com.kuaidaoresume.resume.controller.v1.api;
 import com.kuaidaoresume.common.auth.AuthConstant;
 import com.kuaidaoresume.common.auth.Authorize;
 import com.kuaidaoresume.resume.controller.v1.assembler.ResumeMatchingRepresentationModelAssembler;
+import com.kuaidaoresume.resume.controller.v1.assembler.ResumeRatingRepresentationModelAssembler;
 import com.kuaidaoresume.resume.controller.v1.assembler.ResumeRepresentationModelAssembler;
 import com.kuaidaoresume.resume.controller.v1.assembler.ResumeScoreRepresentationModelAssembler;
-import com.kuaidaoresume.resume.dto.PersistedResumeDto;
-import com.kuaidaoresume.resume.dto.ResumeDto;
-import com.kuaidaoresume.resume.dto.ResumeMatchingDto;
-import com.kuaidaoresume.resume.dto.ResumeScoreDto;
+import com.kuaidaoresume.resume.dto.*;
 import com.kuaidaoresume.resume.model.Resume;
 import com.kuaidaoresume.resume.service.ResumeService;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +34,9 @@ public class ResumeController {
 
     @Autowired
     private final ResumeMatchingRepresentationModelAssembler resumeMatchingAssembler;
+
+    @Autowired
+    private final ResumeRatingRepresentationModelAssembler resumeRatingAssembler;
 
     @Autowired
     private final ModelMapper modelMapper;
@@ -106,6 +107,23 @@ public class ResumeController {
     public ResponseEntity<EntityModel<ResumeMatchingDto>> getResumeMatching(@PathVariable String id) {
         return resumeService.getResumeMatching(id)
             .map(resumeMatchingAssembler::toModel)
+            .map(ResponseEntity::ok)
+            .orElse(ResponseEntity.notFound().build());
+    }
+
+    @Authorize(value = {
+        AuthConstant.AUTHORIZATION_WWW_SERVICE,
+        AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
+        //AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
+        //AuthConstant.AUTHORIZATION_BOT_SERVICE,
+        AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
+        AuthConstant.AUTHORIZATION_SUPPORT_USER,
+        AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
+    })
+    @GetMapping("/resumes/{id}/rating")
+    public ResponseEntity<EntityModel<ResumeRatingDto>> getRating(@PathVariable String id) {
+        return resumeService.getResumeRating(id)
+            .map(resumeRatingAssembler::toModel)
             .map(ResponseEntity::ok)
             .orElse(ResponseEntity.notFound().build());
     }
