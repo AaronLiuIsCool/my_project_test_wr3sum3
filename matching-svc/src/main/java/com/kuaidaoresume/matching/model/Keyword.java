@@ -13,14 +13,11 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Document(collection = "keywords")
 public class Keyword {
-    @Id
-    private String id;
 
     @NotNull
     private String value;
 
-    private String major;
-
+    @NotNull
+    private double rating;
 }

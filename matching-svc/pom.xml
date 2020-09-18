@@ -53,6 +53,12 @@
             <version>1.0.0</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.github.pemistahl</groupId>
+            <artifactId>lingua</artifactId>
+            <version>1.0.2</version>
+        </dependency>
+
         <!-- Test -->
         <dependency>
             <groupId>de.flapdoodle.embed</groupId>

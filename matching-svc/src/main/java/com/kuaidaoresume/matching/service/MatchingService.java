@@ -1,11 +1,13 @@
 package com.kuaidaoresume.matching.service;
 
+import com.github.pemistahl.lingua.api.LanguageDetector;
 import com.github.structlog4j.ILogger;
 import com.github.structlog4j.SLoggerFactory;
 import com.google.common.collect.Lists;
 import com.kuaidaoresume.common.api.ResultCode;
 import com.kuaidaoresume.common.error.ServiceException;
 import com.kuaidaoresume.matching.dto.JobDto;
+import com.kuaidaoresume.matching.dto.KeywordDto;
 import com.kuaidaoresume.matching.dto.LocationDto;
 import com.kuaidaoresume.matching.dto.ResumeDto;
 import com.kuaidaoresume.matching.model.*;
@@ -54,12 +56,14 @@ public class MatchingService {
     @Autowired
     private final VisitedJobRepository visitedJobRepository;
 
-
     @Autowired
     private final ModelMapper modelMapper;
 
     @Autowired
     private final ServiceHelper serviceHelper;
+
+    @Autowired
+    private final LanguageDetector languageDetector;
 
     public void addJob(JobDto jobDto) {
         Job job = modelMapper.map(jobDto, Job.class);
@@ -130,7 +134,8 @@ public class MatchingService {
     public Collection<ResumeDto> findMatchedResumes(JobDto jobDto) {
         LocationDto location = jobDto.getLocation();
         Collection<String> relevantMajors = jobDto.getRelevantMajors() != null ? jobDto.getRelevantMajors() : Lists.newArrayList();
-        Collection<String> keywords = jobDto.getKeywords() != null ? jobDto.getKeywords() : Lists.newArrayList();
+        Collection<String> keywords = jobDto.getKeywords() != null ?
+            jobDto.getKeywords().stream().map(KeywordDto::getValue).collect(Collectors.toSet()) : Lists.newArrayList();
         List<Resume> matchedResumes = resumeRepository.findMatchedResumes(location.getCountry(), location.getCity(),
             relevantMajors, keywords);
         return matchedResumes.stream().map(resume -> modelMapper.map(resume, ResumeDto.class)).collect(Collectors.toList());
@@ -139,7 +144,8 @@ public class MatchingService {
     public Collection<ResumeDto> findMatchedResumes(JobDto jobDto, int page, int pageSize) {
         LocationDto location = jobDto.getLocation();
         Collection<String> relevantMajors = jobDto.getRelevantMajors() != null ? jobDto.getRelevantMajors() : Lists.newArrayList();
-        Collection<String> keywords = jobDto.getKeywords() != null ? jobDto.getKeywords() : Lists.newArrayList();
+        Collection<String> keywords = jobDto.getKeywords() != null ?
+            jobDto.getKeywords().stream().map(KeywordDto::getValue).collect(Collectors.toSet()) : Lists.newArrayList();
         List<Resume> matchedResumes = resumeRepository.findMatchedResumes(location.getCountry(), location.getCity(),
             relevantMajors, keywords, page, pageSize);
         return matchedResumes.stream().map(resume -> modelMapper.map(resume, ResumeDto.class)).collect(Collectors.toList());
@@ -344,5 +350,17 @@ public class MatchingService {
     public Collection<ResumeDto> getResumesVisitedByJob(String jobUuid, int offset, int limit) {
         return visitedJobRepository.findVisitedResumes(jobUuid, offset, limit).stream().map(resume ->
             modelMapper.map(resume, ResumeDto.class)).collect(Collectors.toList());
+    }
+
+    public Collection<JobDto> searchJobs(String country, String city, String term) {
+        String language = languageDetector.detectLanguageOf(term).getIsoCode639_1().toString();
+        return jobRepository.searchJobs(country, city, term, language).stream().map(job ->
+            modelMapper.map(job, JobDto.class)).collect(Collectors.toList());
+    }
+
+    public Collection<JobDto> searchJobs(String country, String city, String term, int page, int pageSize) {
+        String language = languageDetector.detectLanguageOf(term).getIsoCode639_1().toString();
+        return jobRepository.searchJobs(country, city, term, language, page, pageSize).stream().map(job ->
+            modelMapper.map(job, JobDto.class)).collect(Collectors.toList());
     }
 }

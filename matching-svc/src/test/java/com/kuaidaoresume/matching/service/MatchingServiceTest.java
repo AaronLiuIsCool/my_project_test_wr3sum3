@@ -1,5 +1,6 @@
 package com.kuaidaoresume.matching.service;
 
+import com.github.pemistahl.lingua.api.LanguageDetector;
 import com.kuaidaoresume.common.error.ServiceException;
 import com.kuaidaoresume.matching.dto.LocationDto;
 import com.kuaidaoresume.matching.dto.ResumeDto;
@@ -12,6 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.Instant;
 import java.util.*;
@@ -84,6 +86,9 @@ public class MatchingServiceTest {
     @Mock
     private ServiceHelper serviceHelper;
 
+    @Autowired
+    private LanguageDetector languageDetector;
+
     @BeforeEach
     public void setup() {
         now = Instant.now();
@@ -91,7 +96,7 @@ public class MatchingServiceTest {
 
         matchingService = new MatchingService(jobRepository, resumeRepository, matchedResumeRepository,
             tailoredResumeRepository, tailoredJobRepository, bookmarkedResumeRepository, bookmarkedJobRepository,
-            visitedResumeRepository, visitedJobRepository, modelMapper, serviceHelper);
+            visitedResumeRepository, visitedJobRepository, modelMapper, serviceHelper, languageDetector);
     }
 
     private void setupMatchedResumeMocks() {

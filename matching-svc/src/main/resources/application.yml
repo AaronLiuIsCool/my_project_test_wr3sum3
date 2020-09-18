@@ -8,6 +8,7 @@ spring:
     mongodb:
       uri: ${MATCHING_DATASOURCE_URL:mongodb+srv://root:mongodbroot@kuaidaoresume-uat1.kxcvj.mongodb.net}
       database: kuaidaoresume-matching
+      auto-index-creation: true
 
 kuaidaoresume:
   common:

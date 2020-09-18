@@ -1,6 +1,7 @@
 package com.kuaidaoresume.matching.repo;
 
 import com.kuaidaoresume.matching.model.Job;
+import com.kuaidaoresume.matching.model.Keyword;
 import com.kuaidaoresume.matching.model.Location;
 import com.kuaidaoresume.matching.model.TailoredResume;
 import org.junit.jupiter.api.BeforeEach;
@@ -44,10 +45,18 @@ public class TailoredResumeRepositoryTest {
     private Job job;
     private TailoredResume tailoredResume;
 
+    private Keyword keyword1;
+    private Keyword keyword2;
+    private Keyword keyword3;
+
     @BeforeEach
     public void setup() {
         jobRepository.deleteAll();
         tailoredResumeRepository.deleteAll();
+
+        keyword1 = Keyword.builder().value(KEYWORD1).rating(1.0).build();
+        keyword2 = Keyword.builder().value(KEYWORD2).rating(2.0).build();
+        keyword3 = Keyword.builder().value(KEYWORD3).rating(3.0).build();
 
         location = Location.builder()
             .country("Canada")
@@ -59,7 +68,7 @@ public class TailoredResumeRepositoryTest {
             .companyName(COMPANY_NAME)
             .location(location)
             .relevantMajors(Arrays.asList(MAJOR_A, MAJOR_B, MAJOR_C))
-            .keywords(Arrays.asList(KEYWORD1, KEYWORD2, KEYWORD3))
+            .keywords(Arrays.asList(keyword1, keyword2, keyword3))
             .postDate(POST_DATE)
             .createdAt(Instant.now())
             .isActive(true)

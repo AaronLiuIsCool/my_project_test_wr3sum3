@@ -373,4 +373,44 @@ public class MatchingController {
         Collection<ResumeDto> visitedResumes = matchingService.getResumesVisitedByJob(jobUuid, offset, limit);
         return new ResumeListResponse(new ResumeList(visitedResumes, offset, limit));
     }
+
+    @Authorize(value = {
+        AuthConstant.AUTHORIZATION_WWW_SERVICE,
+        AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
+        //AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
+        //AuthConstant.AUTHORIZATION_BOT_SERVICE,
+        AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
+        AuthConstant.AUTHORIZATION_SUPPORT_USER,
+        AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
+    })
+    @GetMapping("/jobs/search")
+    public JobListResponse searchJobs(
+        @RequestParam String country,
+        @RequestParam String city,
+        @RequestParam String term) {
+
+        Collection<JobDto> jobs = matchingService.searchJobs(country, city, term);
+        return new JobListResponse(new JobList(jobs));
+    }
+
+    @Authorize(value = {
+        AuthConstant.AUTHORIZATION_WWW_SERVICE,
+        AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
+        //AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
+        //AuthConstant.AUTHORIZATION_BOT_SERVICE,
+        AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
+        AuthConstant.AUTHORIZATION_SUPPORT_USER,
+        AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
+    })
+    @GetMapping("/jobs/paging-search")
+    public JobListResponse searchJobs(
+        @RequestParam String country,
+        @RequestParam String city,
+        @RequestParam String term,
+        @RequestParam @Min(0) int page,
+        @RequestParam @Min(1) int pageSize) {
+
+        Collection<JobDto> jobs = matchingService.searchJobs(country, city, term, page, pageSize);
+        return new JobListResponse(new JobList(jobs, page, pageSize));
+    }
 }

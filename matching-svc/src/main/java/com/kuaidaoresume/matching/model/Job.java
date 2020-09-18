@@ -21,8 +21,7 @@ import java.util.Collection;
 @CompoundIndexes({
     @CompoundIndex(def = "{'location.country' : 1, 'location.city': 1, 'postDate': -1}"),
     @CompoundIndex(def = "{'location.country' : 1, 'location.city': 1, 'relevantMajors': 1, 'postDate': -1}"),
-    @CompoundIndex(def = "{'location.country' : 1, 'location.city': 1, 'keywords': 1, 'postDate': -1}"),
-    @CompoundIndex(def = "{'location.country' : 1, 'location.city': 1, 'relevantMajors': 1, 'keywords': 1, 'postDate': -1}")
+    @CompoundIndex(def = "{'location.country' : 1, 'location.city': 1, 'keywords': 1, 'postDate': -1}")
 })
 public class Job {
 
@@ -34,11 +33,11 @@ public class Job {
     private String jobUuid;
 
     @NotNull
-    @TextIndexed(weight=40)
+    @TextIndexed(weight=35)
     private String title;
 
     @NotNull
-    @TextIndexed(weight=30)
+    @TextIndexed(weight=25)
     private String companyName;
 
     private Location location;
@@ -49,18 +48,20 @@ public class Job {
 
     private Compensation compensation;
 
-    @TextIndexed(weight=30)
+    @TextIndexed(weight=20)
     private Collection<String> relevantMajors;
 
-    @NotNull
-    private LocalDateTime postDate;
+    @TextIndexed(weight=20)
+    private Collection<Keyword> keywords;
 
     @NotNull
     @Indexed(direction = IndexDirection.DESCENDING)
+    private LocalDateTime postDate;
+
+    @NotNull
     private Instant createdAt;
 
     @NotNull
     private boolean isActive;
 
-    private Collection<String> keywords;
 }

@@ -34,8 +34,8 @@ public class EnhancedResumeRepositoryImpl implements EnhancedResumeRepository {
             Criteria.where("location.country").is(country),
             Criteria.where("location.city").is(city),
             new Criteria().orOperator(
-                Criteria.where("majors").in(majors),
-                Criteria.where("keywords").in(keywords)
+                Criteria.where("keywords").in(keywords),
+                Criteria.where("majors").in(majors)
             )
         ));
         return query;

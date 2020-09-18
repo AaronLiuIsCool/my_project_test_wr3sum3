@@ -8,8 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
-import java.util.Collection;
 
 @Data
 @AllArgsConstructor
@@ -17,29 +15,11 @@ import java.util.Collection;
 @Builder
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JobDto {
+public class KeywordDto {
 
     @NotNull
-    private String jobUuid;
+    private String value;
 
     @NotNull
-    private String title;
-
-    @NotNull
-    private String companyName;
-
-    private LocationDto location;
-
-    private String jobType;
-
-    private String employmentType;
-
-    private CompensationDto compensation;
-
-    private Collection<String> relevantMajors;
-
-    private Collection<KeywordDto> keywords;
-
-    @NotNull
-    private LocalDateTime postDate;
+    private double rating;
 }

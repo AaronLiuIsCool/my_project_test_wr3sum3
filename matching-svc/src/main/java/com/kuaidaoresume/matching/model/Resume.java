@@ -20,8 +20,7 @@ import java.util.Collection;
 @Document(collection = "resumes")
 @CompoundIndexes({
     @CompoundIndex(def = "{'location.country' : 1, 'location.city': 1, 'majors': 1}"),
-    @CompoundIndex(def = "{'location.country' : 1, 'location.city': 1, 'keywords': 1}"),
-    @CompoundIndex(def = "{'location.country' : 1, 'location.city': 1, 'majors': 1, 'keywords': 1}"),
+    @CompoundIndex(def = "{'location.country' : 1, 'location.city': 1, 'keywords': 1}")
 })
 public class Resume {
 
