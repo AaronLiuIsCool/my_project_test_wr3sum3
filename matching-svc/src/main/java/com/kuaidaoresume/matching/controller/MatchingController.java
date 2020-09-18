@@ -413,4 +413,20 @@ public class MatchingController {
         Collection<JobDto> jobs = matchingService.searchJobs(country, city, term, page, pageSize);
         return new JobListResponse(new JobList(jobs, page, pageSize));
     }
+
+    @Authorize(value = {
+            AuthConstant.AUTHORIZATION_WWW_SERVICE,
+            AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
+            //AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
+            //AuthConstant.AUTHORIZATION_BOT_SERVICE,
+            AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
+            AuthConstant.AUTHORIZATION_SUPPORT_USER,
+            AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
+    })
+    @GetMapping("/resumes/score")
+    public ResumeJobScoreResponse getResumeScore(
+            @RequestParam String jobUuid, @RequestParam String resumeUuid) {
+        Collection<ResumeJobScoreDto> resumeJobScores = matchingService.getResumeJobScore(jobUuid, resumeUuid);
+        return new ResumeJobScoreResponse(resumeJobScores);
+    }
 }

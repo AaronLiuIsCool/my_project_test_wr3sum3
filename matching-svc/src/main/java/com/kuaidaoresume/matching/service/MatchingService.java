@@ -10,6 +10,10 @@ import com.kuaidaoresume.matching.dto.JobDto;
 import com.kuaidaoresume.matching.dto.KeywordDto;
 import com.kuaidaoresume.matching.dto.LocationDto;
 import com.kuaidaoresume.matching.dto.ResumeDto;
+import com.kuaidaoresume.matching.dto.ResumeJobScoreDto;
+import com.kuaidaoresume.matching.score.rules.IScoreRule;
+import com.kuaidaoresume.matching.score.rules.KeywordScoreRule;
+import com.kuaidaoresume.matching.score.rules.MajorScoreRule;
 import com.kuaidaoresume.matching.model.*;
 import com.kuaidaoresume.matching.repo.*;
 import com.kuaidaoresume.matching.service.helper.ServiceHelper;
@@ -22,6 +26,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 @Service
 @RequiredArgsConstructor
@@ -362,5 +370,23 @@ public class MatchingService {
         String language = languageDetector.detectLanguageOf(term).getIsoCode639_1().toString();
         return jobRepository.searchJobs(country, city, term, language, page, pageSize).stream().map(job ->
             modelMapper.map(job, JobDto.class)).collect(Collectors.toList());
+    }
+
+    public Collection<ResumeJobScoreDto> getResumeJobScore(String jobUuid, String resumeUuid) {
+        Job job = getJobByUuid(jobUuid);
+        Resume resume = getResumeByUuid(resumeUuid);
+        Properties properties = new Properties();
+
+        try (InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream("score/scores.properties")) {
+            properties.load(new InputStreamReader(in, "UTF-8"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        Collection<IScoreRule> rules = new ArrayList<>();
+        rules.add(new KeywordScoreRule());
+        rules.add(new MajorScoreRule());
+
+        return rules.stream().map(rule -> rule.score(properties, job, resume)).collect(Collectors.toList());
     }
 }
