@@ -52,13 +52,21 @@ public class EnvConfig {
                 .build();
         map.put(EnvConstant.ENV_UAT, envConfig);
 
-        envConfig = EnvConfig.builder().name(EnvConstant.ENV_UAT)
+        envConfig = EnvConfig.builder().name(EnvConstant.ENV_CA_PREPROD)
                 .debug(false)
-                .externalApex("smartresume.careers")
-                .internalApex(EnvConstant.ENV_UAT)
+                .externalApex("ca.smartresume.careers")
+                .internalApex(EnvConstant.ENV_CA_PREPROD)
                 .scheme("http") // CA might need here
                 .build();
-        map.put(EnvConstant.ENV_UAT, envConfig);
+        map.put(EnvConstant.ENV_CA_PREPROD, envConfig);
+
+        envConfig = EnvConfig.builder().name(EnvConstant.ENV_US_PREPROD)
+                .debug(false)
+                .externalApex("us.smartresume.careers")
+                .internalApex(EnvConstant.ENV_US_PREPROD)
+                .scheme("http") // CA might need here
+                .build();
+        map.put(EnvConstant.ENV_US_PREPROD, envConfig);
 
         envConfig = EnvConfig.builder().name(EnvConstant.ENV_PROD)
                 .debug(false)

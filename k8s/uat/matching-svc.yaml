@@ -2,22 +2,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: resume-svc-deployment
-  #namespace: kuaidaoresume-uat
+  name: matching-svc-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: resume-svc
+      app: matching-svc
   template:
     metadata:
       labels:
-        app: resume-svc
+        app: matching-svc
         env: uat
     spec:
       containers:
-        - name: resume-svc
-          image: kuaidaoresume/resume-svc
+        - name: matching-svc
+          image: kuaidaoresume/matching-svc
           imagePullPolicy: Always
           ports:
             - name: http-port
@@ -36,10 +35,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: resume-service
+  name: matching-service
 spec:
   selector:
-    app: resume-svc
+    app: matching-svc
     env: uat
   ports:
     - protocol: TCP

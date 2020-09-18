@@ -25,6 +25,13 @@ spec:
           envFrom:
             - configMapRef:
                 name: common-config
+          volumeMounts:
+            - name: logback-config-volume
+              mountPath: /etc/kuaidaoresume
+      volumes:
+        - name: logback-config-volume
+          configMap:
+            name: logback-config
 ---
 apiVersion: v1
 kind: Service
