@@ -31,9 +31,10 @@ public class ServiceDirectory {
     service = Service.builder()
             .security(SecurityConstant.SEC_AUTHENTICATED)
             .restrictDev(false)
-            .backendDomain("resume-service")
+            .backendDomain("app-service")
+            .noCacheHtml(true)
             .build();
-    map.put("resume", service);
+    map.put("app", service);
 
     service = Service.builder()
             .security(SecurityConstant.SEC_AUTHENTICATED)
@@ -41,6 +42,13 @@ public class ServiceDirectory {
             .backendDomain("job-service")
             .build();
     map.put("job", service);
+
+    service = Service.builder()
+            .security(SecurityConstant.SEC_AUTHENTICATED)
+            .restrictDev(false)
+            .backendDomain("matching-service")
+            .build();
+    map.put("matching", service);
 
     service = Service.builder()
       // Debug site for kdr proxy
@@ -51,19 +59,18 @@ public class ServiceDirectory {
     map.put("kdr", service);
 
     service = Service.builder()
+            .security(SecurityConstant.SEC_AUTHENTICATED)
+            .restrictDev(false)
+            .backendDomain("resume-service")
+            .build();
+    map.put("resume", service);
+
+    service = Service.builder()
          .security(SecurityConstant.SEC_AUTHENTICATED)
          .restrictDev(false)
          .backendDomain("whoami-service")
          .build();
     map.put("whoami", service);
-
-    service = Service.builder()
-            .security(SecurityConstant.SEC_AUTHENTICATED)
-            .restrictDev(false)
-            .backendDomain("app-service")
-            .noCacheHtml(true)
-            .build();
-    map.put("app", service);
 
     service = Service.builder()
             .security(SecurityConstant.SEC_PUBLIC)

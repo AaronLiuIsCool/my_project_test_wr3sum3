@@ -19,10 +19,10 @@ public class SentryClientAspect {
     @Around("execution(* io.sentry.SentryClient.send*(..))")
     public void around(ProceedingJoinPoint joinPoint) throws Throwable {
         // no sentry logging in debug mode
-        if (envConfig.isDebug()) {
+        /*if (envConfig.isDebug()) {
             log.debug("no sentry logging in debug mode");
             return;
-        }
+        }*/
         joinPoint.proceed();
     }
 }

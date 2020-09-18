@@ -52,13 +52,13 @@ public class EnvConfig {
                 .build();
         map.put(EnvConstant.ENV_UAT, envConfig);
 
-//        envConfig = EnvConfig.builder().name(EnvConstant.ENV_UAT)
-//                .debug(false)
-//                .externalApex("kuaidaoresume-uat.com")
-//                .internalApex(EnvConstant.ENV_UAT)
-//                .scheme("https")
-//                .build();
-//        map.put(EnvConstant.ENV_UAT, envConfig);
+        envConfig = EnvConfig.builder().name(EnvConstant.ENV_UAT)
+                .debug(false)
+                .externalApex("smartresume.careers")
+                .internalApex(EnvConstant.ENV_UAT)
+                .scheme("http") // CA might need here
+                .build();
+        map.put(EnvConstant.ENV_UAT, envConfig);
 
         envConfig = EnvConfig.builder().name(EnvConstant.ENV_PROD)
                 .debug(false)

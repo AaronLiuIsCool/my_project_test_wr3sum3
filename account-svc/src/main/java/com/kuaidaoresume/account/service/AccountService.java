@@ -416,7 +416,6 @@ public class AccountService {
     void sendEmail(String userId, String email, String name, String subject, String template, boolean activateOrConfirm) {
         String token = null;
         try {
-            System.out.println("THis is the Account Sign! ->" + appProps.getSigningSecret());
             token = Sign.generateEmailConfirmationToken(userId, email, appProps.getSigningSecret());
         } catch(Exception ex) {
             String errMsg = "Could not create token";
@@ -460,7 +459,7 @@ public class AccountService {
         try {
             baseResponse = mailClient.send(emailRequest);
         } catch (Exception ex) {
-            String errMsg = "Unable to send email";
+            String errMsg = "Unable to send email to " + name + ", Email address: " + email + ".";
             serviceHelper.handleException(logger, ex, errMsg);
             throw new ServiceException(errMsg, ex);
         }

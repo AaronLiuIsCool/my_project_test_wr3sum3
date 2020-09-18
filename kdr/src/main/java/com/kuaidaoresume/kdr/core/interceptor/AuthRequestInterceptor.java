@@ -50,7 +50,7 @@ public class AuthRequestInterceptor implements PreForwardRequestInterceptor {
     String authorization = this.setAuthHeader(data, mapping);
 
     this.validateRestrict(mapping);
-    //this.validateSecurity(data, mapping, authorization); // need enable auth for later sprint TODO Aaron Liu
+    this.validateSecurity(data, mapping, authorization);
 
     // TODO Aaron Liu - filter restricted headers
   }
@@ -162,4 +162,3 @@ public class AuthRequestInterceptor implements PreForwardRequestInterceptor {
     private boolean support;
   }
 }
-

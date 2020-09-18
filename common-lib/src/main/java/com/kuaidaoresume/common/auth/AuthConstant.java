@@ -35,7 +35,7 @@ public class AuthConstant {
     // a request is being made by the whoami microservice
     public static final String AUTHORIZATION_WHOAMI_SERVICE = "whoami-service";
     // AUTHORIZATION_AUTHENTICATED_USER is set as the Authorization header to denote that
-    // a request is being made by an authenticated we6b user
+    // a request is being made by an authenticated web user
     public static final String AUTHORIZATION_AUTHENTICATED_USER = "kdr-authenticated";
     // AUTHORIZATION_ICAL_SERVICE is set as the Authorization header to denote that
     // a request is being made by the ical service
