@@ -25,6 +25,7 @@ ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS `kuaidaoresume_job`.`job` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `uuid` VARCHAR(36) NOT NULL,
   `post_date` DATETIME NOT NULL,
   `position_title` NVARCHAR(75) NOT NULL,
   `company_name` NVARCHAR(75) NOT NULL,
@@ -130,4 +131,14 @@ CREATE TABLE IF NOT EXISTS `kuaidaoresume_job`.`major_has_keyword` (
     REFERENCES `kuaidaoresume_job`.`keyword` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS `kuaidaoresume_job`.`suggestion` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `industry` NVARCHAR(75) NOT NULL,
+  `position_title` NVARCHAR(75) NOT NULL,
+  `texts` NVARCHAR(5000) NOT NULL,
+  `suggestion_keywords` NVARCHAR(3000) NULL COMMENT 'there are 3000 char job suggestion keywords CSV format',
+  PRIMARY KEY (`id`),
+  INDEX `industry_position_idx`(`industry`, `position_title`))
 ENGINE = InnoDB;
