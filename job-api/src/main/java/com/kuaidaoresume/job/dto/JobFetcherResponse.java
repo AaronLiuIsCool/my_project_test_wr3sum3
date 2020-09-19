@@ -34,7 +34,7 @@ public class JobFetcherResponse {
     Date createAt;
     @Builder.Default
     boolean isActive = true;
-    List<String> keywords;
+    List<KeywordDto> keywords;
     @NotNull
     private LocalDateTime postDate;
 }

@@ -60,7 +60,7 @@ public class KeywordControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaTypes.HAL_JSON_VALUE))
-                .andExpect(jsonPath("$.name", is("aKeyword")))
+                .andExpect(jsonPath("$.value", is("aKeyword")))
                 .andReturn();
         verify(keywordService, times(1)).findKeywordById(1L);
         verifyNoMoreInteractions(keywordService);
@@ -84,8 +84,8 @@ public class KeywordControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaTypes.HAL_JSON_VALUE))
                 .andDo(print())
-                .andExpect(jsonPath("$.content[0].name", is("keyword1")))
-                .andExpect(jsonPath("$.content[1].name", is("keyword2")));
+                .andExpect(jsonPath("$.content[0].value", is("keyword1")))
+                .andExpect(jsonPath("$.content[1].value", is("keyword2")));
 
         verify(keywordService, times(1)).findAll();
         verifyNoMoreInteractions(keywordService);

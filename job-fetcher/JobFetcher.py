@@ -94,7 +94,7 @@ class JobFetcher:
 
 def clearJobs():
     try:
-        headers = {'Authorization': 'Basic'}
+        headers = {'Authorization': 'kdr-support'}
         r = requests.delete("http://job-service/v1/jobs",  headers=headers) 
         logging.info("all jobs deleted")
     except Exception as e:

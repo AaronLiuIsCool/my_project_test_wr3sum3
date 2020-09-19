@@ -139,7 +139,7 @@ public class JobInfoExtractionServiceImpl implements JobInfoExtractionService{
                 .location(locationDto)
                 .jobType(jobType)
                 .relevantMajors(majorDtos.stream().map(majorDto -> majorDto.getName()).collect(Collectors.toList()))
-                .keywords(keywordDtos.stream().map(keywordDto -> keywordDto.getName()).collect(Collectors.toList()))
+                .keywords(keywordDtos)
                 .build();
 
         return jobFetcherResponse;

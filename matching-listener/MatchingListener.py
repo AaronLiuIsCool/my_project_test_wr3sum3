@@ -16,7 +16,7 @@ init(dsn=os.getenv('SENTRY_DSN', 'https://270864132b0845e4a9ae4f68f96c77c2@o4343
 def callService(endpoint, payload):
     for retry in range(config["queue"]["retries"]):
         try:
-            headers = {'Authorization': 'Basic'}
+            headers = {'Authorization': 'kdr-support'}
             r = requests.post(endpoint, json = payload, headers=headers) 
             return r
         except Exception as e:
@@ -25,7 +25,6 @@ def callService(endpoint, payload):
     return None    
 
 async def on_message(message: IncomingMessage):
-    headers = {'Authorization': 'Basic'}
     jobs = json.loads(message.body)
 
     for job in jobs:
@@ -39,7 +38,7 @@ async def main(loop, config):
     while True:
         try:
             connection = await connect(config["queue"]["host"], loop=loop)
-            headers = {'Authorization': 'Basic'}
+            headers = {'Authorization': 'kdr-support'}
             async with aiohttp.ClientSession() as session:
                 async with session.get('http://job-service/v1/jobs/1',
                                 headers=headers) as resp:
