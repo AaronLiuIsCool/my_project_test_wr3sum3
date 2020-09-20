@@ -20,6 +20,9 @@ spec:
           ports:
             - name: http-port
               containerPort: 80
+          env:
+            - name: REACT_APP_ENV
+              value: "development"
 ---
 apiVersion: v1
 kind: Service

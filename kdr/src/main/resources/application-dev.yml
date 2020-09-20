@@ -41,6 +41,9 @@ kdr:
       name: app_route
       host: app.kuaidaoresume-v2.local
       destinations: localhost:9102
+  cors:
+    enabled: true
+    webapp_origin: http://localhost:3000,http://app.kuaidaoresume-v2.local:3000,http://app.kuaidaoresume-v2.local:30001,http://app.kuaidaoresume-v2.local
 
 management:
   endpoints:

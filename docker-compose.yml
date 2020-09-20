@@ -140,6 +140,8 @@ services:
     build:
       context: ./webapp
       dockerfile: Dockerfile
+      args:
+        - REACT_APP_ENV=${REACT_APP_ENV}
     image: kuaidaoresume/app-spa
     networks:
       - internal_access

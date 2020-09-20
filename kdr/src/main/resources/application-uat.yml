@@ -1,2 +1,7 @@
+kdr:
+  cors:
+    enabled: true
+    webapp_origin: http://localhost:3000,http://app.uat.smartresume.careers:3000,http://app.uat.smartresume.careers
+
 logging:
   config: /etc/kuaidaoresume/logback-spring.xml
