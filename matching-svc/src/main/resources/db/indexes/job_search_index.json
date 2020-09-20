@@ -1,0 +1,50 @@
+{
+  "analyzer": "lucene.standard",
+  "searchAnalyzer": "lucene.standard",
+  "mappings": {
+    "dynamic": false,
+    "fields": {
+      "companyName": {
+        "analyzer": "lucene.whitespace",
+        "multi": {
+          "chineseAnalyzer": {
+            "analyzer": "lucene.cjk",
+            "type": "string"
+          }
+        },
+        "type": "string"
+      },
+      "keywords": {
+        "fields": {
+          "value": {
+            "analyzer": "lucene.keyword",
+            "ignoreAbove": 255,
+            "multi": {
+              "chineseAnalyzer": {
+                "analyzer": "lucene.cjk",
+                "type": "string"
+              }
+            },
+            "type": "string"
+          }
+        },
+        "type": "document"
+      },
+      "relevantMajors": {
+        "analyzer": "lucene.keyword",
+        "type": "string"
+      },
+      "title": {
+        "analyzer": "lucene.whitespace",
+        "ignoreAbove": 255,
+        "multi": {
+          "chineseAnalyzer": {
+            "analyzer": "lucene.cjk",
+            "type": "string"
+          }
+        },
+        "type": "string"
+      }
+    }
+  }
+}

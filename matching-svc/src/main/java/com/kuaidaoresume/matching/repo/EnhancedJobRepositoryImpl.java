@@ -34,20 +34,21 @@ public class EnhancedJobRepositoryImpl implements EnhancedJobRepository {
     }
 
     @Override
-    public List<Job> searchJobs(String country, String city, String term, String language) {
-        Query query = buildTextSearchQuery(country, city, term, language);
+    public List<Job> searchJobs(String country, String city, String term) {
+        Query query = buildTextSearchQuery(country, city, term);
         return mongoTemplate.find(query, Job.class);
     }
 
     @Override
-    public List<Job> searchJobs(String country, String city, String term, String language, int page, int pageSize) {
-        Query query = buildTextSearchQuery(country, city, term, language);
+    public List<Job> searchJobs(String country, String city, String term, int page, int pageSize) {
+        Query query = buildTextSearchQuery(country, city, term);
         query.with(PageRequest.of(page, pageSize));
         return mongoTemplate.find(query, Job.class);
     }
 
-    private Query buildTextSearchQuery(String country, String city, String term, String language) {
-        TextCriteria textCriteria = TextCriteria.forLanguage(language).matching(term);
+    // TODO: SL write stress tests for this query
+    private Query buildTextSearchQuery(String country, String city, String term) {
+        TextCriteria textCriteria = TextCriteria.forDefaultLanguage().matching(term);
         TextQuery query = TextQuery.queryText(textCriteria).sortByScore();
         query.addCriteria(new Criteria().andOperator(
             Criteria.where("location.country").is(country),

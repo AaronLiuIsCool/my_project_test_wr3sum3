@@ -1,6 +1,5 @@
 package com.kuaidaoresume.matching.service;
 
-import com.github.pemistahl.lingua.api.LanguageDetector;
 import com.github.structlog4j.ILogger;
 import com.github.structlog4j.SLoggerFactory;
 import com.google.common.collect.Lists;
@@ -69,9 +68,6 @@ public class MatchingService {
 
     @Autowired
     private final ServiceHelper serviceHelper;
-
-    @Autowired
-    private final LanguageDetector languageDetector;
 
     public void addJob(JobDto jobDto) {
         Job job = modelMapper.map(jobDto, Job.class);
@@ -361,14 +357,12 @@ public class MatchingService {
     }
 
     public Collection<JobDto> searchJobs(String country, String city, String term) {
-        String language = languageDetector.detectLanguageOf(term).getIsoCode639_1().toString();
-        return jobRepository.searchJobs(country, city, term, language).stream().map(job ->
+        return jobRepository.searchJobs(country, city, term).stream().map(job ->
             modelMapper.map(job, JobDto.class)).collect(Collectors.toList());
     }
 
     public Collection<JobDto> searchJobs(String country, String city, String term, int page, int pageSize) {
-        String language = languageDetector.detectLanguageOf(term).getIsoCode639_1().toString();
-        return jobRepository.searchJobs(country, city, term, language, page, pageSize).stream().map(job ->
+        return jobRepository.searchJobs(country, city, term, page, pageSize).stream().map(job ->
             modelMapper.map(job, JobDto.class)).collect(Collectors.toList());
     }
 

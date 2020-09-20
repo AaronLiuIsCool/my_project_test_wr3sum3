@@ -209,7 +209,7 @@ public class JobRepositoryTest {
             .createdAt(Instant.ofEpochMilli(1598230435))
             .isActive(true)
             .build());
-        assertThat(jobRepository.searchJobs(location.getCountry(), location.getCity(), "software", "en"),
+        assertThat(jobRepository.searchJobs(location.getCountry(), location.getCity(), "software"),
             is(Arrays.asList(job1, job3)));
     }
 
@@ -248,7 +248,7 @@ public class JobRepositoryTest {
             .createdAt(Instant.ofEpochMilli(1598230435))
             .isActive(true)
             .build());
-        assertThat(jobRepository.searchJobs(location.getCountry(), location.getCity(), "software", "en"),
+        assertThat(jobRepository.searchJobs(location.getCountry(), location.getCity(), "software"),
             is(Arrays.asList(job2, job1, job3)));
     }
 
@@ -276,7 +276,7 @@ public class JobRepositoryTest {
             .createdAt(Instant.ofEpochMilli(1598230435))
             .isActive(true)
             .build());
-        assertThat(jobRepository.searchJobs(location.getCountry(), location.getCity(), "software engineer", "en"),
+        assertThat(jobRepository.searchJobs(location.getCountry(), location.getCity(), "software engineer"),
             is(Arrays.asList(job1, job2)));
     }
 
@@ -308,7 +308,7 @@ public class JobRepositoryTest {
             .createdAt(Instant.ofEpochMilli(1598230435))
             .isActive(true)
             .build());
-        assertThat(jobRepository.searchJobs(location.getCountry(), location.getCity(), "software engineer", "en"),
+        assertThat(jobRepository.searchJobs(location.getCountry(), location.getCity(), "software engineer"),
             is(Arrays.asList(job2)));
     }
 
@@ -336,7 +336,7 @@ public class JobRepositoryTest {
             .createdAt(Instant.ofEpochMilli(1598230435))
             .isActive(true)
             .build());
-        assertThat(jobRepository.searchJobs(location.getCountry(), location.getCity(), "software engineer", "en"),
+        assertThat(jobRepository.searchJobs(location.getCountry(), location.getCity(), "software engineer"),
             is(Arrays.asList(job2)));
     }
 
@@ -363,7 +363,7 @@ public class JobRepositoryTest {
             .createdAt(Instant.ofEpochMilli(1598230435))
             .isActive(true)
             .build());
-        assertThat(jobRepository.searchJobs(location.getCountry(), location.getCity(), "google", "en"),
+        assertThat(jobRepository.searchJobs(location.getCountry(), location.getCity(), "google"),
             is(Arrays.asList(job1)));
     }
 
@@ -390,7 +390,7 @@ public class JobRepositoryTest {
             .createdAt(Instant.ofEpochMilli(1598230435))
             .isActive(true)
             .build());
-        assertThat(jobRepository.searchJobs(location.getCountry(), location.getCity(), "law", "en"),
+        assertThat(jobRepository.searchJobs(location.getCountry(), location.getCity(), "law"),
             is(Arrays.asList(job2)));
     }
 
@@ -417,7 +417,7 @@ public class JobRepositoryTest {
             .createdAt(Instant.ofEpochMilli(1598230435))
             .isActive(true)
             .build());
-        assertThat(jobRepository.searchJobs(location.getCountry(), location.getCity(), keyword1.getValue(), "en"),
+        assertThat(jobRepository.searchJobs(location.getCountry(), location.getCity(), keyword1.getValue()),
             is(Arrays.asList(job1)));
     }
 
@@ -444,7 +444,7 @@ public class JobRepositoryTest {
             .createdAt(Instant.ofEpochMilli(1598230435))
             .isActive(true)
             .build());
-        assertThat(jobRepository.searchJobs(location.getCountry(), location.getCity(), keyword2.getValue(), "en"),
+        assertThat(jobRepository.searchJobs(location.getCountry(), location.getCity(), keyword2.getValue()),
             is(Arrays.asList(job2, job1)));
     }
 
@@ -483,7 +483,7 @@ public class JobRepositoryTest {
             .createdAt(Instant.ofEpochMilli(1598230435))
             .isActive(true)
             .build());
-        assertThat(jobRepository.searchJobs(location.getCountry(), location.getCity(), term, "en"),
+        assertThat(jobRepository.searchJobs(location.getCountry(), location.getCity(), term),
             is(Arrays.asList(job2, job1, job3)));
     }
 
@@ -522,7 +522,7 @@ public class JobRepositoryTest {
             .createdAt(Instant.ofEpochMilli(1598230435))
             .isActive(true)
             .build());
-        assertThat(jobRepository.searchJobs(location.getCountry(), location.getCity(), "software", "en", 0, 1),
+        assertThat(jobRepository.searchJobs(location.getCountry(), location.getCity(), "software", 0, 1),
             is(Arrays.asList(job1)));
     }
 
@@ -561,7 +561,7 @@ public class JobRepositoryTest {
             .createdAt(Instant.ofEpochMilli(1598230435))
             .isActive(true)
             .build());
-        assertThat(jobRepository.searchJobs(location.getCountry(), location.getCity(), "software", "en", 1, 2),
+        assertThat(jobRepository.searchJobs(location.getCountry(), location.getCity(), "software", 1, 2),
             is(Arrays.asList(job3)));
     }
 }

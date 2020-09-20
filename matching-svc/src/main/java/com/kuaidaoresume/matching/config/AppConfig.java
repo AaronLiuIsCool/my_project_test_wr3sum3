@@ -1,7 +1,5 @@
 package com.kuaidaoresume.matching.config;
 
-import com.github.pemistahl.lingua.api.LanguageDetector;
-import com.github.pemistahl.lingua.api.LanguageDetectorBuilder;
 import com.kuaidaoresume.common.async.ContextCopyingDecorator;
 import com.kuaidaoresume.common.config.KuaidaoresumeRestConfig;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -21,9 +19,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
-
-import static com.github.pemistahl.lingua.api.IsoCode639_1.EN;
-import static com.github.pemistahl.lingua.api.IsoCode639_1.ZH;
 
 @Configuration
 @EnableAsync
@@ -63,11 +58,6 @@ public class AppConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public LanguageDetector languageDetector() {
-        return LanguageDetectorBuilder.fromIsoCodes639_1(EN, ZH).build();
     }
 }
 
