@@ -239,7 +239,8 @@ public class AccountController {
     @Authorize(value = {
         AuthConstant.AUTHORIZATION_SUPPORT_USER,
         AuthConstant.AUTHORIZATION_WWW_SERVICE,
-        AuthConstant.AUTHORIZATION_RESUME_SERVICE
+        AuthConstant.AUTHORIZATION_RESUME_SERVICE,
+        AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
     })
     @PostMapping(path = "{userId}/resumes")
     public BaseResponse addResumeToAccount(@PathVariable String userId, @RequestBody @Valid ResumeDto resumeDto) {
@@ -252,6 +253,7 @@ public class AccountController {
     @Authorize(value = {
         AuthConstant.AUTHORIZATION_SUPPORT_USER,
         AuthConstant.AUTHORIZATION_WWW_SERVICE,
+        AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
         AuthConstant.AUTHORIZATION_RESUME_SERVICE
     })
     @DeleteMapping(path = "{userId}/resumes")

@@ -30,7 +30,8 @@ public class ProgrammaticMappingsProvider extends MappingsProvider {
 
   @Override
   protected boolean shouldUpdateMappings(HttpServletRequest request) {
-    return false;
+    //return false;
+    return true;
   }
 
   @Override

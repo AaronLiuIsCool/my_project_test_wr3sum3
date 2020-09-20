@@ -160,6 +160,10 @@ kubectl delete deployments --all
 kubectl delete services --all
 kubectl delete configmaps --all
 ```
+All in one
+```
+kubectl delete deployments --all && kubectl delete services --all && kubectl delete configmaps --all
+```
 
 ## Run uat (It's on AWS EKS CA central region)
 1. Go to k8s/uat folder

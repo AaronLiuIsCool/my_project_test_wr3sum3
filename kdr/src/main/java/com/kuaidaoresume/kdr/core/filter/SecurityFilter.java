@@ -43,37 +43,38 @@ public class SecurityFilter extends OncePerRequestFilter {
       return;
     }
 
-    if (!envConfig.isDebug()) {
-      // Check if secure
-      boolean isSecure = request.isSecure();
-      if (!isSecure) {
-        // Check if frontend proxy proxied it
-        if ("https".equals(request.getHeader("X-Forwarded-Proto"))) {
-          isSecure = true;
-        }
-      }
-
-      // If not secure, then redirect
-      if (!isSecure) {
-        log.info("Insecure quest in uat&prod environment, redirect to https");
-        try {
-          URI redirectUrl = new URI("https",
-            request.getServerName(),
-            request.getRequestURI(), null);
-          response.sendRedirect(redirectUrl.toString());
-        } catch (URISyntaxException e) {
-          log.error("fail to build redirect url", e);
-        }
-        return;
-      }
-
-      // HSTS - force SSL
-      response.setHeader("Strict-Transport-Security", "max-age=315360000; includeSubDomains; preload");
-      // No iFrames
-      response.setHeader("X-Frame-Options", "DENY");
-      // Cross-site scripting protection
-      response.setHeader("X-XSS-Protection", "1; mode=block");
-    }
+    // TODO: QS - enable this after we get certifications
+//    if (!envConfig.isDebug()) {
+//      // Check if secure
+//      boolean isSecure = request.isSecure();
+//      if (!isSecure) {
+//        // Check if frontend proxy proxied it
+//        if ("https".equals(request.getHeader("X-Forwarded-Proto"))) {
+//          isSecure = true;
+//        }
+//      }
+//
+//      // If not secure, then redirect
+//      if (!isSecure) {
+//        log.info("Insecure quest in uat&prod environment, redirect to https");
+//        try {
+//          URI redirectUrl = new URI("https",
+//            request.getServerName(),
+//            request.getRequestURI(), null);
+//          response.sendRedirect(redirectUrl.toString());
+//        } catch (URISyntaxException e) {
+//          log.error("fail to build redirect url", e);
+//        }
+//        return;
+//      }
+//
+//      // HSTS - force SSL
+//      response.setHeader("Strict-Transport-Security", "max-age=315360000; includeSubDomains; preload");
+//      // No iFrames
+//      response.setHeader("X-Frame-Options", "DENY");
+//      // Cross-site scripting protection
+//      response.setHeader("X-XSS-Protection", "1; mode=block");
+//    }
 
     filterChain.doFilter(request, response);
   }

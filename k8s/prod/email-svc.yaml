@@ -1,3 +1,4 @@
+# https://matthewpalmer.net/kubernetes-app-developer/articles/kubernetes-apiversion-definition-guide.html
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -16,12 +17,20 @@ spec:
       containers:
         - name: email-svc
           image: kuaidaoresume/mail-svc
+          imagePullPolicy: Always
           ports:
             - name: http-port
               containerPort: 80
           envFrom:
             - configMapRef:
                 name: common-config
+          volumeMounts:
+            - name: logback-config-volume
+              mountPath: /etc/kuaidaoresume
+      volumes:
+        - name: logback-config-volume
+          configMap:
+            name: logback-config
 ---
 apiVersion: v1
 kind: Service

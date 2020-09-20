@@ -1,9 +1,10 @@
+# https://matthewpalmer.net/kubernetes-app-developer/articles/kubernetes-apiversion-definition-guide.html
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: www-web-deployment
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: www-svc
@@ -12,16 +13,25 @@ spec:
       labels:
         app: www-svc
         env: prod
+        track: stable
     spec:
       containers:
         - name: www-svc
           image: kuaidaoresume/www-svc
+          imagePullPolicy: Always
           ports:
             - name: http-port
               containerPort: 80
           envFrom:
             - configMapRef:
                 name: common-config
+          volumeMounts:
+            - name: logback-config-volume
+              mountPath: /etc/kuaidaoresume
+      volumes:
+        - name: logback-config-volume
+          configMap:
+            name: logback-config
 ---
 apiVersion: v1
 kind: Service
