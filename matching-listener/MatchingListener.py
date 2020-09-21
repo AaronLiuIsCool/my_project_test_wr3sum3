@@ -11,8 +11,9 @@ import asyncio
 from aio_pika import connect, IncomingMessage
 import aiohttp
 
-init(dsn=os.getenv('SENTRY_DSN', 'https://270864132b0845e4a9ae4f68f96c77c2@o434398.ingest.sentry.io/5391423'))
-
+init(dsn=os.getenv('SENTRY_DSN', 'https://270864132b0845e4a9ae4f68f96c77c2@o434398.ingest.sentry.io/5391423'), 
+    traces_sample_rate=0.01
+)
 def callService(endpoint, payload):
     for retry in range(config["queue"]["retries"]):
         try:
