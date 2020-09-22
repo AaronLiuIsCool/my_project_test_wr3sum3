@@ -5,7 +5,7 @@ WORKDIR '/usr/app'
 ARG REACT_APP_ENV
 ENV REACT_APP_ENV $REACT_APP_ENV
 
-RUN echo "Running on $REACT_APP_ENV
+RUN echo "Running on $REACT_APP_ENV"
 
 # install dependencies
 COPY package.json ./
