@@ -1,0 +1,13 @@
+spring:
+  profiles:
+    it
+
+server:
+  port: 8087
+
+kuaidaoresume:
+  common:
+    sentry-dsn: ${SENTRY_DSN:https://8822f4ae889b433f9fe72e3904665246@sentry.io/1234888} # mock for test
+  signing-secret: ${SIGNING_SECRET:TEST_SECRET}
+  matching-service-endpoint: http://localhost:8087 # for testing only
+  intercom-access-token: ${INTERCOM_ACCESS_TOKEN:TEST_INTERCOM_ACCESS_TOKEN}

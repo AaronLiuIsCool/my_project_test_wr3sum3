@@ -18,6 +18,7 @@ import java.util.Collection;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ResumeDto {
 
+    @NotNull
     private String resumeUuid;
 
     @NotNull

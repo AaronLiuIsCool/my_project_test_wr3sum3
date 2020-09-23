@@ -27,11 +27,7 @@ public class MatchingController {
     private MatchingService matchingService;
 
     @Authorize(value = {
-        AuthConstant.AUTHORIZATION_WWW_SERVICE,
-        AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
-        //AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
-        //AuthConstant.AUTHORIZATION_BOT_SERVICE,
-        AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
+        AuthConstant.AUTHORIZATION_JOB_SERVICE,
         AuthConstant.AUTHORIZATION_SUPPORT_USER,
         AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
     })
@@ -45,11 +41,7 @@ public class MatchingController {
     }
 
     @Authorize(value = {
-        AuthConstant.AUTHORIZATION_WWW_SERVICE,
-        AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
-        //AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
-        //AuthConstant.AUTHORIZATION_BOT_SERVICE,
-        AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
+        AuthConstant.AUTHORIZATION_RESUME_SERVICE,
         AuthConstant.AUTHORIZATION_SUPPORT_USER,
         AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
     })
@@ -65,9 +57,6 @@ public class MatchingController {
 
     @Authorize(value = {
         AuthConstant.AUTHORIZATION_WWW_SERVICE,
-        AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
-        //AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
-        //AuthConstant.AUTHORIZATION_BOT_SERVICE,
         AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
         AuthConstant.AUTHORIZATION_SUPPORT_USER,
         AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
@@ -80,9 +69,6 @@ public class MatchingController {
 
     @Authorize(value = {
         AuthConstant.AUTHORIZATION_WWW_SERVICE,
-        AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
-        //AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
-        //AuthConstant.AUTHORIZATION_BOT_SERVICE,
         AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
         AuthConstant.AUTHORIZATION_SUPPORT_USER,
         AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
@@ -97,9 +83,6 @@ public class MatchingController {
 
     @Authorize(value = {
         AuthConstant.AUTHORIZATION_WWW_SERVICE,
-        AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
-        //AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
-        //AuthConstant.AUTHORIZATION_BOT_SERVICE,
         AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
         AuthConstant.AUTHORIZATION_SUPPORT_USER,
         AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
@@ -112,9 +95,6 @@ public class MatchingController {
 
     @Authorize(value = {
         AuthConstant.AUTHORIZATION_WWW_SERVICE,
-        AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
-        //AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
-        //AuthConstant.AUTHORIZATION_BOT_SERVICE,
         AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
         AuthConstant.AUTHORIZATION_SUPPORT_USER,
         AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
@@ -129,9 +109,6 @@ public class MatchingController {
 
     @Authorize(value = {
         AuthConstant.AUTHORIZATION_WWW_SERVICE,
-        AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
-        //AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
-        //AuthConstant.AUTHORIZATION_BOT_SERVICE,
         AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
         AuthConstant.AUTHORIZATION_SUPPORT_USER,
         AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
@@ -150,31 +127,25 @@ public class MatchingController {
 
     @Authorize(value = {
         AuthConstant.AUTHORIZATION_WWW_SERVICE,
-        AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
-        //AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
-        //AuthConstant.AUTHORIZATION_BOT_SERVICE,
         AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
         AuthConstant.AUTHORIZATION_SUPPORT_USER,
         AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
     })
     @GetMapping("/jobs/tailored")
-    public BaseResponse getTailoredJob(@RequestParam String resumeUuid) {
+    public GenericJobResponse getTailoredJob(@RequestParam String resumeUuid) {
         Optional<JobDto> jobDtoOptional = matchingService.getResumeTailoredJob(resumeUuid);
         if (jobDtoOptional.isPresent()) {
             return new GenericJobResponse(jobDtoOptional.get());
         } else {
-            BaseResponse baseResponse = new BaseResponse();
-            baseResponse.setMessage("No tailored job with resume " + resumeUuid);
+            GenericJobResponse response = new GenericJobResponse();
+            response.setMessage("No tailored job with resume " + resumeUuid);
 
-            return baseResponse;
+            return response;
         }
     }
 
     @Authorize(value = {
         AuthConstant.AUTHORIZATION_WWW_SERVICE,
-        AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
-        //AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
-        //AuthConstant.AUTHORIZATION_BOT_SERVICE,
         AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
         AuthConstant.AUTHORIZATION_SUPPORT_USER,
         AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
@@ -187,9 +158,6 @@ public class MatchingController {
 
     @Authorize(value = {
         AuthConstant.AUTHORIZATION_WWW_SERVICE,
-        AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
-        //AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
-        //AuthConstant.AUTHORIZATION_BOT_SERVICE,
         AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
         AuthConstant.AUTHORIZATION_SUPPORT_USER,
         AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
@@ -206,9 +174,6 @@ public class MatchingController {
 
     @Authorize(value = {
         AuthConstant.AUTHORIZATION_WWW_SERVICE,
-        AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
-        //AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
-        //AuthConstant.AUTHORIZATION_BOT_SERVICE,
         AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
         AuthConstant.AUTHORIZATION_SUPPORT_USER,
         AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
@@ -223,9 +188,6 @@ public class MatchingController {
 
     @Authorize(value = {
         AuthConstant.AUTHORIZATION_WWW_SERVICE,
-        AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
-        //AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
-        //AuthConstant.AUTHORIZATION_BOT_SERVICE,
         AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
         AuthConstant.AUTHORIZATION_SUPPORT_USER,
         AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
@@ -238,9 +200,6 @@ public class MatchingController {
 
     @Authorize(value = {
         AuthConstant.AUTHORIZATION_WWW_SERVICE,
-        AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
-        //AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
-        //AuthConstant.AUTHORIZATION_BOT_SERVICE,
         AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
         AuthConstant.AUTHORIZATION_SUPPORT_USER,
         AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
@@ -257,9 +216,6 @@ public class MatchingController {
 
     @Authorize(value = {
         AuthConstant.AUTHORIZATION_WWW_SERVICE,
-        AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
-        //AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
-        //AuthConstant.AUTHORIZATION_BOT_SERVICE,
         AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
         AuthConstant.AUTHORIZATION_SUPPORT_USER,
         AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
@@ -272,9 +228,6 @@ public class MatchingController {
 
     @Authorize(value = {
         AuthConstant.AUTHORIZATION_WWW_SERVICE,
-        AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
-        //AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
-        //AuthConstant.AUTHORIZATION_BOT_SERVICE,
         AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
         AuthConstant.AUTHORIZATION_SUPPORT_USER,
         AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
@@ -291,9 +244,6 @@ public class MatchingController {
 
     @Authorize(value = {
         AuthConstant.AUTHORIZATION_WWW_SERVICE,
-        AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
-        //AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
-        //AuthConstant.AUTHORIZATION_BOT_SERVICE,
         AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
         AuthConstant.AUTHORIZATION_SUPPORT_USER,
         AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
@@ -308,9 +258,6 @@ public class MatchingController {
 
     @Authorize(value = {
         AuthConstant.AUTHORIZATION_WWW_SERVICE,
-        AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
-        //AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
-        //AuthConstant.AUTHORIZATION_BOT_SERVICE,
         AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
         AuthConstant.AUTHORIZATION_SUPPORT_USER,
         AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
@@ -323,9 +270,6 @@ public class MatchingController {
 
     @Authorize(value = {
         AuthConstant.AUTHORIZATION_WWW_SERVICE,
-        AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
-        //AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
-        //AuthConstant.AUTHORIZATION_BOT_SERVICE,
         AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
         AuthConstant.AUTHORIZATION_SUPPORT_USER,
         AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
@@ -342,9 +286,6 @@ public class MatchingController {
 
     @Authorize(value = {
         AuthConstant.AUTHORIZATION_WWW_SERVICE,
-        AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
-        //AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
-        //AuthConstant.AUTHORIZATION_BOT_SERVICE,
         AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
         AuthConstant.AUTHORIZATION_SUPPORT_USER,
         AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
@@ -357,9 +298,6 @@ public class MatchingController {
 
     @Authorize(value = {
         AuthConstant.AUTHORIZATION_WWW_SERVICE,
-        AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
-        //AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
-        //AuthConstant.AUTHORIZATION_BOT_SERVICE,
         AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
         AuthConstant.AUTHORIZATION_SUPPORT_USER,
         AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
@@ -376,9 +314,6 @@ public class MatchingController {
 
     @Authorize(value = {
         AuthConstant.AUTHORIZATION_WWW_SERVICE,
-        AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
-        //AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
-        //AuthConstant.AUTHORIZATION_BOT_SERVICE,
         AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
         AuthConstant.AUTHORIZATION_SUPPORT_USER,
         AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
@@ -395,9 +330,6 @@ public class MatchingController {
 
     @Authorize(value = {
         AuthConstant.AUTHORIZATION_WWW_SERVICE,
-        AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
-        //AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
-        //AuthConstant.AUTHORIZATION_BOT_SERVICE,
         AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
         AuthConstant.AUTHORIZATION_SUPPORT_USER,
         AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
@@ -415,13 +347,10 @@ public class MatchingController {
     }
 
     @Authorize(value = {
-            AuthConstant.AUTHORIZATION_WWW_SERVICE,
-            AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
-            //AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
-            //AuthConstant.AUTHORIZATION_BOT_SERVICE,
-            AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
-            AuthConstant.AUTHORIZATION_SUPPORT_USER,
-            AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
+        AuthConstant.AUTHORIZATION_WWW_SERVICE,
+        AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
+        AuthConstant.AUTHORIZATION_SUPPORT_USER,
+        AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
     })
     @GetMapping("/resumes/score")
     public ResumeJobScoreResponse getResumeScore(
