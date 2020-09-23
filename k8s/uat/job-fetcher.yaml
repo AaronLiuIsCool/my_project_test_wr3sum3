@@ -11,7 +11,7 @@ spec:
     metadata:
       labels:
         app: job-fetcher
-        env: prod
+        env: uat
     spec:
       containers:
         - name: job-fetcher
@@ -31,7 +31,7 @@ metadata:
 spec:
   selector:
     app: job-fetcher
-    env: prod
+    env: uat
   ports:
     - protocol: TCP
       port: 5672

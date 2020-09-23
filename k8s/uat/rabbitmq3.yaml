@@ -1,21 +1,22 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
-  name: job-fetcher-deployment
+  name: rabbitmq3
 spec:
+  serviceName: rabbitmq
   replicas: 1
   selector:
     matchLabels:
-      app: job-fetcher
+      app: rabbitmq3
   template:
     metadata:
       labels:
-        app: job-fetcher
-        env: prod
+        app: rabbitmq3
+        env: uat
     spec:
       containers:
-        - name: job-fetcher
-          image: kuaidaoresume/job-fetcher
+        - name: rabbitmq3
+          image: rabbitmq:3-management
           imagePullPolicy: Always
           ports:
             - name: additional-port
@@ -27,11 +28,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: job-fetcher
+  name: rabbitmq3
 spec:
   selector:
-    app: job-fetcher
-    env: prod
+    app: rabbitmq3
+    env: uat
   ports:
     - protocol: TCP
       port: 5672

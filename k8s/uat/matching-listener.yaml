@@ -11,7 +11,7 @@ spec:
     metadata:
       labels:
         app: matching-listener
-        env: prod
+        env: uat
     spec:
       containers:
         - name: matching-listener
@@ -38,7 +38,7 @@ metadata:
 spec:
   selector:
     app: matching-listener
-    env: prod
+    env: uat
   ports:
     - protocol: TCP
       port: 5672
