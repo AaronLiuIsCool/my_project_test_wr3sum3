@@ -46,6 +46,12 @@ public class EnhancedJobRepositoryImpl implements EnhancedJobRepository {
         return mongoTemplate.find(query, Job.class);
     }
 
+    @Override
+    public long countJobsMatchedByTerm(String country, String city, String term) {
+        Query query = buildTextSearchQuery(country, city, term);
+        return mongoTemplate.count(query, Job.class);
+    }
+
     // TODO: SL write stress tests for this query
     private Query buildTextSearchQuery(String country, String city, String term) {
         TextCriteria textCriteria = TextCriteria.forDefaultLanguage().matching(term);

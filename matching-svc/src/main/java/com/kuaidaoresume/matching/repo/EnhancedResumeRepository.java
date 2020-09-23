@@ -10,4 +10,6 @@ public interface EnhancedResumeRepository {
 
     List<Resume> findMatchedResumes(String country, String city, Collection<String> majors, Collection<String> keywords,
         int page, int pageSize);
+
+    long countMatchedResumes(String country, String city, Collection<String> majors, Collection<String> keywords);
 }

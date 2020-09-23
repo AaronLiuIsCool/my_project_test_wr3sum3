@@ -28,6 +28,12 @@ public class EnhancedResumeRepositoryImpl implements EnhancedResumeRepository {
         return mongoTemplate.find(query, Resume.class);
     }
 
+    @Override
+    public long countMatchedResumes(String country, String city, Collection<String> majors, Collection<String> keywords) {
+        Query query = buildFindMatchedResumesQuery(country, city, majors, keywords);
+        return mongoTemplate.count(query, Resume.class);
+    }
+
     private Query buildFindMatchedResumesQuery(String country, String city, Collection<String> majors, Collection<String> keywords) {
         Query query = new Query();
         query.addCriteria(new Criteria().andOperator(

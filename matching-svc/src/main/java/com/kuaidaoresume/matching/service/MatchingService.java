@@ -92,6 +92,10 @@ public class MatchingService {
             .map(job -> modelMapper.map(job, JobDto.class)).collect(Collectors.toList());
     }
 
+    public long countMatchedJobs(ResumeDto resumeDto) {
+        return getMatchedJobs(resumeDto).size();
+    }
+
     private Collection<Job> getMatchedJobs(ResumeDto resumeDto) {
         String resumeUuid = resumeDto.getResumeUuid();
 
@@ -153,6 +157,14 @@ public class MatchingService {
         List<Resume> matchedResumes = resumeRepository.findMatchedResumes(location.getCountry(), location.getCity(),
             relevantMajors, keywords, page, pageSize);
         return matchedResumes.stream().map(resume -> modelMapper.map(resume, ResumeDto.class)).collect(Collectors.toList());
+    }
+
+    public long countMatchedResumes(JobDto jobDto) {
+        LocationDto location = jobDto.getLocation();
+        Collection<String> relevantMajors = jobDto.getRelevantMajors() != null ? jobDto.getRelevantMajors() : Lists.newArrayList();
+        Collection<String> keywords = jobDto.getKeywords() != null ?
+            jobDto.getKeywords().stream().map(KeywordDto::getValue).collect(Collectors.toSet()) : Lists.newArrayList();
+        return resumeRepository.countMatchedResumes(location.getCountry(), location.getCity(), relevantMajors, keywords);
     }
 
     @Transactional
@@ -224,6 +236,12 @@ public class MatchingService {
     public Collection<ResumeDto> getTailoredResumesByJob(String jobUuid, int offset, int limit) {
         Collection<Resume> tailoredResumes = tailoredJobRepository.findTailoredResumesWithLimit(jobUuid, offset, limit);
         return tailoredResumes.stream().map(resume -> modelMapper.map(resume, ResumeDto.class)).collect(Collectors.toList());
+    }
+
+    public long countTailoredResumesByJob(String jobUuid) {
+        return tailoredJobRepository.findByJobUuid(jobUuid)
+            .map(tailoredJob -> tailoredJob.getTailoredResumes().size())
+            .orElse(0);
     }
 
     @Transactional
@@ -319,6 +337,12 @@ public class MatchingService {
             modelMapper.map(job, JobDto.class)).collect(Collectors.toList());
     }
 
+    public long countResumeBookmarkedJobs(String resumeUuid) {
+        return bookmarkedResumeRepository.findByResumeUuid(resumeUuid)
+            .map(bookmarkedResume -> bookmarkedResume.getBookmarkedJobs().size())
+            .orElse(0);
+    }
+
     public Collection<ResumeDto> getResumesBookmarkedByJob(String jobUuid) {
         BookmarkedJob bookmarkedJob = bookmarkedJobRepository.findByJobUuid(jobUuid).orElse(
             BookmarkedJob.builder().bookmarkedResumes(Lists.newArrayList()).build());
@@ -329,6 +353,12 @@ public class MatchingService {
     public Collection<ResumeDto> getResumesBookmarkedByJob(String jobUuid, int offset, int limit) {
         return bookmarkedJobRepository.findResumesBookmarkedByJob(jobUuid, offset, limit).stream().map(resume ->
             modelMapper.map(resume, ResumeDto.class)).collect(Collectors.toList());
+    }
+
+    public long countBookmarkedResumesByJob(String jobUuid) {
+        return bookmarkedJobRepository.findByJobUuid(jobUuid)
+            .map(bookmarkedJob -> bookmarkedJob.getBookmarkedResumes().size())
+            .orElse(0);
     }
 
     public Collection<JobDto> getResumeVisitedJobs(String resumeUuid) {
@@ -344,6 +374,12 @@ public class MatchingService {
             modelMapper.map(job, JobDto.class)).collect(Collectors.toList());
     }
 
+    public long countResumeVisitedJobs(String resumeUuid) {
+        return visitedResumeRepository.findByResumeUuid(resumeUuid)
+            .map(visitedResume -> visitedResume.getVisitedJobs().size())
+            .orElse(0);
+    }
+
     public Collection<ResumeDto> getResumesVisitedByJob(String jobUuid) {
         VisitedJob visitedJob = visitedJobRepository.findByJobUuid(jobUuid).orElse(
             VisitedJob.builder().visitedResumes(Lists.newArrayList()).build());
@@ -356,6 +392,11 @@ public class MatchingService {
             modelMapper.map(resume, ResumeDto.class)).collect(Collectors.toList());
     }
 
+    public long countVisitedResumesByJob(String jobUuid) {
+        return visitedJobRepository.findByJobUuid(jobUuid).map(visitedJob -> visitedJob.getVisitedResumes().size())
+            .orElse(0);
+    }
+
     public Collection<JobDto> searchJobs(String country, String city, String term) {
         return jobRepository.searchJobs(country, city, term).stream().map(job ->
             modelMapper.map(job, JobDto.class)).collect(Collectors.toList());
@@ -364,6 +405,10 @@ public class MatchingService {
     public Collection<JobDto> searchJobs(String country, String city, String term, int page, int pageSize) {
         return jobRepository.searchJobs(country, city, term, page, pageSize).stream().map(job ->
             modelMapper.map(job, JobDto.class)).collect(Collectors.toList());
+    }
+
+    public long countJobsMatchedByTerm(String country, String city, String term) {
+        return jobRepository.countJobsMatchedByTerm(country, city, term);
     }
 
     public Collection<ResumeJobScoreDto> getResumeJobScore(String jobUuid, String resumeUuid) {

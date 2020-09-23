@@ -11,4 +11,6 @@ public interface EnhancedJobRepository {
     List<Job> searchJobs(String country, String city, String term);
 
     List<Job> searchJobs(String country, String city, String term, int page, int pageSize);
+
+    long countJobsMatchedByTerm(String country, String city, String term);
 }

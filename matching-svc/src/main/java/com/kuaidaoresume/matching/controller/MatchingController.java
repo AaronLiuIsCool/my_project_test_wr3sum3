@@ -78,7 +78,9 @@ public class MatchingController {
                                            @RequestParam @Min(0) int offset, @RequestParam @Min(1) int limit) {
 
         Collection<JobDto> matchedJobs = matchingService.findMatchedJobs(resumeDto, offset, limit);
-        return new JobListResponse(new JobList(matchedJobs, offset, limit));
+        long total = matchingService.countMatchedJobs(resumeDto);
+        return new JobListResponse(
+            JobListWithPaging.builder().jobs(matchedJobs).offset(offset).limit(limit).total(total).build());
     }
 
     @Authorize(value = {
@@ -104,7 +106,9 @@ public class MatchingController {
                                                  @RequestParam @Min(0) int page, @RequestParam  @Min(1) int pageSize) {
 
         Collection<ResumeDto> resumeDtos = matchingService.findMatchedResumes(jobDto, page, pageSize);
-        return new ResumeListResponse(new ResumeList(resumeDtos, page, pageSize));
+        long total = matchingService.countMatchedResumes(jobDto);
+        return new ResumeListResponse(
+            ResumeListWithPaging.builder().resumes(resumeDtos).offset(page).limit(pageSize).total(total).build());
     }
 
     @Authorize(value = {
@@ -169,7 +173,9 @@ public class MatchingController {
         @RequestParam @Min(1) int limit) {
 
         Collection<ResumeDto> resumeDtos = matchingService.getTailoredResumesByJob(jobUuid, offset, limit);
-        return new ResumeListResponse(new ResumeList(resumeDtos, offset, limit));
+        long total = matchingService.countTailoredResumesByJob(jobUuid);
+        return new ResumeListResponse(
+            ResumeListWithPaging.builder().resumes(resumeDtos).offset(offset).limit(limit).total(total).build());
     }
 
     @Authorize(value = {
@@ -211,7 +217,9 @@ public class MatchingController {
         @RequestParam @Min(1) int limit) {
 
         Collection<JobDto> bookmarkedJobs = matchingService.getResumeBookmarkedJobs(resumeUuid, offset, limit);
-        return new JobListResponse(new JobList(bookmarkedJobs, offset, limit));
+        long total = matchingService.countResumeBookmarkedJobs(resumeUuid);
+        return new JobListResponse(
+            JobListWithPaging.builder().jobs(bookmarkedJobs).offset(offset).limit(limit).total(total).build());
     }
 
     @Authorize(value = {
@@ -239,7 +247,9 @@ public class MatchingController {
         @RequestParam @Min(1) int limit) {
 
         Collection<ResumeDto> bookmarkedResumes = matchingService.getResumesBookmarkedByJob(jobUuid, offset, limit);
-        return new ResumeListResponse(new ResumeList(bookmarkedResumes, offset, limit));
+        long total = matchingService.countBookmarkedResumesByJob(jobUuid);
+        return new ResumeListResponse(
+            ResumeListWithPaging.builder().resumes(bookmarkedResumes).offset(offset).limit(limit).total(total).build());
     }
 
     @Authorize(value = {
@@ -281,7 +291,9 @@ public class MatchingController {
         @RequestParam @Min(1) int limit) {
 
         Collection<JobDto> visitedJobs = matchingService.getResumeVisitedJobs(resumeUuid, offset, limit);
-        return new JobListResponse(new JobList(visitedJobs, offset, limit));
+        long total = matchingService.countResumeVisitedJobs(resumeUuid);
+        return new JobListResponse(
+            JobListWithPaging.builder().jobs(visitedJobs).offset(offset).limit(limit).total(total).build());
     }
 
     @Authorize(value = {
@@ -309,7 +321,9 @@ public class MatchingController {
         @RequestParam @Min(1) int limit) {
 
         Collection<ResumeDto> visitedResumes = matchingService.getResumesVisitedByJob(jobUuid, offset, limit);
-        return new ResumeListResponse(new ResumeList(visitedResumes, offset, limit));
+        long total = matchingService.countVisitedResumesByJob(jobUuid);
+        return new ResumeListResponse(
+            ResumeListWithPaging.builder().resumes(visitedResumes).offset(offset).limit(limit).total(total).build());
     }
 
     @Authorize(value = {
@@ -343,7 +357,9 @@ public class MatchingController {
         @RequestParam @Min(1) int pageSize) {
 
         Collection<JobDto> jobs = matchingService.searchJobs(country, city, term, page, pageSize);
-        return new JobListResponse(new JobList(jobs, page, pageSize));
+        long total = matchingService.countJobsMatchedByTerm(country, city, term);
+        return new JobListResponse(
+            JobListWithPaging.builder().jobs(jobs).offset(page).limit(pageSize).total(total).build());
     }
 
     @Authorize(value = {
