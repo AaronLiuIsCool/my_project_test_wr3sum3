@@ -18,7 +18,7 @@ public class AuthConstant {
     public static final String AUTHORIZATION_ANONYMOUS_WEB = "kdr-anonymous";
     // AUTHORIZATION_BOT_SERVICE is set as the Authorization header to denote that
     // a request is being made by the bot microservice
-    public static final String AUTHORIZATION_BOT_SERVICE = "bot-service";
+     public static final String AUTHORIZATION_BOT_SERVICE = "bot-service"; //TBD phase 2
     // AUTHORIZATION_ACCOUNT_SERVICE is set as the Authorization header to denote that
     // a request is being made by the account service
     public static final String AUTHORIZATION_ACCOUNT_SERVICE = "account-service";
@@ -31,7 +31,7 @@ public class AuthConstant {
     // AUTHORIZATION_WWW_SERVICE is set as the Authorization header to denote that
     // a request is being made by the www login / signup system
     public static final String AUTHORIZATION_WWW_SERVICE = "www-service";
-    // AUTH_WHOAMI_SERVICE is set as the Authorization heade to denote that
+    // AUTH_WHOAMI_SERVICE is set as the Authorization header to denote that
     // a request is being made by the whoami microservice
     public static final String AUTHORIZATION_WHOAMI_SERVICE = "whoami-service";
     // AUTHORIZATION_AUTHENTICATED_USER is set as the Authorization header to denote that

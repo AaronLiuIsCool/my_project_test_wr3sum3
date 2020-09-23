@@ -122,6 +122,7 @@ public class LoginController {
                 return "redirect:" + returnTo;
             } else {
                 logger.info("Login attempt denied", "email", email);
+                helperService.logError(logger, "Login attempt denied with email:" + email);
                 loginPage.setDenied(true);
                 loginPage.setPreviousEmail(email);
             }

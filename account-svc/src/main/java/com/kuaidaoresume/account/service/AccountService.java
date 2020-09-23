@@ -470,7 +470,8 @@ public class AccountService {
     }
 
     public void trackEvent(String userId, String eventName) {
-        serviceHelper.trackEventAsync(userId, eventName);
+        // serviceHelper.trackEventAsync(userId, eventName);
+        // Don't need CRM tracking in phase I.
     }
 
     public void syncUser(String userId) {

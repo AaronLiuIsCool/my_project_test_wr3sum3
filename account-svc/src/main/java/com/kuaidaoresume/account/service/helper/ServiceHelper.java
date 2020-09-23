@@ -75,26 +75,23 @@ public class ServiceHelper {
         //TODO: Aaron Liu, may not need in phase I. this.syncUserWithIntercom(user, account.getId());
     }
 
-    void syncUserWithIntercom(User user, String userId) {
+/*    void syncUserWithIntercom(User user, String userId) {
         try {
             Map<String, String> params = Maps.newHashMap();
             params.put("user_id", userId);
-
             User existing = User.find(params);
-
             if (existing != null) {
                 User.update(user);
             } else {
                 User.create(user);
             }
-
             logger.debug("updated intercom");
         } catch (Exception ex) {
             String errMsg = "fail to create/update user on Intercom";
             handleException(logger, ex, errMsg);
             throw new ServiceException(errMsg, ex);
         }
-    }
+    }*/
 
     @Async(AppConfig.ASYNC_EXECUTOR_NAME)
     public void trackEventAsync(String userId, String eventName) {
@@ -131,18 +128,16 @@ public class ServiceHelper {
 
     public void handleError(ILogger log, String errMsg) {
         log.error(errMsg);
-        //if (!envConfig.isDebug()) {
+        if (!envConfig.isDebug()) {
             sentryClient.sendMessage(errMsg);
-        //}
+        }
     }
 
     public void handleException(ILogger log, Exception ex, String errMsg) {
         log.error(errMsg, ex);
-        //if (!envConfig.isDebug()) {
+        if (!envConfig.isDebug()) {
             sentryClient.sendMessage(errMsg);
-            System.out.println("her1");
             sentryClient.sendException(ex);
-            System.out.println("herre");
-        //}
+        }
     }
 }

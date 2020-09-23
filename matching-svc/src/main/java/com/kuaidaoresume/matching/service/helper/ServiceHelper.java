@@ -89,6 +89,7 @@ public class ServiceHelper {
 //        }
 //    }
 
+    // TODO Spencer, please use below utilities for sentry exception logging.
     public void handleErrorAndThrowException(ILogger log, String errMsg) {
         log.error(errMsg);
         if (!envConfig.isDebug()) {
@@ -97,6 +98,7 @@ public class ServiceHelper {
         throw new ServiceException(errMsg);
     }
 
+    // TODO Spencer, please use below utilities for sentry exception logging.
     public void handleErrorAndThrowException(ILogger log, Exception ex, String errMsg) {
         log.error(errMsg, ex);
         if (!envConfig.isDebug()) {
