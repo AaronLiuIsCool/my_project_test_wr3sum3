@@ -88,7 +88,7 @@ export const prepareData = ({
   doc = new jsPDF("A4");
   // define the fonts
   // add the font to jsPDF
-  if (process.env.NODE_ENV !== "test") {
+  if (process.env.REACT_APP_ENV !== "test") {
     doc.addFont(
       process.env.PUBLIC_URL + "/fonts/FZHTJW.TTF",
       "FZHTJW",
@@ -112,7 +112,7 @@ export const prepareData = ({
   else{
     paragraphLineHeight = scaleFactor * 1.11 * paragraphLineHeight;
   }
-  
+
   h1Padding = scaleFactor * h1Padding;
   // note change p font since this will break line wrap
   // pFontSize = scaleFactor * Constants.pFontSize;
@@ -344,7 +344,7 @@ const _perpareWork = (workData, messagesRP) => {
       // also handle the line height and bullet point alignment
       doc.setFontSize(pFontSize);
       const descriptionList = work.workDescription.split("\n");
-      
+
       descriptionList.forEach((content) => {
         const wrappedContent = doc.splitTextToSize(
           content,
@@ -498,7 +498,7 @@ const _perpareVolunteer = (volunteerData, messagesRP) => {
       page: currentPage,
     });
     }
-    
+
     // volunteer company name
     if (volunteer.volunteerRole) {
       doc.setFontSize(Constants.h2FontSize);

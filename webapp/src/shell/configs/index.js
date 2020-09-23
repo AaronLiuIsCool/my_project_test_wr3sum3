@@ -4,13 +4,13 @@ import prodConfigs from './configs-prod.json';
 
 let overrides = {};
 
-console.log(`Build configs for ${process.env.NODE_ENV}`)
+console.log(`Build configs for ${process.env.REACT_APP_ENV}`)
 
-switch (process.env.NODE_ENV) {
+switch (process.env.REACT_APP_ENV) {
   case 'production':
     overrides = prodConfigs;
     break;
-  case 'uat':
+  case 'UAT':
     overrides = uatConfigs;
     break;
   case 'test':

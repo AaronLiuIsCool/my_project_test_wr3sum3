@@ -4,11 +4,11 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const compression = require('compression');
-// const helmet = require('helmet');
-// const cors = require('cors');
+const helmet = require('helmet');
 const path = require('path');
 
-const translateRouter = require('./router/translate')
+const translateRouter = require('./server/router/translate');
+const {authCheck} = require('./server/auth');
 
 // Setup default port
 const PORT = process.env.PORT || 80;
@@ -16,8 +16,10 @@ const PORT = process.env.PORT || 80;
 const app = express();
 
 // Implement middleware
-// app.use(cors());
-// app.use(helmet());
+app.use(helmet.frameguard());
+app.use(helmet.noSniff());
+app.use(helmet.xssFilter());
+
 app.use(compression());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -25,7 +27,7 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 
 app.use(express.static(path.join(__dirname, 'build')));
-app.use('/v1/translate', translateRouter);
+app.use('/v1/translate', authCheck, translateRouter);
 app.get('/*', function (req, res) {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });

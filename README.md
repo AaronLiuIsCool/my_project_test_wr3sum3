@@ -220,3 +220,16 @@ Login is enabled, to bypass that, please go to `/404` first and run `localStorag
 
 Please see [guidelines for webapp](webapp/README.md) for more details
 
+#### Connect to backend services on UAT.
+- Modify your `/etc/hosts` file or use https://github.com/oldj/SwitchHosts and add in
+```shell script
+127.0.0.1 app.uat.smartresume.careers
+```
+- Under `webapp/` add in `.env` file with content
+```shell script
+HTTPS=false
+PORT=80 # You will need admin or sudo to allow port 80, or use default 3000
+HOST='app.uat.smartresume.careers'
+```
+- Run `REACT_APP_ENV=UAT yarn start`
+- Go to `http://app.uat.smartresume.careers/` or `http://app.uat.smartresume.careers:3000/` if your port is 3000
