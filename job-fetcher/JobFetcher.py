@@ -74,7 +74,7 @@ class JobFetcher:
                     query = self.queryTemplate.format(country, industry, level)
                     yield query
 
-    def getJobResults(self, mock = True):
+    def getJobResults(self, mock = os.getenv('MOCK_JOB_FETCH', True)):
         if mock:
             self.enqueue(MOCK_JOB_RESULTS)
             return
