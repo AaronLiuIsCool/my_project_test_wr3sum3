@@ -1,0 +1,59 @@
+spring:
+  application:
+    name: kdr-service
+
+server:
+  error:
+    whitelabel:
+      enabled: false
+
+kuaidaoresume:
+  common:
+    sentry-dsn: ${SENTRY_DSN:https://8822f4ae889b433f9fe72e3904665246@sentry.io/1234888}
+    deploy-env: ${DEPLOY:V2}
+  signing-secret: ${SIGNING_SECRET:TEST_SIGNING_SECRET}
+
+kdr:
+  enable_programmatic_mapping: false
+  retrying:
+    max-attempts: 3
+    retry-on:
+      client-http-error: false
+      server-http-error: false
+      exceptions: java.nio.channels.UnresolvedAddressException
+  tracing:
+    enabled: false
+  mappings:
+    -
+      name: kdr_route
+      host: kdr.kuaidaoresume-v2.local
+      destinations: invalid%:httpbin.org
+    -
+      name: account_route
+      host: account.kuaidaoresume-v2.local
+      destinations: localhost:8081
+    -
+      name: resume_route
+      host: resume.kuaidaoresume-v2.local
+      destinations: localhost:8082
+    -
+      name: job_route
+      host: job.kuaidaoresume-v2.local
+      destinations: localhost:8083
+    -
+      name: whoami_route
+      host: whoami.kuaidaoresume-v2.local
+      destinations: localhost:8084
+    -
+      name: www_route
+      host: www.kuaidaoresume-v2.local
+      destinations: localhost:8086
+      retryable: true
+      timeout:
+        connect: 100
+        read: 500
+    -
+      name: app_route
+      host: app.kuaidaoresume-v2.local
+      destinations: localhost:9102
+
