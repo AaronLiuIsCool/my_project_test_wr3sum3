@@ -43,7 +43,6 @@ public abstract class Experience implements ResumeContainable {
     @NotNull
     private Date startDate;
 
-    @NotNull
     private Date endDate;
 
     @NotNull
