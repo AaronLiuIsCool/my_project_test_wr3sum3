@@ -18,6 +18,7 @@ import { validateVolunteer, validateVolunteerEntry } from '../../slicer/voluntee
 import { updateStatus } from '../../slicer/common';
 import ResumeServices from 'shell/services/ResumeServices';
 import { getLogger } from 'shell/logger';
+import { previewResume } from '../ResumePreview/resumeBuilder';
 
 import cityOptions from 'data/city.json';
 
@@ -42,6 +43,7 @@ const VolunteerForm = ({ data, index, isLast = false, messages }) => {
 	const dispatch = useDispatch();
 
 	const save = async () => {
+		previewResume(messages.RPreview);
 		let id = data.id;
 		try {
 			const response =

@@ -3,7 +3,11 @@ import { jsPDF } from "jspdf";
 import { dateRangeBuilder } from "./common";
 import * as Constants from "./Constants";
 
-import store from 'store';
+import store from "store";
+
+// global input data 
+let resumeData = null;
+let messages = null;
 
 // global data storage for download PDF
 let data = [];
@@ -35,7 +39,7 @@ export const adjustToWholePage = (resumeDataSet) => {
   } else if (accumulateY > Constants.endY * 1.5) {
     // make it to two page
     // scaleFactor = (Constants.endY * 2) / accumulateY;
-    scaleFactor = (Constants.endY ) / lastLineHeight;
+    scaleFactor = Constants.endY / lastLineHeight;
   } else if (accumulateY > Constants.endY * 1) {
     // make it to single page
     scaleFactor = Constants.endY / accumulateY;
@@ -47,15 +51,15 @@ export const adjustToWholePage = (resumeDataSet) => {
 };
 
 // do some small adjustments to fit the content into one page
-const dataAdjustAfterBuild = (dataSet) => {
+const dataAdjustAfterBuild = () => {
   // if a new page start with only a few line (15mm or less)
   // reduce the top padding
   if (data.length > 0) {
     const lastLineHeight = data[data.length - 1].y;
     const lastLinePageAt = data[data.length - 1].page;
-    if(lastLinePageAt > 1 && lastLineHeight < 40) {
+    if (lastLinePageAt > 1 && lastLineHeight < 40) {
       scaleFactor = scaleFactor * 0.95;
-      prepareData(dataSet);
+      prepareData();
     }
     // if pageBreak happend at the the last item, remove
     else if (data[data.length - 1].type === "pageBreak") {
@@ -70,19 +74,12 @@ const dataAdjustAfterBuild = (dataSet) => {
  * to read the structure of data, please refer to instruction.png
  * the data format looks like sample_data.js
  */
-export const prepareData = ({
-  basic,
-  education,
-  work,
-  project,
-  volunteer,
-  messagesRP,
-}) => {
-  const basicData = basic.data;
-  const educationData = education.data;
-  const workData = work.data;
-  const projectData = project.data;
-  const volunteerData = volunteer.data;
+export const prepareData = () => {
+  const basicData = resumeData.basic.data;
+  const educationData = resumeData.education.data;
+  const workData = resumeData.work.data;
+  const projectData = resumeData.project.data;
+  const volunteerData = resumeData.volunteer.data;
   // variable reset
   data = [];
   doc = new jsPDF("A4");
@@ -106,10 +103,9 @@ export const prepareData = ({
   pdfTopPadding = scaleFactor * pdfTopPadding;
   headingLineHeight = scaleFactor * headingLineHeight;
   // scaleFactor should have small effect to paragraphLineHeight:
-  if (scaleFactor > 1){
+  if (scaleFactor > 1) {
     paragraphLineHeight = scaleFactor * 0.9 * paragraphLineHeight;
-  }
-  else{
+  } else {
     paragraphLineHeight = scaleFactor * 1.11 * paragraphLineHeight;
   }
 
@@ -123,18 +119,11 @@ export const prepareData = ({
   currentPage = 1;
 
   _perpareDataHeader(basicData, educationData);
-  _perpareWork(workData, messagesRP);
+  _perpareWork(workData);
   _perpareProject(projectData);
-  _perpareVolunteer(volunteerData, messagesRP);
+  _perpareVolunteer(volunteerData);
 
-  dataAdjustAfterBuild({
-    basic,
-    education,
-    work,
-    project,
-    volunteer,
-    messagesRP,
-  });
+  dataAdjustAfterBuild();
 
   return data;
 };
@@ -197,8 +186,7 @@ const _perpareDataHeader = (basicData, educationData) => {
   // need to set font size in order to get correct width
   doc.setFontSize(Constants.h2FontSize);
   currentXPos +=
-    doc.getTextWidth(schoolName) +
-    Constants.defaultPaddingRight * 2;
+    doc.getTextWidth(schoolName) + Constants.defaultPaddingRight * 2;
   data.push(school);
 
   const major = {
@@ -260,7 +248,7 @@ const _perpareDataHeader = (basicData, educationData) => {
   data.push(link);
 };
 
-const _perpareWork = (workData, messagesRP) => {
+const _perpareWork = (workData) => {
   _updateCurrentYPos(h1Padding * 2);
   // draw work title
   if (
@@ -270,7 +258,7 @@ const _perpareWork = (workData, messagesRP) => {
     data.push({
       type: "h1",
       y: currentYPos,
-      content: messagesRP.workExperience,
+      content: messages.workExperience,
       page: currentPage,
     });
     _updateCurrentYPos(h1Padding);
@@ -463,7 +451,7 @@ const _perpareProject = (projectData) => {
   });
 };
 
-const _perpareVolunteer = (volunteerData, messagesRP) => {
+const _perpareVolunteer = (volunteerData) => {
   _updateCurrentYPos(h1Padding * 2);
 
   // draw Volunteer title
@@ -474,7 +462,7 @@ const _perpareVolunteer = (volunteerData, messagesRP) => {
     data.push({
       type: "h1",
       y: currentYPos,
-      content: messagesRP.studentWorkAndVolunteer,
+      content: messages.studentWorkAndVolunteer,
       page: currentPage,
     });
     _updateCurrentYPos(h1Padding);
@@ -489,14 +477,14 @@ const _perpareVolunteer = (volunteerData, messagesRP) => {
 
   volunteerData.forEach((volunteer) => {
     _updateCurrentYPos(h1Padding * 0.5);
-    if (volunteer.volunteerName){
+    if (volunteer.volunteerName) {
       // draw volunteer detail title line
-    data.push({
-      type: "h2",
-      y: currentYPos,
-      content: volunteer.volunteerName,
-      page: currentPage,
-    });
+      data.push({
+        type: "h2",
+        y: currentYPos,
+        content: volunteer.volunteerName,
+        page: currentPage,
+      });
     }
 
     // volunteer company name
@@ -603,8 +591,8 @@ const drawText = ({
   }
 };
 
-const buildResume = (resumeDataSet) => {
-  prepareData(resumeDataSet);
+const buildResume = () => {
+  prepareData();
   data.forEach((d) => {
     d.doc = doc;
     switch (d.type) {
@@ -665,17 +653,19 @@ const buildResume = (resumeDataSet) => {
         console.log("default type");
     }
   });
-  // console.log('data', data);
 };
 
-export const downloadPDF = (resumeDataSet) => {
-  buildResume(resumeDataSet);
+export const downloadPDF = (messagePR) => {
+  resumeData = store.getState().resume;
+  messages = messagePR;
+  buildResume();
   doc.save("resume.pdf");
 };
 
-export const previewResume = () => {
-  const resumeDataSet = store.getState().resume;
-  buildResume(resumeDataSet);
+export const previewResume = (messagePR) => {
+  resumeData = store.getState().resume;
+  messages = messagePR;
+  buildResume();
   const iframe = document.createElement("iframe");
   iframe.setAttribute("style", "height:100%; width:100%;");
   document
