@@ -12,6 +12,7 @@ import com.kuaidaoresume.resume.repository.ResumeRepository;
 import com.kuaidaoresume.resume.service.rating.ResumeRatingFacade;
 import com.kuaidaoresume.resume.service.score.ResumeScoreFacade;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.compress.utils.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,9 +45,10 @@ public class ResumeServiceImpl implements ResumeService {
 
     @Override
     public BasicInfo saveBasicInfo(String resumeId, BasicInfo basicInfoToSave) {
-        if (Objects.nonNull(basicInfoToSave.getProfiles())) {
-            basicInfoToSave.getProfiles().stream().forEach(profile -> profile.setBasicInfo(basicInfoToSave));
+        if (Objects.isNull(basicInfoToSave.getProfiles())) {
+            basicInfoToSave.setProfiles(Lists.newArrayList());
         }
+        basicInfoToSave.getProfiles().stream().forEach(profile -> profile.setBasicInfo(basicInfoToSave));
         Resume savedResume = saveResumeWithItemUpdate(
             (BiConsumer<BasicInfo, Resume>) (basicInfo, resume) -> resume.setBasicInfo(basicInfo)
         ).apply(resumeId, basicInfoToSave);
@@ -141,7 +143,10 @@ public class ResumeServiceImpl implements ResumeService {
 
         Collection<Education> educations = resume.getEducations();
         if (Objects.nonNull(educations)) {
-            educations.forEach(education -> education.setResume(resume));
+            educations.forEach(education -> {
+                education.getAwards().forEach(award -> award.setEducation(education));
+                education.setResume(resume);
+            });
         }
 
         Collection<WorkExperience> workExperiences = resume.getWorkExperiences();

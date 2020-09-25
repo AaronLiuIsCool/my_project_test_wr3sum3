@@ -25,6 +25,10 @@ public interface ResumeClient {
     ResponseEntity<EntityModel<ResumeScoreDto>> getResumeScore(
         @RequestHeader(AuthConstant.AUTHORIZATION_HEADER) String auth, @PathVariable String id);
 
+    @GetMapping("/resumes/{id}/rating")
+    ResponseEntity<EntityModel<ResumeRatingDto>> getResumeRating(
+        @RequestHeader(AuthConstant.AUTHORIZATION_HEADER) String auth, @PathVariable String id);
+
     @PostMapping("/resumes")
     ResponseEntity<EntityModel<PersistedResumeDto>> createResume(
         @RequestHeader(AuthConstant.AUTHORIZATION_HEADER) String auth, @Valid @RequestBody ResumeDto resumeDto);

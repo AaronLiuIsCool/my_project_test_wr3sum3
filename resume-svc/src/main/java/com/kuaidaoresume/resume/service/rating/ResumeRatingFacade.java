@@ -27,6 +27,7 @@ public class ResumeRatingFacade {
 
     public ResumeRatingDto getResumeRating(Resume resume) {
         return ResumeRatingDto.builder()
+            .resumeUuid(resume.getId())
             .score(getScore(resume))
             .educations(getEducationRatings(resume.getEducations()))
             .workExperiences(getExperienceRatings(resume.getWorkExperiences()))
