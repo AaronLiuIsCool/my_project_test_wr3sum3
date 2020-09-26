@@ -22,4 +22,11 @@ public interface AccountRepo extends JpaRepository<Account, String> {
     @Transactional
     int updateEmailAndActivateById(@Param("email") String email, @Param("id") String id);
 
+    @Modifying(clearAutomatically = true)
+    @Query("update Account account set account.openid = :openid, account.name = :name, account.photoUrl = :photoUrl, account.loginType = :loginType, account.confirmedAndActive = true where account.id = :id")
+    @Transactional
+    int saveAccountNonEssentialInfo(@Param("openid") String openid, @Param("name") String name,
+                                        @Param("photoUrl") String photoUrl, @Param("loginType") String loginType,
+                                        @Param("id") String id);
+
 }
