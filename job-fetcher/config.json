@@ -28,17 +28,32 @@
     },
 
     "serpQueries":     {
+        "en": {
+                "levels": [
+                "junior", "entry level", "student", "internship", "new graduate"
+            ],   
+            "industries": [
+                "accounting", "Actuarial science", "computer scienece", "software engineering", "chemical engineering", "civil engineering", "computer engineering", "data science", "economics", "electricial engineering",
+                "Environmental Engineering", "finance", "geology", "graphic design", "human resource", "industrial engineering", "management information system", "marketing", "mechanical engineering", "mining engineering",
+                "Nutrition", "petroleum engineering", "physics", "materials engineering", "Sociology", "biology", "statistics", "Bioinformatics", "mathematics", "supply chain"
+            ],
+            "countries": [
+                "canada",
+                "united states"
+            ]
+        },
+        "zh": {
             "levels": [
-            "junior", "entry level", "student", "internship", "new graduate"
-        ],   
-        "industries": [
-            "accounting", "Actuarial science", "computer scienece", "software engineering", "chemical engineering", "civil engineering", "computer engineering", "data science", "economics", "electricial engineering",
-            "Environmental Engineering", "finance", "geology", "graphic design", "human resource", "industrial engineering", "management information system", "marketing", "mechanical engineering", "mining engineering",
-            "Nutrition", "petroleum engineering", "physics", "materials engineering", "Sociology", "biology", "statistics", "Bioinformatics", "mathematics", "supply chain"
-        ],
-        "countries": [
-            "canada",
-            "united states"
-        ]
+                "应届生", "实习"
+            ],   
+            "industries": [
+                "会计","精算科学","计算机科学","软件工程","化学工程","土木工程","计算机工程","数据科学","经济学","电气工程",
+                "环境工程","金融","地质","平面设计","人力资源","工业工程","管理信息系统","营销","机械工程","采矿工程",
+                "营养","石油工程","物理","材料工程","社会学","生物学","统计学","生物信息学","数学","供应链"
+            ],
+            "countries": [
+                "北京", "上海", "杭州"         
+            ]
+        }
     }
 }
