@@ -255,10 +255,12 @@ public class AccountService {
                 throw new ServiceException(ResultCode.REQ_REJECT,
                         "You cannot change the support parameter");
             }
+            /*
             if (!existingAccount.getPhotoUrl().equals(newAccount.getPhotoUrl())) {
                 throw new ServiceException(ResultCode.REQ_REJECT,
                         "You cannot change the photo through this endpoint (see docs)");
             }
+            */
             // User can request email change - not do it :-)
             if (!existingAccount.getEmail().equals(newAccount.getEmail())) {
                 this.requestEmailChange(newAccount.getId(), newAccount.getEmail());
@@ -267,9 +269,9 @@ public class AccountService {
             }
         }
         // newAccount.setPhotoUrl(Helper.generateGravatarUrl(newAccount.getEmail()));
-
         try {
-            accountRepo.save(newAccount);
+            accountRepo.saveAccountNonEssentialInfo(newAccount.getOpenid(), newAccount.getName(),
+                    newAccount.getPhotoUrl(), newAccount.getLoginType(), newAccount.getId());
         } catch (Exception ex) {
             String errMsg = "Could not update the user account";
             serviceHelper.handleException(logger, ex, errMsg);
@@ -297,7 +299,6 @@ public class AccountService {
         }*/
 
         this.trackEventWithAuthCheck("account_updated");
-
         AccountDto accountDto = this.convertToDto(newAccount);
         return accountDto;
     }

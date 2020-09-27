@@ -48,7 +48,7 @@ class JobFetcher:
                     ret = GoogleSearchResults(params).get_dict(), params
                     break
                 except Exception as e:
-                    capture_exception(e)
+                    #capture_exception(e)
                     time.sleep(self.config["serpConfig"]["waitTimeSec"]** retry) #expo backoff
             yield ret
 
@@ -68,11 +68,12 @@ class JobFetcher:
         return [span.find("a").get("href") for span in soup.find_all('span', attrs={'class':'DaDV9e'})]
 
     def query(self):
-        for country in self.config["serpQueries"]["countries"]:
-            for industry in self.config["serpQueries"]["industries"]:
-                for level in self.config["serpQueries"]["levels"]:
-                    query = self.queryTemplate.format(country, industry, level)
-                    yield query
+        for language in self.config["serpQueries"].values():
+            for country in language["countries"]:
+                for industry in language["industries"]:
+                    for level in language["levels"]:
+                        query = self.queryTemplate.format(country, industry, level)
+                        yield query
 
     def getJobResults(self, mock = os.getenv('MOCK_JOB_FETCH', True)):
         if mock:

@@ -4,11 +4,6 @@ import { useI8n } from 'shell/i18n';
 
 import { 
 	selectResume, 
-	basicSelectors, 
-	educationSelectors, 
-	workSelectors, 
-	projectSelectors, 
-	volunteerSelectors, 
 } from './../../slicer/';
 import { selectUserId } from 'features/App/slicer';
 
@@ -38,12 +33,6 @@ const ResumePreview = () => {
 
 	const userId = useSelector(selectUserId);
 	const resume = useSelector(selectResume);
-	const { data: basicData } = useSelector(basicSelectors.selectBasic);
-	let { data: educationData } = useSelector(educationSelectors.selectEducation);
-	const { data: workData } = useSelector(workSelectors.selectWork);
-	const { data: projectData } = useSelector(projectSelectors.selectProject);
-	const { data: volunteerData } = useSelector(volunteerSelectors.selectVolunteer);
-	educationData = educationData[0]; // need to ask if user enter more than one education
 
 	const [resumeTipsModal, setResumeTipsModal] = useState(false);
 
@@ -82,7 +71,7 @@ const ResumePreview = () => {
 					<button className={styles.whiteBtn}>{messages.RPreview.editThemeColor} </button>
 					<button onClick={handleTranslate} >{messages.RPreview.smartTranslation}</button>
 					<button onClick={adjustToWholePage}>{messages.RPreview.oneClickWholePage}</button>
-					<button onClick={() => downloadPDF({basicData, educationData, workData, projectData, volunteerData, messagesRP:messages.RPreview})}>
+					<button onClick={() => downloadPDF(messages.RPreview)}>
 						<img src={DownloadIcon} alt="download" /> {messages.RPreview.downloadResume}
 					</button>
 					<button className={styles.circle} onClick={() => setResumeTipsModal(true)}>

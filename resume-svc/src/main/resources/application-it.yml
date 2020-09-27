@@ -1,0 +1,21 @@
+spring:
+  profiles:
+    it
+  datasource:
+    url: jdbc:h2:mem:kuaidaoresume-resume;MODE=MYSQL
+    driver-class-name: org.h2.Driver
+  jpa:
+    show-sql: true
+    hibernate.ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+  flyway:
+    enabled: false
+
+kuaidaoresume:
+  common:
+    sentry-dsn: ${SENTRY_DSN:https://8822f4ae889b433f9fe72e3904665246@sentry.io/1234888} # mock for test
+  signing-secret: ${SIGNING_SECRET:TEST_SECRET}
+  resume-service-endpoint: http://localhost:8082 # for testing only
+  intercom-access-token: ${INTERCOM_ACCESS_TOKEN:TEST_INTERCOM_ACCESS_TOKEN}

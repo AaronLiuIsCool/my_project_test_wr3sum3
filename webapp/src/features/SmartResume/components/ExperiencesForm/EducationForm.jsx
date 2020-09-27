@@ -43,7 +43,7 @@ const EducationForm = ({ data, index, isLast = false, messages }) => {
     const dispatch = useDispatch();
 
 	const save = async () => {
-		previewResume();
+		previewResume(messages.RPreview);
         let id;
         try {
             const response = (id === undefined) ?

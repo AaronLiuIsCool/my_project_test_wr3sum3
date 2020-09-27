@@ -19,6 +19,7 @@ import { validateWork, validateWorkEntry } from '../../slicer/work';
 import { updateStatus } from '../../slicer/common';
 import ResumeServices from 'shell/services/ResumeServices';
 import { getLogger } from 'shell/logger';
+import { previewResume } from '../ResumePreview/resumeBuilder';
 
 import DraftEditor from '../../../../components/DraftEditor/index'
 
@@ -45,6 +46,7 @@ const WorkForm = ({ data, index, isLast = false, messages }) => {
 
 	const save = async () => {
 		GAEvent('Resume Edit', 'Save work form'); // call GA on save
+		previewResume(messages.RPreview);
 		let id = data.id;
 		try {
 			const response =

@@ -40,7 +40,7 @@ const BasicForm = ({ data, completed, messages }) => {
 
 
 	const save = async () => {
-		previewResume();
+		previewResume(messages.RPreview);
 		let id;
 		try {
 			const response =

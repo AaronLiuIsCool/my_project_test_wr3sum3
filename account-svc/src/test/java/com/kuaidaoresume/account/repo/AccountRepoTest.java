@@ -1,5 +1,6 @@
 package com.kuaidaoresume.account.repo;
 
+import com.kuaidaoresume.account.model.Resume;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,6 +17,7 @@ import com.kuaidaoresume.account.model.AccountSecret;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -135,6 +137,46 @@ public class AccountRepoTest {
         updatedAccount = accountRepo.save(toUpdateAccount);
         foundAccount = accountRepo.findById(updatedAccount.getId()).get();
         validateAccount(updatedAccount, foundAccount);
+    }
+
+    @Test
+    public void updateAccountWithoutResumesSnapshot() {
+        // setup
+        accountRepo.save(newAccount);
+        assertEquals(1, accountRepo.count());
+        Account toUpdateAccount = newAccount;
+        toUpdateAccount.setName("update");
+        toUpdateAccount.setEmail("update@kuaidaoresume.com");
+
+        Resume newResume = Resume.builder()
+                .id("SHA123")
+                .alias("a resume alias string")
+                .createdAt(LocalDateTime.of(2010, 1, 20, 12, 50)
+                        .atZone(ZoneId.systemDefault()).toInstant())
+                .thumbnailUri("https://a_storage_url")
+                .build();
+        List<Resume> updateResumes = new ArrayList<>();
+        updateResumes.add(newResume);
+        toUpdateAccount.setResumes(updateResumes);
+
+        // execution
+        Account foundAccount = null;
+        int isSuccess = -1;
+        try {
+            isSuccess = accountRepo.saveAccountNonEssentialInfo(toUpdateAccount.getOpenid(),
+                    toUpdateAccount.getName(), toUpdateAccount.getPhotoUrl(), toUpdateAccount.getLoginType(), toUpdateAccount.getId());
+            foundAccount = accountRepo.findById(toUpdateAccount.getId()).get();
+        }
+        catch (Exception exception) {
+            fail("Unexpected exception at updateAccountWithNewResumesSnapshot test case exception:" + exception.getMessage());
+        }
+
+        // check result
+        assertEquals(1, isSuccess);
+        assertEquals(toUpdateAccount.getOpenid(), foundAccount.getOpenid());
+        assertEquals(toUpdateAccount.getName(), foundAccount.getName());
+        assertEquals(toUpdateAccount.getPhotoUrl(), foundAccount.getPhotoUrl());
+        assertEquals(toUpdateAccount.getLoginType(), foundAccount.getLoginType());
     }
 
     @Test

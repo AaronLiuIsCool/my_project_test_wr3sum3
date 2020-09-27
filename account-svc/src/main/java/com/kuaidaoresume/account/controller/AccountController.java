@@ -159,6 +159,7 @@ public class AccountController {
     @PostMapping(path = "/verify_password")
     @Authorize(value = {
             AuthConstant.AUTHORIZATION_WWW_SERVICE,
+            AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
             AuthConstant.AUTHORIZATION_SUPPORT_USER
     })
     public GenericAccountResponse verifyPassword(@RequestBody @Valid VerifyPasswordRequest request) {
@@ -172,6 +173,7 @@ public class AccountController {
     @PostMapping(path = "/request_password_reset")
     @Authorize(value = {
             AuthConstant.AUTHORIZATION_WWW_SERVICE,
+            AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
             AuthConstant.AUTHORIZATION_SUPPORT_USER
     })
     public BaseResponse requestPasswordReset(@RequestBody @Valid PasswordResetRequest request) {
@@ -186,6 +188,7 @@ public class AccountController {
     // RequestPasswordReset sends an email to a user with a password reset link
     @PostMapping(path = "/request_email_change")
     @Authorize(value = {
+            AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
             AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
             AuthConstant.AUTHORIZATION_SUPPORT_USER
     })
@@ -205,6 +208,7 @@ public class AccountController {
     @PostMapping(path = "/change_email")
     @Authorize(value = {
             AuthConstant.AUTHORIZATION_WWW_SERVICE,
+            AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
             AuthConstant.AUTHORIZATION_SUPPORT_USER
     })
     public BaseResponse changeEmail(@RequestBody @Valid EmailConfirmation request) {
