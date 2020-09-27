@@ -135,7 +135,7 @@ if __name__ == "__main__":
     j = createJobFetcher()
     while True:
         cronJob(j)
-        time.sleep(os.get_env(int('JOB_FETCH_EVERY_SECS'), j.config["cronjob"]["scheduleInSecs"]))
+        time.sleep(int(os.getenv('JOB_FETCH_EVERY_SECS', j.config["cronjob"]["scheduleInSecs"])))
 
 
 
