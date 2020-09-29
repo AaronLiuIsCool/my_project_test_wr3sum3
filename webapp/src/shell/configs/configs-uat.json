@@ -1,6 +1,8 @@
 {
   "login-url": "http://www.uat.smartresume.careers/login",
 
+  "logout-url": "http://www.uat.smartresume.careers/logout",
+
   "services-account-baseUrl": "account.uat.smartresume.careers",
 
   "services-resume-baseUrl": "resume.uat.smartresume.careers",

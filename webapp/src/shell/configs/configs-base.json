@@ -1,6 +1,8 @@
 {
   "login-url": "http://www.kuaidaoresume-v2.local/login",
 
+  "logout-url": "http://www.kuaidaoresume-v2.local/logout",
+
   "services-account-baseUrl": "account.kuaidaoresume-v2.local",
 
   "services-resume-baseUrl": "resume.kuaidaoresume-v2.local",

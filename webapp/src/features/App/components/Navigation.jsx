@@ -2,12 +2,13 @@ import React, { useEffect } from 'react';
 import { withRouter } from "react-router";
 import { useSelector, useDispatch } from 'react-redux';
 
-import { Navbar, Nav, ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
+import { Navbar, Nav } from 'react-bootstrap';
+import Actions from './Actions';
 import { ReactComponent as LogoZH } from '../assets/logo_zh.svg';
 import { ReactComponent as LogoEN } from '../assets/logo_zh.svg';
 
 import { useI8n } from 'shell/i18n';
-import { selectLanguage, updateLanguage, updatePath } from '../slicer';
+import { selectLanguage, updatePath } from '../slicer';
 
 const Navigation = ({ location }) => {
     const language = useSelector(selectLanguage);
@@ -31,11 +32,7 @@ const Navigation = ({ location }) => {
                     <Nav.Link href='/job-collection'>{messages["nav_item_jobcollction"]}</Nav.Link>
                 </Nav>
 
-                <ToggleButtonGroup type="radio" name="languageSelect" defaultValue={language}
-                    onChange={value => dispatch(updateLanguage(value))}>
-                    <ToggleButton value={'zh'}>{messages["language_toggle_zh"]}</ToggleButton>
-                    <ToggleButton value={'en'}>{messages["language_toggle_en"]}</ToggleButton>
-                </ToggleButtonGroup>
+                <Actions />
             </Navbar.Collapse>
         </Navbar>
     );
