@@ -71,7 +71,7 @@ const EducationForm = ({ data, index, isLast = false, messages }) => {
     };
 
     const handleSchoolChange = (values) => {
-        const value = values.length === 0 ? null : values[0].u
+        const value = values.length === 0 ? null : values[0].data
         updateStatus(validateEducationEntry, status, setStatus, 'schoolName', value);
         dispatch(actions.updateSchoolName({value, index}));
     };
@@ -95,19 +95,19 @@ const EducationForm = ({ data, index, isLast = false, messages }) => {
     };
 
     const handleMajorChange = (values) => {
-        const value = values.length === 0 ? null : values[0].major
+        const value = values.length === 0 ? null : values[0].data
         updateStatus(validateEducationEntry, status, setStatus, "major", value);
         dispatch(actions.updateMajor({value, index}))
     };
 
     const handleDegreeChange = (values) => {
-        const value = values.length === 0 ? null : values[0].degree
+        const value = values.length === 0 ? null : values[0].data
         updateStatus(validateEducationEntry, status, setStatus, "degree", value);
         dispatch(actions.updateDegree({value, index}))
     };
 
     const handleCityChange = (values) => {
-        const value = values.length === 0 ? null : values[0].city
+        const value = values.length === 0 ? null : values[0].data
         updateStatus(validateEducationEntry, status, setStatus, "city", value);
         dispatch(actions.updateEduCity({value, index}));
     };
@@ -128,7 +128,7 @@ const EducationForm = ({ data, index, isLast = false, messages }) => {
             <Row>
                 <Col lg="4">
                     <DropdownGroup label={messages.schoolName} id="education-school" placeholder={messages.enterSchoolName}
-                        searchKey="u" options={univOptions} value={data.schoolName}
+                        options={univOptions} value={data.schoolName}
                         onChange={handleSchoolChange} feedbackMessage={messages.entryIsInvalid}
                         isValid={status.schoolName.isValid} isInvalid={status.schoolName.isInvalid} />
                 </Col>
@@ -157,19 +157,19 @@ const EducationForm = ({ data, index, isLast = false, messages }) => {
             <Row>
                 <Col>
                     <DropdownGroup label={messages.major} id="education-major" placeholder={messages.enterMajor}
-                        searchKey="major" options={majorOptions} value={data.major}
+                         options={majorOptions} value={data.major}
                         onChange={handleMajorChange} feedbackMessage={messages.entryIsInvalid}
                         isValid={status.major.isValid} isInvalid={status.major.isInvalid} />
                 </Col>
                 <Col>
                     <DropdownGroup label={messages.degree} id="education-degree" placeholder={messages.enterDegree}
-                        searchKey="degree" options={degreeOptions} value={data.degree}
+                        options={degreeOptions} value={data.degree}
                         onChange={handleDegreeChange} feedbackMessage={messages.entryIsInvalid}
                         isValid={status.degree.isValid} isInvalid={status.degree.isInvalid} />
                 </Col>
                 <Col>
                     <DropdownGroup label={messages.schoolCity} id="education-school-city" placeholder={messages.schoolCity}
-                        searchKey="city" options={cityOptions} value={data.city}
+                        options={cityOptions} value={data.city}
                         onChange={handleCityChange} feedbackMessage={messages.entryIsInvalid}
                         isValid={status.city.isValid} isInvalid={status.city.isInvalid} />
                 </Col>

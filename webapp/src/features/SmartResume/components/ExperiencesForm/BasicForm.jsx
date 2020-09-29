@@ -94,7 +94,7 @@ const BasicForm = ({ data, completed, messages }) => {
 	};
 
 	const handleCityChange = (values) => {
-		const value = values.length === 0 ? null : values[0].city;
+		const value = values.length === 0 ? null : values[0].data;
 		if (!validateBasicEntry('city', value)) {
 			return;
 		}
@@ -177,7 +177,6 @@ const BasicForm = ({ data, completed, messages }) => {
 						label={messages.schoolCity}
 						id='education-city'
 						placeholder={messages.schoolCity}
-						searchKey='city'
 						options={cityOptions}
 						value={data.city}
 						onChange={handleCityChange}

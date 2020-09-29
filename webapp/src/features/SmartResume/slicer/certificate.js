@@ -56,6 +56,14 @@ const reducers = {
     completeCertificates: (state) => {
         state.certificate.completed = true;
     },
+    updateCertificateFromResumeSDK: (state, action) => {
+        updateField(state, action.payload.index, "certificateName", action.payload.data.train_cert);
+        updateField(state, action.payload.index, "certificateIssuedDate", action.payload.data.start_date);
+        updateField(state, action.payload.index, "certificateEndDate", action.payload.data.end_date);
+        if (action.payload.data.end_date) {
+            updateField(state, action.payload.index, "validCertificateFlag", true);
+        }
+    },
     addNewCertificate: state => {
         state.certificate.data.push({ ...certificate });
     },

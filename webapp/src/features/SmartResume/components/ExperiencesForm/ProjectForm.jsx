@@ -113,7 +113,7 @@ const ProjectForm = ({ data, index, isLast = false, messages }) => {
 	};
 
 	const handleCityChange = (values) => {
-		const value = values.length === 0 ? null : values[0].city;
+		const value = values.length === 0 ? null : values[0].data;
 		updateStatus(validateProjectEntry, status, setStatus, 'projectCity', value);
 		dispatch(actions.updateProjectCity({ value, index }));
 	};
@@ -222,7 +222,6 @@ const ProjectForm = ({ data, index, isLast = false, messages }) => {
 						label={messages.city}
 						id='project-city'
 						placeholder={messages.projectCity}
-						searchKey='city'
 						options={cityOptions}
 						value={data.projectCity}
 						onChange={handleCityChange}

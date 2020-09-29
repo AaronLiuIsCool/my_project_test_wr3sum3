@@ -115,7 +115,7 @@ const WorkForm = ({ data, index, isLast = false, messages }) => {
 	};
 
 	const handleWorkCityChange = (values) => {
-		const value = values.length === 0 ? null : values[0].city;
+		const value = values.length === 0 ? null : values[0].data;
 		updateStatus(validateWorkEntry, status, setStatus, 'workCity', value);
 		dispatch(actions.updateWorkCity({ value, index }));
 	};
@@ -229,7 +229,6 @@ const WorkForm = ({ data, index, isLast = false, messages }) => {
 						label={messages.city}
 						id='work-city'
 						placeholder={messages.workCity}
-						searchKey='city'
 						options={cityOptions}
 						value={data.workCity}
 						onChange={handleWorkCityChange}

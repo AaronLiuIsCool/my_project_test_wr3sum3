@@ -105,7 +105,7 @@ const VolunteerForm = ({ data, index, isLast = false, messages }) => {
 	};
 
 	const handleCityChange = (values) => {
-		const value = values.length === 0 ? null : values[0].city;
+		const value = values.length === 0 ? null : values[0].data;
 		updateStatus(validateVolunteerEntry, status, setStatus, 'volunteerCity', value);
 		dispatch(actions.updateVolunteerCity({ value, index }));
 	};
@@ -219,7 +219,6 @@ const VolunteerForm = ({ data, index, isLast = false, messages }) => {
 						label={messages.city}
 						id="volunteer-city"
 						placeholder={messages.experienceCity}
-						searchKey="city"
 						options={cityOptions}
 						value={data.volunteerCity}
 						onChange={handleCityChange}

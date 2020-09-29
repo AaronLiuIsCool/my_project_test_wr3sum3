@@ -59,7 +59,7 @@ const CertificateForm = ({ data, index, isLast = false, messages }) => {
 	};
 
 	const handleCertificateChange = (values) => {
-		const value = values.length === 0 ? null : values[0].name;
+		const value = values.length === 0 ? null : values[0].data;
 		updateStatus(validateCertificateEntry, status, setStatus, 'certificateName', value);
 		dispatch(actions.updateCertificateName({ value, index }));
 	};
@@ -95,7 +95,6 @@ const CertificateForm = ({ data, index, isLast = false, messages }) => {
 						label={messages.certificateName}
 						id="certificate-name"
 						placeholder={messages.enterCertificateName}
-						searchKey="name"
 						options={certificateOptions}
 						value={data.certificateName}
 						onChange={handleCertificateChange}
