@@ -31,6 +31,7 @@ public class JobFetcherResponse {
     String jobType;
     String employmentType;
     List<String> relevantMajors;
+    String url;
     Date createAt;
     @Builder.Default
     boolean isActive = true;
