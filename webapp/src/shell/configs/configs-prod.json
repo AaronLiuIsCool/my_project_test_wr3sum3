@@ -7,6 +7,8 @@
 
   "services-resume-baseUrl": "resume.smartresume.careers",
 
+  "services-matching-baseUrl": "matching.smartresume.careers",
+
   "services-job-baseUrl": "job.smartresume.careers",
 
   "services-kdr-baseUrl": "kdr.smartresume.careers",

@@ -10,7 +10,7 @@ import styles from '../../styles/LeftNav.module.css';
 const NavItem = ({ index, path, name, selected = false }) => {
     const dispatch = useDispatch();
     return (
-        <HashLink smooth to={`/#${path}`} onClick={() => dispatch(actions.moveStep(index))}
+        <HashLink smooth to={`#${path}`} onClick={() => dispatch(actions.moveStep(index))}
             className={selected ? styles.navItemSelected : styles.navItem}>
             {name}
         </HashLink>
