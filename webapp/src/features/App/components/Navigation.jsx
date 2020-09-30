@@ -28,7 +28,6 @@ const Navigation = ({ location }) => {
             <Navbar.Collapse id="top-navigation-bar">
                 <Nav className="mr-auto" activeKey={location.pathname}>
                     <Nav.Link href='/'>{messages["nav_item_resumehub"]}</Nav.Link>
-                    <Nav.Link href='/jobs'>{messages["nav_item_jobmatcher"]}</Nav.Link>
                     <Nav.Link href='/job-collection'>{messages["nav_item_jobcollction"]}</Nav.Link>
                 </Nav>
 

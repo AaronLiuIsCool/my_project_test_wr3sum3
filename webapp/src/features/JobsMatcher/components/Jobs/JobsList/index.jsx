@@ -53,12 +53,12 @@ const JobsList = ({ data, pageNumber, onPageChange, selection, onSelect }) => {
             <span className={styles["list-summary"]}>
                 {messages["job_list_summary"].replace('{0}', data.total || 0)}
             </span>
-            {data && data.content && data.content.map((job, index) => (
+            {data && data.jobs && data.jobs.map((job, index) => (
                 <Job data={job} key={`job-${index}`}
                     onClick={() => onSelect(index)}
                     selected={selection === index} />
             ))}
-            {getPaginationItems(pageNumber, Math.floor(data.total/data.pageSize), onPageChange)}
+            {getPaginationItems(pageNumber, Math.floor(data.total/data.limit), onPageChange)}
         </div>
     );
 }

@@ -135,20 +135,26 @@ export default class ResumeServices extends BaseServices {
             logger.error(exception);
         }
     }
-    
-    // TODO: Update this fetch to UAT endpoint later 
+
+    // TODO: Update this fetch to UAT endpoint later
     async getSuggestions(industry, title) {
+        let suggestions = [];
         try {
-            const res = await fetch(`/v1/get_suggestions_by_industry_position?industry=${industry}&limit=50&offset=0&position=${title}`)
-            const {suggestions} = await res.json()
-            return {
-                suggestions
-            }
+            const res = await fetch(`/v1/get_suggestions_by_industry_position?industry=${industry}&limit=50&offset=0&position=${title}`);
+            const data = await res.json();
+            suggestions = data.suggestions;
         } catch (error) {
-            console.error(error)
-            return {
-                suggestions: []
-            }
-        }        
+            logger.error(error);
+        } finally {
+            return { suggestions };
+        }
+    }
+
+    async getResumeMatchingInfo(resumeId) {
+      try {
+        return await this.get(`v1/resumes/${resumeId}/matching`);
+      } catch ( error) {
+        logger.error(error);
+      }
     }
 }

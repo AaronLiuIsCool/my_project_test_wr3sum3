@@ -46,15 +46,6 @@ exports[`App tests renders App 1`] = `
         </a>
         <a
           className="nav-link"
-          data-rb-event-key="/jobs"
-          href="/jobs"
-          onClick={[Function]}
-          onKeyDown={[Function]}
-        >
-          工作搜索
-        </a>
-        <a
-          className="nav-link"
           data-rb-event-key="/job-collection"
           href="/job-collection"
           onClick={[Function]}

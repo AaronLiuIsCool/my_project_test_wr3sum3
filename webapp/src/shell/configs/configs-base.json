@@ -7,6 +7,8 @@
 
   "services-resume-baseUrl": "resume.kuaidaoresume-v2.local",
 
+  "services-matching-baseUrl": "matching.kuaidaoresume-v2.local",
+
   "services-job-baseUrl": "job.kuaidaoresume-v2.local",
 
   "services-kdr-baseUrl": "kdr.kuaidaoresume-v2.local",

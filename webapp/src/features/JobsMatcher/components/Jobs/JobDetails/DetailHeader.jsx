@@ -21,7 +21,7 @@ const DetailHeader = ({ data, showExtraInfo=true }) => {
             <div className={styles["job-details-subtitle"]}>
                 <span className={styles["job-details-subtitle-company"]}>{data.companyName}</span>
                 <span className={styles["job-details-subtitle-location"]}>{`${data.location.country} ${data.location.city}`}</span>
-                <span className={styles["job-details-subtitle-salary"]}>{`${data.salaryMin} ~ ${data.salaryMax}`}</span>
+                {/* <span className={styles["job-details-subtitle-salary"]}>{`${data.salaryMin} ~ ${data.salaryMax}`}</span> */}
             </div>
             {showExtraInfo && (<div className={styles["job-details-actions"]}>
                 <div className={styles["job-details-actions-left"]}>

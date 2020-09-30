@@ -29,7 +29,7 @@ const DetailContent = ({ data, modalOpenHandler, showExtraInfo=true }) => {
 				{showExtraInfo && <MatchScore score={matchingData.score} description={matchingData.description} modalOpenHandler={modalOpenHandler} />}
 				<div className={styles['job-details-description']}>
 					<div className={styles['job-details-description-label']}>{messages['job_details_description']}</div>
-					{data.description.split('\n').map((text, index) => (
+					{data && data.jobDescription && data.jobDescription.split('\n').map((text, index) => (
 						<p key={index}>{text}</p>
 					))}
 				</div>
