@@ -2,9 +2,7 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useI8n } from 'shell/i18n';
 
-import { 
-	selectResume, 
-} from './../../slicer/';
+import { selectResume, resumeBuilderSelectors } from './../../slicer/';
 import { selectUserId } from 'features/App/slicer';
 
 import { getLogger } from 'shell/logger';
@@ -13,6 +11,7 @@ import AccountServices from 'shell/services/AccountServices';
 import AppServices from 'shell/services/AppServices';
 
 import ResumeTips from './ResumeTips';
+import ResumeThemeColorPicker from './ResumeThemeColorPicker';
 import { downloadPDF, adjustToWholePage } from './resumeBuilder';
 
 import styles from '../../styles/ResumePreview.module.css';
@@ -28,13 +27,15 @@ const resumeServices = new ResumeServices();
 const appServices = new AppServices();
 
 const ResumePreview = () => {
-
 	const messages = useI8n();
 
 	const userId = useSelector(selectUserId);
 	const resume = useSelector(selectResume);
+	const resumeBuilder = useSelector(resumeBuilderSelectors.selectresumeBuilder);
+	const color = resumeBuilder.data.color;
 
-	const [resumeTipsModal, setResumeTipsModal] = useState(false);
+	const [isResumeTipsModalOpen, setIsResumeTipsModalOpen] = useState(false);
+	const [isThemeColorModalOpen, setIsThemeColorModalOpen] = useState(false);
 
 	const handleTranslate = async () => {
 		try {
@@ -59,34 +60,36 @@ const ResumePreview = () => {
 		}
 	};
 
-
 	return (
 		<div className={styles.container}>
-			<div id="displayPDF" className={styles.iframeWrapper}>
-				<iframe src="" className={styles.iframeStyle} title="preview"></iframe>
+			<div id='displayPDF' className={styles.iframeWrapper}>
+				<iframe src='' className={styles.iframeStyle} title='preview'></iframe>
 			</div>
-			
+
 			<div className={styles.widgetContainer}>
 				<div>
-					<button className={styles.whiteBtn}>{messages.RPreview.editThemeColor} </button>
-					<button onClick={handleTranslate} >{messages.RPreview.smartTranslation}</button>
+					<button className={styles.whiteBtn} onClick={() => setIsThemeColorModalOpen(true)}>
+						{messages.RPreview.editThemeColor} <span className={styles.colorSquare} style={{ backgroundColor: color }}></span>
+					</button>
+					<button onClick={handleTranslate}>{messages.RPreview.smartTranslation}</button>
 					<button onClick={adjustToWholePage}>{messages.RPreview.oneClickWholePage}</button>
 					<button onClick={() => downloadPDF(messages.RPreview)}>
-						<img src={DownloadIcon} alt="download" /> {messages.RPreview.downloadResume}
+						<img src={DownloadIcon} alt='download' /> {messages.RPreview.downloadResume}
 					</button>
-					<button className={styles.circle} onClick={() => setResumeTipsModal(true)}>
+					<button className={styles.circle} onClick={() => setIsResumeTipsModalOpen(true)}>
 						?
 					</button>
 				</div>
 			</div>
 			{/* ResumeTips close button  */}
-			{resumeTipsModal && (
-				<div className='closeIconContainer' style={{ top: '10px', right: '50px' }} onClick={() => setResumeTipsModal(false)}>
+			{isResumeTipsModalOpen && (
+				<div className='closeIconContainer' style={{ top: '10px', right: '50px' }} onClick={() => setIsResumeTipsModalOpen(false)}>
 					<img src={CloseRegularIcon} alt='Close' className='closeIcon' />
 					<img src={CloseHoverIcon} alt='Close' className='closeIconHover' />
 				</div>
 			)}
-			{resumeTipsModal && <ResumeTips />}
+			{isResumeTipsModalOpen && <ResumeTips />}
+			{isThemeColorModalOpen && <ResumeThemeColorPicker setIsThemeColorModalOpen={setIsThemeColorModalOpen}/>}
 		</div>
 	);
 };
