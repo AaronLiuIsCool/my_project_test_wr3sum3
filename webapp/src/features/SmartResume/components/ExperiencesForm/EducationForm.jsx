@@ -20,7 +20,8 @@ import majorOptions from 'data/major.json';
 import univOptions from 'data/university.json';
 import cityOptions from 'data/city.json';
 
-import { previewResume } from '../ResumePreview/resumeBuilder';
+import { previewResume, wholePageCheck } from '../ResumePreview/resumeBuilder';
+import { generateEducationRating, generateLayoutRating } from '../../utils/resume';
 
 const logger = getLogger('EducationForm');
 const resumeServices = new ResumeServices();
@@ -58,7 +59,7 @@ const EducationForm = ({ data, index, isLast = false, messages }) => {
         }
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         event.stopPropagation();
         if (!validateEducation(data)) {
@@ -67,11 +68,12 @@ const EducationForm = ({ data, index, isLast = false, messages }) => {
         }
         setValidated(true);
         dispatch(actions.completeEducation());
-        save();
+        await save();
+        handleEducationFormRatings(data, index, messages)
     };
 
     const handleSchoolChange = (values) => {
-        const value = values.length === 0 ? null : values[0].u
+        const value = values.length === 0 ? null : values[0].data
         updateStatus(validateEducationEntry, status, setStatus, 'schoolName', value);
         dispatch(actions.updateSchoolName({value, index}));
     };
@@ -95,19 +97,19 @@ const EducationForm = ({ data, index, isLast = false, messages }) => {
     };
 
     const handleMajorChange = (values) => {
-        const value = values.length === 0 ? null : values[0].major
+        const value = values.length === 0 ? null : values[0].data
         updateStatus(validateEducationEntry, status, setStatus, "major", value);
         dispatch(actions.updateMajor({value, index}))
     };
 
     const handleDegreeChange = (values) => {
-        const value = values.length === 0 ? null : values[0].degree
+        const value = values.length === 0 ? null : values[0].data
         updateStatus(validateEducationEntry, status, setStatus, "degree", value);
         dispatch(actions.updateDegree({value, index}))
     };
 
     const handleCityChange = (values) => {
-        const value = values.length === 0 ? null : values[0].city
+        const value = values.length === 0 ? null : values[0].data
         updateStatus(validateEducationEntry, status, setStatus, "city", value);
         dispatch(actions.updateEduCity({value, index}));
     };
@@ -117,9 +119,22 @@ const EducationForm = ({ data, index, isLast = false, messages }) => {
         updateStatus(validateEducationEntry, status, setStatus, "country", value);
         dispatch(actions.updateEduCountry({value, index}));
     };
-
+    
+    const handleEducationFormRatings = async ({gpa, highestAward, otherAward}, index, messages) => {
+        const response = await resumeServices.getRatings(resumeId);
+        const { educations } = await response.json();
+        const schools = educations || [];
+        const educationRating = generateEducationRating({gpa, highestAward, otherAward, schools, index}, messages)
+        const layoutRating = generateLayoutRating(wholePageCheck(messages.RPreview), messages)
+        dispatch(actions.updateLayoutRating(layoutRating))
+        dispatch(actions.updateEducationRating({
+            index,
+            details: educationRating
+        }))
+    }
+    
     return (
-        <Form validated={validated} onSubmit={handleSubmit}>
+        <Form validated={validated} onSubmit={handleSubmit} className={`edu-${index}`}>
             <Row>
                 <Col>
                     <h2 className="form_h2">{messages.enterSchoolInfo}</h2>
@@ -128,7 +143,7 @@ const EducationForm = ({ data, index, isLast = false, messages }) => {
             <Row>
                 <Col lg="4">
                     <DropdownGroup label={messages.schoolName} id="education-school" placeholder={messages.enterSchoolName}
-                        searchKey="u" options={univOptions} value={data.schoolName}
+                        options={univOptions} value={data.schoolName}
                         onChange={handleSchoolChange} feedbackMessage={messages.entryIsInvalid}
                         isValid={status.schoolName.isValid} isInvalid={status.schoolName.isInvalid} />
                 </Col>
@@ -157,19 +172,19 @@ const EducationForm = ({ data, index, isLast = false, messages }) => {
             <Row>
                 <Col>
                     <DropdownGroup label={messages.major} id="education-major" placeholder={messages.enterMajor}
-                        searchKey="major" options={majorOptions} value={data.major}
+                         options={majorOptions} value={data.major}
                         onChange={handleMajorChange} feedbackMessage={messages.entryIsInvalid}
                         isValid={status.major.isValid} isInvalid={status.major.isInvalid} />
                 </Col>
                 <Col>
                     <DropdownGroup label={messages.degree} id="education-degree" placeholder={messages.enterDegree}
-                        searchKey="degree" options={degreeOptions} value={data.degree}
+                        options={degreeOptions} value={data.degree}
                         onChange={handleDegreeChange} feedbackMessage={messages.entryIsInvalid}
                         isValid={status.degree.isValid} isInvalid={status.degree.isInvalid} />
                 </Col>
                 <Col>
                     <DropdownGroup label={messages.schoolCity} id="education-school-city" placeholder={messages.schoolCity}
-                        searchKey="city" options={cityOptions} value={data.city}
+                        options={cityOptions} value={data.city}
                         onChange={handleCityChange} feedbackMessage={messages.entryIsInvalid}
                         isValid={status.city.isValid} isInvalid={status.city.isInvalid} />
                 </Col>

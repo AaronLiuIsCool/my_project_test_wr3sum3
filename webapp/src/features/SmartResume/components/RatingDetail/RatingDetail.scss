@@ -1,3 +1,6 @@
+.highlight-warning {
+  border: 1px solid red !important;
+}
 .rating-detail {
   .fading-container {
     background-color: #ffffff;
@@ -68,6 +71,27 @@
             background-position-y: -2px;
           }
         }
+        .action-details {
+          flex: 1;
+        }
+        .repeat-block {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 15px 0;
+          border-top: 1px solid #f0f0f0;
+          &:nth-child(3) {
+            border-top: 1px solid transparent;
+          }
+          p {
+            font-size: 14px;
+            margin-bottom: 5px;
+          }
+          h5 {
+            font-size: 16px;
+            font-weight: bold;
+          }
+        }
         .nav-btn {
           button {
             outline: none;
@@ -113,6 +137,7 @@
           text-align: left;
           color: #333333;
           margin-bottom: 0.938rem;
+          max-width: 200px;
         }
         .tag {
           display: inline-block;

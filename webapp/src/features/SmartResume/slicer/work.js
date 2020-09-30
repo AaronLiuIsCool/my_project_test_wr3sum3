@@ -67,6 +67,16 @@ const reducers = {
     completeWork: (state) => {
         state.work.completed = true;
     },
+    updateWorkFromResumeSDK: (state, action) => {
+        updateField(state, action.payload.index, "workName", action.payload.data.job_position);
+        updateField(state, action.payload.index, "workCompanyName", action.payload.data.job_cpy);
+        updateField(state, action.payload.index, "workStartDate", action.payload.data.start_date);
+        updateField(state, action.payload.index, "workEndDate", action.payload.data.end_date);
+        updateField(state, action.payload.index, "workDescription", action.payload.data.job_content);
+        if (action.payload.data.end_date) {
+            updateField(state, action.payload.index, "currentWorkFlag", true);
+        }
+    },
     addNewWork: state => {
         state.work.data.push({ ...work });
     },

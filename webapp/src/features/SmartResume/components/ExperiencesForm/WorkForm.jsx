@@ -19,7 +19,8 @@ import { validateWork, validateWorkEntry } from '../../slicer/work';
 import { updateStatus } from '../../slicer/common';
 import ResumeServices from 'shell/services/ResumeServices';
 import { getLogger } from 'shell/logger';
-import { previewResume } from '../ResumePreview/resumeBuilder';
+import { previewResume, wholePageCheck } from '../ResumePreview/resumeBuilder';
+import { generateSuggestions, isDescending, extractDate, generateLayoutRating } from '../../utils/resume';
 
 import DraftEditor from '../../../../components/DraftEditor/index'
 
@@ -28,7 +29,7 @@ import cityOptions from 'data/city.json';
 const logger = getLogger('WorkForm');
 const resumeServices = new ResumeServices();
 
-const WorkForm = ({ data, index, isLast = false, messages }) => {
+const WorkForm = ({ data, index, isLast = false, messages, workData }) => {
 	const trigger = useSelector(assistantSelectors.selectTrigger);
 	const showAssistant = useSelector(assistantSelectors.selectShow);
 	const resumeId = useSelector(selectId);
@@ -60,7 +61,7 @@ const WorkForm = ({ data, index, isLast = false, messages }) => {
 		}
 	};
 
-	const handleSubmit = (event) => {
+	const handleSubmit = async (event) => {
 		event.preventDefault();
 		event.stopPropagation();
 		if (!validateWork(data)) {
@@ -69,8 +70,38 @@ const WorkForm = ({ data, index, isLast = false, messages }) => {
 		}
 		setValidated(true);
         dispatch(actions.completeWork());
-		save();
+        await save();
+        handleWorkFormRating();
     };
+    
+    const handleWorkFormRating = async () => {
+        const response = await resumeServices.getRatings(resumeId);
+
+        // TODO: uncomment this
+        const { workExperiences } = await response.json();
+        
+        // todo delete this afterwards
+        // const { workExperiences } = response;
+        const layoutRating = generateLayoutRating(wholePageCheck(messages.RPreview), messages)
+        dispatch(actions.updateLayoutRating(layoutRating))
+        
+        const {
+            companyArr,
+            keywordsArr,
+            quantifyArr,
+            expArr,
+            sortedArr
+        } = generateSuggestions(workExperiences, 'workXp', 'work', isDescending(extractDate(workData, 'workStartDate')), messages)
+        
+        dispatch(actions.updateWorkRating({ 
+            'amount': expArr,
+            'company': companyArr,
+            'keywords': keywordsArr,
+            'quantify': quantifyArr,
+            'sorted': sortedArr,
+        }));
+    }
+    
     
     const handleWorkDescriptionEditorChange = (value) => {
         updateStatus(
@@ -115,7 +146,7 @@ const WorkForm = ({ data, index, isLast = false, messages }) => {
 	};
 
 	const handleWorkCityChange = (values) => {
-		const value = values.length === 0 ? null : values[0].city;
+		const value = values.length === 0 ? null : values[0].data;
 		updateStatus(validateWorkEntry, status, setStatus, 'workCity', value);
 		dispatch(actions.updateWorkCity({ value, index }));
 	};
@@ -229,7 +260,6 @@ const WorkForm = ({ data, index, isLast = false, messages }) => {
 						label={messages.city}
 						id='work-city'
 						placeholder={messages.workCity}
-						searchKey='city'
 						options={cityOptions}
 						value={data.workCity}
 						onChange={handleWorkCityChange}

@@ -27,6 +27,8 @@ let pdfTopPadding = scaleFactor * Constants.pdfTopPadding;
 let currentXPos = Constants.startX;
 let currentYPos = startY;
 
+let primaryColor = Constants.c_blue;
+
 // 一键整页
 export const adjustToWholePage = (resumeDataSet) => {
   const lastLineHeight = data[data.length - 1].y;
@@ -615,7 +617,7 @@ const buildResume = () => {
         break;
       case "h2":
         // apply h2 style
-        d.color = Constants.c_blue;
+        d.color = primaryColor;
         d.fontSize = Constants.h2FontSize;
         d.bold = true;
         drawText(d);
@@ -627,7 +629,7 @@ const buildResume = () => {
         drawText(d);
         break;
       case "link":
-        d.color = Constants.c_blue;
+        d.color = primaryColor;
         doc.setTextColor(d.color);
         doc.textWithLink(d.content, d.x, d.y, { url: d.url });
         // text underline
@@ -657,6 +659,7 @@ const buildResume = () => {
 
 export const downloadPDF = (messagePR) => {
   resumeData = store.getState().resume;
+  primaryColor = resumeData.resumeBuilder.data.color;
   messages = messagePR;
   buildResume();
   doc.save("resume.pdf");
@@ -664,6 +667,7 @@ export const downloadPDF = (messagePR) => {
 
 export const previewResume = (messagePR) => {
   resumeData = store.getState().resume;
+  primaryColor = resumeData.resumeBuilder.data.color;
   messages = messagePR;
   buildResume();
   const iframe = document.createElement("iframe");
@@ -672,4 +676,11 @@ export const previewResume = (messagePR) => {
     .getElementById("displayPDF")
     .replaceChild(iframe, document.querySelector("#displayPDF iframe"));
   iframe.src = doc.output("datauristring") + "#zoom=FitH";
+};
+
+export const wholePageCheck = (messagePR) => {
+  resumeData = store.getState().resume;
+  messages = messagePR;
+  prepareData();
+  return data;
 };

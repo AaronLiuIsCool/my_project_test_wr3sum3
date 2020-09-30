@@ -8,6 +8,7 @@ import project from "./project";
 import volunteer from "./volunteer";
 import certificate from "./certificate";
 import ratings from "./ratings";
+import resumeBuilder from "./resumeBuilder";
 import { resumeAdaptor } from "../utils/slicerAdaptor";
 
 export const resumeSlice = createSlice({
@@ -24,6 +25,7 @@ export const resumeSlice = createSlice({
         certificate: certificate.initialState,
         volunteer: volunteer.initialState,
         ratings: ratings.initialState,
+        resumeBuilder: resumeBuilder.initialState,
     },
     reducers: {
         setId: (state, action) => {
@@ -47,6 +49,7 @@ export const resumeSlice = createSlice({
         ...volunteer.reducers,
         ...certificate.reducers,
         ...ratings.reducers,
+        ...resumeBuilder.reducers,
     }
 });
 
@@ -64,5 +67,6 @@ export const projectSelectors = project.selectors;
 export const volunteerSelectors = volunteer.selectors;
 export const certificateSelectors = certificate.selectors;
 export const ratingsSelectors = ratings.selectors;
+export const resumeBuilderSelectors = resumeBuilder.selectors;
 
 export default resumeSlice.reducer;

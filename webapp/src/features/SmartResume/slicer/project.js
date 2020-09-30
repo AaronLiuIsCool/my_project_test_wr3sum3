@@ -59,6 +59,16 @@ const reducers = {
     completeProject: (state) => {
         state.project.completed = true;
     },
+    updateProjectFromResumeSDK: (state, action) => {
+        updateField(state, action.payload.index, "projectRole", action.payload.data.proj_name);
+        updateField(state, action.payload.index, "projectCompanyName", action.payload.data.proj_cpy);
+        updateField(state, action.payload.index, "projectStartDate", action.payload.data.start_date);
+        updateField(state, action.payload.index, "projectEndDate", action.payload.data.end_date);
+        updateField(state, action.payload.index, "projectDescription", action.payload.data.proj_content);
+        if (action.payload.data.end_date) {
+            updateField(state, action.payload.index, "currentProjectFlag", true);
+        }
+    },
     addNewProject: (state) => {
         state.project.data.push({ ...project });
     },

@@ -68,3 +68,20 @@ export const addBlock = (editorState, text, ranges) => {
   });
   return EditorState.push(editorState, newContentState, "change-inline-styles");
 };
+
+export const highlightLines = (editorState, contentState, hightedLinesMapping) => {
+    let contentStateWithHighlight = contentState;
+    let blocksMap = contentState.getBlockMap();
+    blocksMap.forEach((block, key) => {
+        if (!hightedLinesMapping[key]) {
+            return;
+        }
+        const selectionState = SelectionState.createEmpty(key);
+        const updateSelection = selectionState.merge({
+            anchorOffset: 0,
+            focusOffset: block.getText().length,
+        });
+        contentStateWithHighlight = Modifier.applyInlineStyle(contentStateWithHighlight, updateSelection, 'toImprove');
+    });
+    return EditorState.push(editorState, contentStateWithHighlight, 'change-inline-style')
+}

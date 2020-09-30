@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { BrowserRouter, Route, Switch  } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 import moment from 'moment';
@@ -43,9 +43,9 @@ async function isAuthenticated(dispatch) {
   }
 }
 const App = ({ waitForInit = true }) => {
-  const [init, setInit] = useState(false);
-  const language = useSelector(selectLanguage);
-  const dispatch = useDispatch();
+	const [init, setInit] = useState(false);
+	const language = useSelector(selectLanguage);
+	const dispatch = useDispatch();
 
   useEffect(() => {
     GApageView(); // call GA for page viewed
@@ -54,16 +54,16 @@ const App = ({ waitForInit = true }) => {
     return () => clearInterval(interval);
   }, []); // eslint-disable-line
 
-  let messages = en;
-  moment.locale('en');
-  if (language === 'zh') {
-    messages = zh;
-    moment.locale('zh-cn');
-  }
+	let messages = en;
+	moment.locale('en');
+	if (language === 'zh') {
+		messages = zh;
+		moment.locale('zh-cn');
+	}
 
-  if (waitForInit && !init) {
-    return <React.Fragment />;
-  }
+	if (waitForInit && !init) {
+		return <React.Fragment />;
+	}
 
   return (
     <I8nContext.Provider value={messages}>
@@ -88,7 +88,7 @@ const App = ({ waitForInit = true }) => {
 };
 
 App.propTypes = {
-  waitForInit: PropTypes.bool
-}
+	waitForInit: PropTypes.bool,
+};
 
 export default App;

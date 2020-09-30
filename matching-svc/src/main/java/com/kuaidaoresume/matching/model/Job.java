@@ -48,6 +48,8 @@ public class Job {
 
     private Compensation compensation;
 
+    private String url;
+
     @TextIndexed(weight=20)
     private Collection<String> relevantMajors;
 

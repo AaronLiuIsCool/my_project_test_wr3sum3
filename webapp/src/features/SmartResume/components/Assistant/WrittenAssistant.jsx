@@ -8,10 +8,11 @@ import { ReactComponent as SearchIcon } from '../../assets/search.svg';
 
 import { actions } from '../../slicer';
 import ResumeServices from 'shell/services/ResumeServices';
-
+import JobServices from 'shell/services/JobsServices'
 import styles from '../../styles/Assistant.module.css';
 
 const resumeServices = new ResumeServices();
+const jobServices = new JobServices();
 
 function renderIndustries(industries) {
     return industries.map((industry, index) => (
@@ -56,7 +57,7 @@ const WrittenAssistant = ({ trigger, context }) => {
     };
 
     const getSuggestions = async (industry, title) => {
-        const response = await resumeServices.getSuggestions(industry, title);
+        const response = await jobServices.getSuggestions(industry, title);
         const { suggestions } = response;
         setSuggestions(parseSuggestions(suggestions));
     };
@@ -83,12 +84,13 @@ const WrittenAssistant = ({ trigger, context }) => {
                 });
                 break;
             case 'project':
-                dispatch(
-                    actions.appendProjectDescription({
-                        index: context.index,
-                        value: tip
-                    })
-                );
+                notifyEditor('project', context.index, {
+                    data: {
+                        offsets: tip.offsets,
+                        text: tip.text
+                    },
+                    type: 'highlight-keyword'
+                });
                 break;
             case 'volunteer':
                 dispatch(

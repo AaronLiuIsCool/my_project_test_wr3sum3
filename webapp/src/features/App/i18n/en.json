@@ -5,5 +5,8 @@
   "nav_item_jobmatcher": "Jobs",
 
   "language_toggle_zh": "中文",
-  "language_toggle_en": "English"
+  "language_toggle_en": "English",
+
+  "logout": "Sign out",
+  "defaultInitial": "Unknown"
 }

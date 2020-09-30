@@ -18,5 +18,6 @@ const accountSlicer = createSlice({
 export const { updateAccount, deleteResume } = accountSlicer.actions;
 
 export const selectResumes = ({account}) => account.resumes;
+export const selectAccountName = ({account}) => account.name;
 
 export default accountSlicer.reducer;

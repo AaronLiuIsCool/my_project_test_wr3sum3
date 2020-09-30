@@ -40,6 +40,8 @@ public class JobDto {
 
     private Collection<KeywordDto> keywords;
 
+    private String url;
+
     @NotNull
     private LocalDateTime postDate;
 }

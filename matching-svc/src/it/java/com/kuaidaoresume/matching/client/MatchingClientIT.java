@@ -37,6 +37,7 @@ public class MatchingClientIT {
     private static final String JOB_UUID = "4b923a17-649c-4135-91c3-e5cfefa9c0bf";
     private static final String RESUME_UUID = "2d034692-16bb-4c57-95dd-29be2554254e";
     private static final String USER_UUID = "334a77f1-5b69-4d6e-80ba-bf5da5d00b54";
+    private static final String JOB_URL = "google.com";
 
     @Autowired
     private MatchingClient matchingClient;
@@ -72,6 +73,7 @@ public class MatchingClientIT {
             .keywords(Arrays.asList(keyword))
             .relevantMajors(Arrays.asList(MAJOR))
             .postDate(LocalDateTime.of(2020, 1, 1, 0, 0))
+            .url(JOB_URL)
             .build();
 
         resume = ResumeDto.builder()

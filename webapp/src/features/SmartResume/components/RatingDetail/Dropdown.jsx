@@ -4,8 +4,8 @@ import './Dropdown.scss';
 const downArrow = require('../../assets/downarrow.png');
 const upArrow = require('../../assets/uparrow.png');
 
-const Dropdown = ({ options, onSelect }) => {
-    const [selectedOption, setSelectedOption] = useState(options[0] || '');
+const Dropdown = ({ options, onSelect, data, messages }) => {
+    const [selectedOption, setSelectedOption] = useState(options[0].value || '');
 
     const [showSelection, setShowSelection] = useState(false);
     const dropdownRef = useRef(null);
@@ -17,6 +17,11 @@ const Dropdown = ({ options, onSelect }) => {
             }
         });
     }, [showSelection]);
+    
+    useEffect(() => {
+        setSelectedOption(messages.all)
+    }, [data, messages.all])
+    
     return (
         <div className="dropdown-wrapper" ref={dropdownRef}>
             <div
@@ -40,9 +45,9 @@ const Dropdown = ({ options, onSelect }) => {
                         options.map((option, index) => {
                         return <div key={index} className="dropdown-item" onClick={() => {
                             setShowSelection(false)
-                            setSelectedOption(option)
-                            onSelect()
-                        }}>{option}</div>;
+                            setSelectedOption(option.value)
+                            onSelect(option.key)
+                        }}>{option.value}</div>;
                     })
                 }
                 </div>

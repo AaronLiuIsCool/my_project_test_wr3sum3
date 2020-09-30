@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import ViewObserver from './ViewObserver';
@@ -8,12 +8,15 @@ import WorkExperience from './WorkExperience';
 import ProjectExperience from './ProjectExperience';
 import VolunteerExperience from './VolunteerExperience';
 import CertificateExperience from './CertificateExperience';
-import RatingDetail from '../RatingDetail/RatingDetail';
+import { actions } from '../../slicer';
+import { useDispatch } from 'react-redux';
 
 import styles from '../../styles/ExperiencesForm.module.css';
 
 const ExperiencesForm = ({ useObserver }) => {
-    const [visible, setVisible] = useState(false);
+    
+    const dispatch = useDispatch();
+    
     return (
         <div className={styles.container}>
             <p>
@@ -21,7 +24,12 @@ const ExperiencesForm = ({ useObserver }) => {
                 <button
                     className="toggle-rating"
                     onClick={() => {
-                        setVisible(!visible);
+                        dispatch(
+                            actions.toggleAssistant({
+                                trigger: 'rating',
+                                context: { },
+                            })
+                        );
                     }}
                 >
                     toggle rating
@@ -35,7 +43,7 @@ const ExperiencesForm = ({ useObserver }) => {
                 <VolunteerExperience />
                 <CertificateExperience />
             </ViewObserver>
-            <RatingDetail visible={visible} />
+            
         </div>
     );
 };

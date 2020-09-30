@@ -1,0 +1,25 @@
+.container {
+  height: 48px;
+  line-height: 48px;
+  text-align: center;
+}
+
+.logoutBtn {
+  font-size: 16px;
+  color: #bfc4d3 !important;
+}
+.logoutBtn:hover {
+  text-decoration: none !important;
+}
+
+.userAvatar {
+  display: inline-block;
+  width: 48px;
+  height: 48px;
+  border-radius: 24px;
+  background-color: #3e89ec;
+  color: white;
+}
+.userAvatar:hover {
+  cursor: pointer;
+}

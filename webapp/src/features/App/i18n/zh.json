@@ -5,5 +5,11 @@
   "nav_item_jobmatcher": "工作搜索",
   "nav_item_jobcollction": "我的岗位",
   "language_toggle_zh": "中文",
-  "language_toggle_en": "English"
+  "language_toggle_en": "English",
+  "createNewResume": "创建一份全新简历",
+  "resumeUpload": "我有简历了，我要上传",
+  "uploadYourResume": "上传您的简历",
+  "upload": "上传",
+  "logout": "登出",
+  "defaultInitial": "未知"
 }

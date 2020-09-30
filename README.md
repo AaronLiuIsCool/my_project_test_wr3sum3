@@ -231,5 +231,5 @@ HTTPS=false
 PORT=80 # You will need admin or sudo to allow port 80, or use default 3000
 HOST='app.uat.smartresume.careers'
 ```
-- Run `REACT_APP_ENV=UAT yarn start`
+- Run `sudo REACT_APP_ENV=UAT yarn start`
 - Go to `http://app.uat.smartresume.careers/` or `http://app.uat.smartresume.careers:3000/` if your port is 3000

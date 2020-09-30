@@ -11,10 +11,13 @@
     input {
       height: 41px;
       background-color: #f2f4f9;
-      color: #d5d9e6;
+      color: #333333;
       border-radius: 8px;
       border: none;
-      /* box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.1); */
+      
+      ::placeholder, :-ms-input-placeholder, ::-ms-input-placeholder  {
+        color: #d5d9e6;
+      }
     }
   }
 

@@ -13,10 +13,13 @@ import AvatarUpload from './AvatarUpload';
 import { validateBasic, validateBasicEntry } from '../../slicer/basic';
 import { updateStatus } from '../../slicer/common';
 import { adaptBasics } from '../../utils/servicesAdaptor';
+import { generateBasicFormRating, generateLayoutRating } from '../../utils/resume';
 import ResumeServices from 'shell/services/ResumeServices';
 import { getLogger } from 'shell/logger';
 
-import { previewResume } from '../ResumePreview/resumeBuilder';
+import { previewResume, 
+    wholePageCheck 
+} from '../ResumePreview/resumeBuilder';
 
 // json data for dropdowns
 import cityOptions from 'data/city.json';
@@ -61,13 +64,25 @@ const BasicForm = ({ data, completed, messages }) => {
 		event.stopPropagation();
 		if (!validateBasic(data)) {
 			setValidated(false);
-			// todo: revert, this is for testing
-			// return;
-		}
+			return;
+        }
+        
+        handleBasicFormRating(data)
+        
 		setValidated(true);
 		dispatch(actions.completeBasic());
 		save();
-	};
+    };
+    
+    
+    const handleBasicFormRating = async ({ avatar, linkedin, weblink }) => {
+        const basicRating = generateBasicFormRating({ avatar, linkedin, weblink, messages })
+        const layoutRating = generateLayoutRating(wholePageCheck(messages.RPreview), messages)
+        dispatch(actions.updateLayoutRating(layoutRating))
+        dispatch(actions.updateBasicInfoRating(basicRating))
+        
+    }
+    
 
 	const handleNameCnChange = (event) => {
 		const value = event.target.value;
@@ -94,7 +109,7 @@ const BasicForm = ({ data, completed, messages }) => {
 	};
 
 	const handleCityChange = (values) => {
-		const value = values.length === 0 ? null : values[0].city;
+		const value = values.length === 0 ? null : values[0].data;
 		if (!validateBasicEntry('city', value)) {
 			return;
 		}
@@ -177,7 +192,6 @@ const BasicForm = ({ data, completed, messages }) => {
 						label={messages.schoolCity}
 						id='education-city'
 						placeholder={messages.schoolCity}
-						searchKey='city'
 						options={cityOptions}
 						value={data.city}
 						onChange={handleCityChange}

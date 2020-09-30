@@ -55,3 +55,261 @@ export function reconstruct(flattenResume) {
   traverseAndUnFlatten(flattenResume, resume);
   return resume;
 }
+
+export const generateBasicFormRating = ({ avatar, linkedin, weblink, messages }) => {
+    const basicArr = []
+    if (linkedin === '') {
+        const obj = {
+            section: 'basicInfo',
+            name: messages.linkedinAccount,
+            type: 'info-complete',
+            message: messages.linkedinMessage,
+            selector: '#basic-linkedin'
+        };
+        basicArr.push(obj);
+    }
+    if (weblink === '') {
+        const obj = {
+            section: 'basicInfo',
+            name: messages.personalWebsite,
+            type: 'info-complete',
+            message: messages.websiteMessage,
+            selector: '#basic-weblink'
+        };
+        basicArr.push(obj);
+    }
+    if(avatar === '') {
+        const obj = {
+            section: 'basicInfo',
+            name: messages.uploadPhoto,
+            type: 'layout',
+            message: messages.photoMessage,
+            selector: '#upload-photo'
+        }
+        basicArr.push(obj)
+        
+    }
+    return basicArr
+}
+
+export const generateLayoutRating = (result, messages) => {
+    const layoutArr = []
+    
+  const { page, y } = result[result.length - 1];
+  if (page === 1) {
+  } else if (page > 1 && y > 39) {
+    layoutArr.push({
+      section: 'basicInfo',
+      prefix: messages.resume,
+      name: messages.notAlign,
+      type: "layout",
+      message: messages.layoutMessage,
+      selector: undefined,
+    });
+  }
+  
+  return layoutArr
+  
+};
+
+export const generateSuggestions = (experience, section, eventType, sorted, messages) => {
+    const keywordsArr = [];
+    const quantifyArr = [];
+    const companyArr = [];
+    const sortedArr = [];
+    const len = experience.length
+    const expArr = [{
+        name: section === 'workXp' ? messages.workExp : section === 'OtherXp' ? messages.otherExp : messages.projectExp,
+        type: 'exp-value',
+        green: len > 1,
+        message:
+            len > 2
+                ? messages.expLengthOverTwo
+                : len > 1
+                ? messages.expLengthTwo
+                : len > 0
+                ? messages.expLengthOne
+                : messages.expLengthZero
+    }];
+    if(!sorted) {
+       sortedArr.push({
+           name: messages.sorted,
+           type: 'layout',
+           section,
+           message: messages.sortedMessage
+       }) 
+    }
+    experience.forEach((exp, index) => {
+        const ratingDetail = exp.bullets || [];
+        const position = exp.role;
+        const companyName = exp.organization;
+        const content = ratingDetail.map((item) => item.bullet);
+        const keywords = ratingDetail.map((item) => item.keywords);
+        const quantify = ratingDetail.map((item) => item.numericWords);
+        if(exp.rating !== 'MEDIOCRE') {
+            const companyObj = {
+                type: 'exp-value',
+                message: `${messages.employedAt1}${exp.orgnization}${messages.employedAt2}${
+                    exp.rating === 'GREAT' ? messages.employedAt3 : messages.employedAt4
+                }${messages.employedAt5}`,
+                section,
+                selector: '',
+                name:
+                    exp.rating === 'GREAT'
+                        ? messages.nationalInfluence
+                        : messages.globalInfluence
+            };
+            companyArr.push(companyObj);
+        }
+        
+        
+        const keywordsSuggestions =
+            keywords.filter((e) => e.length > 0).length / keywords.length <
+            0.5;
+        const quantifySuggestions =
+            quantify.filter((e) => e.length > 0).length / quantify.length <
+            0.5;
+
+        if (keywordsSuggestions) {
+            keywordsArr.push({
+                eventType,
+                content,
+                name: '',
+                type: 'expression',
+                section,
+                company: companyName,
+                position,
+                index,
+                keywords
+            });
+        } else {
+        }
+        if (quantifySuggestions) {
+            quantifyArr.push({
+                eventType,
+                content,
+                name: '',
+                type: 'expression',
+                section,
+                position,
+                company: companyName,
+                index,
+                quantify
+            });
+        } else {
+        }
+    });
+
+    return {
+        companyArr,
+        expArr,
+        keywordsArr,
+        quantifyArr,
+        sortedArr
+    };
+};
+
+export const generateEducationRating = (
+  { gpa, highestAward, otherAward, schools, index },
+  messages
+) => {
+  const educationArr = [];
+  if (highestAward === "") {
+    const obj = {
+      section: "education",
+      name: messages.highestAwards,
+      type: "info-complete",
+      message: messages.highestAwardsMessage,
+      selector: `.edu-${index} #education-highest-award`,
+    };
+    educationArr.push(obj);
+  }
+  if (otherAward === "") {
+    const obj = {
+      section: "education",
+      name: messages.otherAward,
+      type: "info-complete",
+      message: messages.otherAwardMessage,
+      selector: `.edu-${index} #education-other-award`,
+    };
+    educationArr.push(obj);
+  }
+  if (gpa !== "") {
+    const gpaNum = gpa - 0;
+    const gpaObj = {
+      section: "education",
+      name: messages.graduateGPA,
+      type: "exp-value",
+      message: messages.gpaMessageOne,
+      selector: `.edu-${index} #education-gpa`,
+      green: true,
+    };
+    if (gpaNum > 3.5) {
+      educationArr.push(gpaObj);
+    } else if (gpaNum < 3) {
+      gpaObj.green = false;
+      gpaObj.message = messages.gpaMessageTwo;
+      educationArr.push(gpaObj);
+    } else {
+      gpaObj.message = messages.gpaMessageThree;
+      educationArr.push(gpaObj);
+    }
+  }
+
+  if (schools.length > index) {
+    const res = prepareSchoolPopularity(schools[index], messages);
+    if (res) {
+      educationArr.push(res);
+    }
+  }
+  return educationArr
+};
+
+const prepareSchoolPopularity = (school, messages) => {
+  const rating = school.rating;
+  const RATINGS_MAP = {
+    'GREAT': messages.schoolRating1,
+    'GOOD': messages.schoolRating2,
+    'MEDIOCRE': messages.schoolRating3,
+  };
+  const str = `${messages.graduatedFrom.replace(/{school}/g, school.institution)}${RATINGS_MAP[rating]}`;
+  const obj = {
+    school: true,
+    name: `${messages.schoolPopularity}${
+      rating > 4
+        ? messages.extremegood
+        : rating > 2
+        ? messages.verygood
+        : messages.good
+    }`,
+    message: str,
+    green: true,
+    type: "exp-value",
+  };
+  return obj;
+};
+
+export const isDescending = (arr) => {
+  return arr.every(function (x, i) {
+    return i === 0 || x <= arr[i - 1];
+  });
+};
+
+export const extractDate = (arr, label) => {
+  return arr.map((item) => new Date(item[label]).getTime());
+};
+
+export const generateCertificeRating = (numberOfCertificate, messages) => {
+  const certArr = [];
+
+  if (numberOfCertificate < 2) {
+    certArr.push({
+      type: "exp-value",
+      section: "certifications",
+      messages: messages.certificationsMessage,
+      name: messages.certifications,
+    });
+  }
+
+  return certArr;
+};

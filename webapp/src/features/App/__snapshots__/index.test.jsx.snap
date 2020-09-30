@@ -46,15 +46,6 @@ exports[`App tests renders App 1`] = `
         </a>
         <a
           className="nav-link"
-          data-rb-event-key="/jobs"
-          href="/jobs"
-          onClick={[Function]}
-          onKeyDown={[Function]}
-        >
-          工作搜索
-        </a>
-        <a
-          className="nav-link"
           data-rb-event-key="/job-collection"
           href="/job-collection"
           onClick={[Function]}
@@ -64,43 +55,21 @@ exports[`App tests renders App 1`] = `
         </a>
       </div>
       <div
-        className="btn-group btn-group-toggle"
-        role="group"
+        className="container"
       >
-        <label
-          className="btn active btn-primary"
-          disabled={false}
+        <a
+          className="logoutBtn btn btn-link"
+          href="http://www.kuaidaoresume-v2.local/logout"
+          onClick={[Function]}
+          onKeyDown={[Function]}
         >
-          <input
-            autoComplete="off"
-            checked={true}
-            disabled={false}
-            name="languageSelect"
-            onBlur={[Function]}
-            onChange={[Function]}
-            onFocus={[Function]}
-            type="radio"
-            value="zh"
-          />
-          中文
-        </label>
-        <label
-          className="btn btn-primary"
-          disabled={false}
+          登出
+        </a>
+        <div
+          className="userAvatar"
         >
-          <input
-            autoComplete="off"
-            checked={false}
-            disabled={false}
-            name="languageSelect"
-            onBlur={[Function]}
-            onChange={[Function]}
-            onFocus={[Function]}
-            type="radio"
-            value="en"
-          />
-          English
-        </label>
+          未知
+        </div>
       </div>
     </div>
   </nav>

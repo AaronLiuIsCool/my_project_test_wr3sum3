@@ -11,12 +11,13 @@ export function getServiceUrl(baseUrl, api) {
   return `http://${baseUrl}/${api}`
 }
 
-export async function get(url,  options) {
+export async function get(url,  data, options) {
   const headers = getHeaders();
   const request = new Request(url, {
     credentials: 'include',
     method: 'GET',
-    headers
+    headers,
+    body: JSON.stringify(data)
   });
   return await fetch(request);
 }
@@ -59,9 +60,9 @@ export default class BaseServices {
     return getServiceUrl(configs[`${this.configsPrefix}-baseUrl`], api);
   }
 
-  async get(api) {
+  async get(api, params) {
     const url = this.getURL(api);
-    return await get(url);
+    return await get(url, params);
   }
 
   async post(api, data) {

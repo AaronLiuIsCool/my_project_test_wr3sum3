@@ -13,7 +13,8 @@ import './index.scss';
 import {
     addBulletPoint,
     removeStylesForSelection,
-    addBlock
+    addBlock,
+    highlightLines
 } from './editorHelper';
 const colorStyleMap = {
     red: {
@@ -61,7 +62,7 @@ const DraftEditor = ({ texts, handleChangeCallback, label, eventName }) => {
                 entityMap: {},
                 blocks: lines.map((line) => ({
                     key: genKey(),
-                    text: line,
+                    text: line.slice(1),
                     type: 'unordered-list-item',
                     depth: 0,
                     inlineStyleRanges: [],
@@ -74,7 +75,7 @@ const DraftEditor = ({ texts, handleChangeCallback, label, eventName }) => {
             didMount.current = true;
         }
     }, [texts]);
-    
+
     useEffect(() => {
         const eventListenerCallback = (e) => {
             const { data, type } = e.detail;
@@ -121,14 +122,16 @@ const DraftEditor = ({ texts, handleChangeCallback, label, eventName }) => {
                             (acc, cur, index) => {
                                 return index === 0
                                     ? acc + cur.text
-                                    : acc + '\n' + cur.text;
+                                    : acc + '\n*' + cur.text;
                             },
-                            ''
+                            '*'
                         );
                         handleChangeCallback(value);
                     }
                     break;
-
+                case 'update-content':
+                    updateContent(data);
+                    break;
                 default:
                     break;
             }
@@ -137,15 +140,56 @@ const DraftEditor = ({ texts, handleChangeCallback, label, eventName }) => {
         return () => {
             window.removeEventListener(eventName, eventListenerCallback);
         };
+        // eslint-disable-next-line
     }, [eventName, handleChangeCallback]);
+
+    const updateContent = ({ content, keywords, quantify }) => {
+        const hightedLinesMapping = {};
+        const rawContentState = {
+            entityMap: {},
+            blocks: content.map((text, index) => {
+                const key = genKey();
+                if (!!keywords) {
+                    if (keywords[index].length < 1) {
+                        hightedLinesMapping[key] = true;
+                    }
+                } else {
+                    if (quantify[index].length < 1) {
+                        hightedLinesMapping[key] = true;
+                    }
+                }
+                return {
+                    key,
+                    text,
+                    type: 'unordered-list-item',
+                    depth: 0,
+                    inlineStyleRanges: [],
+                    entityRanges: []
+                };
+            })
+        };
+
+        const contentState = convertFromRaw(rawContentState);
+
+        setLocalState(
+            highlightLines(localState, contentState, hightedLinesMapping)
+        );
+        const value = rawContentState.blocks.reduce((acc, cur, index) => {
+            return index === 0 ? acc + cur.text : acc + '\n*' + cur.text;
+        }, '*');
+
+        // update store
+        handleChangeCallback(value);
+    };
+
     const handleChange = (editorState) => {
         // update local state
         setLocalState(removeStylesForSelection(addBulletPoint(editorState)));
 
         const rawContentState = convertToRaw(editorState.getCurrentContent());
         const value = rawContentState.blocks.reduce((acc, cur, index) => {
-            return index === 0 ? acc + cur.text : acc + '\n' + cur.text;
-        }, '');
+            return index === 0 ? acc + cur.text : acc + '\n*' + cur.text;
+        }, '*');
 
         // update store
         handleChangeCallback(value);

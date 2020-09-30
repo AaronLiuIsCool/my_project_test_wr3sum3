@@ -1,22 +1,8 @@
 import { getLogger } from 'shell/logger';
 import BaseServices from './BaseServices';
 
-import defaultJobsMetadata from './data/defaultJobsMetadata.json';
-
 const logger = getLogger('JobsService');
 const PREFIX = 'services-job';
-
-// const MAX_SIZE_PER_PAGE = 7;
-
-function getDefaultJobsLocations() {
-  const locations = [];
-  Object.keys(defaultJobsMetadata.locations).forEach(country => {
-    defaultJobsMetadata.locations[country].forEach(city => {
-      locations.push({ country, city });
-    });
-  })
-  return locations;
-}
 
 export default class JobsServices extends BaseServices {
     constructor() {
@@ -24,38 +10,13 @@ export default class JobsServices extends BaseServices {
         this.configsPrefix = PREFIX;
     }
 
-    async getAllJobs() {
-      try {
-          const response = await this.get('v1/jobs/all');
-          const data = await response.json();
-          console.log(data);
-      } catch (err) {
-          logger.error(err);
-      }
-    }
-
-    async getDefaultJobs(resultsPageNumber) {
+    async getJob(uuid) {
         try {
-            return await this.post('v1/jobs/job-search', {
-              locations: getDefaultJobsLocations()
-            });
+            const response = await this.get(`v1/jobs/uuid/${uuid}`);
+            return await response.json();
         } catch (err) {
             logger.error(err);
         }
-    }
-
-    async getJobs(query, country, city, resultsPageNumber) {
-      try {
-        if (!query && !country && !city) {
-          return await this.getDefaultJobs(resultsPageNumber);
-        }
-        return await this.post('v1/jobs/job-search', {
-          locations: [{city, country}],
-          majors: [{name: query}]
-        });
-      } catch(err) {
-        logger.error(err);
-      }
     }
 
     // TODO: replace with real API call
@@ -64,5 +25,21 @@ export default class JobsServices extends BaseServices {
             score: 79,
             description: "缺少部分相关技能 ｜缺少众多关键词 ｜ 缺少相关技能证书"
         });
+    }
+    
+    // TODO: Update this fetch to UAT endpoint later 
+    async getSuggestions(industry, title) {
+        try {
+            const res = this.get(`/v1/get_suggestions_by_industry_position?industry=${industry}&limit=50&offset=0&position=${title}`)
+            const {suggestions} = await res.json()
+            return {
+                suggestions
+            }
+        } catch (error) {
+            console.error(error)
+            return {
+                suggestions: []
+            }
+        }        
     }
 }

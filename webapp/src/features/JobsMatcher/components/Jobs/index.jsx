@@ -12,7 +12,7 @@ const Jobs = ({ data, pageNumber, onPageChange, modalOpenHandler }) => {
         <div className={styles.container}>
             <JobsList data={data} pageNumber={pageNumber} onPageChange={onPageChange}
                 onSelect={setSelection} selection={selection} />
-            <JobDetails data={data && data.content && data.content[selection]} />
+            <JobDetails data={data && data.jobs && data.jobs[selection]} />
         </div>
     )
 };

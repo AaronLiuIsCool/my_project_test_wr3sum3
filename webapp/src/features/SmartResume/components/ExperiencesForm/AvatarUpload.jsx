@@ -20,7 +20,7 @@ const AvatarUpload = () => {
 				<div className={styles.avatarPreview}>
 					<img src={avatar ? avatar : PhotoUploadIcon} alt="avatar" />
 				</div>
-				<div className={styles.avatarPreviewText}>{messages.uploadPhoto}</div>
+				<div id="upload-photo" className={styles.avatarPreviewText}>{messages.uploadPhoto}</div>
 			</div>
 			<div className={`${styles.modal} ${modalOpen ? styles.modalOpen : styles.modalClosed}`}>
 				<h2>{messages.addPhoto}</h2>

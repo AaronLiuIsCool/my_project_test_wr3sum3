@@ -94,6 +94,13 @@ const reducers = {
     completeBasic: (state) => {
         state.basic.completed = true;
     },
+    updateBasicFromResumeSDK: (state, action) => {
+        updateField(state, "nameCn", action.payload.data.name);
+        updateField(state, "email", action.payload.data.email);
+        updateField(state, "phone", action.payload.data.phone);
+        updateField(state, "city", action.payload.data.city);
+        updateField(state, "weblink", action.payload.data.blog);
+    },
     updateBasicsId: (state, action) => {
         updateField(state, "id", action.payload.id);
     },

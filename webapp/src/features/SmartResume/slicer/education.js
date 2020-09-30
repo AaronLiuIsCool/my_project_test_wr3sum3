@@ -62,6 +62,14 @@ const reducers = {
     completeEducation: (state) => {
         state.education.completed = true;
     },
+    updateEducationFromResumeSDK: (state, action) => {
+        updateField(state, action.payload.index, "schoolName", action.payload.data.edu_college);
+        updateField(state, action.payload.index, "startDate", action.payload.data.start_date);
+        updateField(state, action.payload.index, "graduateDate", action.payload.data.end_date);
+        updateField(state, action.payload.index, "gpa", action.payload.data.edu_gpa);
+        updateField(state, action.payload.index, "major", action.payload.data.edu_major);
+        updateField(state, action.payload.index, "degree", action.payload.data.edu_degree);
+    },
     addNewEducation: (state) => {
         state.education.data.push({...education});
     },

@@ -22,3 +22,4 @@ data:
   JOB_DATASOURCE_USERNAME: root
   JOB_DATASOURCE_PASSWORD: ~Youkn0wit)
   MATCHING_DATASOURCE_URL:mongodb+srv://root:mongodbroot@kuaidaoresume-uat1.kxcvj.mongodb.net
+  JOB_FETCH_EVERY_SECS: 864000
