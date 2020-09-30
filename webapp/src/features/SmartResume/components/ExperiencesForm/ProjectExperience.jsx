@@ -9,7 +9,7 @@ import { actions, projectSelectors } from '../../slicer';
 
 const getForms = (projectData, messages) =>
 	projectData.map((project, index) => (
-		<ProjectForm data={project} index={index} isLast={index === project.length} messages={messages} key={`project-${index}`} />
+		<ProjectForm projectData={projectData} data={project} index={index} isLast={index === project.length} messages={messages} key={`project-${index}`} />
 	));
 
 const ProjectExperience = () => {

@@ -9,7 +9,9 @@ import InputGroup from 'components/InputGroup';
 import DropdownGroup from 'components/DropdownGroup';
 import RadioButtonGroup from 'components/RadioButtonGroup';
 import Button from 'react-bootstrap/Button';
-import TextArea from 'components/TextArea';
+import DraftEditor from '../../../../components/DraftEditor/index'
+import { generateSuggestions, isDescending, extractDate, generateLayoutRating } from '../../utils/resume';
+
 import { ReactComponent as WrittenAssistIcon } from '../../assets/writing_assit.svg';
 
 import { adaptProject } from '../../utils/servicesAdaptor';
@@ -18,14 +20,14 @@ import { validateProject, validateProjectEntry } from '../../slicer/project';
 import { updateStatus } from '../../slicer/common';
 import ResumeServices from 'shell/services/ResumeServices';
 import { getLogger } from 'shell/logger';
-import { previewResume } from '../ResumePreview/resumeBuilder';
+import { previewResume, wholePageCheck } from '../ResumePreview/resumeBuilder';
 
 import cityOptions from 'data/city.json';
 
 const logger = getLogger('ProjectForm');
 const resumeServices = new ResumeServices();
 
-const ProjectForm = ({ data, index, isLast = false, messages }) => {
+const ProjectForm = ({ data, index, isLast = false, messages, projectData }) => {
 	const trigger = useSelector(assistantSelectors.selectTrigger);
 	const showAssistant = useSelector(assistantSelectors.selectShow);
 	const resumeId = useSelector(selectId);
@@ -59,17 +61,39 @@ const ProjectForm = ({ data, index, isLast = false, messages }) => {
 		}
 	};
 
-	const handleSubmit = (event) => {
+    const handleProjectFormRating = async () => {        
+        const response = await resumeServices.getRatings(resumeId);
+
+        const { projectExperiences } = await response.json();
+        
+        const layoutRating = generateLayoutRating(wholePageCheck(messages.RPreview), messages)
+        dispatch(actions.updateLayoutRating(layoutRating))
+        const {
+            companyArr,
+            keywordsArr,
+            quantifyArr,
+            expArr,
+            sortedArr
+        } = generateSuggestions(projectExperiences, 'projectXp', 'project', isDescending(extractDate(projectData, 'projectStartDate')), messages)
+        dispatch(actions.updateProjectRating({ 
+            'amount': expArr,
+            'company': companyArr,
+            'keywords': keywordsArr,
+            'quantify': quantifyArr,
+            'sorted': sortedArr,
+        }));
+    }
+	const handleSubmit = async (event) => {
 		event.preventDefault();
 		event.stopPropagation();
-
 		if (!validateProject(data)) {
 			setValidated(false);
 			return;
 		}
 		setValidated(true);
         dispatch(actions.completeProject());
-		save();
+        await save();
+        handleProjectFormRating();
 	};
 
 	const handleProjectRoleChange = (event) => {
@@ -106,11 +130,16 @@ const ProjectForm = ({ data, index, isLast = false, messages }) => {
 		dispatch(actions.updateProjectEndDate({ value, index }));
 	};
 
-	const handleProjectDescriptionChange = (event) => {
-		const value = event.target.value;
-		updateStatus(validateProjectEntry, status, setStatus, 'projectDescription', value);
-		dispatch(actions.updateProjectDescription({ value, index }));
-	};
+    const handleProjectDescriptionEditorChange = (value) => {
+        updateStatus(
+            validateProjectEntry,
+            status,
+            setStatus,
+            'projectDescription',
+            value
+        );
+        dispatch(actions.updateWorkDescription({ value, index }));
+    }
 
 	const handleCityChange = (values) => {
 		const value = values.length === 0 ? null : values[0].data;
@@ -245,15 +274,13 @@ const ProjectForm = ({ data, index, isLast = false, messages }) => {
 			</Row>
 			<Row>
 				<Col lg='12'>
-					{/*todo: replace with rich text editor */}
 					<div className={assistantContainerClassNames}>
-						<TextArea
-							label={messages.projectDetailsDescription}
-							id='volunteer-description'
-							placeholder={messages.enterProjectDetailsDescription}
-							value={data.projectDescription}
-							onChange={handleProjectDescriptionChange}
-						/>
+                        <DraftEditor 
+                            label={messages.projectDetailsDescription}
+                            handleChangeCallback={handleProjectDescriptionEditorChange}
+                            texts={data.projectDescription} 
+                            eventName={`project-${index}`}
+                        /> 
 						<span className='writeAssistant'>
 							<WrittenAssistIcon />
 							<Button variant='link' onClick={handleAssistantClick}>

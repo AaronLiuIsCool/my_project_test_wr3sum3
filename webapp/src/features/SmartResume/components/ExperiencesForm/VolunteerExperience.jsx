@@ -9,7 +9,7 @@ import { actions, volunteerSelectors } from '../../slicer';
 
 const getForms = (volunteerData, messages) =>
 	volunteerData.map((volunteer, index) => (
-		<VolunteerForm data={volunteer} index={index} isLast={index === volunteer.length} messages={messages} key={`volunteer-${index}`} />
+		<VolunteerForm volunteerData={volunteerData} data={volunteer} index={index} isLast={index === volunteer.length} messages={messages} key={`volunteer-${index}`} />
 	));
 
 const VolunteerExperience = () => {

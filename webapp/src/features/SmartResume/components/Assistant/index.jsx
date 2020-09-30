@@ -16,6 +16,8 @@ const renderAssistant = (trigger, context) => {
     // TODO: Add if back when we add more variation to assist
     if (trigger === 'work') {
         return <WrittenAssistant trigger={trigger} context={context} />;
+    } else if (trigger === 'project') {
+        return <WrittenAssistant trigger={trigger} context={context} />;
     } else if (trigger === 'rating') {
         return <RatingDetail />
     }

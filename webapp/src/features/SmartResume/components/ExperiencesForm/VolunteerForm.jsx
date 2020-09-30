@@ -9,7 +9,9 @@ import InputGroup from 'components/InputGroup';
 import DropdownGroup from 'components/DropdownGroup';
 import RadioButtonGroup from 'components/RadioButtonGroup';
 import Button from 'react-bootstrap/Button';
-import TextArea from 'components/TextArea';
+import DraftEditor from '../../../../components/DraftEditor/index'
+import { generateSuggestions, isDescending, extractDate, generateLayoutRating } from '../../utils/resume';
+
 import { ReactComponent as WrittenAssistIcon } from '../../assets/writing_assit.svg';
 
 import { adaptVolunteer } from '../../utils/servicesAdaptor';
@@ -18,14 +20,14 @@ import { validateVolunteer, validateVolunteerEntry } from '../../slicer/voluntee
 import { updateStatus } from '../../slicer/common';
 import ResumeServices from 'shell/services/ResumeServices';
 import { getLogger } from 'shell/logger';
-import { previewResume } from '../ResumePreview/resumeBuilder';
+import { previewResume, wholePageCheck } from '../ResumePreview/resumeBuilder';
 
 import cityOptions from 'data/city.json';
 
 const logger = getLogger('VolunteerForm');
 const resumeServices = new ResumeServices();
 
-const VolunteerForm = ({ data, index, isLast = false, messages }) => {
+const VolunteerForm = ({ data, index, isLast = false, messages, volunteerData }) => {
 	const trigger = useSelector(assistantSelectors.selectTrigger);
 	const showAssistant = useSelector(assistantSelectors.selectShow);
 	const resumeId = useSelector(selectId);
@@ -59,16 +61,44 @@ const VolunteerForm = ({ data, index, isLast = false, messages }) => {
 		}
 	};
 
-	const handleSubmit = (event) => {
+    const handleProjectFormRating = async () => {
+        
+        const response = await resumeServices.getRatings(resumeId);
+
+        // TODO: uncomment this
+        const { volunteerExperiences } = await response.json();
+        
+        // todo delete this afterwards
+        // const { volunteerExperiences } = response;
+        const layoutRating = generateLayoutRating(wholePageCheck(messages.RPreview), messages)
+        dispatch(actions.updateLayoutRating(layoutRating))
+        const {
+            companyArr,
+            keywordsArr,
+            quantifyArr,
+            expArr,
+            sortedArr
+        } = generateSuggestions(volunteerExperiences, 'otherXp', 'volunteer', isDescending(extractDate(volunteerData, 'volunteerStartDate')), messages)
+
+        dispatch(actions.updateVolunteerRating({ 
+            'amount': expArr,
+            'company': companyArr,
+            'keywords': keywordsArr,
+            'quantify': quantifyArr,
+            'sorted': sortedArr,
+        }));
+    }
+	const handleSubmit = async (event) => {
 		event.preventDefault();
-		event.stopPropagation();
+        event.stopPropagation();
 		if (!validateVolunteer(data)) {
 			setValidated(false);
 			return;
 		}
 		setValidated(true);
         dispatch(actions.completeVolunteer());
-		save();
+        await save();
+        handleProjectFormRating();
 	};
 
 	const handleVolunteerRoleChange = (event) => {
@@ -115,12 +145,17 @@ const VolunteerForm = ({ data, index, isLast = false, messages }) => {
 		updateStatus(validateVolunteerEntry, status, setStatus, 'volunteerCountry', value);
 		dispatch(actions.updateVolunteerCountry({ value, index }));
 	};
-
-	const handleVolunteerDescriptionChange = (event) => {
-		const value = event.target.value;
-		updateStatus(validateVolunteerEntry, status, setStatus, 'volunteerDescription', value);
-		dispatch(actions.updateVolunteerDescription({ value, index }));
-	};
+    
+    const handleVolunteerDescriptionEditorChange = (value) => {
+        updateStatus(
+            validateVolunteerEntry,
+            status,
+            setStatus,
+            'volunteerDescription',
+            value
+        );
+        dispatch(actions.updateVolunteerDescription({ value, index }));
+    }
 
 	const handleAssistantClick = () => {
 		dispatch(
@@ -244,13 +279,12 @@ const VolunteerForm = ({ data, index, isLast = false, messages }) => {
 				<Col lg="12">
 					{/*todo: replace with rich text editor */}
 					<div className={assistantContainerClassNames}>
-						<TextArea
-							label={messages.volunteerDetailsDescription}
-							id="volunteer-description"
-							placeholder={messages.enterVolunteerDetailsDescription}
-							value={data.volunteerDescription}
-							onChange={handleVolunteerDescriptionChange}
-						/>
+                        <DraftEditor 
+                            label={messages.volunteerDetailsDescription}
+                            handleChangeCallback={handleVolunteerDescriptionEditorChange}
+                            texts={data.volunteerDescription} 
+                            eventName={`volunteer-${index}`}
+                        /> 
 						<span className="writeAssistant">
 							<WrittenAssistIcon />
 							<Button variant="link" onClick={handleAssistantClick}>

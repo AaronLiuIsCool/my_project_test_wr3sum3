@@ -9,7 +9,7 @@ import { actions, workSelectors } from '../../slicer';
 
 const getForms = (WorkData, messages) =>
 	WorkData.map((Work, index) => (
-		<WorkForm data={Work} index={index} isLast={index === Work.length} messages={messages} key={`Work-${index}`} />
+		<WorkForm workData={WorkData} data={Work} index={index} isLast={index === Work.length} messages={messages} key={`Work-${index}`} />
 	));
 
 const WorkExperience = () => {

@@ -20,7 +20,8 @@ import majorOptions from 'data/major.json';
 import univOptions from 'data/university.json';
 import cityOptions from 'data/city.json';
 
-import { previewResume } from '../ResumePreview/resumeBuilder';
+import { previewResume, wholePageCheck } from '../ResumePreview/resumeBuilder';
+import { generateEducationRating, generateLayoutRating } from '../../utils/resume';
 
 const logger = getLogger('EducationForm');
 const resumeServices = new ResumeServices();
@@ -58,7 +59,7 @@ const EducationForm = ({ data, index, isLast = false, messages }) => {
         }
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         event.stopPropagation();
         if (!validateEducation(data)) {
@@ -67,7 +68,8 @@ const EducationForm = ({ data, index, isLast = false, messages }) => {
         }
         setValidated(true);
         dispatch(actions.completeEducation());
-        save();
+        await save();
+        handleEducationFormRatings(data, index, messages)
     };
 
     const handleSchoolChange = (values) => {
@@ -117,9 +119,22 @@ const EducationForm = ({ data, index, isLast = false, messages }) => {
         updateStatus(validateEducationEntry, status, setStatus, "country", value);
         dispatch(actions.updateEduCountry({value, index}));
     };
-
+    
+    const handleEducationFormRatings = async ({gpa, highestAward, otherAward}, index, messages) => {
+        const response = await resumeServices.getRatings(resumeId);
+        const { educations } = await response.json();
+        const schools = educations || [];
+        const educationRating = generateEducationRating({gpa, highestAward, otherAward, schools, index}, messages)
+        const layoutRating = generateLayoutRating(wholePageCheck(messages.RPreview), messages)
+        dispatch(actions.updateLayoutRating(layoutRating))
+        dispatch(actions.updateEducationRating({
+            index,
+            details: educationRating
+        }))
+    }
+    
     return (
-        <Form validated={validated} onSubmit={handleSubmit}>
+        <Form validated={validated} onSubmit={handleSubmit} className={`edu-${index}`}>
             <Row>
                 <Col>
                     <h2 className="form_h2">{messages.enterSchoolInfo}</h2>

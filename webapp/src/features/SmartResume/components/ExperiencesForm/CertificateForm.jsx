@@ -14,13 +14,15 @@ import { validateCertificate, validateCertificateEntry } from '../../slicer/cert
 import { updateStatus } from '../../slicer/common';
 import ResumeServices from 'shell/services/ResumeServices';
 import { getLogger } from 'shell/logger';
+import { generateCertificeRating } from '../../utils/resume';
 
 import certificateOptions from 'data/certificate.json';
+import { useEffect } from 'react';
 
 const logger = getLogger('CertificateForm');
 const resumeServices = new ResumeServices();
 
-const CertificateForm = ({ data, index, isLast = false, messages }) => {
+const CertificateForm = ({ data, index, isLast = false, messages, certData }) => {
 	const resumeId = useSelector(selectId);
 	const [validated, setValidated] = useState(false);
 	const [status, setStatus] = useState({
@@ -29,7 +31,16 @@ const CertificateForm = ({ data, index, isLast = false, messages }) => {
 		certificateEndDate: {},
 	});
 	const dispatch = useDispatch();
-
+    
+    const handleCertificateFormRating = () => {
+        const certRating = generateCertificeRating(certData.length, messages);
+        dispatch(actions.updateCertificateRating({details: certRating}))
+    }
+    useEffect(() => {
+        handleCertificateFormRating()
+        // eslint-disable-next-line
+    }, []);
+    
 	const save = async () => {
 		let id = data.id;
 		try {
@@ -47,6 +58,7 @@ const CertificateForm = ({ data, index, isLast = false, messages }) => {
 	};
 
 	const handleSubmit = (event) => {
+        handleCertificateFormRating();
 		event.preventDefault();
 		event.stopPropagation();
 		if (!validateCertificate(data)) {
@@ -55,7 +67,8 @@ const CertificateForm = ({ data, index, isLast = false, messages }) => {
 		}
 		setValidated(true);
         dispatch(actions.completeCertificates());
-		save();
+        save();
+        handleCertificateFormRating()
 	};
 
 	const handleCertificateChange = (values) => {

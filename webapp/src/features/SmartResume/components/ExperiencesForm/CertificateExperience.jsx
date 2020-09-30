@@ -9,7 +9,7 @@ import { actions, certificateSelectors } from '../../slicer';
 
 const getForms = (CertificateData, messages) =>
 	CertificateData.map((Certificate, index) => (
-		<CertificateForm data={Certificate} index={index} isLast={index === Certificate.length} messages={messages} key={`Certificate-${index}`} />
+		<CertificateForm certData={CertificateData} data={Certificate} index={index} isLast={index === Certificate.length} messages={messages} key={`Certificate-${index}`} />
 	));
 
 const CertificateExperience = () => {

@@ -677,3 +677,10 @@ export const previewResume = (messagePR) => {
     .replaceChild(iframe, document.querySelector("#displayPDF iframe"));
   iframe.src = doc.output("datauristring") + "#zoom=FitH";
 };
+
+export const wholePageCheck = (messagePR) => {
+  resumeData = store.getState().resume;
+  messages = messagePR;
+  prepareData();
+  return data;
+};
