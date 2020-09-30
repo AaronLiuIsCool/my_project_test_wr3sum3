@@ -21,7 +21,7 @@ export const imageHeight = 20;
 
 // positions + paddings
 export const startY = pdfTopPadding+5;
-export const endY = pdfPageHeight - pdfTopPadding  * 2;
+export const endY = pdfPageHeight - pdfTopPadding;
 export const startX = pdfLeftPadding;
 export const endX = pdfPageWidth - pdfLeftPadding;
 export const h1Padding = headingLineHeight / 2;

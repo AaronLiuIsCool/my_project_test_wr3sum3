@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useI8n } from 'shell/i18n';
 
@@ -21,6 +21,9 @@ import CloseRegularIcon from '../../assets/close_regular.svg';
 import { resumeAdaptor } from '../../utils/servicesAdaptor';
 import { flatten, reconstruct } from '../../utils/resume';
 
+import { Document, Page, pdfjs } from 'react-pdf';
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+
 const logger = getLogger('SmartResume');
 const accountServices = new AccountServices();
 const resumeServices = new ResumeServices();
@@ -34,8 +37,15 @@ const ResumePreview = () => {
 	const resumeBuilder = useSelector(resumeBuilderSelectors.selectresumeBuilder);
 	const color = resumeBuilder.data.color;
 
+	const [resumeData, setResumeData] = useState(resume.resumeBuilder.data.base64);
 	const [isResumeTipsModalOpen, setIsResumeTipsModalOpen] = useState(false);
 	const [isThemeColorModalOpen, setIsThemeColorModalOpen] = useState(false);
+
+	useEffect(() => {
+		setResumeData(resume.resumeBuilder.data.base64);
+	}, [resume]);
+
+	
 
 	const handleTranslate = async () => {
 		try {
@@ -62,8 +72,15 @@ const ResumePreview = () => {
 
 	return (
 		<div className={styles.container}>
-			<div id='displayPDF' className={styles.iframeWrapper}>
-				<iframe src='' className={styles.iframeStyle} title='preview'></iframe>
+			<div id='displayPDF' className={styles.previewWrapper}>
+				{resumeData && (
+					<Document file={resumeData}>
+						<Page pageNumber={1} />
+						<Page pageNumber={2} />
+						<Page pageNumber={3} />
+						{/* max 3 pages  */}
+					</Document>
+				)}
 			</div>
 
 			<div className={styles.widgetContainer}>
@@ -72,7 +89,7 @@ const ResumePreview = () => {
 						{messages.RPreview.editThemeColor} <span className={styles.colorSquare} style={{ backgroundColor: color }}></span>
 					</button>
 					<button onClick={handleTranslate}>{messages.RPreview.smartTranslation}</button>
-					<button onClick={adjustToWholePage}>{messages.RPreview.oneClickWholePage}</button>
+					<button onClick={() => adjustToWholePage(messages.RPreview)}>{messages.RPreview.oneClickWholePage}</button>
 					<button onClick={() => downloadPDF(messages.RPreview)}>
 						<img src={DownloadIcon} alt='download' /> {messages.RPreview.downloadResume}
 					</button>
@@ -89,7 +106,7 @@ const ResumePreview = () => {
 				</div>
 			)}
 			{isResumeTipsModalOpen && <ResumeTips />}
-			{isThemeColorModalOpen && <ResumeThemeColorPicker setIsThemeColorModalOpen={setIsThemeColorModalOpen}/>}
+			{isThemeColorModalOpen && <ResumeThemeColorPicker setIsThemeColorModalOpen={setIsThemeColorModalOpen} />}
 		</div>
 	);
 };

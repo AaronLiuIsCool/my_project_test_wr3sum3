@@ -4,8 +4,9 @@ import { dateRangeBuilder } from "./common";
 import * as Constants from "./Constants";
 
 import store from "store";
+import { actions } from "../../slicer";
 
-// global input data 
+// global input data
 let resumeData = null;
 let messages = null;
 
@@ -16,12 +17,12 @@ let currentPage = 1;
 
 let scaleFactor = 1; // deafult scale factor
 // some scaled variables
-let headingLineHeight = scaleFactor * Constants.headingLineHeight;
-let paragraphLineHeight = scaleFactor * Constants.paragraphLineHeight;
-let h1Padding = scaleFactor * Constants.h1Padding;
-let pFontSize = scaleFactor * Constants.pFontSize;
-let startY = scaleFactor * Constants.pdfTopPadding;
-let pdfTopPadding = scaleFactor * Constants.pdfTopPadding;
+let headingLineHeight = Constants.headingLineHeight;
+let paragraphLineHeight = Constants.paragraphLineHeight;
+let h1Padding = Constants.h1Padding;
+let pFontSize = Constants.pFontSize;
+let startY = Constants.pdfTopPadding;
+let pdfTopPadding = Constants.pdfTopPadding;
 
 // global config
 let currentXPos = Constants.startX;
@@ -30,43 +31,47 @@ let currentYPos = startY;
 let primaryColor = Constants.c_blue;
 
 // 一键整页
-export const adjustToWholePage = (resumeDataSet) => {
+
+const adjustToWholePageHelper = () => {
+  // 如果data 最后一个元素是pageBreak, 则移除最后一个元素
+  if (data[data.length - 1].type === "pageBreak") {
+    data.splice(-1, 1);
+  }
   const lastLineHeight = data[data.length - 1].y;
   const lastLinePageAt = data[data.length - 1].page;
-
   const accumulateY = Constants.endY * (lastLinePageAt - 1) + lastLineHeight;
-
-  if (accumulateY > Constants.endY * 2) {
+  const pageHeight = Constants.endY;
+  // 以下情况不需要 (无法) 整页
+  // 总长度(accumulateY)小于1页的75%
+  // 总长度在1页的90% = 100% 之间
+  // 总长度在第二页的95% = 100% 之间
+  // 总长度在第二页的80% = 100% 之间
+  if (
+    accumulateY <= pageHeight * 0.75 ||
+    (accumulateY >= pageHeight * 0.9 && accumulateY <= pageHeight) ||
+    (accumulateY >= pageHeight * 1.8 && accumulateY <= pageHeight * 2)
+  ) {
+    previewResume(messages);
+    return;
+  } else if (accumulateY > pageHeight * 2) {
+    // 超过2页
     alert("Your resume are too long!"); // todo: designer need to decide
-  } else if (accumulateY > Constants.endY * 1.5) {
-    // make it to two page
-    // scaleFactor = (Constants.endY * 2) / accumulateY;
-    scaleFactor = Constants.endY / lastLineHeight;
-  } else if (accumulateY > Constants.endY * 1) {
-    // make it to single page
-    scaleFactor = Constants.endY / accumulateY;
-  } else if (accumulateY > Constants.endY * 0.75) {
-    // make it to single page
-    scaleFactor = Constants.endY / accumulateY;
-  }
-  previewResume();
-};
-
-// do some small adjustments to fit the content into one page
-const dataAdjustAfterBuild = () => {
-  // if a new page start with only a few line (15mm or less)
-  // reduce the top padding
-  if (data.length > 0) {
-    const lastLineHeight = data[data.length - 1].y;
-    const lastLinePageAt = data[data.length - 1].page;
-    if (lastLinePageAt > 1 && lastLineHeight < 40) {
-      scaleFactor = scaleFactor * 0.95;
-      prepareData();
+    return;
+  } else {
+    // 需要不停的整页 直到达到上面标准为止
+    if (accumulateY > pageHeight * 1.5) {
+      // 超过1.5页, 变成2页
+      scaleFactor *= 1.05;
+    } else if (accumulateY > pageHeight * 1) {
+      // 超过1页 (不超过1.5页) 变成1页
+      scaleFactor *= 0.95;
+    } else if (accumulateY > pageHeight * 0.75) {
+      // 超过0.75页 变成1页
+      scaleFactor *= 1.05;
     }
-    // if pageBreak happend at the the last item, remove
-    else if (data[data.length - 1].type === "pageBreak") {
-      data.pop();
-    }
+    // recursion 重复进行
+    buildResume();
+    adjustToWholePageHelper();
   }
 };
 
@@ -102,19 +107,10 @@ export const prepareData = () => {
   }
 
   // reset scaled variables
-  pdfTopPadding = scaleFactor * pdfTopPadding;
   headingLineHeight = scaleFactor * headingLineHeight;
-  // scaleFactor should have small effect to paragraphLineHeight:
-  if (scaleFactor > 1) {
-    paragraphLineHeight = scaleFactor * 0.9 * paragraphLineHeight;
-  } else {
-    paragraphLineHeight = scaleFactor * 1.11 * paragraphLineHeight;
-  }
 
-  h1Padding = scaleFactor * h1Padding;
   // note change p font since this will break line wrap
-  // pFontSize = scaleFactor * Constants.pFontSize;
-
+  pFontSize = scaleFactor * Constants.pFontSize;
   currentXPos = Constants.startX;
   startY = pdfTopPadding;
   currentYPos = startY;
@@ -125,7 +121,7 @@ export const prepareData = () => {
   _perpareProject(projectData);
   _perpareVolunteer(volunteerData);
 
-  dataAdjustAfterBuild();
+  // dataAdjustAfterBuild();
 
   return data;
 };
@@ -136,7 +132,7 @@ export const prepareData = () => {
  * @param increment the increment on Y
  */
 const _updateCurrentYPos = (increment) => {
-  if (currentYPos + increment >= Constants.endY) {
+  if (currentYPos + increment >= Constants.endY - pdfTopPadding) {
     // insert page break
     currentYPos = startY;
     data.push({ type: "pageBreak" });
@@ -670,12 +666,23 @@ export const previewResume = (messagePR) => {
   primaryColor = resumeData.resumeBuilder.data.color;
   messages = messagePR;
   buildResume();
-  const iframe = document.createElement("iframe");
-  iframe.setAttribute("style", "height:100%; width:100%;");
-  document
-    .getElementById("displayPDF")
-    .replaceChild(iframe, document.querySelector("#displayPDF iframe"));
-  iframe.src = doc.output("datauristring") + "#zoom=FitH";
+  let base64Data;
+  const buildBase64Str = async () => {
+    new Promise((resolve, reject) => {
+      base64Data = doc.output("datauristring");
+      resolve();
+    });
+  };
+  buildBase64Str().then((res) => {
+    store.dispatch(actions.updateResumeBase64Str({ value: base64Data }));
+  });
+};
+
+
+export const adjustToWholePage = (messagePR) => {
+  resumeData = store.getState().resume;
+  messages = messagePR;
+  adjustToWholePageHelper();
 };
 
 export const wholePageCheck = (messagePR) => {
