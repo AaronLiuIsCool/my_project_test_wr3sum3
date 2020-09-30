@@ -38,7 +38,7 @@ async def on_message(message: IncomingMessage):
 
     for job in jobs:
         processedJob = callService(endpoint="http://job-service/v1/jobs/jobFetcher", payload=truncateId(job))
-        if response.status_code != 200 or len(processedJob.content) == 0: #duplicate
+        if len(processedJob.content) == 0: #duplicate
             continue
         matching = callService(endpoint="http://matching-service/v1/matching/jobs", payload=processedJob.json())
         print("matching", matching)
