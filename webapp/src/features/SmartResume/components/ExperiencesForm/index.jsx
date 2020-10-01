@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 
 import ViewObserver from './ViewObserver';
@@ -8,33 +8,18 @@ import WorkExperience from './WorkExperience';
 import ProjectExperience from './ProjectExperience';
 import VolunteerExperience from './VolunteerExperience';
 import CertificateExperience from './CertificateExperience';
-import { actions } from '../../slicer';
-import { useDispatch } from 'react-redux';
+import ProgressHeader from '../ProgressHeader/index';
+import RatingDetail from '../RatingDetail/RatingDetail';
+
 
 import styles from '../../styles/ExperiencesForm.module.css';
 
 const ExperiencesForm = ({ useObserver }) => {
-    
-    const dispatch = useDispatch();
-    
+    const [scoreVisible, setScoreVisible] = useState(false);
     return (
         <div className={styles.container}>
-            <p>
-                TODO: update progress bar{' '}
-                <button
-                    className="toggle-rating"
-                    onClick={() => {
-                        dispatch(
-                            actions.toggleAssistant({
-                                trigger: 'rating',
-                                context: { },
-                            })
-                        );
-                    }}
-                >
-                    toggle rating
-                </button>
-            </p>
+            <ProgressHeader setScoreVisible={setScoreVisible} scoreVisible={scoreVisible}/>
+
             <ViewObserver enabled={useObserver}>
                 <BasicExperience />
                 <EducationExperience />
@@ -43,7 +28,7 @@ const ExperiencesForm = ({ useObserver }) => {
                 <VolunteerExperience />
                 <CertificateExperience />
             </ViewObserver>
-            
+            <RatingDetail visible={scoreVisible} />
         </div>
     );
 };

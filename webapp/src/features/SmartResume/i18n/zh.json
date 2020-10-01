@@ -97,6 +97,13 @@
   "yymmdd": "年/月/日期",
   "monthFormat": "YYYY[年]MMMM",
   "dateDisplayFormat": "YYYY/MM/DD",
+  "resumeCompletion": "简历完成度",
+  "intensityScore": "强度评分",
+  "clickForDetails": "点击查看详情",
+  "score_A": "优秀",
+  "score_B": "良好",
+  "score_C": "及格",
+  "score_D": "薄弱",
   "RPreview": {
     "linkedinLink": "领英链接",
     "githubLink": "Github链接",

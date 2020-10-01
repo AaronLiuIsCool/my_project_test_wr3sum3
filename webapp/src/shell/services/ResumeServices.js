@@ -144,6 +144,14 @@ export default class ResumeServices extends BaseServices {
         }
     }
 
+    async getScore(resumeId) {
+        try {
+            return await this.get(`v1/resumes/${resumeId}/score`);
+        } catch (exception) {
+            logger.error(exception);
+        }
+    }
+
     // TODO: Update this fetch to UAT endpoint later
     async getSuggestions(industry, title) {
         let suggestions = [];
@@ -159,13 +167,13 @@ export default class ResumeServices extends BaseServices {
     }
 
     async getResumeMatchingInfo(resumeId) {
-      try {
-        return await this.get(`v1/resumes/${resumeId}/matching`);
-      } catch ( error) {
-        logger.error(error);
-      }
+        try {
+            return await this.get(`v1/resumes/${resumeId}/matching`);
+        } catch (error) {
+            logger.error(error);
+        }
     }
-   
+
 }
 
 
