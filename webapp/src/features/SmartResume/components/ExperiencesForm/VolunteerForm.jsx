@@ -221,8 +221,6 @@ const VolunteerForm = ({ data, index, isLast = false, messages, volunteerData })
 						id="volunteer-enter-date"
 						placeholder={messages.yymmdd}
 						value={data.volunteerStartDate}
-						allowPastDatesOnly={true}
-						readOnly={true}
 						monthFormat={messages.monthFormat}
 						displayFormat={messages.dateDisplayFormat}
 						onDateChange={handleVolunteerStartDateChange}
@@ -238,8 +236,6 @@ const VolunteerForm = ({ data, index, isLast = false, messages, volunteerData })
 							id="volunteer-graduate-date"
 							placeholder={messages.yymmdd}
 							value={data.volunteerEndDate}
-							allowPastDatesOnly={true}
-							readOnly={true}
 							monthFormat={messages.monthFormat}
 							displayFormat={messages.dateDisplayFormat}
 							onDateChange={handleVolunteerEndDateChange}

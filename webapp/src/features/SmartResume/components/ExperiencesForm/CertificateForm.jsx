@@ -135,8 +135,6 @@ const CertificateForm = ({ data, index, isLast = false, messages, certData }) =>
 						id="certificate-start-date"
 						placeholder={messages.yymmdd}
 						value={data.certificateIssuedDate}
-						allowPastDatesOnly={true}
-						readOnly={true}
 						monthFormat={messages.monthFormat}
 						displayFormat={messages.dateDisplayFormat}
 						onDateChange={handleCertificateStartDateChange}
@@ -153,8 +151,6 @@ const CertificateForm = ({ data, index, isLast = false, messages, certData }) =>
 							id="certificate-end-date"
 							placeholder={messages.yymmdd}
 							value={data.certificateEndDate}
-							allowPastDatesOnly={true}
-							readOnly={true}
 							monthFormat={messages.monthFormat}
 							displayFormat={messages.dateDisplayFormat}
 							onDateChange={handleCertificateEndDateChange}
