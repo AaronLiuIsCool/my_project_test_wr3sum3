@@ -32,7 +32,7 @@ metadata:
 spec:
   selector:
     app: rabbitmq3
-    env: test
+    env: prod
   ports:
     - protocol: TCP
       port: 5672
