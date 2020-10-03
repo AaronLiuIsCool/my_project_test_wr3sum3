@@ -225,8 +225,6 @@ const WorkForm = ({ data, index, isLast = false, messages, workData }) => {
 						id='work-start-date'
 						placeholder={messages.yymmdd}
 						value={data.workStartDate}
-						allowPastDatesOnly={true}
-						readOnly={true}
 						monthFormat={messages.monthFormat}
 						displayFormat={messages.dateDisplayFormat}
 						onDateChange={handleWorkStartDateChange}
@@ -243,8 +241,6 @@ const WorkForm = ({ data, index, isLast = false, messages, workData }) => {
 							id='work-end-date'
 							placeholder={messages.yymmdd}
 							value={data.workEndDate}
-							allowPastDatesOnly={true}
-							readOnly={true}
 							monthFormat={messages.monthFormat}
 							displayFormat={messages.dateDisplayFormat}
 							onDateChange={handleWorkEndDateChange}
