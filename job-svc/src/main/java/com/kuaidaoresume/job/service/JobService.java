@@ -10,6 +10,8 @@ public interface JobService {
 
     public Optional<JobDto> findJobByUuid(String uuid);
 
+    public Optional<SimpleJobDto> findSimpleJobByUuid(String uuid);
+
     public void deleteJobById(long id);
 
     public List<JobDto> findAll();
