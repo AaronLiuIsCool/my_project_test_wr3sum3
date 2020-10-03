@@ -138,7 +138,7 @@ const ProjectForm = ({ data, index, isLast = false, messages, projectData }) => 
             'projectDescription',
             value
         );
-        dispatch(actions.updateWorkDescription({ value, index }));
+        dispatch(actions.updateProjectDescription({ value, index }));
     }
 
 	const handleCityChange = (values) => {

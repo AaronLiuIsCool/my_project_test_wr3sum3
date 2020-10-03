@@ -12,7 +12,6 @@ const DropdownGroup = ({ label, id, placeholder, options, value, onChange, isVal
 	return (
 		<Form.Group className='form_item'>
 			<Form.Label htmlFor={id}>{label}</Form.Label>
-			<Form.Label htmlFor={id}>{label}</Form.Label>
 			<Typeahead
 				id={id}
 				labelKey='data'
