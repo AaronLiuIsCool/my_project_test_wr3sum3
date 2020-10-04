@@ -33,6 +33,10 @@ let primaryColor = Constants.c_blue;
 // 一键整页
 
 const adjustToWholePageHelper = () => {
+  // 如果简历没有preview 则无法整页
+  if (data.length === 0) {
+    return ;
+  }
   // 如果data 最后一个元素是pageBreak, 则移除最后一个元素
   if (data[data.length - 1].type === "pageBreak") {
     data.splice(-1, 1);
