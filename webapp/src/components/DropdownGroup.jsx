@@ -22,8 +22,7 @@ const DropdownGroup = ({ label, id, placeholder, options, value, onChange, isVal
 				isValid={isValid}
 				isInvalid={isInvalid}
 			/>
-
-			{isInvalid ? <Form.Control.Feedback type='invalid'>{feedbackMessage}</Form.Control.Feedback> : null}
+			{isInvalid ? <Form.Control.Feedback type='invalid' style={{display: 'block'}}>{feedbackMessage}</Form.Control.Feedback> : null}
 		</Form.Group>
 	);
 };

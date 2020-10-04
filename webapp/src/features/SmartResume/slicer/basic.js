@@ -39,7 +39,7 @@ export function validateBasicEntry(name, value) {
             if (validateNonEmptyString(value)) {
                 return true;
             } else if (validateString(value)) {
-                return undefined;
+                return false;
             } else {
                 return false;
             }

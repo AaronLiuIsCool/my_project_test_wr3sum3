@@ -16,7 +16,7 @@ import { ReactComponent as WrittenAssistIcon } from '../../assets/writing_assit.
 import { adaptWork } from '../../utils/servicesAdaptor';
 import { actions, selectId, assistantSelectors } from '../../slicer';
 import { validateWork, validateWorkEntry } from '../../slicer/work';
-import { updateStatus } from '../../slicer/common';
+import { updateStatus, updateAllStatus } from '../../slicer/common';
 import ResumeServices from 'shell/services/ResumeServices';
 import { getLogger } from 'shell/logger';
 import { previewResume, wholePageCheck } from '../ResumePreview/resumeBuilder';
@@ -28,7 +28,15 @@ import cityOptions from 'data/city.json';
 
 const logger = getLogger('WorkForm');
 const resumeServices = new ResumeServices();
-
+const fields = [
+    'workName',
+    'workCompanyName',
+    'workStartDate',
+    'workEndDate',
+    'workCity',
+    'workCountry',
+    'workDescription'
+];
 const WorkForm = ({ data, index, isLast = false, messages, workData }) => {
 	const trigger = useSelector(assistantSelectors.selectTrigger);
 	const showAssistant = useSelector(assistantSelectors.selectShow);
@@ -63,7 +71,8 @@ const WorkForm = ({ data, index, isLast = false, messages, workData }) => {
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
-		event.stopPropagation();
+        event.stopPropagation();
+        updateAllStatus(validateWorkEntry, status, setStatus, fields, data)
 		if (!validateWork(data)) {
 			setValidated(false);
 			return;
@@ -282,16 +291,10 @@ const WorkForm = ({ data, index, isLast = false, messages, workData }) => {
                 <Col lg="12">
                     {/*todo: replace with rich text editor */}
                     <div className={assistantContainerClassNames}>
-                           {/**
-                        <TextArea
-                            label={messages.workDetailsDescription}
-                            id="work-country"
-                            placeholder={messages.workCountry}
-                            value={data.workDescription}
-                            onChange={handleWorkDescriptionChange}
-                        />
-                        */}
                         <DraftEditor 
+                            feedbackMessage={messages.entryIsInvalid}
+                            isValid={status.workDescription.isValid}
+                            isInvalid={status.workDescription.isInvalid}
                             label={messages.workDetailsDescription}
                             handleChangeCallback={handleWorkDescriptionEditorChange}
                             texts={data.workDescription} 

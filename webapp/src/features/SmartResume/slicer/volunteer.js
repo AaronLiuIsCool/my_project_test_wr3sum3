@@ -5,10 +5,10 @@ export function anyVolunteerChanges(volunteers) {
     return detectChangesForAllItem(volunteers, volunteer);
 }
 export function validateVolunteer(data) {
-    return Object.keys(data).every(key => validateVolunteerEntry(key, data[key]));
+    return Object.keys(data).every(key => validateVolunteerEntry(key, data[key], data));
 }
 
-export function validateVolunteerEntry(name, value) {
+export function validateVolunteerEntry(name, value, data) {
     switch (name) {
         case 'volunteerRole':
         case 'volunteerCompanyName':
@@ -16,14 +16,19 @@ export function validateVolunteerEntry(name, value) {
         case 'volunteerCountry':
         case 'volunteerDescription':
             if (validateNonEmptyString(value)) {
+                if(value === '*' && name === 'volunteerDescription') return false // because we added * before each line => to prevent the case whern user deletes everything
                 return true;
             } else if (validateString(value)) {
-                return undefined;
+                return false;
             } else {
                 return false;
             }
         case 'volunteerStartDate':
+            return typeof value === 'string' && validateDate(value);
         case 'volunteerEndDate':
+            if(!data?.currentVolunteerFlag) {
+                return true
+            }
             return typeof value === 'string' && validateDate(value);
         default:
             return true;

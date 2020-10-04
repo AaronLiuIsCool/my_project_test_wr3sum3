@@ -6,10 +6,10 @@ export function anyProjectChanges(projects) {
 }
 
 export function validateProject(data) {
-    return Object.keys(data).every(key => validateProjectEntry(key, data[key]));
+    return Object.keys(data).every(key => validateProjectEntry(key, data[key], data));
 }
 
-export function validateProjectEntry(name, value) {
+export function validateProjectEntry(name, value, data) {
     switch (name) {
         case 'projectRole':
         case 'projectCompanyName':
@@ -17,14 +17,19 @@ export function validateProjectEntry(name, value) {
         case 'projectCountry':
         case 'projectDescription':
             if (validateNonEmptyString(value)) {
+                if(value === '*' && name === 'projectDescription') return false // because we added * before each line => to prevent the case whern user deletes everything
                 return true;
             } else if (validateString(value)) {
-                return undefined;
+                return false;
             } else {
                 return false;
             }
         case 'projectStartDate':
+            return typeof value === 'string' && validateDate(value);
         case 'projectEndDate':
+            if(!data?.currentProjectFlag) {
+                return true
+            }
             return typeof value === 'string' && validateDate(value);
         default:
             return true;

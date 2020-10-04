@@ -44,7 +44,7 @@ const colorStyleMap = {
     }
 };
 
-const DraftEditor = ({ texts, handleChangeCallback, label, eventName }) => {
+const DraftEditor = ({ texts, handleChangeCallback, label, eventName, isInvalid, feedbackMessage }) => {
     const [localState, _setLocalState] = useState(EditorState.createEmpty());
     const localStateRef = useRef(localState);
 
@@ -204,6 +204,7 @@ const DraftEditor = ({ texts, handleChangeCallback, label, eventName }) => {
                 editorState={localState}
                 onChange={handleChange}
             ></Editor>
+            {isInvalid ? <div className="invalid-feedback" style={{display: 'block'}}>{feedbackMessage}</div> : ''}
         </div>
     );
 };

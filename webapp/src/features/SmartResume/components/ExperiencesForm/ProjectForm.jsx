@@ -17,7 +17,7 @@ import { ReactComponent as WrittenAssistIcon } from '../../assets/writing_assit.
 import { adaptProject } from '../../utils/servicesAdaptor';
 import { actions, selectId, assistantSelectors } from '../../slicer';
 import { validateProject, validateProjectEntry } from '../../slicer/project';
-import { updateStatus } from '../../slicer/common';
+import { updateStatus, updateAllStatus } from '../../slicer/common';
 import ResumeServices from 'shell/services/ResumeServices';
 import { getLogger } from 'shell/logger';
 import { previewResume, wholePageCheck } from '../ResumePreview/resumeBuilder';
@@ -26,7 +26,16 @@ import cityOptions from 'data/city.json';
 
 const logger = getLogger('ProjectForm');
 const resumeServices = new ResumeServices();
-
+const fields = [
+    'projectRole',
+    'currentProjectFlag',
+    'projectCompanyName',
+    'projectStartDate',
+    'projectEndDate',
+    'projectDescription',
+    'projectCity',
+    'projectCountry'
+];
 const ProjectForm = ({ data, index, isLast = false, messages, projectData }) => {
 	const trigger = useSelector(assistantSelectors.selectTrigger);
 	const showAssistant = useSelector(assistantSelectors.selectShow);
@@ -85,7 +94,8 @@ const ProjectForm = ({ data, index, isLast = false, messages, projectData }) => 
     }
 	const handleSubmit = async (event) => {
 		event.preventDefault();
-		event.stopPropagation();
+        event.stopPropagation();
+        updateAllStatus(validateProjectEntry, status, setStatus, fields, data)
 		if (!validateProject(data)) {
 			setValidated(false);
 			return;
@@ -272,6 +282,9 @@ const ProjectForm = ({ data, index, isLast = false, messages, projectData }) => 
 				<Col lg='12'>
 					<div className={assistantContainerClassNames}>
                         <DraftEditor 
+                            feedbackMessage={messages.entryIsInvalid}
+                            isValid={status.projectDescription.isValid}
+                            isInvalid={status.projectDescription.isInvalid}
                             label={messages.projectDetailsDescription}
                             handleChangeCallback={handleProjectDescriptionEditorChange}
                             texts={data.projectDescription} 

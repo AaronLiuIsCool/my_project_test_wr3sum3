@@ -6,7 +6,7 @@ const InputGroup = ({ label, id, placeholder, type = 'text', value, onChange, is
 	<Form.Group className="form_item">
 		<Form.Label htmlFor={id}>{label}</Form.Label>
 		<Form.Control type={type} id={id} placeholder={placeholder} value={value} onChange={onChange} isValid={isValid} isInvalid={isInvalid} />
-		{isInvalid && <Form.Control.Feedback type="invalid">{feedbackMessage}</Form.Control.Feedback>}
+		{isInvalid && <Form.Control.Feedback style={{dislay: 'block'}} type="invalid">{feedbackMessage}</Form.Control.Feedback>}
 	</Form.Group>
 );
 

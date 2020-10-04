@@ -14,7 +14,7 @@ export function validateEducationEntry(name, value) {
             if (validateNonEmptyString(value)) {
                 return true;
             } else if (validateString(value)) {
-                return undefined;
+                return false; // 当初为什么写成 undefined？ @Q Sang
             } else {
                 return false;
             }
