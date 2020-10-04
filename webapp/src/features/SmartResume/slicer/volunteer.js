@@ -10,13 +10,13 @@ export function validateVolunteer(data) {
 
 export function validateVolunteerEntry(name, value, data) {
     switch (name) {
+        case 'volunteerDescription':
+            if(value === '*') return false // because we added * before each line => to prevent the case whern user deletes everything
         case 'volunteerRole':
         case 'volunteerCompanyName':
         case 'volunteerCity':
         case 'volunteerCountry':
-        case 'volunteerDescription':
             if (validateNonEmptyString(value)) {
-                if(value === '*' && name === 'volunteerDescription') return false // because we added * before each line => to prevent the case whern user deletes everything
                 return true;
             } else {
                 return false;

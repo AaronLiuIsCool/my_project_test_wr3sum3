@@ -11,13 +11,13 @@ export function validateProject(data) {
 
 export function validateProjectEntry(name, value, data) {
     switch (name) {
+        case 'projectDescription':
+            if(value === '*') return false // because we added * before each line => to prevent the case whern user deletes everything
         case 'projectRole':
         case 'projectCompanyName':
         case 'projectCity':
         case 'projectCountry':
-        case 'projectDescription':
             if (validateNonEmptyString(value)) {
-                if(value === '*' && name === 'projectDescription') return false // because we added * before each line => to prevent the case whern user deletes everything
                 return true;
             } else {
                 return false;

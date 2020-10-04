@@ -15,13 +15,13 @@ export function validateWork(data) {
 
 export function validateWorkEntry(name, value, data) {
     switch (name) {
+        case "workDescription":
+            if(value === '*') return false // because we added * before each line => to prevent the case whern user deletes everything
         case "workName":
         case "workCompanyName":
         case "workCity":
         case "workCountry":
-        case "workDescription":
             if (validateNonEmptyString(value)) {
-                if(value === '*' && name === 'projectDescription') return false // because we added * before each line => to prevent the case whern user deletes everything
                 return true;
             } else {
                 return false;
