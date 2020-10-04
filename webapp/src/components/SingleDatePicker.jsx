@@ -5,14 +5,15 @@ import { SingleDatePicker, isInclusivelyBeforeDay } from 'react-dates';
 import moment from 'moment';
 
 import './SingleDatePicker.scss'
-
+import '../features/SmartResume/styles/validation.scss'
 const SingleDatePickerWrapper = ({
     label, id, placeholder, value, onDateChange, monthFormat, displayFormat,
     readOnly = false, allowPastDatesOnly = false, isInvalid, feedbackMessage, isValid
 }) => {
     const [focused, setFocused] = useState(false);
     return (
-        <Form.Group className={isValid ? "form_item validated" : "form_item"}>
+        <Form.Group className={
+            `form_item form-validation-wrapper ${isValid ? "form-validation-wrapper" : isInvalid ? "not-validated " : "form_item "}`}>
             <Form.Label htmlFor={id}>{label}</Form.Label>
             <SingleDatePicker
                 isOutsideRange={day => (allowPastDatesOnly ? !isInclusivelyBeforeDay(day, moment()) : undefined)}
