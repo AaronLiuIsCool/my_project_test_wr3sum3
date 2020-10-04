@@ -13,8 +13,6 @@ export function validateEducationEntry(name, value) {
         case 'country':
             if (validateNonEmptyString(value)) {
                 return true;
-            } else if (validateString(value)) {
-                return false; // 当初为什么写成 undefined？ @Q Sang
             } else {
                 return false;
             }

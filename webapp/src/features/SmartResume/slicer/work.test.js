@@ -28,7 +28,7 @@ describe('test education related functionalities', () => {
       ['schoolName', undefined, false],
       ['schoolName', 123, false],
       ['schoolName', 'u of a', true],
-      ['schoolName', '', undefined],
+      ['schoolName', '', false],
 
       ['gpa', undefined, false],
       ['gpa', 5, false],
@@ -55,22 +55,22 @@ describe('test education related functionalities', () => {
       ['major', undefined, false],
       ['major', 123, false],
       ['major', 'cs', true],
-      ['major', '', undefined],
+      ['major', '', false],
 
       ['degree', undefined, false],
       ['degree', 123, false],
       ['degree', 'master', true],
-      ['degree', '', undefined],
+      ['degree', '', false],
 
       ['city', undefined, false],
       ['city', 123, false],
       ['city', '北京', true],
-      ['city', '', undefined],
+      ['city', '', false],
 
       ['country', undefined, false],
       ['country', 123, false],
       ['country', '中国', true],
-      ['country', '', undefined]
+      ['country', '', false]
     ];
 
     tests.forEach((test, index) => expect(validateEducationEntry(test[0], test[1])).toBe(test[2]));

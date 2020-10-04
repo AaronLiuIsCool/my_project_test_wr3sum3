@@ -19,8 +19,6 @@ export function validateProjectEntry(name, value, data) {
             if (validateNonEmptyString(value)) {
                 if(value === '*' && name === 'projectDescription') return false // because we added * before each line => to prevent the case whern user deletes everything
                 return true;
-            } else if (validateString(value)) {
-                return false;
             } else {
                 return false;
             }

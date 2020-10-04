@@ -38,8 +38,6 @@ export function validateBasicEntry(name, value) {
         case 'city':
             if (validateNonEmptyString(value)) {
                 return true;
-            } else if (validateString(value)) {
-                return false;
             } else {
                 return false;
             }
