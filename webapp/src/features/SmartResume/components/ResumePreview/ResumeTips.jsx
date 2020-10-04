@@ -22,16 +22,16 @@ const ResumeTips = () => {
             ))}
           </select>
         </div>
-        <Accordion defaultActiveKey="1">
+        <Accordion>
           {
             resumeTipsData[optionsState].map((item, index) => (
               <Card className={styles.card}>
                 <Card.Header className={styles.cardHader}>
-                  <Accordion.Toggle as={Button} variant="link" eventKey={index}>
+                  <Accordion.Toggle as={Button} variant="link" eventKey={index+1}>
                     {item.q}
                   </Accordion.Toggle>
                 </Card.Header>
-                <Accordion.Collapse eventKey={index}>
+                <Accordion.Collapse eventKey={index+1}>
                   <Card.Body className={styles.cardBody}>{item.a}</Card.Body>
                 </Accordion.Collapse>
               </Card>

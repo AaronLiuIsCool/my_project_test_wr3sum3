@@ -45,8 +45,6 @@ public class JobController {
 
     @Authorize(value = {
             AuthConstant.AUTHORIZATION_WWW_SERVICE,
-            AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
-            AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
             AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
             AuthConstant.AUTHORIZATION_SUPPORT_USER,
             AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
@@ -60,8 +58,22 @@ public class JobController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @Authorize(value = {
+            AuthConstant.AUTHORIZATION_WWW_SERVICE,
+            AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
+            AuthConstant.AUTHORIZATION_SUPPORT_USER,
+            AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
+    })
     @GetMapping("/jobs/uuid/{uuid}")
-    public ResponseEntity<EntityModel<PersistedJobDto>> findJob(@PathVariable String uuid) {
+    public ResponseEntity<EntityModel<PersistedJobDto>> findJob(@PathVariable String uuid,
+                                                                      @RequestParam(required = false, defaultValue = "true") boolean lazy) {
+        if(lazy)
+        return jobService.findSimpleJobByUuid(uuid)
+                .map(job -> modelMapper.map(job, PersistedJobDto.class))
+                .map(jobRepresentationModelAssembler::toModel)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+
         return jobService.findJobByUuid(uuid)
                 .map(job -> modelMapper.map(job, PersistedJobDto.class))
                 .map(jobRepresentationModelAssembler::toModel)
@@ -71,8 +83,6 @@ public class JobController {
 
     @Authorize(value = {
             AuthConstant.AUTHORIZATION_WWW_SERVICE,
-            AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
-            AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
             AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
             AuthConstant.AUTHORIZATION_SUPPORT_USER,
             AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
@@ -85,8 +95,6 @@ public class JobController {
 
     @Authorize(value = {
             AuthConstant.AUTHORIZATION_WWW_SERVICE,
-            AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
-            AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
             AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
             AuthConstant.AUTHORIZATION_SUPPORT_USER,
             AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
@@ -99,9 +107,6 @@ public class JobController {
 
     @Authorize(value = {
             AuthConstant.AUTHORIZATION_WWW_SERVICE,
-            AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
-            AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
-            AuthConstant.AUTHORIZATION_BOT_SERVICE,
             AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
             AuthConstant.AUTHORIZATION_SUPPORT_USER,
             AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
@@ -133,8 +138,6 @@ public class JobController {
 
     @Authorize(value = {
             AuthConstant.AUTHORIZATION_WWW_SERVICE,
-            AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
-            AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
             AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
             AuthConstant.AUTHORIZATION_SUPPORT_USER,
             AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
@@ -153,8 +156,6 @@ public class JobController {
 
     @Authorize(value = {
             AuthConstant.AUTHORIZATION_WWW_SERVICE,
-            AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
-            AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
             AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
             AuthConstant.AUTHORIZATION_SUPPORT_USER,
             AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
@@ -174,8 +175,6 @@ public class JobController {
 
     @Authorize(value = {
             AuthConstant.AUTHORIZATION_WWW_SERVICE,
-            AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
-            AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
             AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
             AuthConstant.AUTHORIZATION_SUPPORT_USER,
             AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE

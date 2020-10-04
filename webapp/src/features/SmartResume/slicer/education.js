@@ -1,4 +1,4 @@
-import { validateDate, validateString, validateNonEmptyString } from 'utils/validator';
+import { validateDate, validateNonEmptyString } from 'utils/validator';
 
 export function validateEducation(data) {
     return Object.keys(data).every(key => validateEducationEntry(key, data[key]));
@@ -13,8 +13,6 @@ export function validateEducationEntry(name, value) {
         case 'country':
             if (validateNonEmptyString(value)) {
                 return true;
-            } else if (validateString(value)) {
-                return undefined;
             } else {
                 return false;
             }

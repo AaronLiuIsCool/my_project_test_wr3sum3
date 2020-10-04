@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Date;
-import java.util.UUID;
+import com.fasterxml.uuid.Generators;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -41,7 +41,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class JobRepositoryTest {
 
     private static final Long id = 1L;
-    private static final String uuid = UUID.randomUUID().toString();
+    private static final String uuid = Generators.timeBasedGenerator().generate().toString();
     private static final Date postDate = new Date(System.currentTimeMillis());
     private static final String positionTitle = "SDE";
     private static final String companyName = "ABC";

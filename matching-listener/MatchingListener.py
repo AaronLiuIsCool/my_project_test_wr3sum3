@@ -16,10 +16,11 @@ init(dsn=os.getenv('SENTRY_DSN', 'https://270864132b0845e4a9ae4f68f96c77c2@o4343
     traces_sample_rate=0.01
 )
 
-def truncateId(job):
+def truncateIdAndDescription(job, limit=10000):
     m = hashlib.sha256()
     m.update(job['job_id'].encode('utf-8'))
     job['job_id'] = m.hexdigest()
+    job['description'] = job['description'][:limit]
     return job
 
 def callService(endpoint, payload):
@@ -37,8 +38,8 @@ async def on_message(message: IncomingMessage):
     jobs = json.loads(message.body)
 
     for job in jobs:
-        processedJob = callService(endpoint="http://job-service/v1/jobs/jobFetcher", payload=truncateId(job))
-        if len(processedJob.content) == 0: #duplicate
+        processedJob = callService(endpoint="http://job-service/v1/jobs/jobFetcher", payload=truncateIdAndDescription(job))
+        if processedJob is None or processedJob.status_code != 200 or len(processedJob.content) == 0: #duplicate
             continue
         matching = callService(endpoint="http://matching-service/v1/matching/jobs", payload=processedJob.json())
         print("matching", matching)

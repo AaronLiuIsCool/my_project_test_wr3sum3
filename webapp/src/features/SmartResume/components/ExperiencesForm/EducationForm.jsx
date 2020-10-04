@@ -11,7 +11,7 @@ import Button from 'react-bootstrap/Button';
 import { adaptEducation } from '../../utils/servicesAdaptor';
 import { actions, selectId } from '../../slicer';
 import { validateEducation, validateEducationEntry } from '../../slicer/education';
-import { updateStatus } from '../../slicer/common';
+import { updateStatus, updateAllStatus } from '../../slicer/common';
 import ResumeServices from 'shell/services/ResumeServices';
 import { getLogger } from 'shell/logger';
 
@@ -25,7 +25,18 @@ import { generateEducationRating, generateLayoutRating } from '../../utils/resum
 
 const logger = getLogger('EducationForm');
 const resumeServices = new ResumeServices();
-
+const fields = [
+    'schoolName',
+    'gpa',
+    'startDate',
+    'graduateDate',
+    'major',
+    'degree',
+    'city',
+    'country',
+    'highestAward',
+    'otherAward'
+];
 const EducationForm = ({ data, index, isLast = false, messages }) => {
     const resumeId = useSelector(selectId);
     const [validated, setValidated] = useState(false);
@@ -45,7 +56,7 @@ const EducationForm = ({ data, index, isLast = false, messages }) => {
 
 	const save = async () => {
 		previewResume(messages.RPreview);
-        let id;
+        let id = data.id;
         try {
             const response = (id === undefined) ?
                 await resumeServices.createEducation(resumeId, adaptEducation(data)) :
@@ -62,6 +73,7 @@ const EducationForm = ({ data, index, isLast = false, messages }) => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         event.stopPropagation();
+        updateAllStatus(validateEducationEntry, status, setStatus, fields, data)
         if (!validateEducation(data)) {
             setValidated(false);
             return;
@@ -155,14 +167,14 @@ const EducationForm = ({ data, index, isLast = false, messages }) => {
                 </Col>
                 <Col>
                     <SingleDatePicker label={messages.enterSchoolDate} id="education-enter-date"
-                        placeholder={messages.yymmdd} value={data.startDate} allowPastDatesOnly={true} readOnly={true}
+                        placeholder={messages.yymmdd} value={data.startDate}
                         monthFormat={messages.monthFormat} displayFormat={messages.dateDisplayFormat}
                         onDateChange={handleSchoolStartDateChange} feedbackMessage={messages.entryIsInvalid}
                         isValid={status.startDate.isValid} isInvalid={status.startDate.isInvalid} />
                 </Col>
                 <Col>
                     <SingleDatePicker label={messages.graduateDate} id="education-graduate-date"
-                        placeholder={messages.yymmdd} value={data.graduateDate} allowPastDatesOnly={true} readOnly={true}
+                        placeholder={messages.yymmdd} value={data.graduateDate}
                         monthFormat={messages.monthFormat} displayFormat={messages.dateDisplayFormat}
                         onDateChange={handleGradDateChange} feedbackMessage={messages.entryIsInvalid}
                         isValid={status.graduateDate.isValid} isInvalid={status.graduateDate.isInvalid} />
@@ -200,12 +212,14 @@ const EducationForm = ({ data, index, isLast = false, messages }) => {
                 <Col>
                     <InputGroup label={messages.highestAward} id="education-highest-award"
                         placeholder={messages.enterHighestAward} value={data.highestAward}
-                        onChange={event => dispatch(actions.updateHighestAward({value: event.target.value, index}))} />
+                        onChange={event => dispatch(actions.updateHighestAward({value: event.target.value, index}))}
+                        isValid={status.highestAward.isValid} isInvalid={status.highestAward.isInvalid} />
                 </Col>
                 <Col>
                     <InputGroup label={messages.otherAward} id="education-other-award"
                         placeholder={messages.enterOtherAward} value={data.otherAward}
-                        onChange={event => dispatch(actions.updateOtherAward({value: event.target.value, index}))} />
+                        onChange={event => dispatch(actions.updateOtherAward({value: event.target.value, index}))}
+                        isValid={status.otherAward.isValid} isInvalid={status.otherAward.isInvalid} />
                 </Col>
             </Row>
             <Row className="form_buttons">

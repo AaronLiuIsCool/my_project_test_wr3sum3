@@ -56,10 +56,17 @@ public class JobDtoTest {
                 .build();
 
         JobDto jobDto = modelMapper.map(job, JobDto.class);
+        SimpleJobDto simpleJobDto = modelMapper.map(job, SimpleJobDto.class);
         LocationDto locationDto = modelMapper.map(location, LocationDto.class);       
         MajorDto majorDto = modelMapper.map(major, MajorDto.class);
 
         PersistedJobDto persistedJobDto = modelMapper.map(jobDto, PersistedJobDto.class);
+
+        assertNotNull(simpleJobDto);
+        assertThat(simpleJobDto.getPostDate(), is(postDate));
+        assertThat(simpleJobDto.getPositionTitle(), is(positionTitle));
+        assertThat(simpleJobDto.getCompanyName(), is(companyName));
+        assertThat(simpleJobDto.getUrl(), is(url));
 
         assertNotNull(jobDto);
         assertThat(jobDto.getPostDate(), is(postDate));
@@ -76,6 +83,7 @@ public class JobDtoTest {
         assertThat(persistedJobDto.getUrl(), is(url));
         assertThat(persistedJobDto.getMajors().get(0), is(majorDto));
         assertThat(persistedJobDto.getLocation(), is(locationDto));
+
     }
 
     @Test

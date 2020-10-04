@@ -10,6 +10,19 @@ export function updateStatus(validatorFunc, status, statusSetter, name, value) {
   statusSetter(newStatus);
 }
 
+export const updateAllStatus = (validatorFunc, status, statusSetter, fields, data) => {
+    const newStatus = {...status}
+    fields.forEach(field => {
+        const validateFlag = validatorFunc(field, data[field], data);
+        if (validateFlag === undefined) {
+            newStatus[field] = {};
+        } else {
+            newStatus[field] = { isValid: validateFlag, isInvalid: !validateFlag };
+        }
+    })
+    statusSetter(newStatus);
+}
+
 
 
 export function detectChangesForAllItem(datas, originData) {

@@ -5,6 +5,7 @@ import com.kuaidaoresume.common.auth.Authorize;
 import com.kuaidaoresume.resume.controller.v1.assembler.EducationRepresentationModelAssembler;
 import com.kuaidaoresume.resume.dto.EducationDto;
 import com.kuaidaoresume.resume.dto.PersistedEducationDto;
+import com.kuaidaoresume.resume.model.Award;
 import com.kuaidaoresume.resume.model.Education;
 import com.kuaidaoresume.resume.service.ResumeService;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -167,6 +169,9 @@ public class EducationController {
     }
 
     private void bindAwardToEducation(Education education) {
-        education.getAwards().forEach(award -> award.setEducation(education));
+        Collection<Award> awards = education.getAwards();
+        if (Objects.nonNull(awards)) {
+            awards.forEach(award -> award.setEducation(education));
+        }
     }
 }

@@ -1,7 +1,7 @@
 export function adaptBasics(basics = {}) {
     const { id, fullName = '', alias = '',
-      city = '', country = '', email = '',
-      phoneNumber = '', profiles = [] } = basics;
+        city = '', country = '', email = '',
+        phoneNumber = '', profiles = [] } = basics;
     let linkedin = '';
     let weblink = '';
     profiles.forEach(({ type, url }) => {
@@ -37,9 +37,8 @@ export function adaptBasics(basics = {}) {
 }
 
 export function adaptEducation(edu = {}) {
-  const {id, institution = '', gpa = '', startDate = '', endDate = '',
-    major = '', degree = '', city = '', country = '', awards = []} = edu;
-    console.log(awards);
+    const { id, institution = '', gpa = '', startDate = '', endDate = '',
+        major = '', degree = '', city = '', country = '', awards = [] } = edu;
     const data = {
         id,
         schoolName: institution,
@@ -68,7 +67,7 @@ export function adaptEducations(educations = []) {
 
 export function adaptWork(work = {}) {
     const { city = '', country = '', description = '',
-      endDate = '', id, organization = '', role = '', startDate = '' } = work;
+        endDate = '', id, organization = '', role = '', startDate = '' } = work;
     const data = {
         id,
         workName: role,
@@ -95,8 +94,8 @@ export function adaptWorks(works = []) {
 }
 
 export function adaptProject(project = {}) {
-  const { city = '', country = '', description = '', endDate = '',
-     id, organization = '', role = '', startDate = '' } = project
+    const { city = '', country = '', description = '', endDate = '',
+        id, organization = '', role = '', startDate = '' } = project
     const data = {
         id,
         projectRole: role,
@@ -122,7 +121,7 @@ export function adaptProjects(projects = []) {
 }
 
 export function adaptCertificate(cert = {}) {
-  const {name = '', issueDate = '', expirationDate = '', id} = cert;
+    const { name = '', issueDate = '', expirationDate = '', id } = cert;
     const data = {
         id,
         certificateName: name,
@@ -144,8 +143,8 @@ export function adaptCertificates(certificates = []) {
 }
 
 export function adaptVolunteer(volunteer = {}) {
-  const { city = '', country = '', description = '', endDate = '',
-    id, organization = '', role = '', startDate = '' } = volunteer
+    const { city = '', country = '', description = '', endDate = '',
+        id, organization = '', role = '', startDate = '' } = volunteer
     const data = {
         id,
         volunteerRole: role,

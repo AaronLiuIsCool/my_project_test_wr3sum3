@@ -30,13 +30,13 @@ export default class JobsServices extends BaseServices {
     // TODO: Update this fetch to UAT endpoint later 
     async getSuggestions(industry, title) {
         try {
-            const res = this.get(`/v1/get_suggestions_by_industry_position?industry=${industry}&limit=50&offset=0&position=${title}`)
+            const res = await this.get(`/v1/get_suggestions_by_industry_position?industry=${industry}&limit=50&offset=0&position=${title}`)
             const {suggestions} = await res.json()
             return {
                 suggestions
             }
         } catch (error) {
-            console.error(error)
+            logger.error(error)
             return {
                 suggestions: []
             }

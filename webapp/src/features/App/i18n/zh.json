@@ -11,5 +11,18 @@
   "uploadYourResume": "上传您的简历",
   "upload": "上传",
   "logout": "登出",
-  "defaultInitial": "未知"
+  "defaultInitial": "未知",
+  "RPreview": {
+    "linkedinLink": "领英链接",
+    "githubLink": "Github链接",
+    "workExperience": "工作经历",
+    "studentWorkAndVolunteer": "学生工作和志愿服务",
+    "current": "现今",
+    "editThemeColor": "编辑主题色",
+    "smartTranslation": "智能翻译",
+    "oneClickWholePage": "一键整页",
+    "downloadResume": "下载简历",
+    "perparingResume": "生成中..",
+    "downLoadResume": "下载简历"
+  }
 }

@@ -2,6 +2,11 @@ import moment from 'moment';
 
 const JDBC_DATE_FORMAT = 'YYYY-MM-DD';
 
+function getDateString(date) {
+  const dateValue = moment(date);
+  return dateValue.isValid() ? dateValue.format(JDBC_DATE_FORMAT) : undefined;
+}
+
 export function adaptBasics(basics) {
     if (basics.completed === false) {
         return undefined;
@@ -46,8 +51,8 @@ export function adaptEducation(edu) {
         city,
         country,
         degree,
-        startDate: moment(startDate).format(JDBC_DATE_FORMAT),
-        endDate: moment(graduateDate).format(JDBC_DATE_FORMAT)
+        startDate: getDateString(startDate),
+        endDate: getDateString(graduateDate)
     };
 
     data.awards = data.awards || [];
@@ -76,8 +81,8 @@ export function adaptWork(work) {
         city: workCity,
         country: workCountry,
         description: workDescription,
-        startDate: moment(workStartDate).format(JDBC_DATE_FORMAT),
-        endDate: moment(workEndDate).format(JDBC_DATE_FORMAT)
+        startDate: getDateString(workStartDate),
+        endDate: getDateString(workEndDate)
     }
 
     return data;
@@ -102,8 +107,8 @@ export function adaptProject(project) {
         city: projectCity,
         country: projectCountry,
         description: projectDescription,
-        startDate: moment(projectStartDate).format(JDBC_DATE_FORMAT),
-        endDate: moment(projectEndDate).format(JDBC_DATE_FORMAT)
+        startDate: getDateString(projectStartDate),
+        endDate: getDateString(projectEndDate)
     };
 
     return data;
@@ -122,8 +127,8 @@ export function adaptCertificate(cert) {
     return {
         id,
         name: certificateName,
-        issueDate: moment(certificateIssuedDate).format(JDBC_DATE_FORMAT),
-        expirationDate: moment(certificateEndDate).format(JDBC_DATE_FORMAT)
+        issueDate: getDateString(certificateIssuedDate),
+        expirationDate: getDateString(certificateEndDate)
     };
 }
 
@@ -143,8 +148,8 @@ export function adaptVolunteer(volunteer) {
         id,
         role: volunteerRole,
         organization: volunteerCompanyName,
-        startDate: moment(volunteerStartDate).format(JDBC_DATE_FORMAT),
-        endDate: moment(volunteerEndDate).format(JDBC_DATE_FORMAT),
+        startDate: getDateString(volunteerStartDate),
+        endDate: getDateString(volunteerEndDate),
         description: volunteerDescription,
         city: volunteerCity,
         country: volunteerCountry

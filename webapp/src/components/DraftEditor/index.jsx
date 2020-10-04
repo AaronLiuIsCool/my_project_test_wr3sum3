@@ -16,6 +16,7 @@ import {
     addBlock,
     highlightLines
 } from './editorHelper';
+import '../../features/SmartResume/styles/validation.scss'
 const colorStyleMap = {
     red: {
         color: 'rgba(255, 0, 0, 1.0)'
@@ -44,7 +45,7 @@ const colorStyleMap = {
     }
 };
 
-const DraftEditor = ({ texts, handleChangeCallback, label, eventName }) => {
+const DraftEditor = ({ texts, handleChangeCallback, label, eventName, isInvalid, feedbackMessage }) => {
     const [localState, _setLocalState] = useState(EditorState.createEmpty());
     const localStateRef = useRef(localState);
 
@@ -56,7 +57,7 @@ const DraftEditor = ({ texts, handleChangeCallback, label, eventName }) => {
     const didMount = useRef(false);
 
     useEffect(() => {
-        if (!didMount.current) {
+        if (!didMount.current && texts) {
             const lines = texts.split('\n');
             const rawContentState = {
                 entityMap: {},
@@ -196,7 +197,7 @@ const DraftEditor = ({ texts, handleChangeCallback, label, eventName }) => {
     };
 
     return (
-        <div className="draftjs-editor-container form_item">
+        <div className="draftjs-editor-container form_item form-validation-wrapper">
             <label className="form-label">{label}</label>
             <Editor
                 customStyleMap={colorStyleMap}
@@ -204,6 +205,7 @@ const DraftEditor = ({ texts, handleChangeCallback, label, eventName }) => {
                 editorState={localState}
                 onChange={handleChange}
             ></Editor>
+            {isInvalid ? <div className="invalid-feedback">{feedbackMessage}</div> : ''}
         </div>
     );
 };

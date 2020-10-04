@@ -1,5 +1,7 @@
 package com.kuaidaoresume.job.service;
 
+import com.github.structlog4j.ILogger;
+import com.github.structlog4j.SLoggerFactory;
 import com.kuaidaoresume.common.matching.KeywordMatcher;
 import com.kuaidaoresume.job.dto.JobFetcherRequest;
 import com.kuaidaoresume.job.dto.JobFetcherResponse;
@@ -10,6 +12,7 @@ import com.kuaidaoresume.job.model.Keyword;
 import com.kuaidaoresume.job.model.Location;
 import com.kuaidaoresume.job.repository.JobRepository;
 import com.kuaidaoresume.job.repository.KeywordRepository;
+import com.kuaidaoresume.job.repository.LocationRepository;
 import com.kuaidaoresume.job.repository.MajorRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -27,6 +30,8 @@ import java.time.*;
 @Service
 @RequiredArgsConstructor
 public class JobInfoExtractionServiceImpl implements JobInfoExtractionService{
+    static final ILogger logger = SLoggerFactory.getLogger(JobInfoExtractionServiceImpl.class);
+
     @Autowired
     MajorExtractionService majorExtractionService;
 
@@ -40,6 +45,9 @@ public class JobInfoExtractionServiceImpl implements JobInfoExtractionService{
     private final JobRepository jobRepository;
 
     @Autowired
+    private final LocationRepository locationRepository;
+
+    @Autowired
     private final KeywordRepository keywordRepository;
 
     @Autowired
@@ -49,20 +57,40 @@ public class JobInfoExtractionServiceImpl implements JobInfoExtractionService{
     public JobFetcherResponse extractAndPersist(JobFetcherRequest jobFetcherRequest) {
         String url = jobFetcherRequest.getJobLink();
 
+        Optional<Job> jobOptional = jobRepository.findByUrl(url);
+
+        if (jobOptional.isPresent()) {
+            return null;
+        }
+
+        String[] locationData = jobFetcherRequest.getLocation().split(",");
+
+        if(locationData.length == 0) { //we must have location
+            return null;
+        }
+
+        String country = locationData[locationData.length - 1].trim();  //last one is always country
+        String city = locationData.length > 1 ? locationData[0].trim() : "";  //first one is always city
+        String state = locationData.length == 3 ? locationData[1].trim() : "";
+
+        LocationDto locationDto = LocationDto.builder()
+                .country(country)
+                .city(city)
+                .state(state)
+                .build();
+
+
         List<KeywordDto> keywordDtos = keywordMatcher.getMatches(jobFetcherRequest.getDescription())
                 .stream().map(x -> KeywordDto.builder()
                         .name(x)
                         .build()).collect(Collectors.toList());
 
-        String[] locationData = jobFetcherRequest.getLocation().split(",");
 
-        LocationDto locationDto = LocationDto.builder()
-                .country(locationData[locationData.length - 1].trim()) //last one is always country
-                .city(locationData[0].trim()) //first one is always state
-                .state(locationData.length == 3 ? "" : locationData[1].trim())
-                .build();
 
-        Location location = modelMapper.map(locationDto, Location.class);
+        Optional<Location> locationOptional = locationRepository.findByCountryIgnoreCaseAndCityIgnoreCase(country, city);
+        Location location = locationOptional.isPresent() ? locationOptional.get() : modelMapper.map(locationDto, Location.class);
+
+        logger.info("location = " + location);
 
         List<MajorDto> majorDtos = majorExtractionService.extract(jobFetcherRequest.getDescription());
         List<Major> majors = majorDtos.stream().map
@@ -89,11 +117,6 @@ public class JobInfoExtractionServiceImpl implements JobInfoExtractionService{
         }
         Date createdAt = new Date(createdTimeMillis);
 
-        Optional<Job> jobOptional = jobRepository.findByUrl(url);
-
-        if (jobOptional.isPresent()) {
-            return null;
-        }
         Job job = Job.builder().postDate(createdAt)
                 .positionTitle(jobFetcherRequest.getTitle())
                 .companyName(jobFetcherRequest.getCompanyName())

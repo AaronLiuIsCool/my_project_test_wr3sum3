@@ -1,4 +1,4 @@
-import { validateDate, validateString, validateNonEmptyString } from 'utils/validator';
+import { validateDate, validateNonEmptyString } from 'utils/validator';
 import { detectChangesForAllItem } from "./common";
 
 export function anyProjectChanges(projects) {
@@ -6,25 +6,29 @@ export function anyProjectChanges(projects) {
 }
 
 export function validateProject(data) {
-    return Object.keys(data).every(key => validateProjectEntry(key, data[key]));
+    return Object.keys(data).every(key => validateProjectEntry(key, data[key], data));
 }
 
-export function validateProjectEntry(name, value) {
+export function validateProjectEntry(name, value, data) {
     switch (name) {
+        case 'projectDescription':
+            if(value === '*') return false // because we added * before each line => to prevent the case whern user deletes everything
+            // eslint-disable-next-line
         case 'projectRole':
         case 'projectCompanyName':
         case 'projectCity':
         case 'projectCountry':
-        case 'projectDescription':
             if (validateNonEmptyString(value)) {
                 return true;
-            } else if (validateString(value)) {
-                return undefined;
             } else {
                 return false;
             }
         case 'projectStartDate':
+            return typeof value === 'string' && validateDate(value);
         case 'projectEndDate':
+            if(!data?.currentProjectFlag) {
+                return true
+            }
             return typeof value === 'string' && validateDate(value);
         default:
             return true;

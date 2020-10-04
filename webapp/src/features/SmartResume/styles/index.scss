@@ -234,4 +234,9 @@
     border-top: 26px solid transparent !important;
     border-right: 33px solid #3e89ec !important;
   }
+
+  /* resume preview style  */
+  .react-pdf__Page canvas{
+    margin:20px auto;
+  }
 }

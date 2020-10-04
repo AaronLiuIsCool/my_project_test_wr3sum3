@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Date;
 import java.util.Set;
 import java.util.HashSet;
-import java.util.UUID;
+import com.fasterxml.uuid.Generators;
 
 @Data
 @NoArgsConstructor
@@ -32,7 +32,7 @@ public class Job {
     private long id;
     @Column(name = "uuid", nullable = false, updatable = false, unique = true)
     @Builder.Default
-    private String uuid = UUID.randomUUID().toString();
+    private String uuid = Generators.timeBasedGenerator().generate().toString();
     @Column(name = "post_date", nullable = false, updatable = false, unique = true)
     private Date postDate;
     @Column(name = "position_title", nullable = false, updatable = false, unique = true)
@@ -63,17 +63,17 @@ public class Job {
     private String jobPostIdentifier;
     @Column(name = "job_description", nullable = true, updatable = false)
     private String jobDescription;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "location_id", referencedColumnName="id")
     private Location location;
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(
             name = "job_has_required_major",
             joinColumns = { @JoinColumn(name = "job_id", referencedColumnName="id") },
             inverseJoinColumns = { @JoinColumn(name = "major_id", referencedColumnName="id") }
     )
     private List<Major> majors;
-    @OneToMany(mappedBy = "job", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "job", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @Builder.Default
     private Set<JobHasKeyword> jobHasKeywords = new HashSet<>();
 }

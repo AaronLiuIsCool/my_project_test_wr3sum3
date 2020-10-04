@@ -29,6 +29,8 @@ public class Location {
     private String country;
     @Column(name = "city", nullable = false, updatable = false)
     private String city;
+    @Column(name = "state", nullable = true, updatable = false) //bug fix: state is already in db, alter table needed
+    private String state;
     @Column(name = "post_code", nullable = true, updatable = false)
     private String postCode;
 

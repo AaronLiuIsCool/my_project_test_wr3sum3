@@ -17,7 +17,7 @@ import { ReactComponent as WrittenAssistIcon } from '../../assets/writing_assit.
 import { adaptVolunteer } from '../../utils/servicesAdaptor';
 import { actions, selectId, assistantSelectors } from '../../slicer';
 import { validateVolunteer, validateVolunteerEntry } from '../../slicer/volunteer';
-import { updateStatus } from '../../slicer/common';
+import { updateStatus, updateAllStatus } from '../../slicer/common';
 import ResumeServices from 'shell/services/ResumeServices';
 import { getLogger } from 'shell/logger';
 import { previewResume, wholePageCheck } from '../ResumePreview/resumeBuilder';
@@ -26,7 +26,16 @@ import cityOptions from 'data/city.json';
 
 const logger = getLogger('VolunteerForm');
 const resumeServices = new ResumeServices();
-
+const fields = [
+    'volunteerRole',
+    'currentVolunteerFlag',
+    'volunteerCompanyName',
+    'volunteerStartDate',
+    'volunteerEndDate',
+    'volunteerCity',
+    'volunteerCountry',
+    'volunteerDescription'
+];
 const VolunteerForm = ({ data, index, isLast = false, messages, volunteerData }) => {
 	const trigger = useSelector(assistantSelectors.selectTrigger);
 	const showAssistant = useSelector(assistantSelectors.selectShow);
@@ -91,6 +100,7 @@ const VolunteerForm = ({ data, index, isLast = false, messages, volunteerData })
 	const handleSubmit = async (event) => {
 		event.preventDefault();
         event.stopPropagation();
+        updateAllStatus(validateVolunteerEntry, status, setStatus, fields, data)
 		if (!validateVolunteer(data)) {
 			setValidated(false);
 			return;
@@ -201,7 +211,8 @@ const VolunteerForm = ({ data, index, isLast = false, messages, volunteerData })
 						value={data.currentVolunteerFlag}
 						onClickHandler={handleCurrentVolunteerFlagChange}
 						feedbackMessage={messages.entryIsInvalid}
-						isInvalid={status.currentVolunteerFlag.isInvalid}
+                        isInvalid={status.currentVolunteerFlag.isInvalid}
+                        isValid={status.currentVolunteerFlag.isValid}
 					/>
 				</Col>
 				<Col>
@@ -210,7 +221,9 @@ const VolunteerForm = ({ data, index, isLast = false, messages, volunteerData })
 						id="volunteer-company"
 						placeholder={messages.enterCompanyName}
 						value={data.volunteerCompanyName}
-						onChange={handleVolunteerCompanyNameChange}
+                        onChange={handleVolunteerCompanyNameChange}
+                        isValid={status.volunteerCompanyName.isValid}
+						isInvalid={status.volunteerCompanyName.isInvalid}
 					/>
 				</Col>
 			</Row>
@@ -221,8 +234,6 @@ const VolunteerForm = ({ data, index, isLast = false, messages, volunteerData })
 						id="volunteer-enter-date"
 						placeholder={messages.yymmdd}
 						value={data.volunteerStartDate}
-						allowPastDatesOnly={true}
-						readOnly={true}
 						monthFormat={messages.monthFormat}
 						displayFormat={messages.dateDisplayFormat}
 						onDateChange={handleVolunteerStartDateChange}
@@ -238,8 +249,6 @@ const VolunteerForm = ({ data, index, isLast = false, messages, volunteerData })
 							id="volunteer-graduate-date"
 							placeholder={messages.yymmdd}
 							value={data.volunteerEndDate}
-							allowPastDatesOnly={true}
-							readOnly={true}
 							monthFormat={messages.monthFormat}
 							displayFormat={messages.dateDisplayFormat}
 							onDateChange={handleVolunteerEndDateChange}
@@ -280,6 +289,9 @@ const VolunteerForm = ({ data, index, isLast = false, messages, volunteerData })
 					{/*todo: replace with rich text editor */}
 					<div className={assistantContainerClassNames}>
                         <DraftEditor 
+                            feedbackMessage={messages.entryIsInvalid}
+                            isValid={status.volunteerDescription.isValid}
+                            isInvalid={status.volunteerDescription.isInvalid}
                             label={messages.volunteerDetailsDescription}
                             handleChangeCallback={handleVolunteerDescriptionEditorChange}
                             texts={data.volunteerDescription} 

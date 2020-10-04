@@ -1,6 +1,5 @@
 import {
     validateDate,
-    validateString,
     validateNonEmptyString
 } from "utils/validator";
 
@@ -11,20 +10,20 @@ export function anyWorkChanges(works) {
 }
 
 export function validateWork(data) {
-    return Object.keys(data).every(key => validateWorkEntry(key, data[key]));
+    return Object.keys(data).every(key => validateWorkEntry(key, data[key], data));
 }
 
-export function validateWorkEntry(name, value) {
+export function validateWorkEntry(name, value, data) {
     switch (name) {
+        case "workDescription":
+            if(value === '*') return false // because we added * before each line => to prevent the case whern user deletes everything
+            // eslint-disable-next-line
         case "workName":
         case "workCompanyName":
         case "workCity":
         case "workCountry":
-        case "workDescription":
             if (validateNonEmptyString(value)) {
                 return true;
-            } else if (validateString(value)) {
-                return undefined;
             } else {
                 return false;
             }
@@ -35,7 +34,11 @@ export function validateWorkEntry(name, value) {
                 toString.call(value) === "[object Boolean]"
             );
         case "workStartDate":
+            return typeof value === "string" && validateDate(value);
         case "workEndDate":
+            if(!data?.currentWorkFlag) {
+                return true
+            }
             return typeof value === "string" && validateDate(value);
         default:
             return true;

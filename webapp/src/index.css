@@ -49,3 +49,15 @@ code {
 .closeIconContainer:hover .closeIconHover{
   display: block;
 }
+
+/* react bootstrap progress bar style  */
+.bg-score_A{
+  background-color: #2abc6e!important;
+}
+.bg-score_B,
+.bg-score_C{
+  background-color: #edbc4d!important;
+}
+.bg-score_D{
+  background-color: #ff6565!important;
+}

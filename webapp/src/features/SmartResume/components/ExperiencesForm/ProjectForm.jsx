@@ -17,7 +17,7 @@ import { ReactComponent as WrittenAssistIcon } from '../../assets/writing_assit.
 import { adaptProject } from '../../utils/servicesAdaptor';
 import { actions, selectId, assistantSelectors } from '../../slicer';
 import { validateProject, validateProjectEntry } from '../../slicer/project';
-import { updateStatus } from '../../slicer/common';
+import { updateStatus, updateAllStatus } from '../../slicer/common';
 import ResumeServices from 'shell/services/ResumeServices';
 import { getLogger } from 'shell/logger';
 import { previewResume, wholePageCheck } from '../ResumePreview/resumeBuilder';
@@ -26,7 +26,16 @@ import cityOptions from 'data/city.json';
 
 const logger = getLogger('ProjectForm');
 const resumeServices = new ResumeServices();
-
+const fields = [
+    'projectRole',
+    'currentProjectFlag',
+    'projectCompanyName',
+    'projectStartDate',
+    'projectEndDate',
+    'projectDescription',
+    'projectCity',
+    'projectCountry'
+];
 const ProjectForm = ({ data, index, isLast = false, messages, projectData }) => {
 	const trigger = useSelector(assistantSelectors.selectTrigger);
 	const showAssistant = useSelector(assistantSelectors.selectShow);
@@ -85,7 +94,8 @@ const ProjectForm = ({ data, index, isLast = false, messages, projectData }) => 
     }
 	const handleSubmit = async (event) => {
 		event.preventDefault();
-		event.stopPropagation();
+        event.stopPropagation();
+        updateAllStatus(validateProjectEntry, status, setStatus, fields, data)
 		if (!validateProject(data)) {
 			setValidated(false);
 			return;
@@ -138,7 +148,7 @@ const ProjectForm = ({ data, index, isLast = false, messages, projectData }) => 
             'projectDescription',
             value
         );
-        dispatch(actions.updateWorkDescription({ value, index }));
+        dispatch(actions.updateProjectDescription({ value, index }));
     }
 
 	const handleCityChange = (values) => {
@@ -218,8 +228,6 @@ const ProjectForm = ({ data, index, isLast = false, messages, projectData }) => 
 						id='project-enter-date'
 						placeholder={messages.yymmdd}
 						value={data.projectStartDate}
-						allowPastDatesOnly={true}
-						readOnly={true}
 						monthFormat={messages.monthFormat}
 						displayFormat={messages.dateDisplayFormat}
 						onDateChange={handleProjectStartDateChange}
@@ -235,8 +243,6 @@ const ProjectForm = ({ data, index, isLast = false, messages, projectData }) => 
 							id='project-graduate-date'
 							placeholder={messages.yymmdd}
 							value={data.projectEndDate}
-							allowPastDatesOnly={true}
-							readOnly={true}
 							monthFormat={messages.monthFormat}
 							displayFormat={messages.dateDisplayFormat}
 							onDateChange={handleProjectEndDateChange}
@@ -276,6 +282,9 @@ const ProjectForm = ({ data, index, isLast = false, messages, projectData }) => 
 				<Col lg='12'>
 					<div className={assistantContainerClassNames}>
                         <DraftEditor 
+                            feedbackMessage={messages.entryIsInvalid}
+                            isValid={status.projectDescription.isValid}
+                            isInvalid={status.projectDescription.isInvalid}
                             label={messages.projectDetailsDescription}
                             handleChangeCallback={handleProjectDescriptionEditorChange}
                             texts={data.projectDescription} 

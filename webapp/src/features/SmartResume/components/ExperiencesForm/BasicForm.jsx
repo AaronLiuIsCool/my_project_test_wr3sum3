@@ -11,7 +11,7 @@ import { actions, selectId } from '../../slicer';
 import AvatarUpload from './AvatarUpload';
 
 import { validateBasic, validateBasicEntry } from '../../slicer/basic';
-import { updateStatus } from '../../slicer/common';
+import { updateStatus, updateAllStatus } from '../../slicer/common';
 import { adaptBasics } from '../../utils/servicesAdaptor';
 import { generateBasicFormRating, generateLayoutRating } from '../../utils/resume';
 import ResumeServices from 'shell/services/ResumeServices';
@@ -26,7 +26,15 @@ import cityOptions from 'data/city.json';
 
 const logger = getLogger('BasicForm');
 const resumeServices = new ResumeServices();
-
+const fields = [
+    'nameCn',
+    'nameEn',
+    'email',
+    'phone',
+    'city',
+    'linkedin',
+    'weblink'
+];
 const BasicForm = ({ data, completed, messages }) => {
 	const resumeId = useSelector(selectId);
 	const [validated, setValidated] = useState(false);
@@ -44,7 +52,7 @@ const BasicForm = ({ data, completed, messages }) => {
 
 	const save = async () => {
 		previewResume(messages.RPreview);
-		let id;
+		let id = data.id;
 		try {
 			const response =
 				data.id === undefined
@@ -61,7 +69,8 @@ const BasicForm = ({ data, completed, messages }) => {
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
-		event.stopPropagation();
+        event.stopPropagation();
+        updateAllStatus(validateBasicEntry, status, setStatus, fields, data)
 		if (!validateBasic(data)) {
 			setValidated(false);
 			return;

@@ -56,6 +56,15 @@ public class JobServiceImpl implements JobService{
     }
 
     @Override
+    public Optional<SimpleJobDto> findSimpleJobByUuid(String uuid) {
+        Optional<Job> jobOptional = jobRepository.findByUuid(uuid);
+        if (!jobOptional.isPresent()) {
+            return Optional.ofNullable(null);
+        }
+        return Optional.ofNullable(modelMapper.map(jobOptional.get(), SimpleJobDto.class));
+    }
+
+    @Override
     public void deleteJobById(long id) {
        jobRepository.deleteById(id);
     }
