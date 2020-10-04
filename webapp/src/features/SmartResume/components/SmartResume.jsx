@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import { previewResume } from './ResumePreview/resumeBuilder';
+import { useHistory } from "react-router-dom";
 
 import { selectLanguage, selectUserId } from 'features/App/slicer';
 import { actions } from 'features/SmartResume/slicer';
@@ -22,7 +23,7 @@ const logger = getLogger('ResumeStarter');
 const accountServices = new AccountServices();
 const resumeServices = new ResumeServices();
 
-async function getOrCreateResume(dispatch, userId, resumeId, language) {
+async function getOrCreateResume(dispatch, userId, resumeId, language, history) {
     if (resumeId) {
         try {
             const response = await resumeServices.getResume(resumeId);
@@ -38,22 +39,26 @@ async function getOrCreateResume(dispatch, userId, resumeId, language) {
         const response = await resumeServices.createResume({language});
         const data = await response.json();
         const resumeId = data.id;
+        await accountServices.addResume(userId, resumeId);
         accountServices.addResume(userId, resumeId);
         dispatch(actions.setId(resumeId));
+        history.push(`/resume/${resumeId}`);
     } catch (exception) {
         logger.error(exception);
         // TODO: Need to handle retry
+        history.push(`/`);
     }
 }
 
 const SmartResume = ({ useObserver = false, resumeId }) => {
+    const history = useHistory();
     const dispatch = useDispatch();
     const userId = useSelector(selectUserId);
     const language = useSelector(selectLanguage);
     const messages = language === 'zh' ? zh : en;
 
     useEffect(() => {
-        getOrCreateResume(dispatch, userId, resumeId, language);
+        getOrCreateResume(dispatch, userId, resumeId, language, history);
 		previewResume(messages.RPreview);
     }, []); // eslint-disable-line
 

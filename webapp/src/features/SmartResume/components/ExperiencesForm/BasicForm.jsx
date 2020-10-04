@@ -44,7 +44,7 @@ const BasicForm = ({ data, completed, messages }) => {
 
 	const save = async () => {
 		previewResume(messages.RPreview);
-		let id;
+		let id = data.id;
 		try {
 			const response =
 				data.id === undefined
