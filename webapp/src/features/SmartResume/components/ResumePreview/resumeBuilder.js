@@ -1,4 +1,3 @@
-// todo: after this issue has been released, we can upgrade the version of jsPDF to the lastest version and import using the following way：
 import { jsPDF } from "jspdf";
 import { dateRangeBuilder } from "./common";
 import * as Constants from "./Constants";
@@ -195,9 +194,8 @@ const _perpareDataHeader = (basicData, educationData) => {
     type: "h3",
     y: startY,
     x: currentXPos,
-    content: `${
-      educationData.major ? educationData.major : ""
-    } ${dateRangeBuilder(educationData.startDate, educationData.graduateDate)}`,
+    content: `${educationData.major ? educationData.major : ""
+      } ${dateRangeBuilder(educationData.startDate, educationData.graduateDate)}`,
     page: currentPage,
   };
   // reset currentXPos
@@ -317,9 +315,8 @@ const _perpareWork = (workData) => {
         type: "h3",
         y: currentYPos,
         x: currentXPos,
-        content: `${dateRangeBuilder(work.workStartDate, work.workEndDate)}  ${
-          work.workCity
-        } ${work.workCountry}`,
+        content: `${dateRangeBuilder(work.workStartDate, work.workEndDate)}  ${work.workCity
+          } ${work.workCountry}`,
         alignment: "right",
         page: currentPage,
       });
@@ -380,7 +377,7 @@ const _perpareProject = (projectData) => {
         Constants.startX +
         (project.projectRole
           ? doc.getTextWidth(project.projectRole) +
-            Constants.defaultPaddingRight
+          Constants.defaultPaddingRight
           : 0);
       data.push({
         type: "h3",
@@ -401,7 +398,7 @@ const _perpareProject = (projectData) => {
       doc.setFontSize(Constants.h3FontSize);
       currentXPos += project.projectCompanyName
         ? doc.getTextWidth(project.projectCompanyName) +
-          Constants.defaultPaddingRight
+        Constants.defaultPaddingRight
         : 0;
       data.push({
         type: "h3",
@@ -496,7 +493,7 @@ const _perpareVolunteer = (volunteerData) => {
         Constants.startX +
         (volunteer.volunteerName
           ? doc.getTextWidth(volunteer.volunteerName) +
-            Constants.defaultPaddingRight
+          Constants.defaultPaddingRight
           : 0);
       data.push({
         type: "h3",
@@ -517,7 +514,7 @@ const _perpareVolunteer = (volunteerData) => {
       doc.setFontSize(Constants.h3FontSize);
       currentXPos += volunteer.volunteerRole
         ? doc.getTextWidth(volunteer.volunteerRole) +
-          Constants.defaultPaddingRight
+        Constants.defaultPaddingRight
         : 0;
       data.push({
         type: "h3",

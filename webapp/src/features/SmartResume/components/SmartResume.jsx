@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
+import { previewResume } from './ResumePreview/resumeBuilder';
 
 import { selectLanguage, selectUserId } from 'features/App/slicer';
 import { actions } from 'features/SmartResume/slicer';
@@ -53,6 +54,7 @@ const SmartResume = ({ useObserver = false, resumeId }) => {
 
     useEffect(() => {
         getOrCreateResume(dispatch, userId, resumeId, language);
+		previewResume(messages.RPreview);
     }, []); // eslint-disable-line
 
     return (
