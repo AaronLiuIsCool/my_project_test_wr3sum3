@@ -164,9 +164,9 @@ public class WorkExperienceControllerTest {
 
     @Test
     public void whenDeleteById_thenReturn202() throws Exception {
-        doNothing().when(resumeService).deleteById(WORK_EXPERIENCE_ID, WorkExperience.class);
+        doNothing().when(resumeService).deleteById(WORK_EXPERIENCE_ID, WorkExperience.class, RESUME_ID);
 
-        mvc.perform(delete("/v1/work-experiences/{id}", WORK_EXPERIENCE_ID))
+        mvc.perform(delete("/v1/work-experiences/{id}?resumeId={resumeId}", WORK_EXPERIENCE_ID, RESUME_ID))
             .andDo(print())
             .andExpect(status().isNoContent())
             .andReturn();

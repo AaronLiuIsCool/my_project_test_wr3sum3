@@ -29,3 +29,6 @@ kuaidaoresume:
   signing-secret: ${SIGNING_SECRET}
   #bot-service-endpoint: ${BOT_SERVICE_ENDPOINT:http://bot-service:8080}
   intercom-access-token: ${INTERCOM_ACCESS_TOKEN}
+  resume:
+    caching:
+      maximum-size: ${RESUME_CACHING_MAXIMUM_SIZE:50000}

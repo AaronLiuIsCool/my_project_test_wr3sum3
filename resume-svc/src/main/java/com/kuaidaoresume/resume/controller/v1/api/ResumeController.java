@@ -112,4 +112,16 @@ public class ResumeController {
             .map(ResponseEntity::ok)
             .orElse(ResponseEntity.notFound().build());
     }
+
+    @Authorize(value = {
+        AuthConstant.AUTHORIZATION_WWW_SERVICE,
+        AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
+        AuthConstant.AUTHORIZATION_SUPPORT_USER,
+        AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
+    })
+    @DeleteMapping("/resumes/{id}")
+    public ResponseEntity<?> deleteById(@PathVariable String id) {
+        resumeService.deleteResume(id);
+        return ResponseEntity.noContent().build();
+    }
 }

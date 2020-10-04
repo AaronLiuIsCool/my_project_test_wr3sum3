@@ -14,6 +14,10 @@ import com.kuaidaoresume.resume.service.score.ResumeScoreFacade;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.compress.utils.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -43,6 +47,10 @@ public class ResumeServiceImpl implements ResumeService {
     @Autowired
     private final KeywordMatcher keywordMatcher;
 
+    @Autowired
+    private final CacheManager cacheManager;
+
+    @CacheEvict(cacheNames = "resumes", key = "#resumeId")
     @Override
     public BasicInfo saveBasicInfo(String resumeId, BasicInfo basicInfoToSave) {
         if (Objects.isNull(basicInfoToSave.getProfiles())) {
@@ -55,6 +63,7 @@ public class ResumeServiceImpl implements ResumeService {
         return savedResume.getBasicInfo();
     }
 
+    @CacheEvict(cacheNames = "resumes", key = "#resumeId")
     @Override
     public Education newEducation(String resumeId, Education educationToSave) {
         Resume savedResume = saveResumeWithItemUpdate(
@@ -63,6 +72,7 @@ public class ResumeServiceImpl implements ResumeService {
         return savedResume.getEducations().stream().reduce((cur, next) -> next).orElse(null);
     }
 
+    @CacheEvict(cacheNames = "resumes", key = "#resumeId")
     @Override
     public Collection<Education> saveEducations(String resumeId, Iterable<Education> educations) {
         return saveResumeWithItemsUpdate(resume -> resume.getEducations(),
@@ -70,6 +80,7 @@ public class ResumeServiceImpl implements ResumeService {
         ).apply(resumeId, educations);
     }
 
+    @CacheEvict(cacheNames = "resumes", key = "#resumeId")
     @Override
     public WorkExperience newWorkExperience(String resumeId, WorkExperience workExperienceToSave) {
         Resume savedResume = saveResumeWithItemUpdate(
@@ -78,6 +89,7 @@ public class ResumeServiceImpl implements ResumeService {
         return savedResume.getWorkExperiences().stream().reduce((cur, next) -> next).orElse(null);
     }
 
+    @CacheEvict(cacheNames = "resumes", key = "#resumeId")
     @Override
     public Collection<WorkExperience> saveWorkExperiences(String resumeId, Iterable<WorkExperience> workExperiences) {
         return saveResumeWithItemsUpdate(resume -> resume.getWorkExperiences(),
@@ -85,6 +97,7 @@ public class ResumeServiceImpl implements ResumeService {
         ).apply(resumeId, workExperiences);
     }
 
+    @CacheEvict(cacheNames = "resumes", key = "#resumeId")
     @Override
     public ProjectExperience newProjectExperience(String resumeId, ProjectExperience projectExperienceToSave) {
         Resume savedResume = saveResumeWithItemUpdate(
@@ -93,6 +106,7 @@ public class ResumeServiceImpl implements ResumeService {
         return savedResume.getProjectExperiences().stream().reduce((cur, next) -> next).orElse(null);
     }
 
+    @CacheEvict(cacheNames = "resumes", key = "#resumeId")
     @Override
     public Collection<ProjectExperience> saveProjectExperiences(String resumeId, Iterable<ProjectExperience> projectExperiences) {
         return saveResumeWithItemsUpdate(resume -> resume.getProjectExperiences(),
@@ -100,6 +114,7 @@ public class ResumeServiceImpl implements ResumeService {
         ).apply(resumeId, projectExperiences);
     }
 
+    @CacheEvict(cacheNames = "resumes", key = "#resumeId")
     @Override
     public VolunteerExperience newVolunteerExperience(String resumeId, VolunteerExperience volunteerExperienceToSave) {
         Resume savedResume = saveResumeWithItemUpdate(
@@ -107,6 +122,7 @@ public class ResumeServiceImpl implements ResumeService {
         return savedResume.getVolunteerExperiences().stream().reduce((cur, next) -> next).orElse(null);
     }
 
+    @CacheEvict(cacheNames = "resumes", key = "#resumeId")
     @Override
     public Collection<VolunteerExperience> saveVolunteerExperiences(String resumeId, Iterable<VolunteerExperience> volunteerExperiences) {
         return saveResumeWithItemsUpdate(resume -> resume.getVolunteerExperiences(),
@@ -114,6 +130,7 @@ public class ResumeServiceImpl implements ResumeService {
         ).apply(resumeId, volunteerExperiences);
     }
 
+    @CacheEvict(cacheNames = "resumes", key = "#resumeId")
     @Override
     public Certificate newCertificate(String resumeId, Certificate certificateToSave) {
         Resume savedResume = saveResumeWithItemUpdate(
@@ -121,6 +138,7 @@ public class ResumeServiceImpl implements ResumeService {
         return savedResume.getCertificates().stream().reduce((cur, next) -> next).orElse(null);
     }
 
+    @CacheEvict(cacheNames = "resumes", key = "#resumeId")
     @Override
     public Collection<Certificate> saveCertificates(String resumeId, Iterable<Certificate> certificates) {
         return saveResumeWithItemsUpdate(resume -> resume.getCertificates(),
@@ -128,23 +146,45 @@ public class ResumeServiceImpl implements ResumeService {
         ).apply(resumeId, certificates);
     }
 
+
+    @Cacheable("resumes")
     @Override
     public Optional<Resume> findResumeById(String resumeId) {
         return resumeRepository.findById(resumeId);
     }
 
+    @CacheEvict(cacheNames = "resumes", key = "#resume.id")
     @Override
     public Resume saveResume(Resume resume) {
+        bindResume(resume);
+        return resumeRepository.save(resume);
+    }
+
+    @CacheEvict(cacheNames = "resumes", key = "#resumeId")
+    @Override
+    public void deleteResume(String resumeId) {
+        resumeRepository.deleteById(resumeId);
+    }
+
+    private void bindResume(Resume resume) {
         BasicInfo basicInfo = resume.getBasicInfo();
         if (Objects.nonNull(basicInfo)) {
             basicInfo.setResume(resume);
-            basicInfo.getProfiles().forEach(profile -> profile.setBasicInfo(basicInfo));
+            Collection<Profile> profiles = basicInfo.getProfiles();
+            if (Objects.isNull(profiles)) {
+                profiles = Lists.newArrayList();
+            }
+            profiles.forEach(profile -> profile.setBasicInfo(basicInfo));
         }
 
         Collection<Education> educations = resume.getEducations();
         if (Objects.nonNull(educations)) {
             educations.forEach(education -> {
-                education.getAwards().forEach(award -> award.setEducation(education));
+                Collection<Award> awards = education.getAwards();
+                if (Objects.isNull(awards)) {
+                    awards = Lists.newArrayList();
+                }
+                awards.forEach(award -> award.setEducation(education));
                 education.setResume(resume);
             });
         }
@@ -168,8 +208,6 @@ public class ResumeServiceImpl implements ResumeService {
         if (Objects.nonNull(certificates)) {
             certificates.forEach(certificate -> certificate.setResume(resume));
         }
-
-        return resumeRepository.save(resume);
     }
 
     @Override
@@ -187,6 +225,7 @@ public class ResumeServiceImpl implements ResumeService {
         return resumeContainableRepositoryFactory.getResumeContainableRepository(type).findAllByResumeId(resumeId);
     }
 
+    @CacheEvict(cacheNames = "resumes", key = "#toUpdate.resume.id")
     @Override
     public <T extends ResumeContainable> void updateResumeContainable(T toUpdate, Class<? extends ResumeContainable> type)
         throws EntityNotFoundException {
@@ -200,11 +239,13 @@ public class ResumeServiceImpl implements ResumeService {
         resumeContainableRepository.save(toUpdate);
     }
 
+    @CacheEvict(cacheNames = "resumes", key = "#resumeId")
     @Override
-    public void deleteById(Long id, Class<? extends ResumeContainable> type) {
+    public void deleteById(Long id, Class<? extends ResumeContainable> type, String resumeId) {
         resumeContainableRepositoryFactory.getResumeContainableRepository(type).deleteById(id);
     }
 
+    @CacheEvict(cacheNames = "resumes", key = "#resumeId")
     @Override
     public void deleteAllByResumeId(String resumeId, Class<? extends ResumeContainable> type) {
         ResumeContainableRepository resumeContainableRepository = resumeContainableRepositoryFactory.getResumeContainableRepository(type);
@@ -213,34 +254,69 @@ public class ResumeServiceImpl implements ResumeService {
 
     @Override
     public Optional<ResumeScoreDto> getResumeScore(String resumeId) {
-        return resumeRepository.findById(resumeId).map(resumeScoreFacade::getResumeScore);
+        Cache resumesCache = cacheManager.getCache("resumes");
+        Cache.ValueWrapper valueWrapper = resumesCache.get(resumeId);
+        if (Objects.nonNull(valueWrapper)) {
+            Resume resume = (Resume) valueWrapper.get();
+            return Optional.of(resumeScoreFacade.getResumeScore(resume));
+        } else {
+            return resumeRepository.findById(resumeId).map(resume -> {
+                bindResume(resume);
+                resumesCache.put(resumeId, resume);
+                return resumeScoreFacade.getResumeScore(resume);
+            });
+        }
     }
 
     @Override
     public Optional<ResumeMatchingDto> getResumeMatching(String resumeId) {
-        return resumeRepository.findById(resumeId).map(resume -> {
-            Set<String> majors = resume.getEducations().stream().map(Education::getMajor).collect(Collectors.toSet());
-            Set<String> keywords = new HashSet<>();
-            extractKeywordsFromExperience(keywords, resume.getWorkExperiences());
-            extractKeywordsFromExperience(keywords, resume.getProjectExperiences());
-            extractKeywordsFromExperience(keywords, resume.getVolunteerExperiences());
-            BasicInfo basicInfo = resume.getBasicInfo();
-            LocationDto location = LocationDto.builder()
-                .country(basicInfo.getCountry())
-                .state(basicInfo.getProvince())
-                .city(basicInfo.getCity())
-                .build();
-            return ResumeMatchingDto.builder()
-                .location(location)
-                .majors(majors)
-                .keywords(keywords)
-                .build();
-        });
+        Cache resumesCache = cacheManager.getCache("resumes");
+        Cache.ValueWrapper valueWrapper = resumesCache.get(resumeId);
+        if (Objects.nonNull(valueWrapper)) {
+            Resume resume = (Resume) valueWrapper.get();
+            return Optional.of(getResumeMatchingDto(resume));
+        } else {
+            return resumeRepository.findById(resumeId).map(resume -> {
+                bindResume(resume);
+                resumesCache.put(resumeId, resume);
+                return getResumeMatchingDto(resume);
+            });
+        }
+    }
+
+    private ResumeMatchingDto getResumeMatchingDto(Resume resume) {
+        Set<String> majors = resume.getEducations().stream().map(Education::getMajor).collect(Collectors.toSet());
+        Set<String> keywords = new HashSet<>();
+        extractKeywordsFromExperience(keywords, resume.getWorkExperiences());
+        extractKeywordsFromExperience(keywords, resume.getProjectExperiences());
+        extractKeywordsFromExperience(keywords, resume.getVolunteerExperiences());
+        BasicInfo basicInfo = resume.getBasicInfo();
+        LocationDto location = LocationDto.builder()
+            .country(basicInfo.getCountry())
+            .state(basicInfo.getProvince())
+            .city(basicInfo.getCity())
+            .build();
+        return ResumeMatchingDto.builder()
+            .location(location)
+            .majors(majors)
+            .keywords(keywords)
+            .build();
     }
 
     @Override
     public Optional<ResumeRatingDto> getResumeRating(String resumeId) {
-        return resumeRepository.findById(resumeId).map(resumeRatingFacade::getResumeRating);
+        Cache resumesCache = cacheManager.getCache("resumes");
+        Cache.ValueWrapper valueWrapper = resumesCache.get(resumeId);
+        if (Objects.nonNull(valueWrapper)) {
+            Resume resume = (Resume) valueWrapper.get();
+            return Optional.of(resumeRatingFacade.getResumeRating(resume));
+        } else {
+            return resumeRepository.findById(resumeId).map(resume -> {
+                bindResume(resume);
+                resumesCache.put(resumeId, resume);
+                return resumeRatingFacade.getResumeRating(resume);
+            });
+        }
     }
 
     private <T extends Experience> void extractKeywordsFromExperience(Set<String> keywords, Collection<T> experiences) {

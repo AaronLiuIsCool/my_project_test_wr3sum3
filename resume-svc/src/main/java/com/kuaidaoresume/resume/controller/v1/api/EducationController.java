@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -151,8 +152,8 @@ public class EducationController {
         AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
     })
     @DeleteMapping("/educations/{id}")
-    public ResponseEntity<?> deleteById(@PathVariable Long id) {
-        resumeService.deleteById(id, Education.class);
+    public ResponseEntity<?> deleteById(@PathVariable Long id, @RequestParam @NotNull String resumeId) {
+        resumeService.deleteById(id, Education.class, resumeId);
         return ResponseEntity.noContent().build();
     }
 
