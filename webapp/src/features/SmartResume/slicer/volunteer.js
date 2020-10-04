@@ -1,4 +1,4 @@
-import { validateDate, validateString, validateNonEmptyString } from 'utils/validator';
+import { validateDate, validateNonEmptyString } from 'utils/validator';
 import { detectChangesForAllItem } from "./common";
 
 export function anyVolunteerChanges(volunteers) {

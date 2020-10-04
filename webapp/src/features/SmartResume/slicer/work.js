@@ -1,6 +1,5 @@
 import {
     validateDate,
-    validateString,
     validateNonEmptyString
 } from "utils/validator";
 
