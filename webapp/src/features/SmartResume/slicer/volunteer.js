@@ -12,6 +12,7 @@ export function validateVolunteerEntry(name, value, data) {
     switch (name) {
         case 'volunteerDescription':
             if(value === '*') return false // because we added * before each line => to prevent the case whern user deletes everything
+        // eslint-disable-next-line
         case 'volunteerRole':
         case 'volunteerCompanyName':
         case 'volunteerCity':

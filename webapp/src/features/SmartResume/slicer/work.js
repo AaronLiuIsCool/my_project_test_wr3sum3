@@ -17,6 +17,7 @@ export function validateWorkEntry(name, value, data) {
     switch (name) {
         case "workDescription":
             if(value === '*') return false // because we added * before each line => to prevent the case whern user deletes everything
+            // eslint-disable-next-line
         case "workName":
         case "workCompanyName":
         case "workCity":
