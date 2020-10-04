@@ -56,8 +56,12 @@ export function adaptEducation(edu) {
     };
 
     data.awards = data.awards || [];
-    data.awards.push({ name: highestAward || '' });
-    data.awards.push({ name: otherAward || '' });
+    if (highestAward) {
+      data.awards.push({ name: highestAward });
+    }
+    if (otherAward) {
+      data.awards.push({ name: otherAward });
+    }
 
     return data;
 }
