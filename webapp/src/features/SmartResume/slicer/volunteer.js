@@ -1,29 +1,33 @@
-import { validateDate, validateString, validateNonEmptyString } from 'utils/validator';
+import { validateDate, validateNonEmptyString } from 'utils/validator';
 import { detectChangesForAllItem } from "./common";
 
 export function anyVolunteerChanges(volunteers) {
     return detectChangesForAllItem(volunteers, volunteer);
 }
 export function validateVolunteer(data) {
-    return Object.keys(data).every(key => validateVolunteerEntry(key, data[key]));
+    return Object.keys(data).every(key => validateVolunteerEntry(key, data[key], data));
 }
 
-export function validateVolunteerEntry(name, value) {
+export function validateVolunteerEntry(name, value, data) {
     switch (name) {
+        case 'volunteerDescription':
+            if(value === '*') return false // because we added * before each line => to prevent the case whern user deletes everything
+        // eslint-disable-next-line
         case 'volunteerRole':
         case 'volunteerCompanyName':
         case 'volunteerCity':
         case 'volunteerCountry':
-        case 'volunteerDescription':
             if (validateNonEmptyString(value)) {
                 return true;
-            } else if (validateString(value)) {
-                return undefined;
             } else {
                 return false;
             }
         case 'volunteerStartDate':
+            return typeof value === 'string' && validateDate(value);
         case 'volunteerEndDate':
+            if(!data?.currentVolunteerFlag) {
+                return true
+            }
             return typeof value === 'string' && validateDate(value);
         default:
             return true;

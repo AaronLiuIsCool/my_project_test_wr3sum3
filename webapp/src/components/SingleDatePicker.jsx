@@ -4,13 +4,16 @@ import { Form } from 'react-bootstrap';
 import { SingleDatePicker, isInclusivelyBeforeDay } from 'react-dates';
 import moment from 'moment';
 
+import './SingleDatePicker.scss'
+import '../features/SmartResume/styles/validation.scss'
 const SingleDatePickerWrapper = ({
     label, id, placeholder, value, onDateChange, monthFormat, displayFormat,
-    readOnly = false, allowPastDatesOnly = false, isInvalid, feedbackMessage
+    readOnly = false, allowPastDatesOnly = false, isInvalid, feedbackMessage, isValid
 }) => {
     const [focused, setFocused] = useState(false);
     return (
-        <Form.Group className="form_item">
+        <Form.Group className={
+            `form_item form-validation-wrapper ${isValid ? "form-validation-wrapper" : isInvalid ? "not-validated " : "form_item "}`}>
             <Form.Label htmlFor={id}>{label}</Form.Label>
             <SingleDatePicker
                 isOutsideRange={day => (allowPastDatesOnly ? !isInclusivelyBeforeDay(day, moment()) : undefined)}
@@ -19,7 +22,7 @@ const SingleDatePickerWrapper = ({
                 id={id} placeholder={placeholder} noBorder={true} readOnly={readOnly}
                 monthFormat={monthFormat} displayFormat={displayFormat}
             />
-            {isInvalid ? (<Form.Control.Feedback type="invalid">
+            {isInvalid ? (<Form.Control.Feedback style={{display: 'block'}} type="invalid">
                 {feedbackMessage}
             </Form.Control.Feedback>) : null}
         </Form.Group >

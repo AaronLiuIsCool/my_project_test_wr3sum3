@@ -29,12 +29,12 @@ describe("test basic form related functionalities", () => {
       ["nameCn", undefined, false],
       ["nameCn", 123, false],
       ["nameCn", "u of a", true],
-      ["nameCn", "", undefined],
+      ["nameCn", "", false],
 
       ["nameEn", undefined, false],
       ["nameEn", 123, false],
       ["nameEn", "u of a", true],
-      ["nameEn", "", undefined],
+      ["nameEn", "", false],
 
       ["email", undefined, false],
       ["email", 123, false],
@@ -52,7 +52,7 @@ describe("test basic form related functionalities", () => {
       ["city", undefined, false],
       ["city", 123, false],
       ["city", "北京", true],
-      ["city", "", undefined],
+      ["city", "", false],
 
     ];
 
