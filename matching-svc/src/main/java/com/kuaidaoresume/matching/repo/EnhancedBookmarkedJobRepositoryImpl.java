@@ -1,5 +1,6 @@
 package com.kuaidaoresume.matching.repo;
 
+import com.google.common.collect.Lists;
 import com.kuaidaoresume.matching.model.BookmarkedJob;
 import com.kuaidaoresume.matching.model.Resume;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class EnhancedBookmarkedJobRepositoryImpl implements EnhancedBookmarkedJobRepository {
 
@@ -25,6 +27,7 @@ public class EnhancedBookmarkedJobRepositoryImpl implements EnhancedBookmarkedJo
         );
         BookmarkedJob bookmarkedJob = mongoTemplate.aggregate(aggregation, BookmarkedJob.class, BookmarkedJob.class)
             .getUniqueMappedResult();
-        return new ArrayList<>(bookmarkedJob.getBookmarkedResumes());
+        return Objects.nonNull(bookmarkedJob) ? new ArrayList<>(bookmarkedJob.getBookmarkedResumes()) :
+            Lists.newArrayList();
     }
 }
