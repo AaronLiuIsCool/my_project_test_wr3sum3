@@ -191,9 +191,13 @@ const DraftEditor = ({ texts, handleChangeCallback, label, eventName, isInvalid,
         const value = rawContentState.blocks.reduce((acc, cur, index) => {
             return index === 0 ? acc + cur.text : acc + '\n*' + cur.text;
         }, '*');
-
-        // update store
-        handleChangeCallback(value);
+        
+        const currentContentState = localState.getCurrentContent()
+        const prevContentState = editorState.getCurrentContent()
+        if(currentContentState !== prevContentState) {
+            // update store
+            handleChangeCallback(value);
+        }    
     };
 
     return (
