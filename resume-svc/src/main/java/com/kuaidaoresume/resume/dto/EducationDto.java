@@ -30,7 +30,6 @@ public class EducationDto {
     private String degree;
     @NotNull
     private String startDate;
-    @NotNull
     private String endDate;
     private String gpa;
     private List<AwardDto> awards;

@@ -50,7 +50,6 @@ public class Education implements ResumeContainable {
     @NotNull
     private Date startDate;
 
-    @NotNull
     private Date endDate;
 
     @Size(min = 1, max = 4)
