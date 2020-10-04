@@ -16,8 +16,6 @@ import { downloadPDF, adjustToWholePage } from './resumeBuilder';
 
 import styles from '../../styles/ResumePreview.module.css';
 import DownloadIcon from '../../assets/download_white.svg';
-import CloseHoverIcon from '../../assets/close_hover.svg';
-import CloseRegularIcon from '../../assets/close_regular.svg';
 import { resumeAdaptor } from '../../utils/servicesAdaptor';
 import { flatten, reconstruct } from '../../utils/resume';
 
@@ -95,18 +93,11 @@ const ResumePreview = () => {
 					<button onClick={() => downloadPDF(messages.RPreview)}>
 						<img src={DownloadIcon} alt='download' /> {messages.RPreview.downloadResume}
 					</button>
-					<button className={styles.circle} onClick={() => setIsResumeTipsModalOpen(true)}>
+					<button className={styles.circle} onClick={() => setIsResumeTipsModalOpen(!isResumeTipsModalOpen)}>
 						?
 					</button>
 				</div>
 			</div>
-			{/* ResumeTips close button  */}
-			{isResumeTipsModalOpen && (
-				<div className='closeIconContainer' style={{ top: '10px', right: '50px' }} onClick={() => setIsResumeTipsModalOpen(false)}>
-					<img src={CloseRegularIcon} alt='Close' className='closeIcon' />
-					<img src={CloseHoverIcon} alt='Close' className='closeIconHover' />
-				</div>
-			)}
 			{isResumeTipsModalOpen && <ResumeTips />}
 			{isThemeColorModalOpen && <ResumeThemeColorPicker setIsThemeColorModalOpen={setIsThemeColorModalOpen} />}
 		</div>

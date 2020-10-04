@@ -9,6 +9,7 @@
   box-shadow: 0 12px 24px 0 rgba(0, 0, 0, 0.1);
   background-color: #ffffff;
   color: #333;
+  overflow: auto;
 }
 .header{
   font-size: 24px;
