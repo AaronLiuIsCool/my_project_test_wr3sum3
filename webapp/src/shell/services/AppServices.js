@@ -13,9 +13,22 @@ export default class AppServices extends BaseServices {
     async translate(data) {
         try {
             return await this.post('v1/translate/gcp', {
-              text: data,
-              from: 'zh',
-              to: 'en'
+                text: data,
+                from: 'zh',
+                to: 'en'
+            });
+        } catch (exception) {
+            logger.error(exception);
+        }
+    }
+
+    async imageUpload(base64, resumeId) {
+        const timeStamp = new Date().getTime();
+        try {
+            return await this.post('v1/image/upload', {
+                fileName: `${resumeId}_${timeStamp}.png`,
+                fileType: 'image/png',
+                base64,
             });
         } catch (exception) {
             logger.error(exception);

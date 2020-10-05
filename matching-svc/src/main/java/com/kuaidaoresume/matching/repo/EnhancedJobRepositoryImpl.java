@@ -2,6 +2,7 @@ package com.kuaidaoresume.matching.repo;
 
 import com.kuaidaoresume.matching.model.Job;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -40,6 +41,7 @@ public class EnhancedJobRepositoryImpl implements EnhancedJobRepository {
     }
 
     @Override
+    @Cacheable("searchJobs-paging")
     public List<Job> searchJobs(String country, String city, String term, int page, int pageSize) {
         Query query = buildTextSearchQuery(country, city, term);
         query.with(PageRequest.of(page, pageSize));

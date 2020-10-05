@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -138,8 +139,8 @@ public class CertificateController {
         AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
     })
     @DeleteMapping("/certificates/{id}")
-    public ResponseEntity<?> deleteById(@PathVariable Long id) {
-        resumeService.deleteById(id, Certificate.class);
+    public ResponseEntity<?> deleteById(@PathVariable Long id, @RequestParam @NotNull String resumeId) {
+        resumeService.deleteById(id, Certificate.class, resumeId);
         return ResponseEntity.noContent().build();
     }
 

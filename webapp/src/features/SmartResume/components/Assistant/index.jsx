@@ -18,6 +18,8 @@ const renderAssistant = (trigger, context) => {
         return <WrittenAssistant trigger={trigger} context={context} />;
     } else if (trigger === 'project') {
         return <WrittenAssistant trigger={trigger} context={context} />;
+    } else if (trigger === 'volunteer') {
+        return <WrittenAssistant trigger={trigger} context={context} />;
     } else if (trigger === 'rating') {
         return <RatingDetail />
     }

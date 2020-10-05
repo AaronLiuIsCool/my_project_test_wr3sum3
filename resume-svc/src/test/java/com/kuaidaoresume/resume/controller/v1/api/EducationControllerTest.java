@@ -183,9 +183,9 @@ public class EducationControllerTest {
 
     @Test
     public void whenDeleteById_thenReturn202() throws Exception {
-        doNothing().when(resumeService).deleteById(EDUCATION_ID, Education.class);
+        doNothing().when(resumeService).deleteById(EDUCATION_ID, Education.class, RESUME_ID);
 
-        mvc.perform(delete("/v1/educations/{id}", EDUCATION_ID))
+        mvc.perform(delete("/v1/educations/{id}?resumeId={resumeId}", EDUCATION_ID, RESUME_ID))
             .andDo(print())
             .andExpect(status().isNoContent())
             .andReturn();

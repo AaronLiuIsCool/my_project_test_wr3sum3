@@ -90,6 +90,8 @@ public class JobRepositoryTest {
                 .location(location)
                 .majors(majors)
                 .build();
+        locationRepository.save(location);
+        majorRepository.save(major);
         jobRepository.save(job);
     }
 

@@ -40,6 +40,14 @@ export default class ResumeServices extends BaseServices {
         }
     }
 
+    async updatePhotoReference(resumeId, url) {
+        try {
+            return await this.put(`v1/resumes/${resumeId}/photo-reference?value=${url}`);
+        } catch (exception) {
+            logger.error(exception);
+        }
+    }
+
     async updateBasics(resumeId, basics) {
         try {
             return await this.put(`v1/resumes/${resumeId}/basic-info`, basics);

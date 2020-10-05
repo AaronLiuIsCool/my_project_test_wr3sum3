@@ -5,10 +5,10 @@ import {
 } from "utils/validator";
 
 export function validateCertificate(data) {
-    return Object.keys(data).every(key => validateCertificateEntry(key, data[key]));
+    return Object.keys(data).every(key => validateCertificateEntry(key, data[key], data));
 }
 
-export function validateCertificateEntry(name, value) {
+export function validateCertificateEntry(name, value, data) {
     switch (name) {
         case "certificateName":
         case "certificateCity":
@@ -27,8 +27,12 @@ export function validateCertificateEntry(name, value) {
                 value === false ||
                 toString.call(value) === "[object Boolean]"
             );
-        case "certificateIssuedDate":
         case "certificateEndDate":
+            if(!data?.currentCertificateFlag) {
+                return true;
+            }
+            return typeof value === "string" && validateDate(value);
+        case "certificateIssuedDate":
             return typeof value === "string" && validateDate(value);
         default:
             return true;

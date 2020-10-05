@@ -14,10 +14,12 @@ import com.kuaidaoresume.job.repository.JobRepository;
 import com.kuaidaoresume.job.repository.KeywordRepository;
 import com.kuaidaoresume.job.repository.LocationRepository;
 import com.kuaidaoresume.job.repository.MajorRepository;
+import com.kuaidaoresume.job.config.CacheConfig;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.kuaidaoresume.job.dto.*;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -54,6 +56,7 @@ public class JobInfoExtractionServiceImpl implements JobInfoExtractionService{
     private final ModelMapper modelMapper;
 
     @Override
+    @CacheEvict(cacheNames = {CacheConfig.JOB_CACHE, CacheConfig.JOB_SEARCH_CACHE}, allEntries=true, beforeInvocation = true)
     public JobFetcherResponse extractAndPersist(JobFetcherRequest jobFetcherRequest) {
         String url = jobFetcherRequest.getJobLink();
 

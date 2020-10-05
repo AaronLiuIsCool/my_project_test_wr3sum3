@@ -15,7 +15,7 @@ const ResumeThemeColorPicker = ({ setIsThemeColorModalOpen }) => {
 
 	const handleColorPicked = (color) => {
 		dispatch(actions.updateColor({ color }));
-		setIsThemeColorModalOpen('false');
+		setIsThemeColorModalOpen(false);
 	};
 
 	return (

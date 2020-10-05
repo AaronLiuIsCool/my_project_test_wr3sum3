@@ -43,9 +43,10 @@ const ResumePreview = () => {
 	useEffect(() => {
 		setResumeData(resume.resumeBuilder.data.base64);
 	}, [resume]);
-
-	
-
+	const toggleThemeColorModal = () => {
+        setIsThemeColorModalOpen(!isThemeColorModalOpen)
+    }
+    
 	const handleTranslate = async () => {
 		try {
 			const parsedResume = flatten(resumeAdaptor(resume));
@@ -57,7 +58,7 @@ const ResumePreview = () => {
 			const translatedResume = reconstruct(parsedResume);
 			response = await resumeServices.createResume(translatedResume);
 			const data = await response.json();
-			if (!data.success) {
+			if (data.success === false) {
 				logger.error(data.message);
 				return;
 			}
@@ -85,7 +86,7 @@ const ResumePreview = () => {
 
 			<div className={styles.widgetContainer}>
 				<div>
-					<button className={styles.whiteBtn} onClick={() => setIsThemeColorModalOpen(true)}>
+					<button className={styles.whiteBtn} onClick={() => toggleThemeColorModal()}>
 						{messages.RPreview.editThemeColor} <span className={styles.colorSquare} style={{ backgroundColor: color }}></span>
 					</button>
 					<button onClick={handleTranslate}>{messages.RPreview.smartTranslation}</button>

@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+
 import { useI8n } from 'shell/i18n';
 
 import AvatarEdit from 'components/AvatarEdit';
@@ -8,11 +9,30 @@ import PhotoUploadIcon from '../../assets/photoupload.svg';
 import CloseHoverIcon from '../../assets/close_hover.svg';
 import CloseRegularIcon from '../../assets/close_regular.svg';
 
-const AvatarUpload = () => {
+const AvatarUpload = ({photoReference}) => {
 	const messages = useI8n();
 	const [modalOpen, setModalOpen] = useState(false);
 	const [avatar, setAvatar] = useState(null);
 
+	function toDataUrl(url, callback) {
+    var xhr = new XMLHttpRequest();
+    xhr.onload = function() {
+        var reader = new FileReader();
+        reader.onloadend = function() {
+            callback(reader.result);
+        }
+        reader.readAsDataURL(xhr.response);
+    };
+    xhr.open('GET', url);
+    xhr.responseType = 'blob';
+    xhr.send();
+}
+
+	useEffect(() => {
+		if (photoReference){
+		  toDataUrl(photoReference, setAvatar);
+		}
+	}, [photoReference]);
 	
 	return (
 		<div className={styles.avatarContainer}>

@@ -57,8 +57,9 @@ const DraftEditor = ({ texts, handleChangeCallback, label, eventName, isInvalid,
     const didMount = useRef(false);
 
     useEffect(() => {
-        if (!didMount.current && texts) {
-            const lines = texts.split('\n');
+        if (!didMount.current) {
+            const content = texts ? texts : '';
+            const lines = content.split('\n');
             const rawContentState = {
                 entityMap: {},
                 blocks: lines.map((line) => ({
@@ -191,9 +192,13 @@ const DraftEditor = ({ texts, handleChangeCallback, label, eventName, isInvalid,
         const value = rawContentState.blocks.reduce((acc, cur, index) => {
             return index === 0 ? acc + cur.text : acc + '\n*' + cur.text;
         }, '*');
-
-        // update store
-        handleChangeCallback(value);
+        
+        const currentContentState = localState.getCurrentContent()
+        const prevContentState = editorState.getCurrentContent()
+        if(currentContentState !== prevContentState) {
+            // update store
+            handleChangeCallback(value);
+        }    
     };
 
     return (

@@ -25,7 +25,7 @@ const validatePhone = (input) => {
 
 const validateURL = (input) => {
     if (validateString(input) && !validateNonEmptyString(input)) {
-      return true;
+        return true;
     }
     const re = /[(http(s)?)://(www.)?a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/ig
     return re.test(input);

@@ -1,10 +1,8 @@
 package com.kuaidaoresume.matching;
 
-import com.kuaidaoresume.matching.repo.JobRepository;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 /**
  * Matching services main entry.

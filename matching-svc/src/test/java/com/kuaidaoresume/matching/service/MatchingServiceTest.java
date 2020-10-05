@@ -12,6 +12,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.CacheManager;
 
 import java.time.Instant;
 import java.util.*;
@@ -84,6 +85,9 @@ public class MatchingServiceTest {
     @Mock
     private ServiceHelper serviceHelper;
 
+    @Mock
+    private CacheManager cacheManager;
+
     @BeforeEach
     public void setup() {
         now = Instant.now();
@@ -91,7 +95,7 @@ public class MatchingServiceTest {
 
         matchingService = new MatchingService(jobRepository, resumeRepository, matchedResumeRepository,
             tailoredResumeRepository, tailoredJobRepository, bookmarkedResumeRepository, bookmarkedJobRepository,
-            visitedResumeRepository, visitedJobRepository, modelMapper, serviceHelper);
+            visitedResumeRepository, visitedJobRepository, modelMapper, serviceHelper, cacheManager);
     }
 
     private void setupMatchedResumeMocks() {

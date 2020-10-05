@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 import assistant from './assistant';
+import photoReference from "./photoReference";
 import basic from "./basic";
 import education from "./education";
 import work from "./work";
@@ -18,6 +19,7 @@ export const resumeSlice = createSlice({
         stepIndex: 0,
 
         assistant: assistant.initialState,
+        photoReference: photoReference.initialState,
         basic: basic.initialState,
         education: education.initialState,
         work: work.initialState,
@@ -34,7 +36,7 @@ export const resumeSlice = createSlice({
 
         setResume: (state, action) => {
             const resume = action.payload;
-            return {...state, ...resumeAdaptor(resume)};
+            return { ...state, ...resumeAdaptor(resume) };
         },
 
         moveStep: (state, action) => {
@@ -42,6 +44,7 @@ export const resumeSlice = createSlice({
         },
 
         ...assistant.reducers,
+        ...photoReference.reducers,
         ...basic.reducers,
         ...education.reducers,
         ...work.reducers,
@@ -60,6 +63,7 @@ export const selectStep = ({ resume }) => resume.stepIndex;
 export const selectResume = ({ resume }) => resume;
 
 export const assistantSelectors = assistant.selectors;
+export const photoReferenceSelectors = photoReference.selectors;
 export const basicSelectors = basic.selectors;
 export const educationSelectors = education.selectors;
 export const workSelectors = work.selectors;
