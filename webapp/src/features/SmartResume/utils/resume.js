@@ -112,7 +112,7 @@ export const generateLayoutRating = (result, messages) => {
   
 };
 
-export const generateSuggestions = (experience, section, eventType, sorted, messages) => {
+export const generateSuggestions = (experience=[], section, eventType, sorted, messages) => {
     const keywordsArr = [];
     const quantifyArr = [];
     const companyArr = [];
