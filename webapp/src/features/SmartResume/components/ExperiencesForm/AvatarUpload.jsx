@@ -15,7 +15,6 @@ const AvatarUpload = ({photoReference}) => {
 	const [avatar, setAvatar] = useState(null);
 
 	function toDataUrl(url, callback) {
-		console.log("test", url)
     var xhr = new XMLHttpRequest();
     xhr.onload = function() {
         var reader = new FileReader();
@@ -30,8 +29,6 @@ const AvatarUpload = ({photoReference}) => {
 }
 
 	useEffect(() => {
-		// // test 
-		// photoReference = "https://kuaidao-img.s3.ca-central-1.amazonaws.com/todo_get_current_resume_id_1601231456864.png";
 		if (photoReference){
 		  toDataUrl(photoReference, setAvatar);
 		}

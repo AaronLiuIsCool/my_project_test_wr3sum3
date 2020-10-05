@@ -86,11 +86,7 @@ const WorkForm = ({ data, index, isLast = false, messages, workData }) => {
     const handleWorkFormRating = async () => {
         const response = await resumeServices.getRatings(resumeId);
 
-        // TODO: uncomment this
-        const { workExperiences } = await response.json();
-        
-        // todo delete this afterwards
-        // const { workExperiences } = response;
+				const { workExperiences } = await response.json();
         const layoutRating = generateLayoutRating(wholePageCheck(messages.RPreview), messages)
         dispatch(actions.updateLayoutRating(layoutRating))
         
