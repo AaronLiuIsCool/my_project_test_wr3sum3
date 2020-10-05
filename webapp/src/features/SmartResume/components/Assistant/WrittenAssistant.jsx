@@ -93,12 +93,13 @@ const WrittenAssistant = ({ trigger, context }) => {
                 });
                 break;
             case 'volunteer':
-                dispatch(
-                    actions.appendVolunteerDescription({
-                        index: context.index,
-                        value: tip
-                    })
-                );
+                notifyEditor('volunteer', context.index, {
+                    data: {
+                        offsets: tip.offsets,
+                        text: tip.text
+                    },
+                    type: 'highlight-keyword'
+                });
                 break;
             default:
                 return;
