@@ -57,7 +57,7 @@ const ResumePreview = () => {
 			const translatedResume = reconstruct(parsedResume);
 			response = await resumeServices.createResume(translatedResume);
 			const data = await response.json();
-			if (!data.success) {
+			if (data.success === false) {
 				logger.error(data.message);
 				return;
 			}
