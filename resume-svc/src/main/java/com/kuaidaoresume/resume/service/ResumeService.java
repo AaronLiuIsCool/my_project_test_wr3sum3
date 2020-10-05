@@ -56,4 +56,6 @@ public interface ResumeService {
     Optional<ResumeMatchingDto> getResumeMatching(String resumeId);
 
     Optional<ResumeRatingDto> getResumeRating(String resumeId);
+
+    Optional<Resume> saveResumePhotoReference(String resumeId, String photoReference);
 }

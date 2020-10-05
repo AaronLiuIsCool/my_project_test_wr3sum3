@@ -2,6 +2,7 @@ package com.kuaidaoresume.resume.client;
 
 import com.kuaidaoresume.common.auth.AuthConstant;
 import com.kuaidaoresume.resume.dto.*;
+import com.sun.istack.NotNull;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
@@ -227,4 +228,9 @@ public interface ResumeClient {
     @DeleteMapping("/resumes/{resumeId}/work-experiences")
     ResponseEntity<?> deleteWorkExperiencesByResumeId(
         @RequestHeader(AuthConstant.AUTHORIZATION_HEADER) String auth, @PathVariable String resumeId);
+
+    @PutMapping("/resumes/{id}/photo-reference")
+    ResponseEntity<EntityModel<PersistedResumeDto>> savePhotoReference(
+        @RequestHeader(AuthConstant.AUTHORIZATION_HEADER) String auth, @PathVariable String id,
+        @RequestParam @NotNull String value);
 }

@@ -4,6 +4,7 @@ import com.kuaidaoresume.common.auth.AuthConstant;
 import com.kuaidaoresume.resume.dto.*;
 import com.kuaidaoresume.resume.model.Profile;
 import com.kuaidaoresume.resume.service.rating.Rating;
+import feign.FeignException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,6 +22,8 @@ import java.util.Collections;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
@@ -333,6 +336,25 @@ public class ResumeClientIT {
         PersistedCertificateDto updated =
             resumeClient.findCertificateById(AuthConstant.AUTHORIZATION_AUTHENTICATED_USER, id).getBody().getContent();
         assertThat(updated.getExpirationDate(), is(newExpirationDate));
+    }
+
+    @Test
+    @Order(7)
+    public void test_savePhotoReference() {
+        String photoReference = "https://imgur.com/gallery/s8G5B";
+        ResponseEntity<EntityModel<PersistedResumeDto>> responseEntity =
+            resumeClient.savePhotoReference(AuthConstant.AUTHORIZATION_AUTHENTICATED_USER, resumeId, photoReference);
+        assertThat(responseEntity.getStatusCode(), is(OK));
+        assertThat(responseEntity.getBody().getContent().getPhotoReference(), is(photoReference));
+    }
+
+    @Test
+    @Order(8)
+    public void test_savePhotoReferenceToResumeNotExisted() {
+        String photoReference = "https://imgur.com/gallery/s8G5B";
+        FeignException exception = assertThrows(FeignException.class, () ->
+            resumeClient.savePhotoReference(AuthConstant.AUTHORIZATION_AUTHENTICATED_USER, "not-existed-resume-id", photoReference));
+        assertTrue(exception.getMessage().startsWith("status 404"));
     }
 }
 

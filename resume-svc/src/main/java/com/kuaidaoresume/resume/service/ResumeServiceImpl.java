@@ -319,6 +319,15 @@ public class ResumeServiceImpl implements ResumeService {
         }
     }
 
+    @CacheEvict(cacheNames = "resumes", key = "#resumeId")
+    @Override
+    public Optional<Resume> saveResumePhotoReference(String resumeId, String photoReference) {
+        return resumeRepository.findById(resumeId).map(resume -> {
+            resume.setPhotoReference(photoReference);
+            return resumeRepository.save(resume);
+        });
+    }
+
     private <T extends Experience> void extractKeywordsFromExperience(Set<String> keywords, Collection<T> experiences) {
         experiences.forEach(experience -> {
             keywords.addAll(keywordMatcher.getMatches(experience.getDescription()));

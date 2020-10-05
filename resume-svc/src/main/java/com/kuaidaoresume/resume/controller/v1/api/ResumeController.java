@@ -9,6 +9,7 @@ import com.kuaidaoresume.resume.controller.v1.assembler.ResumeScoreRepresentatio
 import com.kuaidaoresume.resume.dto.*;
 import com.kuaidaoresume.resume.model.Resume;
 import com.kuaidaoresume.resume.service.ResumeService;
+import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,6 +84,24 @@ public class ResumeController {
         Resume saved = resumeService.saveResume(toSave);
         EntityModel<PersistedResumeDto> entityModel = resumeAssembler.toModel(modelMapper.map(saved, PersistedResumeDto.class));
         return ResponseEntity.created(resumeAssembler.getSelfLink(entityModel).toUri()).body(entityModel);
+    }
+
+    @Authorize(value = {
+        AuthConstant.AUTHORIZATION_WWW_SERVICE,
+        AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
+        AuthConstant.AUTHORIZATION_SUPPORT_USER,
+        AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
+    })
+    @PutMapping("/resumes/{id}/photo-reference")
+    public ResponseEntity<EntityModel<PersistedResumeDto>> savePhotoReference(
+        @PathVariable String id,
+        @RequestParam @NotNull String value) {
+
+        return resumeService.saveResumePhotoReference(id, value)
+            .map(resume -> modelMapper.map(resume, PersistedResumeDto.class))
+            .map(resumeAssembler::toModel)
+            .map(ResponseEntity::ok)
+            .orElse(ResponseEntity.notFound().build());
     }
 
     @Authorize(value = {
