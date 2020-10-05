@@ -113,7 +113,7 @@ const WrittenAssistant = ({ trigger, context }) => {
         window.dispatchEvent(event);
     };
 
-    const parseSuggestions = (suggestions) => {
+    const parseSuggestions = (suggestions = []) => {
         return suggestions.map((suggestion) => {
             let keywords = suggestion.suggestionKeywords.split(',');
             let html = suggestion.texts;

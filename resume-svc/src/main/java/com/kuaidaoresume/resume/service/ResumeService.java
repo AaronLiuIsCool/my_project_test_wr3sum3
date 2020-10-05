@@ -15,6 +15,8 @@ public interface ResumeService {
 
     Resume saveResume(Resume resume);
 
+    void deleteResume(String resumeId);
+
     <T extends ResumeContainable> Optional<T> findById(Long id, Class<? extends ResumeContainable> type);
 
     <T extends ResumeContainable> Optional<T> findByResumeId(String resumeId, Class<? extends ResumeContainable> type);
@@ -23,7 +25,7 @@ public interface ResumeService {
 
     <T extends ResumeContainable> void updateResumeContainable(T toUpdate, Class<? extends ResumeContainable> type) throws EntityNotFoundException;
 
-    void deleteById(Long id, Class<? extends ResumeContainable> type);
+    void deleteById(Long id, Class<? extends ResumeContainable> type, String resumeId);
 
     void deleteAllByResumeId(String resumeId, Class<? extends ResumeContainable> type);
 
@@ -54,4 +56,6 @@ public interface ResumeService {
     Optional<ResumeMatchingDto> getResumeMatching(String resumeId);
 
     Optional<ResumeRatingDto> getResumeRating(String resumeId);
+
+    Optional<Resume> saveResumePhotoReference(String resumeId, String photoReference);
 }

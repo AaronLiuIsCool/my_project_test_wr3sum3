@@ -146,9 +146,9 @@ public class CertificateControllerTest {
 
     @Test
     public void whenDeleteById_thenReturn202() throws Exception {
-        doNothing().when(resumeService).deleteById(CERTIFICATE_ID, Certificate.class);
+        doNothing().when(resumeService).deleteById(CERTIFICATE_ID, Certificate.class, RESUME_ID);
 
-        mvc.perform(delete("/v1/certificates/{id}", CERTIFICATE_ID))
+        mvc.perform(delete("/v1/certificates/{id}?resumeId={resumeId}", CERTIFICATE_ID, RESUME_ID))
             .andDo(print())
             .andExpect(status().isNoContent())
             .andReturn();

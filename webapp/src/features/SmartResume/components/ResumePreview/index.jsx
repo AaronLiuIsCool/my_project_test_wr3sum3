@@ -16,8 +16,6 @@ import { downloadPDF, adjustToWholePage } from './resumeBuilder';
 
 import styles from '../../styles/ResumePreview.module.css';
 import DownloadIcon from '../../assets/download_white.svg';
-import CloseHoverIcon from '../../assets/close_hover.svg';
-import CloseRegularIcon from '../../assets/close_regular.svg';
 import { resumeAdaptor } from '../../utils/servicesAdaptor';
 import { flatten, reconstruct } from '../../utils/resume';
 
@@ -40,6 +38,7 @@ const ResumePreview = () => {
 	const [resumeData, setResumeData] = useState(resume.resumeBuilder.data.base64);
 	const [isResumeTipsModalOpen, setIsResumeTipsModalOpen] = useState(false);
 	const [isThemeColorModalOpen, setIsThemeColorModalOpen] = useState(false);
+	const [numOfPagesList, setNumOfPagesList] = useState([]);
 
 	useEffect(() => {
 		setResumeData(resume.resumeBuilder.data.base64);
@@ -70,15 +69,16 @@ const ResumePreview = () => {
 		}
 	};
 
+	function onDocumentLoadSuccess(pdf) {
+    setNumOfPagesList(Array.from(Array(pdf.numPages), (v, i) => i + 1));
+  }
+
 	return (
 		<div className={styles.container}>
 			<div id='displayPDF' className={styles.previewWrapper}>
 				{resumeData && (
-					<Document file={resumeData}>
-						<Page pageNumber={1} />
-						<Page pageNumber={2} />
-						<Page pageNumber={3} />
-						{/* max 3 pages  */}
+					<Document file={resumeData} onLoadSuccess={onDocumentLoadSuccess}>
+						{numOfPagesList.map(i => <Page pageNumber={i} key={i} />)}
 					</Document>
 				)}
 			</div>
@@ -93,18 +93,11 @@ const ResumePreview = () => {
 					<button onClick={() => downloadPDF(messages.RPreview)}>
 						<img src={DownloadIcon} alt='download' /> {messages.RPreview.downloadResume}
 					</button>
-					<button className={styles.circle} onClick={() => setIsResumeTipsModalOpen(true)}>
+					<button className={styles.circle} onClick={() => setIsResumeTipsModalOpen(!isResumeTipsModalOpen)}>
 						?
 					</button>
 				</div>
 			</div>
-			{/* ResumeTips close button  */}
-			{isResumeTipsModalOpen && (
-				<div className='closeIconContainer' style={{ top: '10px', right: '50px' }} onClick={() => setIsResumeTipsModalOpen(false)}>
-					<img src={CloseRegularIcon} alt='Close' className='closeIcon' />
-					<img src={CloseHoverIcon} alt='Close' className='closeIconHover' />
-				</div>
-			)}
 			{isResumeTipsModalOpen && <ResumeTips />}
 			{isThemeColorModalOpen && <ResumeThemeColorPicker setIsThemeColorModalOpen={setIsThemeColorModalOpen} />}
 		</div>

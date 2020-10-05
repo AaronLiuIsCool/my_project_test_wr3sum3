@@ -9,7 +9,6 @@ import ProjectExperience from './ProjectExperience';
 import VolunteerExperience from './VolunteerExperience';
 import CertificateExperience from './CertificateExperience';
 import ProgressHeader from '../ProgressHeader/index';
-import RatingDetail from '../RatingDetail/RatingDetail';
 
 
 import styles from '../../styles/ExperiencesForm.module.css';
@@ -28,7 +27,6 @@ const ExperiencesForm = ({ useObserver }) => {
                 <VolunteerExperience />
                 <CertificateExperience />
             </ViewObserver>
-            <RatingDetail visible={scoreVisible} />
         </div>
     );
 };

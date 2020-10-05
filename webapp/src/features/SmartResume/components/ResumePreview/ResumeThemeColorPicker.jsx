@@ -20,7 +20,7 @@ const ResumeThemeColorPicker = ({ setIsThemeColorModalOpen }) => {
 
 	return (
 		<div className={styles.colorPickercontainer}>
-			{colorList.maddap((color) => (
+			{colorList.map((color) => (
 				<span key={color} className={styles.colorCircle} style={{ backgroundColor: color }} onClick={() => handleColorPicked(color)}></span>
 			))}
 		</div>

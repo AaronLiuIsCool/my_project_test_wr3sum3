@@ -56,7 +56,7 @@ const EducationForm = ({ data, index, isLast = false, messages }) => {
 
 	const save = async () => {
 		previewResume(messages.RPreview);
-        let id;
+        let id = data.id;
         try {
             const response = (id === undefined) ?
                 await resumeServices.createEducation(resumeId, adaptEducation(data)) :

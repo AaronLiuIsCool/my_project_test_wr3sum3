@@ -1,6 +1,6 @@
 import csv, json
 
-inputCSVFile = open('./data/resume-tips.csv', 'r')
+inputCSVFile = open('./data/resume-tips-v2.csv', 'r')
 outputFileName = './data/resume-tips.json'
 
 fieldnames = ("type","question","answer")
@@ -16,7 +16,7 @@ for row in rows:
   if rowType == "":
     continue
   if rowType not in data:
-    data[rowType] = []
+    data[rowType] = [{"q": row['question'], 'a': row['answer']}]
   else:
     data[rowType].append({"q": row['question'], 'a': row['answer']})
 

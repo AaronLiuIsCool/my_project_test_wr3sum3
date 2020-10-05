@@ -4,31 +4,34 @@ import com.github.structlog4j.ILogger;
 import com.github.structlog4j.SLoggerFactory;
 import com.google.common.collect.Lists;
 import com.kuaidaoresume.common.api.ResultCode;
+import com.kuaidaoresume.common.auditlog.LogEntry;
+import com.kuaidaoresume.common.auth.AuthContext;
 import com.kuaidaoresume.common.error.ServiceException;
-import com.kuaidaoresume.matching.dto.JobDto;
-import com.kuaidaoresume.matching.dto.KeywordDto;
-import com.kuaidaoresume.matching.dto.LocationDto;
-import com.kuaidaoresume.matching.dto.ResumeDto;
-import com.kuaidaoresume.matching.dto.ResumeJobScoreDto;
+import com.kuaidaoresume.matching.dto.*;
+import com.kuaidaoresume.matching.model.*;
+import com.kuaidaoresume.matching.repo.*;
 import com.kuaidaoresume.matching.score.rules.IScoreRule;
 import com.kuaidaoresume.matching.score.rules.KeywordScoreRule;
 import com.kuaidaoresume.matching.score.rules.MajorScoreRule;
-import com.kuaidaoresume.matching.model.*;
-import com.kuaidaoresume.matching.repo.*;
 import com.kuaidaoresume.matching.service.helper.ServiceHelper;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.Instant;
-import java.util.*;
-import java.util.stream.Collectors;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.time.Instant;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -69,6 +72,10 @@ public class MatchingService {
     @Autowired
     private final ServiceHelper serviceHelper;
 
+    @Autowired
+    private final CacheManager cacheManager;
+
+    @CacheEvict(cacheNames = {"matchedJobs", "searchJobs"})
     public void addJob(JobDto jobDto) {
         Job job = modelMapper.map(jobDto, Job.class);
         job.setActive(true);
@@ -81,22 +88,42 @@ public class MatchingService {
         resumeRepository.save(resume);
     }
 
+    @Cacheable("matchedJobs")
     public Collection<JobDto> findMatchedJobs(ResumeDto resumeDto) {
-        Collection<Job> matchedJobs = getMatchedJobs(resumeDto);
-        return matchedJobs.stream().map(job -> modelMapper.map(job, JobDto.class)).collect(Collectors.toList());
+        return getMatchedJobs(resumeDto);
     }
 
     public Collection<JobDto> findMatchedJobs(ResumeDto resumeDto, int offset, int limit) {
-        Collection<Job> matchedJobs = getMatchedJobs(resumeDto);
-        return matchedJobs.stream().skip(offset).limit(limit)
-            .map(job -> modelMapper.map(job, JobDto.class)).collect(Collectors.toList());
+        try {
+            Collection<JobDto> matchedJobDtos = null;
+            Cache matchedJobsCache = cacheManager.getCache("matchedJobs");
+            Cache.ValueWrapper valueWrapper = matchedJobsCache.get(resumeDto);
+            if (Objects.nonNull(valueWrapper)) {
+                matchedJobDtos = (Collection<JobDto>) valueWrapper.get();
+            } else {
+                LogEntry auditLog = LogEntry.builder()
+                    .authorization(AuthContext.getAuthz())
+                    .currentUserId(AuthContext.getUserId())
+                    .targetType("matchedJobs caching")
+                    .targetId(resumeDto.getResumeUuid())
+                    .updatedContents("Cache missed")
+                    .build();
+                logger.info("Find matched jobs", auditLog);
+                matchedJobDtos = getMatchedJobs(resumeDto);
+                matchedJobsCache.put(resumeDto, matchedJobDtos);
+            }
+            return matchedJobDtos.stream().skip(offset).limit(limit).collect(Collectors.toList());
+        } catch (RuntimeException e) {
+            serviceHelper.handleErrorAndThrowException(logger, e, "Failed to find matched jobs.");
+            throw e;
+        }
     }
 
     public long countMatchedJobs(ResumeDto resumeDto) {
         return getMatchedJobs(resumeDto).size();
     }
 
-    private Collection<Job> getMatchedJobs(ResumeDto resumeDto) {
+    private Collection<JobDto> getMatchedJobs(ResumeDto resumeDto) {
         String resumeUuid = resumeDto.getResumeUuid();
 
         saveResumeAsync(resumeDto, resumeUuid);
@@ -119,7 +146,8 @@ public class MatchingService {
 
             saveMatchedResumeAsync(matchedResume, matchedJobs);
         }
-        return matchedJobs;
+        return matchedJobs.stream().map(job ->
+            modelMapper.map(job, JobDto.class)).collect(Collectors.toList());
     }
 
     private void saveMatchedResumeAsync(MatchedResume matchedResume, Collection<Job> matchedJobs) {
@@ -168,7 +196,10 @@ public class MatchingService {
     }
 
     @Transactional
-    public void addTailoredResume(String resumeUuid, String jobUuid, boolean addBookmark) {
+    @Caching(
+        put = {@CachePut(cacheNames = "tailoredJob", key = "#resumeUuid")},
+        evict = {@CacheEvict(cacheNames = "bookmarkedJobs", key = "#resumeUuid")})
+    public JobDto addTailoredResume(String resumeUuid, String jobUuid, boolean addBookmark) {
         Resume resume = getResumeByUuid(resumeUuid);
         Job job = getJobByUuid(jobUuid);
 
@@ -181,6 +212,9 @@ public class MatchingService {
         if (addBookmark) {
             bookmarkJobAsync(resumeUuid, jobUuid, resume, job);
         }
+
+        // added return type to populate the result that would be used by @Cacheable("tailoredJob")
+        return modelMapper.map(job, JobDto.class);
     }
 
     private void bookmarkJobAsync(String resumeUuid, String jobUuid, Resume resume, Job job) {
@@ -219,9 +253,10 @@ public class MatchingService {
         return tailoredResume;
     }
 
-    public Optional<JobDto> getResumeTailoredJob(String resumeUuid) {
+    @Cacheable(cacheNames = "tailoredJob")
+    public JobDto getResumeTailoredJob(String resumeUuid) {
         return tailoredResumeRepository.findByResumeUuid(resumeUuid).map(tailoredResume ->
-            modelMapper.map(tailoredResume.getTargetJob(), JobDto.class));
+            modelMapper.map(tailoredResume.getTargetJob(), JobDto.class)).orElse(null);
     }
 
     public Collection<ResumeDto> getTailoredResumesByJob(String jobUuid) {
@@ -245,19 +280,23 @@ public class MatchingService {
     }
 
     @Transactional
-    public void bookmarkJob(String resumeUuid, String jobUuid) {
+    @CachePut(cacheNames = "bookmarkedJobs", key = "#resumeUuid")
+    public Collection<JobDto> bookmarkJob(String resumeUuid, String jobUuid) {
         Resume resume = getResumeByUuid(resumeUuid);
         Job job = getJobByUuid(jobUuid);
 
-        bookmarkJob(resumeUuid, jobUuid, resume, job);
+        Collection<Job> bookmarkJobs = bookmarkJob(resumeUuid, jobUuid, resume, job);
+        return bookmarkJobs.stream()
+            .map(bookmarkedJob -> modelMapper.map(bookmarkedJob, JobDto.class)).collect(Collectors.toList());
     }
 
-    private void bookmarkJob(String resumeUuid, String jobUuid, Resume resume, Job job) {
+    private Collection<Job> bookmarkJob(String resumeUuid, String jobUuid, Resume resume, Job job) {
         BookmarkedResume bookmarkedResume = buildBookmarkedResume(resumeUuid, job);
         bookmarkedResumeRepository.save(bookmarkedResume);
 
         BookmarkedJob bookmarkedJob = buildBookmarkedJob(jobUuid, resume);
         bookmarkedJobRepository.save(bookmarkedJob);
+        return bookmarkedResume.getBookmarkedJobs();
     }
 
     private BookmarkedResume buildBookmarkedResume(String resumeUuid, Job job) {
@@ -283,6 +322,38 @@ public class MatchingService {
         resumesSet.add(resume);
         bookmarkedJob.setBookmarkedResumes(resumesSet);
         return bookmarkedJob;
+    }
+
+    @Cacheable("bookmarkedJobs")
+    public Collection<JobDto> getResumeBookmarkedJobs(String resumeUuid) {
+        BookmarkedResume bookmarkedResume = bookmarkedResumeRepository.findByResumeUuid(resumeUuid).orElse(
+            BookmarkedResume.builder().bookmarkedJobs(Lists.newArrayList()).build()
+        );
+        return bookmarkedResume.getBookmarkedJobs().stream().map(job -> modelMapper.map(job, JobDto.class))
+            .collect(Collectors.toList());
+    }
+
+    public Collection<JobDto> getResumeBookmarkedJobs(String resumeUuid, int offset, int limit) {
+        Collection<JobDto> bookmarkedJobs = null;
+        Cache bookmarkedJobsCache = cacheManager.getCache("bookmarkedJobs");
+        Cache.ValueWrapper valueWrapper = bookmarkedJobsCache.get(resumeUuid);
+        if (Objects.nonNull(valueWrapper)) {
+            bookmarkedJobs = (Collection<JobDto>) valueWrapper.get();
+        }
+        if (Objects.nonNull(bookmarkedJobs)) {
+            return bookmarkedJobs.stream().skip(offset).limit(limit).collect(Collectors.toList());
+        } else {
+            LogEntry auditLog = LogEntry.builder()
+                .authorization(AuthContext.getAuthz())
+                .currentUserId(AuthContext.getUserId())
+                .targetType("bookmarkedJobs caching")
+                .targetId(resumeUuid)
+                .updatedContents("Cache missed")
+                .build();
+            logger.info("get resume bookmarked jobs", auditLog);
+            return bookmarkedResumeRepository.findBookmarkedJobs(resumeUuid, offset, limit).stream().map(job ->
+                modelMapper.map(job, JobDto.class)).collect(Collectors.toList());
+        }
     }
 
     @Transactional
@@ -324,25 +395,6 @@ public class MatchingService {
         return visitedJob;
     }
 
-    public Collection<JobDto> getResumeBookmarkedJobs(String resumeUuid) {
-        BookmarkedResume bookmarkedResume = bookmarkedResumeRepository.findByResumeUuid(resumeUuid).orElse(
-            BookmarkedResume.builder().bookmarkedJobs(Lists.newArrayList()).build()
-        );
-        return bookmarkedResume.getBookmarkedJobs().stream().map(job -> modelMapper.map(job, JobDto.class))
-            .collect(Collectors.toList());
-    }
-
-    public Collection<JobDto> getResumeBookmarkedJobs(String resumeUuid, int offset, int limit) {
-        return bookmarkedResumeRepository.findBookmarkedJobs(resumeUuid, offset, limit).stream().map(job ->
-            modelMapper.map(job, JobDto.class)).collect(Collectors.toList());
-    }
-
-    public long countResumeBookmarkedJobs(String resumeUuid) {
-        return bookmarkedResumeRepository.findByResumeUuid(resumeUuid)
-            .map(bookmarkedResume -> bookmarkedResume.getBookmarkedJobs().size())
-            .orElse(0);
-    }
-
     public Collection<ResumeDto> getResumesBookmarkedByJob(String jobUuid) {
         BookmarkedJob bookmarkedJob = bookmarkedJobRepository.findByJobUuid(jobUuid).orElse(
             BookmarkedJob.builder().bookmarkedResumes(Lists.newArrayList()).build());
@@ -358,6 +410,12 @@ public class MatchingService {
     public long countBookmarkedResumesByJob(String jobUuid) {
         return bookmarkedJobRepository.findByJobUuid(jobUuid)
             .map(bookmarkedJob -> bookmarkedJob.getBookmarkedResumes().size())
+            .orElse(0);
+    }
+
+    public long countResumeBookmarkedJobs(String resumeUuid) {
+        return bookmarkedResumeRepository.findByResumeUuid(resumeUuid)
+            .map(bookmarkedResume -> bookmarkedResume.getBookmarkedJobs().size())
             .orElse(0);
     }
 
@@ -397,14 +455,34 @@ public class MatchingService {
             .orElse(0);
     }
 
-    public Collection<JobDto> searchJobs(String country, String city, String term) {
-        return jobRepository.searchJobs(country, city, term).stream().map(job ->
-            modelMapper.map(job, JobDto.class)).collect(Collectors.toList());
+    @Cacheable("searchJobs")
+    public Collection<JobDto> searchJobs(SearchJobDto searchJobDto) {
+        return jobRepository.searchJobs(searchJobDto.getCountry(), searchJobDto.getCity(), searchJobDto.getTerm())
+            .stream().map(job -> modelMapper.map(job, JobDto.class)).collect(Collectors.toList());
     }
 
-    public Collection<JobDto> searchJobs(String country, String city, String term, int page, int pageSize) {
-        return jobRepository.searchJobs(country, city, term, page, pageSize).stream().map(job ->
-            modelMapper.map(job, JobDto.class)).collect(Collectors.toList());
+    public Collection<JobDto> searchJobs(SearchJobDto searchJobDto, int page, int pageSize) {
+        Collection<JobDto> searchedJobs = null;
+        Cache searchJobsCache = cacheManager.getCache("searchJobs");
+        Cache.ValueWrapper valueWrapper = searchJobsCache.get(searchJobDto);
+        if (Objects.nonNull(valueWrapper)) {
+            searchedJobs = (Collection<JobDto>) valueWrapper.get();
+        }
+        if (Objects.nonNull(searchedJobs)) {
+            return searchedJobs.stream().skip(page).limit(pageSize).collect(Collectors.toList());
+        } else {
+            LogEntry auditLog = LogEntry.builder()
+                .authorization(AuthContext.getAuthz())
+                .currentUserId(AuthContext.getUserId())
+                .targetType("searchJobs caching")
+                .updatedContents("Cache missed")
+                .build();
+            logger.info("Search jobs", auditLog);
+
+            return jobRepository.searchJobs(searchJobDto.getCountry(), searchJobDto.getCity(), searchJobDto.getTerm(),
+                page, pageSize).stream().map(job ->
+                modelMapper.map(job, JobDto.class)).collect(Collectors.toList());
+        }
     }
 
     public long countJobsMatchedByTerm(String country, String city, String term) {
@@ -419,6 +497,7 @@ public class MatchingService {
         try (InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream("score/scores.properties")) {
             properties.load(new InputStreamReader(in, "UTF-8"));
         } catch (IOException e) {
+            serviceHelper.handleErrorAndThrowException(logger, e, "Failed to get resume job score.");
             throw new RuntimeException(e);
         }
 

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import java.util.Collection;
-import java.util.Optional;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/v1/matching")
@@ -137,9 +137,9 @@ public class MatchingController {
     })
     @GetMapping("/jobs/tailored")
     public GenericJobResponse getTailoredJob(@RequestParam String resumeUuid) {
-        Optional<JobDto> jobDtoOptional = matchingService.getResumeTailoredJob(resumeUuid);
-        if (jobDtoOptional.isPresent()) {
-            return new GenericJobResponse(jobDtoOptional.get());
+        JobDto tailoredJob = matchingService.getResumeTailoredJob(resumeUuid);
+        if (Objects.nonNull(tailoredJob)) {
+            return new GenericJobResponse(tailoredJob);
         } else {
             GenericJobResponse response = new GenericJobResponse();
             response.setMessage("No tailored job with resume " + resumeUuid);
@@ -338,7 +338,7 @@ public class MatchingController {
         @RequestParam String city,
         @RequestParam String term) {
 
-        Collection<JobDto> jobs = matchingService.searchJobs(country, city, term);
+        Collection<JobDto> jobs = matchingService.searchJobs(buildSearchJobDto(country, city, term));
         return new JobListResponse(new JobList(jobs));
     }
 
@@ -356,7 +356,7 @@ public class MatchingController {
         @RequestParam @Min(0) int page,
         @RequestParam @Min(1) int pageSize) {
 
-        Collection<JobDto> jobs = matchingService.searchJobs(country, city, term, page, pageSize);
+        Collection<JobDto> jobs = matchingService.searchJobs(buildSearchJobDto(country, city, term), page, pageSize);
         long total = matchingService.countJobsMatchedByTerm(country, city, term);
         return new JobListResponse(
             JobListWithPaging.builder().jobs(jobs).offset(page).limit(pageSize).total(total).build());
@@ -373,5 +373,13 @@ public class MatchingController {
             @RequestParam String jobUuid, @RequestParam String resumeUuid) {
         Collection<ResumeJobScoreDto> resumeJobScores = matchingService.getResumeJobScore(jobUuid, resumeUuid);
         return new ResumeJobScoreResponse(resumeJobScores);
+    }
+
+    private SearchJobDto buildSearchJobDto(String country, String city, String term) {
+        return SearchJobDto.builder()
+            .country(country)
+            .city(city)
+            .term(term)
+            .build();
     }
 }

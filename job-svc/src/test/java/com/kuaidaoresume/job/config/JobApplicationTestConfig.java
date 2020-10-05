@@ -4,6 +4,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.boot.test.context.TestConfiguration;
 
 @TestConfiguration
-@Import(value = {AppConfig.class})
+@Import(value = {AppConfig.class, CacheConfig.class})
 public class JobApplicationTestConfig {
 }

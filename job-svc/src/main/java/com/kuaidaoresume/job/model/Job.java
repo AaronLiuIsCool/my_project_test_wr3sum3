@@ -63,10 +63,10 @@ public class Job {
     private String jobPostIdentifier;
     @Column(name = "job_description", nullable = true, updatable = false)
     private String jobDescription;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY) //keep location when deleting job
     @JoinColumn(name = "location_id", referencedColumnName="id")
     private Location location;
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinTable(
             name = "job_has_required_major",
             joinColumns = { @JoinColumn(name = "job_id", referencedColumnName="id") },

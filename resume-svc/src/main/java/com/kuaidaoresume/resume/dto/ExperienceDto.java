@@ -27,7 +27,6 @@ public class ExperienceDto {
     private String country;
     @NotNull
     private String startDate;
-    @NotNull
     private String endDate;
     @NotNull
     private String description;

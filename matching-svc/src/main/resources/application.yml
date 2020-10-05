@@ -19,3 +19,6 @@ kuaidaoresume:
   job-service-endpoint: ${JOB_SERVICE_ENDPOINT:http://job-service:8080}
   resume-service-endpoint: ${RESUME_SERVICE_ENDPOINT:http://resume-service:8080}
   intercom-access-token: ${INTERCOM_ACCESS_TOKEN}
+  matching:
+    caching:
+      maximum-size: ${MATCHING_CACHING_MAXIMUM_SIZE:100000}
