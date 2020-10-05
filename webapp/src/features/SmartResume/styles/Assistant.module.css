@@ -45,6 +45,7 @@
   100% {
     left: -80px;
     opacity: 0;
+    z-index: -1;
   }
 }
 
@@ -52,6 +53,7 @@
   100% {
     left: -80px;
     opacity: 0;
+    z-index: -1;
   }
 }
 
