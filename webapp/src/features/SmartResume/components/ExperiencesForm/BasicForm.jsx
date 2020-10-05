@@ -35,6 +35,7 @@ const fields = [
     'linkedin',
     'weblink'
 ];
+
 const BasicForm = ({ data, photoReference, completed, messages }) => {
 	const resumeId = useSelector(selectId);
 	const [validated, setValidated] = useState(false);

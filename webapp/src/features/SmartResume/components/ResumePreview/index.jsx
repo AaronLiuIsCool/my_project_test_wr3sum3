@@ -43,7 +43,6 @@ const ResumePreview = () => {
 	useEffect(() => {
 		setResumeData(resume.resumeBuilder.data.base64);
 	}, [resume]);
-
 	const toggleThemeColorModal = () => {
         setIsThemeColorModalOpen(!isThemeColorModalOpen)
     }
