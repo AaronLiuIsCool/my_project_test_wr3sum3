@@ -172,6 +172,7 @@ export function adaptVolunteers(volunteers = []) {
 export function resumeAdaptor(resume) {
     return {
         id: resume.id,
+        photoReference: resume.photoReference,
         basic: adaptBasics(resume.basicInfo),
         education: adaptEducations(resume.educations),
         work: adaptWorks(resume.workExperiences),

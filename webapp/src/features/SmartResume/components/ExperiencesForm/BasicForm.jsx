@@ -35,7 +35,7 @@ const fields = [
     'linkedin',
     'weblink'
 ];
-const BasicForm = ({ data, completed, messages }) => {
+const BasicForm = ({ data, photoReference, completed, messages }) => {
 	const resumeId = useSelector(selectId);
 	const [validated, setValidated] = useState(false);
 	const [status, setStatus] = useState({
@@ -48,7 +48,6 @@ const BasicForm = ({ data, completed, messages }) => {
 		weblink: {},
 	});
 	const dispatch = useDispatch();
-
 
 	const save = async () => {
 		previewResume(messages.RPreview);
@@ -142,7 +141,7 @@ const BasicForm = ({ data, completed, messages }) => {
 	return (
 		<Form validated={validated} onSubmit={handleSubmit}>
 			<Row>
-				<AvatarUpload />
+				<AvatarUpload photoReference={photoReference}/>
 			</Row>
 			<Row>
 				<Col>

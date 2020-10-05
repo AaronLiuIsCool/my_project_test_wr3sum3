@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+
 import { useI8n } from 'shell/i18n';
 
 import AvatarEdit from 'components/AvatarEdit';
@@ -8,11 +9,33 @@ import PhotoUploadIcon from '../../assets/photoupload.svg';
 import CloseHoverIcon from '../../assets/close_hover.svg';
 import CloseRegularIcon from '../../assets/close_regular.svg';
 
-const AvatarUpload = () => {
+const AvatarUpload = ({photoReference}) => {
 	const messages = useI8n();
 	const [modalOpen, setModalOpen] = useState(false);
 	const [avatar, setAvatar] = useState(null);
 
+	function toDataUrl(url, callback) {
+		console.log("test", url)
+    var xhr = new XMLHttpRequest();
+    xhr.onload = function() {
+        var reader = new FileReader();
+        reader.onloadend = function() {
+            callback(reader.result);
+        }
+        reader.readAsDataURL(xhr.response);
+    };
+    xhr.open('GET', url);
+    xhr.responseType = 'blob';
+    xhr.send();
+}
+
+	useEffect(() => {
+		// // test 
+		// photoReference = "https://kuaidao-img.s3.ca-central-1.amazonaws.com/todo_get_current_resume_id_1601231456864.png";
+		if (photoReference){
+		  toDataUrl(photoReference, setAvatar);
+		}
+	}, [photoReference]);
 	
 	return (
 		<div className={styles.avatarContainer}>

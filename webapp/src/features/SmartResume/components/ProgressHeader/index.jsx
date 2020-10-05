@@ -36,23 +36,25 @@ const ProgressHeader = ({ setScoreVisible, scoreVisible }) => {
 	}
 
 	useEffect(() => {
-		getResumeScore(resumeId).then((resumeScoreData) => {
-			const percentage = Math.round(resumeScoreData.totalScore / MAXSCORE * 100);
-			setScorePercentage(percentage)
-			if (percentage < 55) {
-				setScoreRating("score_D");
-			} else if (percentage < 70) {
-				setScoreRating("score_C");
-			} else if (percentage < 85) {
-				setScoreRating("score_B");
-			} else if (percentage <= 100) {
-				setScoreRating("score_A");
-			} else {
-				setScorePercentage(0);
-				setScoreRating("error");
-				logger.error("简历打分异常");
-			}
-		});
+		if (resumeId){
+			getResumeScore(resumeId).then((resumeScoreData) => {
+				const percentage = Math.round(resumeScoreData.totalScore / MAXSCORE * 100);
+				setScorePercentage(percentage)
+				if (percentage < 55) {
+					setScoreRating("score_D");
+				} else if (percentage < 70) {
+					setScoreRating("score_C");
+				} else if (percentage < 85) {
+					setScoreRating("score_B");
+				} else if (percentage <= 100) {
+					setScoreRating("score_A");
+				} else {
+					setScorePercentage(0);
+					setScoreRating("error");
+					logger.error("简历打分异常");
+				}
+			});
+		}
 	}, [resumeId]); // eslint-disable-line
 
 
