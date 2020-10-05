@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
 
 import { Button, Form, InputGroup } from 'react-bootstrap';
 import { Typeahead } from 'react-bootstrap-typeahead';
 import WrittenTipCard from './WrittenTipCard';
 import { ReactComponent as SearchIcon } from '../../assets/search.svg';
 
-import { actions } from '../../slicer';
 import ResumeServices from 'shell/services/ResumeServices';
 import JobServices from 'shell/services/JobsServices'
 import styles from '../../styles/Assistant.module.css';
@@ -35,7 +33,6 @@ const WrittenAssistant = ({ trigger, context }) => {
     const [industries, setIndustries] = useState([]);
     const [titles, setTitles] = useState([]);
     const [suggestions, setSuggestions] = useState([]);
-    const dispatch = useDispatch();
 
     const [industry, setIndustry] = useState('');
     const [title, setTitle] = useState('');
@@ -93,12 +90,13 @@ const WrittenAssistant = ({ trigger, context }) => {
                 });
                 break;
             case 'volunteer':
-                dispatch(
-                    actions.appendVolunteerDescription({
-                        index: context.index,
-                        value: tip
-                    })
-                );
+                notifyEditor('volunteer', context.index, {
+                    data: {
+                        offsets: tip.offsets,
+                        text: tip.text
+                    },
+                    type: 'highlight-keyword'
+                });
                 break;
             default:
                 return;
