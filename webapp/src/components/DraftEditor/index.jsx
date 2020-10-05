@@ -57,8 +57,9 @@ const DraftEditor = ({ texts, handleChangeCallback, label, eventName, isInvalid,
     const didMount = useRef(false);
 
     useEffect(() => {
-        if (!didMount.current && texts) {
-            const lines = texts.split('\n');
+        if (!didMount.current) {
+            const content = texts ? texts : '';
+            const lines = content.split('\n');
             const rawContentState = {
                 entityMap: {},
                 blocks: lines.map((line) => ({
