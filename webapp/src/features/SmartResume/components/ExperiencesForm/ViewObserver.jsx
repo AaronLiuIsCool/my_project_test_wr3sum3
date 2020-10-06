@@ -10,7 +10,7 @@ const wrapChildrenWithInView = (children, makeChangeHandler) => (
         const handleChange = makeChangeHandler(index);
         return (
             <InView as="div" key={`inView-${index}`}
-                threshold={0.9} onChange={handleChange}>
+                threshold={0.50} onChange={handleChange}>
                 {child}
             </InView>
         );
