@@ -29,8 +29,8 @@ const AvatarUpload = ({photoReference}) => {
 }
 
 	useEffect(() => {
-		if (photoReference){
-		  toDataUrl(photoReference, setAvatar);
+		if (photoReference.url){
+		  toDataUrl(photoReference.url, setAvatar);
 		}
 	}, [photoReference]);
 	
