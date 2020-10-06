@@ -34,7 +34,7 @@ let primaryColor = Constants.c_blue;
 const adjustToWholePageHelper = () => {
   // 如果简历没有preview 则无法整页
   if (data.length === 0) {
-    return ;
+    return;
   }
   // 如果data 最后一个元素是pageBreak, 则移除最后一个元素
   if (data[data.length - 1].type === "pageBreak") {
@@ -110,7 +110,7 @@ export const prepareData = () => {
   }
 
   // reset scaled variables
-  headingLineHeight = scaleFactor * headingLineHeight;
+  // headingLineHeight = scaleFactor * headingLineHeight;
 
   // note change p font since this will break line wrap
   pFontSize = scaleFactor * Constants.pFontSize;
@@ -476,12 +476,12 @@ const _perpareVolunteer = (volunteerData) => {
 
   volunteerData.forEach((volunteer) => {
     _updateCurrentYPos(h1Padding * 0.5);
-    if (volunteer.volunteerName) {
+    if (volunteer.volunteerCompanyName) {
       // draw volunteer detail title line
       data.push({
         type: "h2",
         y: currentYPos,
-        content: volunteer.volunteerName,
+        content: volunteer.volunteerCompanyName,
         page: currentPage,
       });
     }
@@ -491,8 +491,8 @@ const _perpareVolunteer = (volunteerData) => {
       doc.setFontSize(Constants.h2FontSize);
       currentXPos =
         Constants.startX +
-        (volunteer.volunteerName
-          ? doc.getTextWidth(volunteer.volunteerName) +
+        (volunteer.volunteerCompanyName
+          ? doc.getTextWidth(volunteer.volunteerCompanyName) +
           Constants.defaultPaddingRight
           : 0);
       data.push({

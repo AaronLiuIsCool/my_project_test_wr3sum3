@@ -100,7 +100,7 @@ const ResumePreview = () => {
 				</div>
 			</div>
 			{isResumeTipsModalOpen && <ResumeTips />}
-			{isThemeColorModalOpen && <ResumeThemeColorPicker setIsThemeColorModalOpen={setIsThemeColorModalOpen} />}
+			{isThemeColorModalOpen && <ResumeThemeColorPicker setIsThemeColorModalOpen={setIsThemeColorModalOpen} messages={messages}/>}
 		</div>
 	);
 };
