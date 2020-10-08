@@ -175,7 +175,7 @@ const _perpareDataHeader = (basicData, educationData) => {
     doc.getTextWidth(basicData.nameCn) + Constants.defaultPaddingRight * 2;
   data.push(title);
 
-  const schoolName = educationData.schoolName ? educationData.schoolName : "";
+  const schoolName = educationData[0]?.schoolName || "";
   const school = {
     type: "h2",
     y: startY,
@@ -194,8 +194,8 @@ const _perpareDataHeader = (basicData, educationData) => {
     type: "h3",
     y: startY,
     x: currentXPos,
-    content: `${educationData.major ? educationData.major : ""
-      } ${dateRangeBuilder(educationData.startDate, educationData.graduateDate)}`,
+    content: `${educationData[0].major || ""
+      } ${dateRangeBuilder(educationData[0]?.startDate, educationData[0]?.graduateDate)}`,
     page: currentPage,
   };
   // reset currentXPos

@@ -2,12 +2,12 @@ import { createSlice } from "@reduxjs/toolkit";
 
 import assistant from './assistant';
 import photoReference from "./photoReference";
-import basic from "./basic";
-import education from "./education";
-import work from "./work";
-import project from "./project";
-import volunteer from "./volunteer";
-import certificate from "./certificate";
+import basic, {validateBasic} from "./basic";
+import education, {validateEducation} from "./education";
+import work, {validateWork} from "./work";
+import project, {validateProject} from "./project";
+import volunteer, {validateVolunteer} from "./volunteer";
+import certificate, {validateCertificate} from "./certificate";
 import ratings from "./ratings";
 import resumeBuilder from "./resumeBuilder";
 import { resumeAdaptor } from "../utils/slicerAdaptor";
@@ -61,6 +61,20 @@ export const { actions } = resumeSlice;
 export const selectId = ({ resume }) => resume.id;
 export const selectStep = ({ resume }) => resume.stepIndex;
 export const selectResume = ({ resume }) => resume;
+export const selectValidatedResume = ({ resume }) => {
+  const {photoReference, basic, education, work,
+    project, volunteer, certificate} = resume;
+
+  return {
+    photoReference,
+    basic: validateBasic(basic) ? basic : undefined,
+    education: {...education, data: education.data.filter(validateEducation)},
+    work: {...work, data: work.data.filter(validateWork)},
+    project: {...project, data: project.data.filter(validateProject)},
+    volunteer: {...volunteer, data: volunteer.data.filter(validateVolunteer)},
+    certificate: {...certificate, data: certificate.data.filter(validateCertificate)},
+  };
+};
 
 export const assistantSelectors = assistant.selectors;
 export const photoReferenceSelectors = photoReference.selectors;
