@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class FaviconFilter extends OncePerRequestFilter {
 
-  static final String FAVICON_PATH = "/favicon.ico";
+  static final String FAVICON_PATH = "/favicon.png";
 
   private final byte[] faviconFile;
 

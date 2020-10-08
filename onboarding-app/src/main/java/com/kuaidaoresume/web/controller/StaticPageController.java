@@ -18,4 +18,10 @@ public class StaticPageController {
         model.addAttribute(Constant.ATTRIBUTE_NAME_PAGE, pageFactory.buildSignupPage());
         return Constant.VIEW_SIGNUP;
     }
+
+    @RequestMapping(value="")
+    public String getHome(Model model) {
+        model.addAttribute(Constant.ATTRIBUTE_NAME_PAGE, pageFactory.buildHomePage());
+        return Constant.VIEW_HOME;
+    }
 }
