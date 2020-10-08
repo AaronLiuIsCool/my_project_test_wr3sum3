@@ -16,7 +16,7 @@ public class AssetLoader {
   private byte[] faviconBytes;
 
   static final String IMAGE_FILE_PATH = "static/assets/images/kuaidaoresume_coffee.png";
-  static final String FAVICON_FILE_PATH = "static/assets/images/favicon.ico";
+  static final String FAVICON_FILE_PATH = "static/assets/images/favicon.png";
 
   public String getImageBase64() {
     return this.imageBase64;

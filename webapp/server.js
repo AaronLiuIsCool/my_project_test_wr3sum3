@@ -8,7 +8,7 @@ const helmet = require("helmet");
 const path = require("path");
 
 const translateRouter = require('./server/router/translate');
-const resumeSDKRouter = require("./router/resumeSDK");
+const resumeSDKRouter = require("./server/router/resumeSDK");
 const imageUploadRoutes = require("./server/router/imageUpload");
 const { authCheck } = require('./server/auth');
 

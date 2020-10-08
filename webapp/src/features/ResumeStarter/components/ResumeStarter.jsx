@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
-import axios from 'axios';
 import { useI8n } from 'shell/i18n';
 import { useHistory } from 'react-router';
-
+import AppServices from 'shell/services/AppServices';
 import { useDispatch } from 'react-redux';
 import { actions } from 'features/SmartResume/slicer';
 import { previewResume } from 'features/SmartResume/components/ResumePreview/resumeBuilder';
 
 import styles from '../styles/ResumeStarter.module.css';
-
+const appServices = new AppServices();
 
 const ResumerStarter = () => {
 	const dispatch = useDispatch();
@@ -69,24 +68,17 @@ const ResumerStarter = () => {
 		setSelectedFile(e.target.files);
 	};
 
-	
-
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		e.stopPropagation();
 		const data = new FormData();
 		data.append('file', selectedFile[0]);
-		await axios
-			.post('http://localhost:80/v1/resumeSDK/upload', data)
-			.then((res) => {
-				updateInfo(res.data.result);
-			})
-			.then((res) => {
-				previewResume(messages.RPreview);
-			})
-			.catch((err) => {
-				console.log('upload fail', err);
-			});
+
+		const response = await appServices.resumeSDKUpload(data);
+		if (response) {
+				await updateInfo(response.data.result);
+				previewResume(messages.RPreview)
+		}
 	};
 
 	return (

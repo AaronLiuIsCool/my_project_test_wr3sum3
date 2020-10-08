@@ -14,7 +14,15 @@ public class PageFactory {
     @Autowired
     AppProps appProps;
 
-    // lombok inheritance workaround, details here: https://www.baeldung.com/lombok-builder-inheritance
+    public Page buildHomePage() {
+        return Page.builder()
+                .title("Kuaidaoresume - Change the way, you think about employment.")
+                .description("Kuaidaoresume Home Page")
+                .templateName("home")
+                .version(kuaidaoresumeProps.getDeployEnv())
+                .build();
+    }
+
     public LoginPage buildLoginPage() {
         return LoginPage.childBuilder()
                 .title("Kuaidaoresume Log in")

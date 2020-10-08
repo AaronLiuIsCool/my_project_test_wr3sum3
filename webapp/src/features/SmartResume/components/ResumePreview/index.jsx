@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useI8n } from 'shell/i18n';
 
-import { selectResume, resumeBuilderSelectors } from './../../slicer/';
+import { selectResume, selectValidatedResume, resumeBuilderSelectors } from './../../slicer/';
 import { selectUserId } from 'features/App/slicer';
 
 import { getLogger } from 'shell/logger';
@@ -32,6 +32,7 @@ const ResumePreview = () => {
 
 	const userId = useSelector(selectUserId);
 	const resume = useSelector(selectResume);
+	const validatedResume = useSelector(selectValidatedResume);
 	const resumeBuilder = useSelector(resumeBuilderSelectors.selectresumeBuilder);
 	const color = resumeBuilder.data.color;
 
@@ -49,7 +50,7 @@ const ResumePreview = () => {
     
 	const handleTranslate = async () => {
 		try {
-			const parsedResume = flatten(resumeAdaptor(resume));
+			const parsedResume = flatten(resumeAdaptor(validatedResume));
 			let response = await appServices.translate(Object.values(parsedResume));
 			const translations = await response.json();
 			Object.keys(parsedResume).forEach((key, index) => {
@@ -100,7 +101,7 @@ const ResumePreview = () => {
 				</div>
 			</div>
 			{isResumeTipsModalOpen && <ResumeTips />}
-			{isThemeColorModalOpen && <ResumeThemeColorPicker setIsThemeColorModalOpen={setIsThemeColorModalOpen} />}
+			{isThemeColorModalOpen && <ResumeThemeColorPicker setIsThemeColorModalOpen={setIsThemeColorModalOpen} messages={messages}/>}
 		</div>
 	);
 };

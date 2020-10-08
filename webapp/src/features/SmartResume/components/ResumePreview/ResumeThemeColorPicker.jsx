@@ -1,11 +1,11 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { actions } from '../../slicer';
-
+import { previewResume } from './resumeBuilder';
 import styles from '../../styles/ResumePreview.module.css';
 
 
-const ResumeThemeColorPicker = ({ setIsThemeColorModalOpen }) => {
+const ResumeThemeColorPicker = ({ setIsThemeColorModalOpen, messages }) => {
 	const dispatch = useDispatch();
 	const COLOR_BLUE = '#3e89ec';
 	const COLOR_ORANGE = '#ec663e';
@@ -16,10 +16,11 @@ const ResumeThemeColorPicker = ({ setIsThemeColorModalOpen }) => {
 	const handleColorPicked = (color) => {
 		dispatch(actions.updateColor({ color }));
 		setIsThemeColorModalOpen(false);
+		previewResume(messages.RPreview);
 	};
 
 	return (
-		<div className={styles.colorPickercontainer}>
+		<div className={styles.colorPickerContainer}>
 			{colorList.map((color) => (
 				<span key={color} className={styles.colorCircle} style={{ backgroundColor: color }} onClick={() => handleColorPicked(color)}></span>
 			))}

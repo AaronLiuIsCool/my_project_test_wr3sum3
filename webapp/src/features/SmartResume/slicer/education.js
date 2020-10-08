@@ -32,6 +32,7 @@ export function validateEducationEntry(name, value) {
 }
 
 export const education = {
+    completed: false,
     id: undefined,
     schoolName: "",
     gpa: "",

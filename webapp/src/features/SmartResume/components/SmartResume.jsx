@@ -58,8 +58,11 @@ const SmartResume = ({ useObserver = false, resumeId }) => {
     const messages = language === 'zh' ? zh : en;
 
     useEffect(() => {
-        getOrCreateResume(dispatch, userId, resumeId, language, history);
-		previewResume(messages.RPreview);
+        const updatePreview = async () => {
+            await getOrCreateResume(dispatch, userId, resumeId, language, history);
+            previewResume(messages.RPreview);
+        }
+        updatePreview();
     }, []); // eslint-disable-line
 
     return (
