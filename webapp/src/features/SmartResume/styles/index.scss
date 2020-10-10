@@ -240,3 +240,11 @@
     margin:20px auto;
   }
 }
+.App {
+    nav.navbar {
+        display: none;
+    }
+    .features.smart-resume {
+        padding-top: 0;
+    }
+}
