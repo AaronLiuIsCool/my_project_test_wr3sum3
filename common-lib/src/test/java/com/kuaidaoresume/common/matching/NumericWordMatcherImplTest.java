@@ -43,6 +43,18 @@ public class NumericWordMatcherImplTest {
     }
 
     @Test
+    public void whenContainsWithDigitsChinese_thenReturnTrue() {
+        String text = "我们去年的收入是$123456789元，击败了99%的竞争对手。年增长率是200%。";
+        assertTrue(numericWordMatcherImpl.contains(text));
+    }
+
+    @Test
+    public void test_getMatchesWithDigitsChinese() {
+        String text = "我们去年的收入是$123456789元，击败了99%的竞争对手。年增长率是200%。";
+        assertThat(numericWordMatcherImpl.getMatches(text), is(Sets.newHashSet("$123456789", "99%", "200%")));
+    }
+
+    @Test
     public void whenContainsWithDigitsAndDecimal_thenReturnTrue() {
         String text = "I made 99.88 dollars last year";
         assertTrue(numericWordMatcherImpl.contains(text));
@@ -51,6 +63,18 @@ public class NumericWordMatcherImplTest {
     @Test
     public void test_getMatchesWithDigitsAndDecimal() {
         String text = "I made 99.88 dollars last year";
+        assertThat(numericWordMatcherImpl.getMatches(text), is(Sets.newHashSet("99.88")));
+    }
+
+    @Test
+    public void whenContainsWithDigitsAndDecimalChinese_thenReturnTrue() {
+        String text = "去年我赚了99.88元";
+        assertTrue(numericWordMatcherImpl.contains(text));
+    }
+
+    @Test
+    public void test_getMatchesWithDigitsAndDecimalChinese() {
+        String text = "去年我赚了99.88元。";
         assertThat(numericWordMatcherImpl.getMatches(text), is(Sets.newHashSet("99.88")));
     }
 
@@ -67,6 +91,18 @@ public class NumericWordMatcherImplTest {
     }
 
     @Test
+    public void whenContainsWithDigitsAndPercentageChinese_thenReturnTrue() {
+        String text = "我们的销售击败了99%的竞争对手";
+        assertTrue(numericWordMatcherImpl.contains(text));
+    }
+
+    @Test
+    public void test_getMatchesWithDigitsAndPercentageChinese() {
+        String text = "我们的销售击败了99%的竞争对手";
+        assertThat(numericWordMatcherImpl.getMatches(text), is(Sets.newHashSet("99%")));
+    }
+
+    @Test
     public void whenContainsWithDigitsAndDollarSign_thenReturnTrue() {
         String text = "I made $99 dollars last year";
         assertTrue(numericWordMatcherImpl.contains(text));
@@ -79,6 +115,18 @@ public class NumericWordMatcherImplTest {
     }
 
     @Test
+    public void whenContainsWithDigitsAndDollarSignChinese_thenReturnTrue() {
+        String text = "去年我赚了¥99元";
+        assertTrue(numericWordMatcherImpl.contains(text));
+    }
+
+    @Test
+    public void test_getMatchesWithDigitsAndDollarSignChinese() {
+        String text = "去年我赚了¥99元";
+        assertThat(numericWordMatcherImpl.getMatches(text), is(Sets.newHashSet("¥99")));
+    }
+
+    @Test
     public void whenContainsWithDigitsAndNegativeSign_thenReturnTrue() {
         String text = "I made -99 dollars last year";
         assertTrue(numericWordMatcherImpl.contains(text));
@@ -87,6 +135,18 @@ public class NumericWordMatcherImplTest {
     @Test
     public void test_getMatchesContainsWithDigitsAndNegativeSign() {
         String text = "I made -99 dollars last year";
+        assertThat(numericWordMatcherImpl.getMatches(text), is(Sets.newHashSet("-99")));
+    }
+
+    @Test
+    public void whenContainsWithDigitsAndNegativeSignChinese_thenReturnTrue() {
+        String text = "去年我赚了-99元";
+        assertTrue(numericWordMatcherImpl.contains(text));
+    }
+
+    @Test
+    public void test_getMatchesContainsWithDigitsAndNegativeSignChinese() {
+        String text = "去年我赚了-99元";
         assertThat(numericWordMatcherImpl.getMatches(text), is(Sets.newHashSet("-99")));
     }
 
@@ -103,6 +163,18 @@ public class NumericWordMatcherImplTest {
     }
 
     @Test
+    public void whenContainsWithDigitsAndPlusSignOnFrontChinese_thenReturnTrue() {
+        String text = "去年我赚了+99元";
+        assertTrue(numericWordMatcherImpl.contains(text));
+    }
+
+    @Test
+    public void test_getMatchesWithDigitsAndPlusSignOnFrontChinese() {
+        String text = "去年我赚了+99元";
+        assertThat(numericWordMatcherImpl.getMatches(text), is(Sets.newHashSet("+99")));
+    }
+
+    @Test
     public void whenContainsWithDigitsAndFollowByPlusSign_thenReturnTrue() {
         String text = "I made 12345678+ dollars last year";
         assertTrue(numericWordMatcherImpl.contains(text));
@@ -115,6 +187,18 @@ public class NumericWordMatcherImplTest {
     }
 
     @Test
+    public void whenContainsWithDigitsAndFollowByPlusSignChinese_thenReturnTrue() {
+        String text = "我去年赚了12345678+元";
+        assertTrue(numericWordMatcherImpl.contains(text));
+    }
+
+    @Test
+    public void test_getMatchesWithDigitsAndFollowByPlusSignChinese() {
+        String text = "我去年赚了12345678+元";
+        assertThat(numericWordMatcherImpl.getMatches(text), is(Sets.newHashSet("12345678+")));
+    }
+
+    @Test
     public void whenContainsWithDigitsFollowByPunctuation_thenReturnTrue() {
         String text = "My score is 99, and yours is 0.";
         assertTrue(numericWordMatcherImpl.contains(text));
@@ -123,6 +207,18 @@ public class NumericWordMatcherImplTest {
     @Test
     public void test_getMatchesWithDigitsFollowByPunctuation() {
         String text = "My score is 99, and yours is 0.";
+        assertThat(numericWordMatcherImpl.getMatches(text), is(Sets.newHashSet("99", "0")));
+    }
+
+    @Test
+    public void whenContainsWithDigitsFollowByPunctuationChinese_thenReturnTrue() {
+        String text = "我的分数是99，你的是0。";
+        assertTrue(numericWordMatcherImpl.contains(text));
+    }
+
+    @Test
+    public void test_getMatchesWithDigitsFollowByPunctuationChinese() {
+        String text = "我的分数是99，你的是0。";
         assertThat(numericWordMatcherImpl.getMatches(text), is(Sets.newHashSet("99", "0")));
     }
 
