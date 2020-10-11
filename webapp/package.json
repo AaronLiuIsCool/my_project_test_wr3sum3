@@ -13,6 +13,7 @@
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
+    "cross-env": "^7.0.2",
     "dotenv": "^8.2.0",
     "draft-js": "^0.11.7",
     "express": "^4.17.1",
@@ -49,6 +50,7 @@
   "scripts": {
     "serve": "nodemon server.js",
     "serve:dev": "PORT=3000 nodemon server.js",
+    "start:windows": "cross-env REACT_APP_ENV=UAT react-scripts start",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "build:ci": "CI=true react-scripts build",

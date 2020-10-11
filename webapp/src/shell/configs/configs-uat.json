@@ -17,5 +17,7 @@
 
   "services-auth-baseUrl": "whoami.uat.smartresume.careers",
 
-  "services-app-baseUrl": "app.uat.smartresume.careers"
+  "services-app-baseUrl": "app.uat.smartresume.careers",
+  
+  "services-matching-baseUrl": "matching.uat.smartresume.careers"
 }
