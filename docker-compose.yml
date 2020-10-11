@@ -45,6 +45,10 @@ services:
       - JOB_DATASOURCE_URL
       - JOB_DATASOURCE_USERNAME
       - JOB_DATASOURCE_PASSWORD
+      - JOB_CACHE_POLICY_MAXSIZE
+      - JOB_CACHE_POLICY_EVICTION
+      - JOB_SEARCH_CACHE_POLICY_MAXSIZE
+      - JOB_SEARCH_CACHE_POLICY_EVICTION
     networks:
       - internal_access
       - external_access # db access

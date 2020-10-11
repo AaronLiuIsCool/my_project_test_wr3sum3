@@ -36,4 +36,21 @@ export default class MatchingServices extends BaseServices {
             logger.error(err);
         }
     }
+    
+    async findBookMarkJobs(resumeId) {
+      try {
+          const res = await this.get(`v1/matching/jobs/bookmarked?resumeUuid=${resumeId}`);
+          return res;
+      } catch(err) {
+        logger.error(err);
+      }
+    }
+    async findTailorJobs(resumeId) {
+        try {
+            const res = await this.get(`v1/matching/jobs/tailored?resumeUuid=${resumeId}`);
+            return res;
+        } catch(err) {
+          logger.error(err);
+        }
+    }
 }

@@ -2,36 +2,62 @@
   width: 1000px;
   margin: 200px auto;
 }
+
+.title{
+  font-size: 30px;
+  text-align: center;
+  color: #333333;
+}
+
 .button {
   width: 490px;
   margin: 5px;
 }
-.uploadContainer {
-  margin-top: 50px;
-  padding: 30px;
-  width: 1000px;
-  height: auto;
+
+.optionWrapper{
+  display: flex;
+}
+
+.option{
+  width: 480px;
+  height: 349px;
+  margin:20px;
+  padding:80px;
   border-radius: 8px;
-  box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.1);
-  border: solid 1px #3e89ec;
-  text-align: center;
+  box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.1);
+  text-align:center;
 }
 
-.fileInput {
-  display: block;
-  width: 100%;
-  padding: 0.375rem 0.75rem;
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 1.5;
-  color: #495057;
-  background-color: #fff;
-  background-clip: padding-box;
-  border: 1px solid #ced4da;
-  border-radius: 0.25rem;
+.optionTitle{
+  font-size: 30px;
+  font-weight: bold;
+  color: #3e89ec;
 }
 
-.submitButton{
+.optionDescription{
+  font-size: 14px;
+  color: #bfc4d3;
+}
+
+.buttonWrapper{
+  display: flex;
+  justify-content: space-evenly;
+  padding: 30px;
+}
+
+.buttonWrapper .button{
+  width: 88px;
+}
+
+.uploadButton{
   margin-top:30px;
-  width: 100%;
+  width: 190px;
+  border-radius: 4px;
+  height: 42px;
+  border-radius: 4px;
+  background-color: #3e89ec;
+}
+
+.hidden{
+  display: none;
 }

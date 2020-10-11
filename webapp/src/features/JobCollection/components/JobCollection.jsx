@@ -1,57 +1,120 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useSelector } from 'react-redux';
 import { I8nContext } from 'shell/i18n';
-import { selectLanguage } from 'features/App/slicer';
+import { selectLanguage, selectUserId } from 'features/App/slicer';
 import zh from '../i18n/zh.json';
 import en from '../i18n/en.json';
-
-import './JobCollection.scss';
+import moment from 'moment';
 
 import JobCard from './JobCard';
 import { ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
+import AccountServices from 'shell/services/AccountServices';
+import MatchingServices from 'shell/services/MatchingServices';
+import { getLogger } from 'shell/logger';
 
-const DUMMY_DATA = [
-    {
-        id: 'ID1',
-        applied: false,
-        title: '金融客户经理',
-        company: '中国托业银行',
-        date: '2018/10月/30号',
-        location: '北京'
-    },
-    {
-        id: 'ID2',
-        applied: true,
-        title: '大堂经理',
-        company: '中国兴业银行',
-        date: '2019/10月/30号',
-        location: '上海'
-    },
-    {
-        id: 'ID3',
-        applied: false,
-        title: '客服经理',
-        company: '阿里巴巴',
-        date: '2020/10月/30号',
-        location: '杭州'
+import './JobCollection.scss';
+
+const accountServices = new AccountServices();
+const matchingServices = new MatchingServices();
+const JDBC_DATE_FORMAT = 'YYYY-MM-DD';
+const logger = getLogger('JOBCOLLECTION');
+
+// TODO: 这个可能会需要 因为可能一个有两个resume有同一个收藏的job
+// const removeDuplicates = (arr, key) => {
+//     const res = [];
+//     const hash = {}
+//     arr.forEach(item => {
+//         if(hash[item[key]] === undefined) {
+//             hash[item[key]] = true
+//             res.push(item)
+//         }
+//     })
+//     return res
+// }
+const formatLocation = (location) => {
+    return `${location.city} - ${location.country}`;
+};
+const getAllResumeIds = async (userId) => {
+    try {
+        const response = await accountServices.getAccountInfo(userId);
+        if (!response) {
+            logger.warn('No response from account service get');
+        }
+        const responseJson = await response.json();
+        if (responseJson.success) {
+            return responseJson.account.resumes.map(
+                (resume) => resume.resumeId
+            );
+        } else {
+            logger.error(response.message);
+            return [];
+        }
+    } catch (exception) {
+        logger.error(exception);
     }
-];
+};
+const getAllBookmarkJobs = async (resumeIds) => {
+    const bookmarkJobCalls = resumeIds.map(async (resumeId) => {
+        const response = await matchingServices.findBookMarkJobs(resumeId);
+        if (!response) {
+            logger.warn('No response from account service get');
+        }
+        const responseJson = await response.json();
+        return responseJson.jobList.jobs;
+    });
+    const results = (await Promise.all(bookmarkJobCalls)).reduce((acc, cur) => {
+        return acc.concat(cur);
+    }, []);
+    return results;
+};
 
+const getAllTailorJobs = async (resumeIds) => {
+    const tailorJobCalls = resumeIds.map(async (resumeId) => {
+        const response = await matchingServices.findTailorJobs(resumeId);
+        if (!response) {
+            logger.warn('No response from account service get');
+        }
+        const responseJson = await response.json();
+        return responseJson.jobDto === null ? [] : responseJson.jobDto;
+    });
+    const results = (await Promise.all(tailorJobCalls)).reduce((acc, cur) => {
+        return acc.concat(cur);
+    }, []);
+    return results;
+};
+const tailoredJobs = [];
+const bookmarkedJobs = [];
 const JobCollection = () => {
+    const userId = useSelector(selectUserId);
+
     const language = useSelector(selectLanguage);
     const messages = language === 'zh' ? zh : en;
 
-    const [jobsToBeDisplayed, setJobsToBeDisplayed] = useState(DUMMY_DATA);
+    const [jobsToBeDisplayed, setJobsToBeDisplayed] = useState([]);
 
-    const applyFilter = (applied) => {
-        if (applied) {
-            const res = jobsToBeDisplayed.filter((job) => job.applied === true);
-            setJobsToBeDisplayed(res);
+    const applyFilter = (bookmark) => {
+        if (bookmark) {
+            setJobsToBeDisplayed(bookmarkedJobs);
         } else {
-            setJobsToBeDisplayed(DUMMY_DATA);
+            setJobsToBeDisplayed(tailoredJobs);
         }
     };
+
+    useEffect(() => {
+        getAllResumeIds(userId).then((res) => {
+            if (res.length > 0) {
+                getAllBookmarkJobs(res).then((allBookmarkJobs) => {
+                    bookmarkedJobs.push(...allBookmarkJobs);
+                    setJobsToBeDisplayed(bookmarkedJobs);
+                });
+                getAllTailorJobs(res).then((allTailorJobs) => {
+                    tailoredJobs.push(...allTailorJobs);
+                });
+            }
+        });
+        // eslint-disable-next-line
+    }, []);
 
     return (
         <I8nContext.Provider value={messages}>
@@ -61,31 +124,34 @@ const JobCollection = () => {
                     <ToggleButtonGroup
                         type="radio"
                         name="collectio-select"
-                        defaultValue="all"
+                        defaultValue="bookmark"
                         onChange={(e) => {
-                            applyFilter(e === 'all');
+                            applyFilter(e === 'bookmark');
                         }}
                     >
-                        <ToggleButton className="all" value={'all'}>
-                            {messages['all']}
+                        <ToggleButton className="bookmark" value={'bookmark'}>
+                            {messages['bookmarkedJobs']}
                         </ToggleButton>
-                        <ToggleButton className="applied" value={'applied'}>
-                            {messages['applied']}
+                        <ToggleButton className="tailor" value={'tailor'}>
+                            {messages['tailoredJobs']}
                         </ToggleButton>
                     </ToggleButtonGroup>
                 </div>
-
-                {jobsToBeDisplayed.map((job) => (
-                    <JobCard
-                        key={job.id}
-                        id={job.id}
-                        applied={job.applied}
-                        title={job.title}
-                        company={job.company}
-                        date={job.date}
-                        location={job.location}
-                    ></JobCard>
-                ))}
+                <div>
+                    {jobsToBeDisplayed.map((job, index) => (
+                        <JobCard
+                            key={job.jobUuid + index}
+                            id={job.jobUuid}
+                            applied={false}
+                            title={job.title}
+                            company={job.companyName}
+                            date={moment(new Date(job.postDate)).format(
+                                JDBC_DATE_FORMAT
+                            )}
+                            location={formatLocation(job.location)}
+                        ></JobCard>
+                    ))}
+                </div>
             </div>
         </I8nContext.Provider>
     );

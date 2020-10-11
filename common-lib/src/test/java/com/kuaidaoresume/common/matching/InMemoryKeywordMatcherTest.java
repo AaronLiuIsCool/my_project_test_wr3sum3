@@ -13,6 +13,7 @@ import java.util.*;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.hasItems;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -23,7 +24,6 @@ public class InMemoryKeywordMatcherTest {
     private List<String> keywords;
     private String[] punctuations;
     private Random random;
-
 
     @BeforeAll
     public void init() throws Exception {
@@ -75,6 +75,16 @@ public class InMemoryKeywordMatcherTest {
     }
 
     @Test
+    public void whenContainsWithChineseKeyword_thenReturnTrue() {
+        assertTrue(inMemoryKeywordMatcher.contains("我曾经担任市场调研的工作。"));
+    }
+
+    @Test
+    public void getMatchesWithChineseKeyword() {
+        assertThat(inMemoryKeywordMatcher.getMatches("我曾经担任市场调研和软件工程的工作。"), hasItems("软件工程", "市场调研"));
+    }
+
+    @Test
     public void whenGetMatchesWithMatching_thenReturnMatchedWords() {
         StringBuilder textBuilder = new StringBuilder();
         int numHits = 3;
@@ -95,11 +105,6 @@ public class InMemoryKeywordMatcherTest {
         for (String keyword : keywordsInText) {
             matches.contains(keyword.toLowerCase());
         }
-    }
-
-    @Test
-    public void whenGetMatchesWithChineseKeyword_thenReturnTrue() {
-        assertTrue(inMemoryKeywordMatcher.contains("blah blah 市场调研 blah"));
     }
 
     private void appendNonMatchingWords(StringBuilder builder) {

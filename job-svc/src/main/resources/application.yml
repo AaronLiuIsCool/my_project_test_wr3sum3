@@ -21,3 +21,12 @@ kuaidaoresume:
     deploy-env: ${DEPLOY:V2}
   signing-secret: ${SIGNING_SECRET}
   intercom-access-token: ${INTERCOM_ACCESS_TOKEN}
+  cache:
+    job:
+      policy:
+        max-size-policy: ${JOB_CACHE_POLICY_MAXSIZE:PER_NODE}
+        eviction-policy: ${JOB_CACHE_POLICY_EVICTION:LRU}
+    job-search:
+      policy:
+        max-size-policy: ${JOB_SEARCH_CACHE_POLICY_MAXSIZE:PER_NODE}
+        eviction-policy: ${JOB_SEARCH_CACHE_POLICY_EVICTION:LFU}

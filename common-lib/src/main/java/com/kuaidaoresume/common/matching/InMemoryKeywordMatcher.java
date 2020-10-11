@@ -14,7 +14,6 @@ public class InMemoryKeywordMatcher implements KeywordMatcher {
         keywordsTrie = Trie.builder()
             .ignoreOverlaps()
             .ignoreCase()
-            .onlyWholeWords()
             .addKeywords(keywords)
             .build();
     }
