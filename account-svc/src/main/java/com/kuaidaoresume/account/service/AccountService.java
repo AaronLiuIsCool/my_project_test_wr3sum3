@@ -40,6 +40,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Instant;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 import static java.util.stream.Collectors.toList;
 
@@ -120,11 +122,12 @@ public class AccountService {
 
             String emailName = name;
             if (StringUtils.isEmpty(emailName)) {
-                emailName = "there";
+                emailName = AccountConstant.GREETING_WORD_CN_ZH;
             }
 
             String subject = "Activate your Kuaidaoresume account";
-            this.sendEmail(account.getId(), email, emailName, subject, AccountConstant.ACTIVATE_ACCOUNT_TMPL, true);
+            //this.sendEmail(account.getId(), email, emailName, subject, AccountConstant.ACTIVATE_ACCOUNT_TMPL, true); // for english
+            this.sendEmail(account.getId(), email, emailName, subject, AccountConstant.ACTIVATE_ACCOUNT_TMPL_CN_ZH, true); // for chinese
         }
 
         LogEntry auditLog = LogEntry.builder()
@@ -312,14 +315,16 @@ public class AccountService {
             throw new ServiceException(ResultCode.NOT_FOUND, "No user with that email exists");
         }
 
-        String subject = "Reset your Kuaidaoresume password";
+        String subject = "Reset your Smartresume password";
         boolean activate = false; // reset
-        String tmpl = AccountConstant.RESET_PASSWORD_TMPL;
+        //String tmpl = AccountConstant.RESET_PASSWORD_TMPL; // for english
+        String tmpl = AccountConstant.RESET_PASSWORD_TMPL_CN_ZH; // for chinese
         if (!account.isConfirmedAndActive()) {
             // Not actually active - make some tweaks for activate instead of password reset
             activate = true; // activate
-            subject = "Activate your Kuaidaoresume account";
-            tmpl = AccountConstant.ACTIVATE_ACCOUNT_TMPL;
+            subject = "Activate your Smartresume account";
+            //tmpl = AccountConstant.ACTIVATE_ACCOUNT_TMPL; // for english
+            tmpl = AccountConstant.ACTIVATE_ACCOUNT_TMPL_CN_ZH; // for chinese
         }
 
         // Send verification email
@@ -334,7 +339,8 @@ public class AccountService {
         }
 
         String subject = "Confirm Your New Email Address";
-        this.sendEmail(account.getId(), email, account.getName(), subject, AccountConstant.CONFIRM_EMAIL_TMPL, true);
+        //this.sendEmail(account.getId(), email, account.getName(), subject, AccountConstant.CONFIRM_EMAIL_TMPL, true); //for english
+        this.sendEmail(account.getId(), email, account.getName(), subject, AccountConstant.CONFIRM_EMAIL_TMPL_CN_ZH, true); // for chinese.
     }
 
     // ChangeEmail sets an account to active and updates its email. It is
@@ -448,12 +454,17 @@ public class AccountService {
             htmlBody = String.format(template, link.toString(), link.toString());
         }
 
+        Map<String, Object> emailModel = new HashMap();
+        emailModel.put("name", name);
+        emailModel.put("link", link);
+
         EmailRequest emailRequest = EmailRequest.builder()
                 .to(email)
                 .from("aaronliu.dev.canada@gmail.com") //TODO: Aaron Liu update to Eyeshigh customer support as default
                 .name(name)
                 .subject(subject)
                 .htmlBody(htmlBody)
+                .model(emailModel)
                 .build();
 
         BaseResponse baseResponse = null;

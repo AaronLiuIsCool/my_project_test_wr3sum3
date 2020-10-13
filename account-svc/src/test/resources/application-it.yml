@@ -1,5 +1,7 @@
 # ****** H2 In Memory Database Connection Info *******
 spring:
+  profiles:
+    it
   application:
     name: account-service
   datasource: # use in-memory db for unit testing
