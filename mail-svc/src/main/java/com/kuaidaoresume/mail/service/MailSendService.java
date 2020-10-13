@@ -70,12 +70,14 @@ public class MailSendService {
                 StandardCharsets.UTF_8.name());
 
         org.thymeleaf.context.Context tlContext = new org.thymeleaf.context.Context();
+        System.out.println(req.getModel());
+
         tlContext.setVariables(req.getModel());
         // TODO: Aaron Liu switch to other templates as necessary
-        //String html = templateEngine.process("welcome-email-template", tlContext);
+        String html = templateEngine.process("welcome-email-template", tlContext);
 
         helper.setTo(req.getTo());
-        helper.setText(req.getHtmlBody(), true);
+        helper.setText(html, true);
         helper.setSubject(req.getSubject());
         helper.setFrom(req.getFrom());
 

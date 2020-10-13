@@ -7,6 +7,7 @@ import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;
 import java.util.Map;
+import java.util.HashMap;
 
 @Data
 @Builder
@@ -22,7 +23,8 @@ public class EmailRequest {
     @NotBlank(message = "Please provide an from")
     private String from;
 
-    private Map<String, Object> model;
+    @Builder.Default()
+    private Map<String, Object> model = new HashMap<>();
 
     @NotBlank(message = "Please provide a valid body")
     @JsonProperty("html_body")
