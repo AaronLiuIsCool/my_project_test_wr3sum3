@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import Button from 'react-bootstrap/Button';
+import { Link } from 'react-router-dom'
 import Grid from './Grid';
 import Item from './Item';
 
@@ -21,9 +23,9 @@ const Hub = ({ resumes }) => {
                 <span className={styles.title}>
                 {messages['hub_title']}
             </span>
-                <a className={styles.action} href='/resumes/new'>
+            <Button as={Link} variant="link" className={styles.action} to='/new'>
                 {messages['hub_action']}
-            </a>
+            </Button>
             </div>
             {renderGrid(resumes)}
         </div>

@@ -118,7 +118,7 @@ const JobCollection = () => {
 
     return (
         <I8nContext.Provider value={messages}>
-            <div className="features job-collection">
+            <div className="features padding-for-nav job-collection">
                 <h1>{messages.heading}</h1>
                 <div className="btn-container">
                     <ToggleButtonGroup

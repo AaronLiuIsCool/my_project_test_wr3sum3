@@ -42,7 +42,7 @@ async function getOrCreateResume(dispatch, userId, resumeId, language, history) 
         await accountServices.addResume(userId, resumeId);
         accountServices.addResume(userId, resumeId);
         dispatch(actions.setId(resumeId));
-        history.push(`/resume/${resumeId}`);
+        history.replace(`/resume/${resumeId}`);
     } catch (exception) {
         logger.error(exception);
         // TODO: Need to handle retry

@@ -60,7 +60,7 @@ const ResumeHub = () => {
 
     return (
         <I8nContext.Provider value={messages}>
-            <div className='features resumeHub'>
+            <div className='features padding-for-nav resumeHub'>
                 {renderHub(resumes)}
             </div>
         </I8nContext.Provider>

@@ -1,5 +1,5 @@
 import React from 'react';
 
-const LoadFallbackComponent = () => <div>Loading...</div>
+const LoadFallbackComponent = () => <div />;
 
 export default LoadFallbackComponent;

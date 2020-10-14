@@ -91,7 +91,7 @@
                 <configuration>
                     <url>jdbc:mysql://kuaidaoresume-job.cm27uwrvuert.ca-central-1.rds.amazonaws.com:3306/kuaidaoresume-job</url>
                     <user>root</user>
-                    <password>~Youkn0wit)</password>
+                    <password>~Youkn0wit)-j0b</password>
                 </configuration>
             </plugin>
         </plugins>

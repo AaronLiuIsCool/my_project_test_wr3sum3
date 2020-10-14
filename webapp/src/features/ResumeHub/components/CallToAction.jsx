@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { Link } from 'react-router-dom'
 import Button from 'react-bootstrap/Button';
 import { ReactComponent as CreateYourResumeIllustration } from '../assets/create_your_resume.svg';
 
@@ -18,7 +18,7 @@ const CallToAction = () => {
                 <p className={styles.description}>
                     {messages['new_resume_description']}
                 </p>
-                <Button className={styles.action} href='/resumes/new'>
+                <Button as={Link} className={styles.action} to='/new'>
                     {messages['new_resume_start']}
                 </Button>
             </div>
