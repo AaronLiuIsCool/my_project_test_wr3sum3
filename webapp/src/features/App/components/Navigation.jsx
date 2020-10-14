@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
-import { withRouter } from "react-router";
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useHistory, withRouter, Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import { Navbar, Nav } from 'react-bootstrap';
 import Actions from './Actions';
@@ -8,27 +8,57 @@ import { ReactComponent as LogoZH } from '../assets/logo_zh.svg';
 import { ReactComponent as LogoEN } from '../assets/logo_zh.svg';
 
 import { useI8n } from 'shell/i18n';
-import { selectLanguage, updatePath } from '../slicer';
+import { selectLanguage } from '../slicer';
+
+import styles from '../styles/Navigation.module.css';
+
+const ROUTES = [{
+    path: '/',
+    messageKey: 'nav_item_resumehub'
+}, {
+    path: '/collections',
+    messageKey: 'nav_item_jobcollction'
+}];
 
 const Navigation = ({ location }) => {
+    const [showNav, setShowNav] = useState(true);
+    const history = useHistory();
     const language = useSelector(selectLanguage);
     const messages = useI8n();
-    const dispatch = useDispatch();
     
     useEffect(() => {
-        dispatch(updatePath(location));
-    }, [dispatch, location]);
+        const shouldShowNav = ROUTES.some(({path}) => path === location.pathname);
+        if (showNav !== shouldShowNav) {
+            setShowNav(shouldShowNav);
+        }
+    }, [showNav, location]);
+
+    if (!showNav) {
+        return (
+            <div className={styles.closeButton} 
+                onClick={() => history.goBack()} />
+        );
+    }
+
+    const renderRoutes = () => (
+        ROUTES.map(({path, messageKey}) => (
+            <Nav.Item as="li" key={messageKey}>
+                <Nav.Link as={Link} to={path} eventKey={path}>
+                    {messages[messageKey]}
+                </Nav.Link>
+            </Nav.Item>
+        ))
+    );
 
     return (
         <Navbar bg="white" expand="lg" fixed="top">
-            <Navbar.Brand href="/">
+            <Navbar.Brand as={Link} to="/">
                 {language === 'zh' ? <LogoZH /> : <LogoEN />}
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="top-navigation-bar" />
             <Navbar.Collapse id="top-navigation-bar">
-                <Nav className="mr-auto" activeKey={location.pathname}>
-                    <Nav.Link href='/'>{messages["nav_item_resumehub"]}</Nav.Link>
-                    <Nav.Link href='/job-collection'>{messages["nav_item_jobcollction"]}</Nav.Link>
+                <Nav className="mr-auto" activeKey={location.pathname} defaultActiveKey='/' as='ul'>
+                    {renderRoutes()}
                 </Nav>
 
                 <Actions />

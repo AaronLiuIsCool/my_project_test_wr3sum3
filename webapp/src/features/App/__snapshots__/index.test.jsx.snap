@@ -10,6 +10,7 @@ exports[`App tests renders App 1`] = `
     <a
       className="navbar-brand"
       href="/"
+      onClick={[Function]}
     >
       <svg>
         logo_zh.svg
@@ -31,29 +32,37 @@ exports[`App tests renders App 1`] = `
       className="navbar-collapse collapse"
       id="top-navigation-bar"
     >
-      <div
+      <ul
         className="mr-auto navbar-nav"
         onKeyDown={[Function]}
       >
-        <a
-          className="nav-link active"
-          data-rb-event-key="/"
-          href="/"
-          onClick={[Function]}
-          onKeyDown={[Function]}
+        <li
+          className="nav-item"
         >
-          我的简历
-        </a>
-        <a
-          className="nav-link"
-          data-rb-event-key="/job-collection"
-          href="/job-collection"
-          onClick={[Function]}
-          onKeyDown={[Function]}
+          <a
+            className="nav-link active"
+            data-rb-event-key="/"
+            disabled={false}
+            href="/"
+            onClick={[Function]}
+          >
+            我的简历
+          </a>
+        </li>
+        <li
+          className="nav-item"
         >
-          我的岗位
-        </a>
-      </div>
+          <a
+            className="nav-link"
+            data-rb-event-key="/collections"
+            disabled={false}
+            href="/collections"
+            onClick={[Function]}
+          >
+            我的岗位
+          </a>
+        </li>
+      </ul>
       <div
         className="container"
       >

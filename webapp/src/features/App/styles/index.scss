@@ -24,6 +24,8 @@
   }
 
   .features {
-    padding-top: 80px;
+    &.padding-for-nav {
+      padding-top: 80px;
+    }
   }
 }

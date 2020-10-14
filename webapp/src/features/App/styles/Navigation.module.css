@@ -1,0 +1,16 @@
+.closeButton {
+  z-index: 3;
+  position: fixed;
+  top: 0;
+  right: 0;
+
+  width: 100px;
+  height: 100px;
+
+  background-image: url('../assets/close_regular.svg');
+}
+
+.closeButton:hover {
+  background-image: url('../assets/close_hover.svg');
+  cursor: pointer;
+}

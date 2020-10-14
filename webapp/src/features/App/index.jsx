@@ -72,12 +72,11 @@ const App = ({ waitForInit = true }) => {
           <Navigation />
           <Switch>
             <PrivateRoute exact path="/" component={ResumeHub} />
-            <PrivateRoute exact path="/resumes" component={ResumeHub} />
-            <PrivateRoute path="/resumes/new" component={ResumeStarter} />
+            <PrivateRoute path="/new" component={ResumeStarter} />
             <PrivateRoute exact path="/resume" component={SmartResume} />
             <PrivateRoute exact path="/resume/:resumeId" component={SmartResume} />
             <PrivateRoute path="/jobs" component={JobsMatcher} />
-            <PrivateRoute path="/job-collection" component={JobCollection} />
+            <PrivateRoute path="/collections" component={JobCollection} />
             <Route component={Page404} />
             <Route path="/404" component={Page404} />
           </Switch>

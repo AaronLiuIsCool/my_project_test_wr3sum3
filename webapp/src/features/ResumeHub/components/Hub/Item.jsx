@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 
+import { Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import thumbnail from '../../assets/thumbnail@2x.png'; 
 import { ReactComponent as EditIcon } from '../../assets/edit.svg'; 
@@ -51,16 +52,16 @@ const Grid = ({ resume }) => {
                         {new Date(resume.createdAt).toLocaleDateString()}
                     </div>
                     <div className={styles.links}>
-                        <Button variant="link" href={`/resume/${resume.resumeId}`} className={styles.link} >
+                        <Button as={Link} variant="link" to={`/resume/${resume.resumeId}`} className={styles.link} >
                             <EditIcon /> {messages['hub_item_edit']}
                         </Button>
-                        <Button variant="link" className={styles.link}>
+                        <Button as={Link} variant="link" className={styles.link} to={'#'}>
                             <Download /> {messages['hub_item_download']}
                         </Button>
-                        <Button variant="link" className={styles.link}>
+                        <Button as={Link} variant="link" className={styles.link} to={'#'}>
                             <ShareIcon /> {messages['hub_item_share']}
                         </Button>
-                        <Button variant="link" className={styles.link}>
+                        <Button as={Link} variant="link" className={styles.link} to={'#'}>
                             <DuplicateIcon /> {messages['hub_item_duplicate']}
                         </Button>
                     </div>
@@ -70,7 +71,7 @@ const Grid = ({ resume }) => {
                     </Button>
                 </div>
             </div>
-            <Button href={`/jobs?resume=${resume.resumeId}`} className={styles.matchingBtn} >
+            <Button as={Link} to={`/jobs?resume=${resume.resumeId}`} className={styles.matchingBtn} >
                 {messages['hub_item_match']}
             </Button>
         </div>

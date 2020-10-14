@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import Button from 'react-bootstrap/Button';
 import { useI8n } from 'shell/i18n';
-import { useHistory } from 'react-router';
+import { Link, useHistory } from 'react-router-dom';
 import AppServices from 'shell/services/AppServices';
 import { useDispatch } from 'react-redux';
 import { actions } from 'features/SmartResume/slicer';
@@ -92,8 +92,8 @@ const ResumerStarter = () => {
 					<p className={styles.optionTitle}>{messages.createNewResume}</p>
 					<p className={styles.optionDescription}>{messages.chooseLanguage}</p>
 					<div className={styles.buttonWrapper}>
-						<Button href='/resume' className={styles.button}>{messages.language_toggle_zh}</Button>
-						<Button href='/resume' className={styles.button}>{messages.language_toggle_en}</Button>
+						<Button as={Link} to='/resume' className={styles.button}>{messages.language_toggle_zh}</Button>
+						<Button as={Link} to='/resume' className={styles.button}>{messages.language_toggle_en}</Button>
 					</div>
 				</div>
 				<div className={styles.option}>

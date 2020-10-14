@@ -9,9 +9,6 @@ const appSlicers = createSlice({
     updateLanguage: (state, action) => {
       state.language = action.payload;
     },
-    updatePath: (state, action) => {
-      state.path = action.payload;
-    },
     updateAuthInfo: (state, action) => {
       const loginBypass = localStorage.getItem('kdr-login-bypass') === 'true'; // TODO: Remove before we go out to prod
       const authInfo = action.payload;
@@ -21,10 +18,9 @@ const appSlicers = createSlice({
   },
 });
 
-export const { updateLanguage, updatePath, updateAuthInfo } = appSlicers.actions;
+export const { updateLanguage, updateAuthInfo } = appSlicers.actions;
 
 export const selectLanguage = ({app}) => app.language;
-export const selectPath = ({app}) => app.path;
 export const selectAuthentication = ({app}) => app.authenticated;
 export const selectUserId = ({app}) => app.iam && app.iam.userId;
 
