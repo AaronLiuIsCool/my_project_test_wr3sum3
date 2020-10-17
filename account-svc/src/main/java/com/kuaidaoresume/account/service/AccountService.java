@@ -446,15 +446,17 @@ public class AccountService {
             serviceHelper.handleException(logger, ex, errMsg);
             throw new ServiceException(errMsg, ex);
         }
+        Map<String, Object> emailModel = new HashMap();
 
         String htmlBody = null;
         if (activateOrConfirm) { // active or confirm
             htmlBody = String.format(template, name, link.toString(), link.toString(), link.toString());
+            emailModel.put("type", "activateOrConfirm");
         } else { // reset
             htmlBody = String.format(template, link.toString(), link.toString());
+            emailModel.put("type", "resetPassword");
         }
 
-        Map<String, Object> emailModel = new HashMap();
         emailModel.put("name", name);
         emailModel.put("link", link);
 
