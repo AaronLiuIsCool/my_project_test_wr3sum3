@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import { previewResume } from './ResumePreview/resumeBuilder';
@@ -49,20 +49,41 @@ async function getOrCreateResume(dispatch, userId, resumeId, language, history) 
         history.push(`/`);
     }
 }
+async function getAccountInfoAndSetResumeName(userId, resumeId, setter) {
+  try {
+    const response = await accountServices.getAccountInfo(userId);
+    if (!response) {
+      logger.warn('No response from account service get');
+    }
 
+    const responseJson = await response.json();
+    if (responseJson.success) {
+      const { resumes } = responseJson.account;
+      const resume = resumes.find((item) => item.resumeId === resumeId);
+      if (resume) {
+        setter(resume.alias);
+      }
+    } else {
+      logger.error(response.message);
+    }
+  } catch (exception) {
+    logger.error(exception);
+  }
+}
 const SmartResume = ({ useObserver = false, resumeId }) => {
     const history = useHistory();
     const dispatch = useDispatch();
     const userId = useSelector(selectUserId);
     const language = useSelector(selectLanguage);
     const messages = language === 'zh' ? zh : en;
-
+    const [resumeName, setResumeName] = useState('');
     useEffect(() => {
         const updatePreview = async () => {
             await getOrCreateResume(dispatch, userId, resumeId, language, history);
             previewResume(messages.RPreview);
         }
         updatePreview();
+        getAccountInfoAndSetResumeName(userId, resumeId, setResumeName);
     }, []); // eslint-disable-line
 
     return (
@@ -73,7 +94,7 @@ const SmartResume = ({ useObserver = false, resumeId }) => {
                     <Assistant />
                     <ResumePreview  />
                 </div>
-                <ExperiencesForm useObserver={useObserver} />
+                <ExperiencesForm resumeName={resumeName} useObserver={useObserver} />
             </div>
         </I8nContext.Provider>
     );
