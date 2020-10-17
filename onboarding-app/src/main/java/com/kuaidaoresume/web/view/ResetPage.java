@@ -11,7 +11,8 @@ public class ResetPage extends Page {
     private String recaptchaPublic;
 
     @Builder(builderMethodName = "childBuilder")
-    public ResetPage(String title, String description, String templateName, String cssId, String version, boolean denied, String recaptchaPublic) {
+    public ResetPage(String title, String description, String templateName, String cssId, String version,
+                     boolean denied, String recaptchaPublic) {
         super(title, description, templateName, cssId, version);
         this.denied = denied;
         this.recaptchaPublic = recaptchaPublic;

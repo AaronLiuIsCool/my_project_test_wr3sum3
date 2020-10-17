@@ -133,7 +133,7 @@ public class AccountController {
         this.validateAuthenticatedUser(newAccountDto.getId());
         this.validateEnv();
 
-        AccountDto accountDto =  accountService.update(newAccountDto);
+        AccountDto accountDto = accountService.update(newAccountDto);
 
         GenericAccountResponse genericAccountResponse = new GenericAccountResponse(accountDto);
         return genericAccountResponse;

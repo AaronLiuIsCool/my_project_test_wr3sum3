@@ -28,6 +28,11 @@
           />
         </div>
       </div>
+      <div class="mdl-textfield mdl-js-textfield">
+          <script src="https://www.google.com/recaptcha/api.js"></script>
+          <div class="g-recaptcha" th:data-sitekey="${page.recaptchaPublic}"></div>
+      </div>
+      <br />
       <div class="button-group">
         <button type="submit" class="btn btn-primary float-left">
           重置密码
