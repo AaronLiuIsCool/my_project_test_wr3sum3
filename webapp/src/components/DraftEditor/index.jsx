@@ -74,7 +74,6 @@ const DraftEditor = ({ texts, handleChangeCallback, label, eventName, isInvalid,
             setLocalState(
                 EditorState.createWithContent(convertFromRaw(rawContentState))
             );
-            didMount.current = true;
         }
     }, [texts]);
 
@@ -88,6 +87,7 @@ const DraftEditor = ({ texts, handleChangeCallback, label, eventName, isInvalid,
 
             switch (type) {
                 case 'highlight-keyword':
+                    didMount.current = true;
                     const { offsets, text } = data;
                     if (blockLength === 1 && blocks[0].text === '') {
                         const rawContentState = {
@@ -132,6 +132,7 @@ const DraftEditor = ({ texts, handleChangeCallback, label, eventName, isInvalid,
                     }
                     break;
                 case 'update-content':
+                    didMount.current = true;
                     updateContent(data);
                     break;
                 default:
@@ -185,6 +186,7 @@ const DraftEditor = ({ texts, handleChangeCallback, label, eventName, isInvalid,
     };
 
     const handleChange = (editorState) => {
+        didMount.current = true;
         // update local state
         setLocalState(removeStylesForSelection(addBulletPoint(editorState)));
 

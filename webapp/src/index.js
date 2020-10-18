@@ -5,6 +5,8 @@ import { Provider } from 'react-redux';
 import App from 'features/App';
 import store from 'store';
 
+import Loader from './components/Loader';
+
 import * as serviceWorker from './serviceWorker';
 import { GAInitialize } from './utils/GATracking';
 
@@ -18,6 +20,7 @@ GAInitialize(); // init google analytics
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
+      <Loader />
       <App />
     </Provider>
   </React.StrictMode>,
