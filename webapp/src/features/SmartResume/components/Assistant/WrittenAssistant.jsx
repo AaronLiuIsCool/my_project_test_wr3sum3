@@ -1,22 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 
-import { Button, Form, InputGroup } from 'react-bootstrap';
-import { Typeahead } from 'react-bootstrap-typeahead';
 import WrittenTipCard from './WrittenTipCard';
-import { ReactComponent as SearchIcon } from '../../assets/search.svg';
 
 import ResumeServices from 'shell/services/ResumeServices';
 import JobServices from 'shell/services/JobsServices'
 import styles from '../../styles/Assistant.module.css';
+import DropdownGroup from './Dropdown/DropdownGroup';
 
 const resumeServices = new ResumeServices();
 const jobServices = new JobServices();
-
-function renderIndustries(industries) {
-    return industries.map((industry, index) => (
-        <option key={`${industry}-${index}`}>{industry}</option>
-    ));
-}
 
 function renderTips(tips, handleSelect) {
     return tips.map((tip, index) => (
@@ -31,12 +23,10 @@ function renderTips(tips, handleSelect) {
 // TODO: Standardize this component to be used for more than just Work written assistant
 const WrittenAssistant = ({ trigger, context }) => {
     const [industries, setIndustries] = useState([]);
-    const [titles, setTitles] = useState([]);
+    const [titles, setTitles] = useState({});
     const [suggestions, setSuggestions] = useState([]);
 
-    const [industry, setIndustry] = useState('');
-    const [title, setTitle] = useState('');
-
+    const loaded = useRef(false);
     const getIndustries = async () => {
         const response = await resumeServices.getWrittenAssistant(
             trigger,
@@ -62,12 +52,16 @@ const WrittenAssistant = ({ trigger, context }) => {
     useEffect(() => {
         getIndustries();
         getTitles();
-        getSuggestions();
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    useEffect(() => {
+      if(industries && titles && industries.length > 0 && titles[industries[0]]) {
+        if(!loaded.current) {
+          getSuggestions(industries[0], titles[industries[0]][0]);
+          loaded.current = true;
+        }
+      }
+    }, [industries, titles]) // eslint-disable-line
 
-    const handleSearch = (e) => {
-        getSuggestions(industry, title);
-    };
 
     const handleTipSelect = (tip) => {
         switch (trigger) {
@@ -156,7 +150,8 @@ const WrittenAssistant = ({ trigger, context }) => {
     };
     return (
         <div className={styles['inner-container']}>
-            <div className="writtenAssistantWidgetHeader">
+            <DropdownGroup industries={industries} titles={titles} onSelect={getSuggestions} />
+            {/* <div className="writtenAssistantWidgetHeader">
                 <InputGroup className="mb-3">
                     <InputGroup.Prepend>
                         <Form.Control
@@ -200,7 +195,7 @@ const WrittenAssistant = ({ trigger, context }) => {
                         </InputGroup.Text>
                     </InputGroup.Append>
                 </InputGroup>
-            </div>
+            </div> */}
             <div className="tips-container">
                 {renderTips(suggestions, handleTipSelect)}
             </div>
