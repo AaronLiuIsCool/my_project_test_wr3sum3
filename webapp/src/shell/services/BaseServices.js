@@ -1,5 +1,5 @@
 import configs from 'shell/configs';
-
+import {showLoader, hideLoader} from 'shell/loader'
 function getHeaders() {
   return new Headers({
     'Content-Type': 'application/json',
@@ -62,21 +62,33 @@ export default class BaseServices {
 
   async get(api, params) {
     const url = this.getURL(api);
-    return await get(url, params);
+    showLoader();
+    const res = await get(url, params);
+    hideLoader();
+    return res;
   }
 
   async post(api, data) {
     const url = this.getURL(api);
-    return await post(url, data);
+    showLoader();
+    const res = await post(url, data);
+    hideLoader();
+    return res;
   }
 
   async put(api, data) {
     const url = this.getURL(api);
-    return await put(url, data);
+    showLoader();
+    const res = await put(url, data);
+    hideLoader();
+    return res;
   }
 
   async delete(api, data) {
     const url = this.getURL(api);
-    return await deletion(url, data);
+    showLoader();
+    const res = await deletion(url, data);
+    hideLoader();
+    return res;
   }
 }

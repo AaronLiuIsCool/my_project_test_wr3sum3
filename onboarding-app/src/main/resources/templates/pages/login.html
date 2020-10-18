@@ -5,6 +5,7 @@
       layout:decorate="~{layout}"
       with:includeScripts="true"
 >
+<div id="login_container"></div>
 <th:block layout:fragment="content">
   <div class="content-body desktop">
     <p class="title">
@@ -45,10 +46,11 @@
         <button type="submit" class="btn btn-primary float-left">
           登入
         </button>
-        <button type="submit" class="btn btn-success float-right">
+        <a class="btn btn-success float-right" target="_blank"
+           th:href="@{__${page.wechatLoginUrl}__}">
           <img th:src="@{img/wechat_white.svg}" alt="WeChat logo" />
           微信登入
-        </button>
+        </a>
       </div>
     </form>
     <p class="label">我还没有账号 <a th:href="@{/sign-up}" href="signup.html">点击注册</a></p>
