@@ -5,11 +5,41 @@
       layout:decorate="~{layout}"
       with:includeScripts="true"
 >
-<head>
-    <meta charset="UTF-8">
-    <title>Follow steps to reset your Kuaidaoresume password.</title>
-</head>
-<body>
-
-</body>
+<th:block layout:fragment="content">
+  <div class="content-body">
+    <p class="title">
+      输入邮箱
+    </p>
+    <form th:action="@{/password-reset}" th:method="post">
+      <div class="warning-message" th:if="${page.denied}">
+        <p>用户不存在</p>
+      </div>
+      <div class="form-content">
+        <div class="form-group">
+          <label for="login-email">邮箱</label>
+          <input
+            name="email"
+            type="email"
+            class="form-control"
+            id="login-email"
+            aria-describedby="emailHelp"
+            placeholder="请输入您的账户邮箱"
+            autofocus
+          />
+        </div>
+      </div>
+      <div class="mdl-textfield mdl-js-textfield">
+          <script src="https://www.google.com/recaptcha/api.js"></script>
+          <div class="g-recaptcha" th:data-sitekey="${page.recaptchaPublic}"></div>
+      </div>
+      <br />
+      <div class="button-group">
+        <button type="submit" class="btn btn-primary float-left">
+          重置密码
+        </button>
+      </div>
+    </form>
+    <p class="label">我还没有账号 <a th:href="@{/sign-up}" href="signup.html">点击注册</a></p>
+  </div>
+</th:block>
 </html>

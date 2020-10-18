@@ -15,6 +15,7 @@ import com.kuaidaoresume.common.error.ServiceException;
 import com.kuaidaoresume.web.service.HelperService;
 import com.kuaidaoresume.web.view.Constant;
 import com.kuaidaoresume.web.view.PageFactory;
+import com.kuaidaoresume.web.view.ResetPage;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -55,7 +56,12 @@ public class ResetController {
             }
             if (!baseResponse.isSuccess()) {
                 helperService.logError(logger, baseResponse.getMessage());
-                throw new ServiceException(baseResponse.getMessage());
+                //throw new ServiceException(baseResponse.getMessage());
+                //user email does not exist
+                ResetPage resetPage = pageFactory.buildResetPage();
+                resetPage.setDenied(true);
+                model.addAttribute(Constant.ATTRIBUTE_NAME_PAGE, resetPage);
+                return Constant.VIEW_RESET;
             }
             logger.info("Initiating password reset"); // log the info
             model.addAttribute(Constant.ATTRIBUTE_NAME_PAGE, pageFactory.buildResetConfirmPage());

@@ -98,9 +98,19 @@ public class PageFactory {
     public ConfirmResetPage buildConfirmResetPage() {
         return ConfirmResetPage.childBuilder()
                 .title("Reset your Kuaidaoresume password")
-                .description("Follow steps to reset your Kuaidaoresume password.")
+                .description("Follow steps to reset your SmartResume password.")
                 .cssId("sign-up")
                 .templateName("confirmreset")
+                .version(kuaidaoresumeProps.getDeployEnv())
+                .build();
+    }
+
+    public Page buildResetCompletePage() {
+        return Page.builder()
+                .title("Kuaidaoresume password reset complete")
+                .description("Kuaidaoresume password reset complete")
+                .cssId("complete")
+                .templateName("resetcomplete")
                 .version(kuaidaoresumeProps.getDeployEnv())
                 .build();
     }
