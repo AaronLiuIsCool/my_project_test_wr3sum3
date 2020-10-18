@@ -33,6 +33,16 @@ public class PageFactory {
                 .build();
     }
 
+    public WeChatCallBackPage buildWeChatCallBackPage() {
+        return WeChatCallBackPage.childBuilder()
+                .title("WeChat callback")
+                .description("Handles wechat callback for OAuth login")
+                .cssId("wechat-callback")
+                .templateName("wechat-callback")
+                .version(kuaidaoresumeProps.getDeployEnv())
+                .build();
+    }
+
     public Page buildConfirmPage() {
         return Page.builder()
                 .title("Open your email and click on the confirmation link!")

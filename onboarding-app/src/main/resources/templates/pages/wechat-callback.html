@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:with="http://www.thymeleaf.org/extras/with"
+      layout:decorate="~{layout}"
+      with:includeScripts="true"
+>
+<th:block layout:fragment="content">
+  <div class="content-body">
+    <p class="title">
+      微信登入
+    </p>
+    <div class="alert alert-success" role="alert">
+      <h4 class="alert-heading"><p th:text="${page.errorMsg}" /></h4>
+    </div>
+  </div>
+</th:block>
+</html>
