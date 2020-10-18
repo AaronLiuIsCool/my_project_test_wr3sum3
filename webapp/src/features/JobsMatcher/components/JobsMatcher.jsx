@@ -8,7 +8,7 @@ import MatchingServices from 'shell/services/MatchingServices';
 import { I8nContext } from 'shell/i18n';
 import { selectLanguage, selectUserId } from 'features/App/slicer';
 
-import JobRefinement from './Jobs/JobRefinement';
+import JobRefinementModal from './Jobs/JobRefinementModal';
 import SearchHeader from './SearchHeader';
 import Jobs from './Jobs';
 
@@ -50,7 +50,9 @@ const JobMatcher = ({ resume }) => {
     const [city, setCity] = useState();
     const [ready, setReady] = useState(false);
 
-    const [modalOpened, setModalOpened] = useState(false); 
+    const [selectedJob, setSelectedJob] = useState(0);
+
+    const [modalOpened, setModalOpened] = useState(false);
 
     const search = async (query, country, city, pageNumber) => {
         try {
@@ -78,6 +80,7 @@ const JobMatcher = ({ resume }) => {
         search(query, country, city, pageNumber);
     }
 
+
     useEffect(() => {
         getResumeMatchingInfo(resume).then((resumeDto) => {
             matchingServices.setContext({...resumeDto, userId});
@@ -95,8 +98,8 @@ const JobMatcher = ({ resume }) => {
             <div className="features job-matcher">
                 <SearchHeader onSearch={handleSearch} initial={{query, country, city}} />
                 <Jobs data={searchResults} pageNumber={resultsPageNumber}
-                    onPageChange={handlePageChange} modalOpenHandler={setModalOpened}/>
-                {modalOpened && <JobRefinement data={searchResults} modalOpenHandler={setModalOpened} />}
+                    onPageChange={handlePageChange} modalOpenHandler={setModalOpened} selectedJob={selectedJob} setSelectedJob={setSelectedJob}/>
+                {modalOpened && <JobRefinementModal data={searchResults} modalOpenHandler={setModalOpened} selectedJob={selectedJob}/>}
             </div>
         </I8nContext.Provider>
     );

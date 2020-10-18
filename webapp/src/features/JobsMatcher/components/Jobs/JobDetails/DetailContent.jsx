@@ -20,7 +20,10 @@ const DetailContent = ({ data, modalOpenHandler, showExtraInfo=true }) => {
 			setMatchingData(matchingData);
 		}
 		getMatchingScore();
+
+
 	}, [matchingData]);
+	
 
 	return (
 		<>
@@ -34,8 +37,6 @@ const DetailContent = ({ data, modalOpenHandler, showExtraInfo=true }) => {
 					))}
 				</div>
 			</div>
-			
-			
 		</>
 	);
 };

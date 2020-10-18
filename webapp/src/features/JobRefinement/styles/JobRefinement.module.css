@@ -1,3 +1,17 @@
+.jobRefinementContainer{
+  display: flex;
+  height:100%;
+}
+
+.left {
+  flex-basis: 46.66%;
+  height:100%;
+}
+.right {
+  flex-basis: 53.33%;
+  overflow: auto;
+  height: 100%;
+}
 .container {
   border-radius: 8px;
   box-shadow: 0 12px 24px 0 rgba(0, 0, 0, 0.1);
@@ -30,14 +44,6 @@
   height: 100%;
 }
 
-.left {
-  flex-basis: 66.66%;
-}
-.right {
-  flex-basis: 33.33%;
-  overflow: auto;
-  height: 100%;
-}
 
 .h1 {
   font-size: 30px;
@@ -77,7 +83,10 @@
   box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.1);
   border: solid 1px #3e89ec;
 }
-
+a.option{
+  color: #333;
+  text-decoration: none;;
+}
 .inputContainer {
   width: 100%;
   margin: 50px auto;
@@ -92,89 +101,11 @@
   /* small ui discussion, do we need the shadow?  */
   /* box-shadow: none; */
 }
-.leftHeader {
-  display: flex;
-  justify-content: space-between;
-  padding: 20px;
-  border-bottom: solid 1px #f0f0f0;
-}
-.leftHeader > div {
-  align-items: center;
-  font-size: 14px;
-  color: #bfc4d3;
-}
-.leftHeaderTitle {
-  font-size: 20px;
-  font-weight: bold;
-  color: #333;
-}
-.leftHeaderTitle span {
-  color: #3e89ec;
-}
-.score_container {
-  display: flex;
-  align-items: center;
-}
-.score_container p {
-  margin-bottom: 0;
-  margin-right: 10px;
-  font-size: 14px;
-  font-weight: bold;
-  color: #333;
-}
-.score-icon {
-  height: 50px;
-  width: 50px;
-  float: left;
-  position: relative;
-}
 
-.score {
-  width: 36px;
-  height: 36px;
-  opacity: 0.96;
-  border-radius: 50px;
-  background-color: #edbc4d;
-  margin-top: 10px;
-  margin-left: 6px;
-  position: absolute;
-  text-align: center;
-  line-height: 36px;
-  color: white;
-}
-
-.leftBody {
-  display: flex;
-}
-
-.leftBodyNav {
-  width: 200px;
-}
-
-.leftBodyNav > div {
-  width: 180px;
-  height: 61px;
-  background-color: #f2f4f9;
-  font-size: 16px;
-  font-weight: bold;
-  color: #333;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.leftBodyNav > div.leftBodyNavSelected {
-  background-color: #ffffff;
-  color: #3e89ec;
-}
-
-.leftBodyContent {
-  padding: 2.5rem;
-  width: 100%;
-}
 .BodyContentTitle {
   font-size: 20px;
   font-weight: bold;
+  margin: 10px 0;
 }
 .BodyItem,
 .BodyItemBG {
@@ -203,11 +134,42 @@
   border-bottom: 1px solid #2abc6e;
   padding: 5px;
 }
+.BodyItemUnderlineBad {
+  color: #ff6565;
+  border-bottom: 1px solid #ff6565;
+  padding: 5px;
+}
 
 .BodyItemUnderKeywords {
   color: #2abc6e;
   display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
 }
-.BodyItemUnderKeywords span {
+.BodyItemUnderKeywordsBad {
+  color: #ff6565;
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+.BodyItemUnderKeywords span,
+.BodyItemUnderKeywordsBad span {
   padding-right: 0.625rem;
 }
+
+.job-details-description {
+  height: 581px;
+  font-size: 16px;
+  line-height: 2;
+  color: #333333;
+  padding: 20px 0;
+}
+
+.job-details-description-label {
+  height: 26px;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+

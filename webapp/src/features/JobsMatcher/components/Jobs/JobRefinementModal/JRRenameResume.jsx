@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
 import { useI8n } from 'shell/i18n';
+import { useHistory } from 'react-router-dom';
 
 import { Form, Button } from 'react-bootstrap';
-import styles from '../../../styles/JobRefinement.module.css';
+import styles from '../../../styles/JobRefinementModal.module.css';
 
-const JRRenameResume = ({ stepHandler }) => {
+const JRRenameResume = () => {
 	const messages = useI8n();
+	const history = useHistory();
 
 	const [inputValue, setInputValue] = useState('');
 
 	const handleRenameResume = e => {
 		e.preventDefault();
-		stepHandler(3);
-		// todo: call rename api?
+		// todo: save resume name
 	};
 
 	return (

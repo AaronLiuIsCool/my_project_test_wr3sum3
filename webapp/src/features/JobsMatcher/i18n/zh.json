@@ -18,14 +18,6 @@
   "refinement_yes_overwrite":"好的，直接覆盖就行",
   "refinement_name_it":"请您为这份新简历命名",
   "refinement_name_suggestion":"建议用简历类别，比如 [咨询] [投行] [战投] 或者是 [岗位名称+公司名称] 的形式来来命名以方便查询",
-  "refinement_confirm":"确认",
-  "refinement_selected_resume":"所选简历",
-  "refinement_finance":"金融分析师",
-  "refinement_selected_resume_hint":"针对您想申请的这个岗位，我们推荐您优化一下我们发现的岗位匹配度上的一些问题",
-  "refinement_major_match":"专业匹配度",
-  "refinement_education_match":"学历匹配度",
-  "refinement_keyword_match":"关键词匹配度",
-  "refinement_experience_match":"经历年限匹配",
-  "refinement_certificate_match":"技能证书匹配"
+  "refinement_confirm":"确认"
 }
   
