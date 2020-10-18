@@ -6,7 +6,7 @@
       with:includeScripts="true"
 >
 <th:block layout:fragment="content">
-  <div class="content-body">
+  <div class="content-body desktop">
     <p class="title">
       登入
     </p>
@@ -52,6 +52,94 @@
       </div>
     </form>
     <p class="label">我还没有账号 <a th:href="@{/sign-up}" href="signup.html">点击注册</a></p>
+  </div>
+  <style>
+    .mobile {
+      display: none;
+    }
+    .mobile * {
+      margin: 0;
+      padding: 0;
+    }
+    .logo-container {
+      margin: 25px auto 45px;
+      text-align: center;
+    }
+    .image-container {
+      margin: 0 auto 40px;
+      width: calc(100% - 160px);
+    }
+    .image-container > img {
+      width: 100%;
+    }
+    .text-content {
+      width: calc(100% - 80px);
+      margin: 0 auto;
+      text-align: center;
+    }
+    .text-content > h2 {
+      font-size: 30px;
+      font-weight: bold;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: 1.5;
+      letter-spacing: 0.9px;
+      text-align: center;
+      color: #333333;
+      margin-bottom: 18px;
+    }
+    .text-content > p {
+      font-family: MicrosoftYaHei;
+      font-size: 16px;
+      font-weight: normal;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: 1.5;
+      letter-spacing: normal;
+      text-align: center;
+      color: #8e94a7;
+      margin-bottom: 10px;
+    }
+    .button {
+      margin: 30px auto;
+      text-align: center;
+    }
+    .button > a {
+      display: inline-block;
+      width: 110px;
+      height: 39px;
+      border-radius: 4px;
+      background-color: #3e89ec;
+      font-size: 14px;
+      line-height: 39px;
+      color: #ffffff;
+    }
+    @media screen and (max-width: 767px) {
+        .mobile {
+            display: block;
+        }
+        .desktop {
+            display: none;
+        }
+    }
+  </style>
+  <div class="mobile">
+    <div class="logo-container">
+      <img src="@{img//logo.svg}" />
+    </div>
+    <div class="image-container">
+      <img src="@{img/devices.png}" />
+    </div>
+    <div class="text-content">
+      <h2>不好意思</h2>
+      <p>我们的服务现在暂时还不支持手机或者平板移动设备的浏览器</p>
+      <p>
+        请您在您的家用PC或者手提电脑上打开我们网站以确保您能够顺利使用我们所提供的服务
+      </p>
+    </div>
+    <div class="button">
+      <a>好我知道了</a>
+    </div>
   </div>
 </th:block>
 </html>
