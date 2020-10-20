@@ -38,6 +38,28 @@ async function findMatchingJobs(query, country, city, pageNumber) {
     return await matchingServices.searchJobs(query, country, city, pageNumber);
 }
 
+function getQuery(resumeDto = {}) {
+    const {keywords = [], majors = []} = resumeDto;
+    if (majors.length > 0) {
+        return majors[0];
+    } else if (keywords.length > 0) {
+        return keywords[0];
+    }
+    return '';
+}
+
+function getCountry(resumeDto = {}) {
+    const {location} = resumeDto;
+    const country = location?.country || '';
+    return country !== 'undefined' ? country : '';
+}
+
+function getCity(resumeDto = {}) {
+    const {location} = resumeDto;
+    const city = location?.city || '';
+    return city !== 'undefined' ? city : '';
+}
+
 const JobMatcher = ({ resume }) => {
     const language = useSelector(selectLanguage);
     const messages = language === 'zh' ? zh : en;
@@ -83,8 +105,11 @@ const JobMatcher = ({ resume }) => {
 
     useEffect(() => {
         getResumeMatchingInfo(resume).then((resumeDto) => {
-            matchingServices.setContext({...resumeDto, userId});
-            handleSearch();
+            matchingServices.setContext({...resumeDto, userId, resumeUuid: resume});
+            const query = getQuery(resumeDto);
+            const country = getCountry(resumeDto);
+            const city = getCity(resumeDto);
+            handleSearch(query, country, city);
             setReady(true);
         });
     }, []); // eslint-disable-line
@@ -106,7 +131,8 @@ const JobMatcher = ({ resume }) => {
 };
 
 JobMatcher.propTypes = {
-    resume: PropTypes.string
+    resume: PropTypes.string,
+    page: PropTypes.number
 };
 
 export default JobMatcher;

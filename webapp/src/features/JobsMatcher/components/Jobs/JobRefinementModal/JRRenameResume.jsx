@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import { useI8n } from 'shell/i18n';
-import { useHistory } from 'react-router-dom';
 
 import { Form, Button } from 'react-bootstrap';
 import styles from '../../../styles/JobRefinementModal.module.css';
 
 const JRRenameResume = () => {
 	const messages = useI8n();
-	const history = useHistory();
 
 	const [inputValue, setInputValue] = useState('');
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Redirect } from 'react-router-dom';
 import JROverWriteResume from './JROverWriteResume';
 import JRRenameResume from './JRRenameResume';
 
@@ -7,7 +7,7 @@ import styles from '../../../styles/JobRefinementModal.module.css';
 import CloseHoverIcon from '../../../assets/close_hover.svg';
 import CloseRegularIcon from '../../../assets/close_regular.svg';
 
-const renderModalSteppers = (jobId, resumeId, history, modalOpenHandler, step, setStep) => {
+const renderModalSteppers = (jobId, resumeId, modalOpenHandler, step, setStep) => {
 
 	return (
 		<>
@@ -17,7 +17,7 @@ const renderModalSteppers = (jobId, resumeId, history, modalOpenHandler, step, s
 			</div>
 			{step === 1 && <JROverWriteResume stepHandler={setStep} />}
 			{step === 2 && <JRRenameResume />}
-			{step === 3 && history.push(`/refinement?jobId=${jobId}&resumeId=${resumeId}`)}
+			{step === 3 && <Redirect push to={`/refinement?jobId=${jobId}&resumeId=${resumeId}`} />}
 		</>
 	);
 };
@@ -30,7 +30,7 @@ const JobRefinementModal = ({ data, modalOpenHandler, selectedJob }) => {
 
 	return (
 		<div className={styles.container}>
-			<div className={styles.body}>{Boolean(data) ? renderModalSteppers(data.jobs[selectedJob].jobUuid, resumeId, history, modalOpenHandler, step, setStep) : null}</div>
+			<div className={styles.body}>{Boolean(data) ? renderModalSteppers(data.jobs[selectedJob].jobUuid, resumeId, modalOpenHandler, step, setStep) : null}</div>
 		</div>
 	);
 };
