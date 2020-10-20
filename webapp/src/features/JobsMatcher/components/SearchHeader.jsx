@@ -12,7 +12,7 @@ const SearchHeader = ({ onSearch, initial = {} }) => {
     const [query, setQuery] = useState(initial.query);
     const [country, setCountry] = useState(initial.country);
     const [city, setCity] = useState(initial.city);
-
+    
     return (
         <Form className={styles.container}>
             <Row>

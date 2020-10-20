@@ -9,21 +9,21 @@ import { timeSince } from '../../../utils/time';
 
 import styles from '../../../styles/JobDetails.module.css';
 
-const DetailHeader = ({ data, showExtraInfo=true }) => {
+const DetailHeader = ({ data }) => {
     const messages = useI8n();
 
     return (
         <div className={styles["job-details-header"]}>
             <div className={styles["job-details-title"]}>
                 {data.positionTitle}
-                <span className={styles["job-details-title-off"]}>{timeSince(data.postDate)}</span>
+                <span className={styles["job-details-title-off"]}>{timeSince(data?.postDate)}</span>
             </div>
             <div className={styles["job-details-subtitle"]}>
-                <span className={styles["job-details-subtitle-company"]}>{data.companyName}</span>
-                <span className={styles["job-details-subtitle-location"]}>{`${data.location.country} ${data.location.city}`}</span>
+                <span className={styles["job-details-subtitle-company"]}>{data?.companyName}</span>
+                <span className={styles["job-details-subtitle-location"]}>{`${data?.location?.country || ''} ${data?.location?.city || ''}`}</span>
                 {/* <span className={styles["job-details-subtitle-salary"]}>{`${data.salaryMin} ~ ${data.salaryMax}`}</span> */}
             </div>
-            {showExtraInfo && (<div className={styles["job-details-actions"]}>
+            <div className={styles["job-details-actions"]}>
                 <div className={styles["job-details-actions-left"]}>
                     <span className={styles["job-details-action"]}>
                         <BookmarkIcon className={styles["job-details-action-icon"]} />
@@ -39,7 +39,7 @@ const DetailHeader = ({ data, showExtraInfo=true }) => {
                         {messages["job-details-apply"]}
                     </Button>
                 </div>
-            </div>)}
+            </div>
         </div>
     );
 };

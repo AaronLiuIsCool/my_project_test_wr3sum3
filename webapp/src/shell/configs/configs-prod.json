@@ -11,6 +11,8 @@
 
   "services-job-baseUrl": "job.smartresume.careers",
 
+  "services-matching-baseUrl": "matching.smartresume.careers",
+
   "services-kdr-baseUrl": "kdr.smartresume.careers",
 
   "services-mail-baseUrl": "mail.smartresume.careers",

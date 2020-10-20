@@ -1,0 +1,14 @@
+{
+  "job_finishing_touches": "对岗精修",
+  "job_details_description": "职位描述",
+  "refinement_selected_resume":"所选简历",
+  "refinement_selected_resume_hint":"针对您想申请的这个岗位，我们推荐您优化一下我们发现的岗位匹配度上的一些问题",
+  "MajorScoreRule":"专业匹配度",
+  "refinement_education_match":"学历匹配度",
+  "KeywordScoreRule":"关键词匹配度",
+  "refinement_experience_match":"经历年限匹配",
+  "refinement_certificate_match":"技能证书匹配",
+  "resume_already_in_use": "简历中已用",
+  "resume_still_need": "岗位还要求",
+  "save": "保存"
+}

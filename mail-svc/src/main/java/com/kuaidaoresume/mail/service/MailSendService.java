@@ -70,11 +70,13 @@ public class MailSendService {
                 StandardCharsets.UTF_8.name());
 
         org.thymeleaf.context.Context tlContext = new org.thymeleaf.context.Context();
-        System.out.println(req.getModel());
 
         tlContext.setVariables(req.getModel());
         // TODO: Aaron Liu switch to other templates as necessary
-        String html = templateEngine.process("welcome-email-template", tlContext);
+        String html =
+                req.getModel().get("type").toString().equals("activateOrConfirm") ?
+                        templateEngine.process("welcome-email-template", tlContext):
+                        templateEngine.process("forget-password-email-template", tlContext);
 
         helper.setTo(req.getTo());
         helper.setText(html, true);

@@ -84,6 +84,14 @@ public class AccountService {
         return this.convertToDto(account);
     }
 
+    public AccountDto getByOpenId(final String openId) {
+        Account account = accountRepo.findAccountByOpenid(openId);
+        if (account == null) {
+            throw new ServiceException(String.format(("Wechat user with open id %s not found"), openId));
+        }
+        return this.convertToDto(account);
+    }
+
     //public AccountDto create(String name, String email, String phoneNumber) {
     public AccountDto create(String name, String email) {
         if (StringUtils.hasText(email)) {
@@ -152,11 +160,13 @@ public class AccountService {
                 throw new ServiceException("A wechat user with that email already exists. Try to not use wechat login.");
             }
         }
+
+        final String openId = weChatAccountDto.getOpenid();
         Account account = Account.builder()
-                .email(weChatAccountDto.getEmail())
-                .name(weChatAccountDto.getNickname())
-                .openid(weChatAccountDto.getOpenid())
-                .photoUrl(weChatAccountDto.getHeadimgurl())
+                .email(openId + "@kuaidaoemail.com")
+                .name(":)")
+                .openid(openId)
+//                .photoUrl(weChatAccountDto.getHeadimgurl()) // TODO: Add these back when we add in avatar
                 .loginType("wechat")
                 .build();
 
@@ -273,6 +283,19 @@ public class AccountService {
         }
         // newAccount.setPhotoUrl(Helper.generateGravatarUrl(newAccount.getEmail()));
         try {
+            if(existingAccount.getResumes() != null) {
+                for(Resume resume : existingAccount.getResumes()) {
+                    /**
+                     * 1. we just need to set here because the saveAccountNonEssentialInfo later is transactional and we have cascade
+                     * 2. new account already has the resumes because it was foundByid System.out.println(newAccount.getResumes());
+                     * 3. because we're only updating account, resumes should point to the "new" account,
+                     *    new in the sense that it is updated and needs to be cascaded, whereas account still points to the same resumes.
+                     *    In a sense we're only updating one side of the relationship.
+                     * TODO: decouple resume account as much as possible to a transit/process services or consumer side.
+                     */
+                    resume.setAccount(newAccount);
+                }
+            }
             accountRepo.saveAccountNonEssentialInfo(newAccount.getOpenid(), newAccount.getName(),
                     newAccount.getPhotoUrl(), newAccount.getLoginType(), newAccount.getId());
         } catch (Exception ex) {
@@ -446,15 +469,17 @@ public class AccountService {
             serviceHelper.handleException(logger, ex, errMsg);
             throw new ServiceException(errMsg, ex);
         }
+        Map<String, Object> emailModel = new HashMap();
 
         String htmlBody = null;
         if (activateOrConfirm) { // active or confirm
             htmlBody = String.format(template, name, link.toString(), link.toString(), link.toString());
+            emailModel.put("type", "activateOrConfirm");
         } else { // reset
             htmlBody = String.format(template, link.toString(), link.toString());
+            emailModel.put("type", "resetPassword");
         }
 
-        Map<String, Object> emailModel = new HashMap();
         emailModel.put("name", name);
         emailModel.put("link", link);
 

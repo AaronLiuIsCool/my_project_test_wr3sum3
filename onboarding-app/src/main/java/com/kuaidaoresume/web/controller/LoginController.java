@@ -2,6 +2,7 @@ package com.kuaidaoresume.web.controller;
 
 import com.github.structlog4j.ILogger;
 import com.github.structlog4j.SLoggerFactory;
+import com.kuaidaoresume.web.service.WeChatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,7 +17,6 @@ import com.kuaidaoresume.common.auth.AuthConstant;
 import com.kuaidaoresume.common.auth.AuthContext;
 import com.kuaidaoresume.common.auth.Sessions;
 import com.kuaidaoresume.common.env.EnvConfig;
-import com.kuaidaoresume.common.env.EnvConstant;
 import com.kuaidaoresume.common.services.Service;
 import com.kuaidaoresume.common.services.ServiceDirectory;
 import com.kuaidaoresume.web.props.AppProps;
@@ -27,8 +27,10 @@ import com.kuaidaoresume.web.view.PageFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.Map;
 
 @Controller
@@ -62,6 +64,19 @@ public class LoginController {
                         HttpServletResponse response) {
 
         LoginPage loginPage = pageFactory.buildLoginPage();
+
+        try {
+            String wechatCallbackUrl = HelperService.buildUrl("http", "www." + envConfig.getExternalApex() + "/wechat_callback");
+            wechatCallbackUrl = URLEncoder.encode(wechatCallbackUrl, "UTF-8");
+            loginPage.setWechatLoginUrl(
+                    "https://open.weixin.qq.com/connect/qrconnect?" +
+                            "appid=" + WeChatService.WECHAT_APP_ID +
+                            "&redirect_uri=" + wechatCallbackUrl +
+                            "&response_type=code&scope=snsapi_login#wechat_redirect"
+            );
+        } catch (UnsupportedEncodingException exception) {
+            logger.error("Set wechat callback url failed", exception);
+        }
         loginPage.setReturnTo(returnTo); // for GET
 
         // if logged in - go away

@@ -11,6 +11,7 @@ import org.springframework.core.io.ClassPathResource;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -36,7 +37,7 @@ public class NumericWordMatcherImpl implements NumericWordMatcher {
         digitsPattern = Pattern.compile("[-\\+$¥]?(\\d+|\\d{1,3}(,\\d{3})*)(\\.\\d+)?%?([\\.,;!\\+])?");
         List<String> numericWords = new ArrayList<>();
         ClassPathResource resource = new ClassPathResource("matching/numeric-words.txt");
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(resource.getInputStream()))) {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(resource.getInputStream(), Charset.forName("UTF-8")))) {
             String numericWord;
             while ((numericWord = br.readLine()) != null) {
                 numericWords.add(numericWord);

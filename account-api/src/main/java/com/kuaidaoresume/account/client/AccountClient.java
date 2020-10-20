@@ -20,6 +20,9 @@ public interface AccountClient {
     @PostMapping(path = "/create")
     GenericAccountResponse createAccount(@RequestHeader(AuthConstant.AUTHORIZATION_HEADER) String authz, @RequestBody @Valid CreateAccountRequest request);
 
+    @PostMapping(path = "/create_account_by_wechat")
+    GenericAccountResponse createAccountByWechat(@RequestHeader(AuthConstant.AUTHORIZATION_HEADER) String authz, @RequestBody @Valid WechatAccountDto newWechatAccountDto);
+
     @PostMapping(path = "/track_event")
     BaseResponse trackEvent(@RequestBody @Valid TrackEventRequest request);
 
@@ -38,6 +41,9 @@ public interface AccountClient {
 
     @GetMapping(path = "/get")
     GenericAccountResponse getAccount(@RequestHeader(AuthConstant.AUTHORIZATION_HEADER) String authz, @RequestParam @NotBlank String userId);
+
+    @GetMapping(path = "/getByOpenId")
+    GenericAccountResponse getAccountByOpenId(@RequestHeader(AuthConstant.AUTHORIZATION_HEADER) String authz, @RequestParam @NotBlank String openId);
 
     @PutMapping(path = "/update")
     GenericAccountResponse updateAccount(@RequestHeader(AuthConstant.AUTHORIZATION_HEADER) String authz, @RequestBody @Valid AccountDto newAccount);
