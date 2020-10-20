@@ -84,6 +84,14 @@ public class AccountService {
         return this.convertToDto(account);
     }
 
+    public AccountDto getByOpenId(final String openId) {
+        Account account = accountRepo.findAccountByOpenid(openId);
+        if (account == null) {
+            throw new ServiceException(String.format(("Wechat user with open id %s not found"), openId));
+        }
+        return this.convertToDto(account);
+    }
+
     //public AccountDto create(String name, String email, String phoneNumber) {
     public AccountDto create(String name, String email) {
         if (StringUtils.hasText(email)) {
@@ -152,11 +160,13 @@ public class AccountService {
                 throw new ServiceException("A wechat user with that email already exists. Try to not use wechat login.");
             }
         }
+
+        final String openId = weChatAccountDto.getOpenid();
         Account account = Account.builder()
-                .email(weChatAccountDto.getEmail())
-                .name(weChatAccountDto.getNickname())
-                .openid(weChatAccountDto.getOpenid())
-                .photoUrl(weChatAccountDto.getHeadimgurl())
+                .email(openId + "@kuaidaoemail.com")
+                .name(":)")
+                .openid(openId)
+//                .photoUrl(weChatAccountDto.getHeadimgurl()) // TODO: Add these back when we add in avatar
                 .loginType("wechat")
                 .build();
 

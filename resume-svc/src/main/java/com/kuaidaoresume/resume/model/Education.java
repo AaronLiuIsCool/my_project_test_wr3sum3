@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Collection;
 
 @Data
@@ -48,9 +48,9 @@ public class Education implements ResumeContainable {
     private String degree;
 
     @NotNull
-    private Date startDate;
+    private LocalDate startDate;
 
-    private Date endDate;
+    private LocalDate endDate;
 
     @Size(min = 1, max = 4)
     @Column(length = 4)
