@@ -33,7 +33,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @Import(JpaTestConfig.class)
 public class EducationRepositoryTest {
 
-    private static final Date NOW = Date.valueOf(LocalDate.now());
+    private static final LocalDate NOW = LocalDate.now();
     private Resume resume;
     private Education education;
     private Award award;

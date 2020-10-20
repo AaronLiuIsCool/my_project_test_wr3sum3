@@ -47,11 +47,10 @@ public class WorkExperienceControllerTest {
     private static final String COUNTRY = "Canada";
     private static final String CITY = "Vancouver";
     private static final String DESCRIPTION = "I nailed it.";
-    private static final Date START_DATE = Date.valueOf(LocalDate.of(2000, 1, 1));
-    private static final Date END_DATE = Date.valueOf(LocalDate.of(2001, 1, 1));
-    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE;
-    private static final String START_DATE_TEXT = START_DATE.toLocalDate().format(FORMATTER);
-    private static final String END_DATE_TEXT = END_DATE.toLocalDate().format(FORMATTER);
+    private static final LocalDate START_DATE = LocalDate.of(2000, 1, 1);
+    private static final LocalDate END_DATE = LocalDate.of(2001, 1, 1);
+    private static final String START_DATE_TEXT = START_DATE.toString();
+    private static final String END_DATE_TEXT = END_DATE.toString();
 
     private WorkExperience workExperience;
 

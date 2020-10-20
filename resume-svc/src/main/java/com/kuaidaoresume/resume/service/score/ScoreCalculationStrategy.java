@@ -15,7 +15,7 @@ public interface ScoreCalculationStrategy<T> {
             Properties properties = new Properties();
             properties.load(in);
             String value = properties.getProperty(key);
-            return StringUtils.isNotEmpty(value) ? Integer.valueOf(value) : defaultValue;
+            return StringUtils.isNotEmpty(value) ? Integer.parseInt(value) : defaultValue;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

@@ -5,7 +5,7 @@ import com.github.structlog4j.json.JsonFormatter;
 import feign.RequestInterceptor;
 import io.sentry.Sentry;
 import io.sentry.SentryClient;
-import org.modelmapper.ModelMapper;
+import org.modelmapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -19,6 +19,9 @@ import com.kuaidaoresume.common.env.EnvConfig;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 @Configuration
 @EnableConfigurationProperties(KuaidaoresumeProps.class)
@@ -35,7 +38,30 @@ public class KuaidaoresumeConfig implements WebMvcConfigurer {
 
     @Bean
     public ModelMapper modelMapper() {
-        return new ModelMapper();
+        ModelMapper modelmapper = new ModelMapper();
+
+        Provider<LocalDate> localDateProvider = new AbstractProvider<LocalDate>() {
+            @Override
+            public LocalDate get() {
+                return LocalDate.now();
+            }
+        };
+
+        Converter<String, LocalDate> stringToLocalDateConverter = new AbstractConverter<String, LocalDate>() {
+            @Override
+            protected LocalDate convert(String source) {
+                if (Objects.isNull(source)) return null;
+                DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                LocalDate localDate = LocalDate.parse(source, format);
+                return localDate;
+            }
+        };
+
+        modelmapper.createTypeMap(String.class, LocalDate.class);
+        modelmapper.addConverter(stringToLocalDateConverter);
+        modelmapper.getTypeMap(String.class, LocalDate.class).setProvider(localDateProvider);
+        modelmapper.getConfiguration().setSkipNullEnabled(true);
+        return modelmapper;
     }
 
     @Bean
