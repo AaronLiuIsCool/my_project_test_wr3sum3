@@ -18,10 +18,10 @@ import { getLogger } from 'shell/logger';
 import degreeOptions from 'data/degree.json';
 import majorOptions from 'data/major.json';
 import univOptions from 'data/university.json';
-import cityOptions from 'data/city.json';
+import countryOptions from 'data/country.json';
 
 import { previewResume, wholePageCheck } from '../ResumePreview/resumeBuilder';
-import { generateEducationRating, generateLayoutRating } from '../../utils/resume';
+import { generateEducationRating, generateLayoutRating, updateCityOptions } from '../../utils/resume';
 
 const logger = getLogger('EducationForm');
 const resumeServices = new ResumeServices();
@@ -40,6 +40,7 @@ const fields = [
 const EducationForm = ({ data, index, isLast = false, messages }) => {
     const resumeId = useSelector(selectId);
     const [validated, setValidated] = useState(false);
+    const [cityOptions, setCityOptions] = useState([])
     const [status, setStatus] = useState({
         schoolName: {},
         gpa: {},
@@ -126,8 +127,9 @@ const EducationForm = ({ data, index, isLast = false, messages }) => {
         dispatch(actions.updateEduCity({value, index}));
     };
 
-    const handleCountryChange = (event) => {
-        const value = event.target.value;
+    const handleCountryChange = (values) => {
+        const value = values.length === 0 ? null : values[0].data
+        updateCityOptions(value, setCityOptions)
         updateStatus(validateEducationEntry, status, setStatus, "country", value);
         dispatch(actions.updateEduCountry({value, index}));
     };
@@ -201,10 +203,10 @@ const EducationForm = ({ data, index, isLast = false, messages }) => {
                         isValid={status.city.isValid} isInvalid={status.city.isInvalid} />
                 </Col>
                 <Col>
-                    <InputGroup label={messages.schoolCountry} id="education-school-country"
-                        placeholder={messages.schoolCountry} value={data.country}
-                        onChange={handleCountryChange} feedbackMessage={messages.entryIsInvalid}
-                        isValid={status.country.isValid} isInvalid={status.country.isInvalid} />
+                    <DropdownGroup label={messages.schoolCountry} id="education-school-country" placeholder={messages.schoolCountry}
+                            options={countryOptions} value={data.country}
+                            onChange={handleCountryChange} feedbackMessage={messages.entryIsInvalid}
+                            isValid={status.country.isValid} isInvalid={status.country.isInvalid} />
                 </Col>
             </Row>
 
