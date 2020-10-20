@@ -20,9 +20,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.sql.Date;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -44,11 +42,10 @@ public class CertificateControllerTest {
     private static final Long CERTIFICATE_ID = 1L;
     private static final String NAME = "CPA";
 
-    private static final Date ISSUE_DATE = Date.valueOf(LocalDate.of(2000, 1, 1));
-    private static final Date EXPIRATION_DATE = Date.valueOf(LocalDate.of(2001, 1, 1));
-    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE;
-    private static final String ISSUE_DATE_TEXT = ISSUE_DATE.toLocalDate().format(FORMATTER);
-    private static final String EXPIRATION_DATE_TEXT = EXPIRATION_DATE.toLocalDate().format(FORMATTER);
+    private static final LocalDate ISSUE_DATE = LocalDate.of(2000, 1, 1);
+    private static final LocalDate EXPIRATION_DATE = LocalDate.of(2001, 1, 1);
+    private static final String ISSUE_DATE_TEXT = ISSUE_DATE.toString();
+    private static final String EXPIRATION_DATE_TEXT = EXPIRATION_DATE.toString();
 
     private Certificate certificate;
 

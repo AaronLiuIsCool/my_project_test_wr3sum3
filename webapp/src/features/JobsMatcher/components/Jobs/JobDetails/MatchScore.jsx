@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Button from 'react-bootstrap/Button';
-import ScoreRing from './ScoreRing';
+import ScoreRing from 'components/ScoreRing';
 
 import { useI8n } from 'shell/i18n';
 

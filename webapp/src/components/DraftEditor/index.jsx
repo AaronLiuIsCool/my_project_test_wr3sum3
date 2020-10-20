@@ -16,7 +16,7 @@ import {
     addBlock,
     highlightLines
 } from './editorHelper';
-import '../../features/SmartResume/styles/validation.scss'
+
 const colorStyleMap = {
     red: {
         color: 'rgba(255, 0, 0, 1.0)'

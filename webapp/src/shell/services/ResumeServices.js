@@ -88,6 +88,14 @@ export default class ResumeServices extends BaseServices {
         }
     }
 
+    async bulkUpdateWork(resumeId, work) {
+        try {
+            return await this.put(`v1/resumes/${resumeId}/work-experiences/`, work);
+        } catch (exception) {
+            logger.error(exception);
+        }
+    }
+
     async createProject(resumeId, project) {
         try {
             return await this.post(`v1/resumes/${resumeId}/project-experiences`, project);

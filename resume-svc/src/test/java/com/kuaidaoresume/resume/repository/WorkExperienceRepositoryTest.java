@@ -32,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 @Import(JpaTestConfig.class)
 public class WorkExperienceRepositoryTest {
     
-    private static final Date NOW = Date.valueOf(LocalDate.now());
+    private static final LocalDate NOW = LocalDate.now();
 
     private static final String ROLE = "CEO";
     private static final String ORGANIZATION = "Delos Inc.";

@@ -11,7 +11,7 @@ import styles from './ProgressHeader.module.css';
 
 const resumeServices = new ResumeServices();
 const logger = getLogger('App');
-const MAXSCORE = 35;
+const MAXSCORE = 100; // TODO: Maybe this can come from the backend
 
 
 const ProgressHeader = ({ setScoreVisible, scoreVisible }) => {
