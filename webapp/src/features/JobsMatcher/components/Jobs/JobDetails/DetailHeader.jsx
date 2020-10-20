@@ -16,11 +16,11 @@ const DetailHeader = ({ data }) => {
         <div className={styles["job-details-header"]}>
             <div className={styles["job-details-title"]}>
                 {data.positionTitle}
-                <span className={styles["job-details-title-off"]}>{timeSince(data.postDate)}</span>
+                <span className={styles["job-details-title-off"]}>{timeSince(data?.postDate)}</span>
             </div>
             <div className={styles["job-details-subtitle"]}>
-                <span className={styles["job-details-subtitle-company"]}>{data.companyName}</span>
-                <span className={styles["job-details-subtitle-location"]}>{`${data?.location?.country} ${data?.location?.city}`}</span>
+                <span className={styles["job-details-subtitle-company"]}>{data?.companyName}</span>
+                <span className={styles["job-details-subtitle-location"]}>{`${data?.location?.country || ''} ${data?.location?.city || ''}`}</span>
                 {/* <span className={styles["job-details-subtitle-salary"]}>{`${data.salaryMin} ~ ${data.salaryMax}`}</span> */}
             </div>
             <div className={styles["job-details-actions"]}>

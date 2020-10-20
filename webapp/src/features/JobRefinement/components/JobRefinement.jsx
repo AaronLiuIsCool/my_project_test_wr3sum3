@@ -49,7 +49,7 @@ const JobRefinement = () => {
 			}
 			return;
 		}
-		return history.push('/')
+		return history.replace('/');
 	}
 
 	const jobDetailsSearch = async () => {

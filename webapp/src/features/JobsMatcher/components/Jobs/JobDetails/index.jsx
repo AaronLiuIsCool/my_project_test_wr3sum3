@@ -22,12 +22,13 @@ const JobDetails = ({ data = {}, modalOpenHandler }) => {
 
     useEffect(() => {
         if (!data.jobUuid) {
+            setJob(undefined);
             return;
         }
         jobServices.getJob(data.jobUuid).then(responseData => {
             setJob(responseData);
         })
-        }, [data]);
+    }, [data]);
 
     return (
         <div className={styles["container-details"]}>
