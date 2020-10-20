@@ -1,7 +1,7 @@
 * {
   margin: 0;
   padding: 0;
-  font-family: MicrosoftYaHei;
+  font-family: "微软雅黑"， MicrosoftYaHei;
 }
 
 .blue {
@@ -56,7 +56,7 @@ nav {
 }
 
 .banner {
-  background-image: url('../assets/bg-image.png');
+  background-image: url('.//assets/bg-image.png');
   height: 50rem;
   background-size: 100%;
   background-position: -40% 0%;
@@ -105,7 +105,7 @@ nav {
 }
 .banner-right::after {
   background-size: cover;
-  background-image: url('../assets/Resume_dropshadow.png');
+  background-image: url('./assets/Resume_dropshadow.png');
   content: "";
   display: block;
   position: absolute;
@@ -240,7 +240,7 @@ p > .dot {
 }
 
 a.button {
-
+  
   width: 224px;
   height: 41px;
   border-radius: 4px;
@@ -280,7 +280,7 @@ a.button {
   overflow: visible;
 }
 .svg1::after {
-  top: -125px;
+  top: -90px;
   left: -222px;
   content: "";
   display: block;
@@ -299,7 +299,7 @@ a.button {
   width: 800px;
   height: 756px;
   position: absolute;
-  background-image: url(../assets/cloud_3.svg);
+  background-image: url(./assets/cloud_3.svg);
   background-position: 0%;
   background-size: contain;
   background-repeat: no-repeat;
@@ -313,7 +313,7 @@ a.button {
   width: 900px;
   height: 800px;
   position: absolute;
-  background-image: url('../assets/cloud_2.svg');
+  background-image: url('./assets/cloud_2.svg');
   background-position: 0%;
   background-repeat: no-repeat;
 }
@@ -331,7 +331,228 @@ a.button {
   width: 740px;
   height: 756px;
   position: absolute;
-  background-image: url('../assets/cloud_4.svg');
+  background-image: url('./assets/cloud_4.svg');
   background-position: 0%;
   background-repeat: no-repeat;
+}
+.display-mobile {
+  display: none;
+}
+.logo {
+  text-align: center;
+  margin-bottom: 40px;
+}
+.btn-trial {
+  text-align: center; 
+  margin-top: 1.75rem
+}
+.text-content > .image-wrapper {
+  display: none;
+}
+p.action-item {
+  margin-top: 30px;
+  text-align: center;
+  position: relative;
+  z-index: 111;
+}
+.action-item > a {
+  display: inline-block;
+  width: 124px;
+  height: 39px;
+  border-radius: 4px;
+  background-color: #3e89ec;
+  line-height: 39px;
+  color: #fff;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 767px) {
+  .section02 h2 {
+      font-size: 30px;
+      margin: 0 auto 32px;
+      width: calc(100% - 80px);
+  }
+  .section02 .row {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      width: calc(100% - 70px);
+      padding-top: 0;
+  }
+  .col {
+      font-size: 0;
+      width: calc(33.33% - 6px);
+      margin-bottom: 20px;
+      height: auto;
+  }
+  .divider {
+      margin-bottom: 50px;
+  }
+  p.action-item {
+      margin-bottom: 10px;
+  }
+  .svg1::after, .svg3::after, .svg2::after, .svg4::after {
+      display: none;
+  }
+  .row {
+      width: 100%;
+  }
+  .image-text-row {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      padding-top: 0;
+  }
+  .hidden-mobile {
+      display: none;
+  }
+  .row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+  }
+  .col-4 {
+      width: calc(100% - 90px);
+      padding: 0;
+      margin-bottom: 40px;
+  }
+  .logo {
+      width: 100%;
+      text-align: center;
+      margin-bottom: 60px;
+  }
+  .links {
+      width: calc(100% - 192px);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      margin: 0 auto;
+      padding-bottom: 0;
+  }
+  .links > a {
+      margin: 0 0 60px;
+      width: 50%;
+      text-align: center;
+  }
+  .display-mobile {
+      display: block;
+  }
+  .record, .copyright {
+      font-size: 14px;
+  }
+  a.button {
+      font-size: 14px;
+  }
+  .col-4 .image-container {
+      width: 80px;
+      height: 80px;
+  }
+  .col-4 > p {
+      margin: 0 auto;
+  }
+  p.test-name {
+      font-size: 18px;
+      margin: 20px auto 10px;
+  }
+  p.title {
+      margin-bottom: 20px;
+  }
+  p.title > span {
+      font-size: 12px;
+  }
+  .btn-trial {
+      margin-top: 0;
+  }
+  .section02 h2, .section03 h2 {
+      text-align: center;
+      font-size: 30px;
+      padding-bottom: 0;
+  }
+  .text-left, .text-right {
+      margin-left: 0;
+      margin-right: 0;
+      width: calc(100% - 80px);
+  }
+  .text-content > h3 {
+      text-align: center;
+      margin-bottom: 20px;
+  }
+  .text-content > .image-wrapper {
+      display: block;
+      text-align: center;
+      margin-bottom: 20px;
+  }
+  .text-content > p {
+      text-align: center;
+  }
+  .image-wrapper > img {
+      width: 100%;
+  }
+  .image-right, .image-left {
+      display: none;
+  }
+  .banner {
+      border-top: 1px solid #f2f4f9;
+      background-image: url('./assets/bannerBG.png');
+      background-image: none;
+      height: 580px;
+      background-size: 100%;
+      background-position: 0% 0%;
+      overflow: visible;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+      position: relative;
+  }
+  .banner-left {
+      width: 100%;
+      top: 30px;
+      left: 0;
+  }
+  .banner-left > * {
+      width: calc(100% - 80px);
+      margin: 0 auto;
+      text-align: center;
+  } 
+  .banner-left > h1 {
+      line-height: 1.5;
+      font-size: 30px;
+      margin-bottom: 30px;
+  }
+  .banner-left > p {
+      font-size: 18px;
+      font-family: "微软雅黑";
+      color: #8e94a7;
+      line-height: 2;
+  }
+  .banner-left > a {
+      display: none;
+  }
+  .banner > .banner-image {
+      width: 100%;
+  }
+  .banner-image > img {
+      width: 100%;
+  }
+  .banner-right {
+      display: none;
+  }
+  .banner-resume {
+      position: relative;
+      z-index: 111;
+      margin-top: -260px;
+      width: 100%;
+  }
+  .banner-resume > img {
+      width: 100%;
+  }
+  footer {
+      border-top: 1px solid #f2f4f9;
+  }
+  .section02 {
+      padding-top: 20px;
+  }
+  .image-text-row:last-child {
+      padding-bottom: 0;
+  }
 }
