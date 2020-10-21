@@ -22,8 +22,9 @@ const CertificateExperience = () => {
 			title={messages.certificate}
 			subtitle={messages.certificateInfo}
 			icon="job.svg"
-			addMore={true}
-			addMoreMessage={messages.addNewExperience}
+      addMore={true}
+      
+			addMoreMessage={messages.addNewCertificate}
 			handleAddMore={() => dispatch(actions.addNewCertificate())}>
 			{getForms(Certificate.data, messages)}
 		</Step>

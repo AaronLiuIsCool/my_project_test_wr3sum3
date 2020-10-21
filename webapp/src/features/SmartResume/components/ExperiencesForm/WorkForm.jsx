@@ -260,7 +260,19 @@ const WorkForm = ({ data, index, isLast = false, messages, workData }) => {
 						/>
 					</Col>
 				)}
-
+        <Col>
+          <DropdownGroup
+              label={messages.country}
+              id='work-country'
+              placeholder={messages.workCountry}
+              options={countryOptions}
+              value={data.workCountry}
+              onChange={handleWorkCountryChange}
+              feedbackMessage={messages.entryIsInvalid}
+              isValid={status.workCountry.isValid}
+              isInvalid={status.workCountry.isInvalid}
+            />
+				</Col>
 				<Col>
 					<DropdownGroup
 						label={messages.city}
@@ -273,19 +285,6 @@ const WorkForm = ({ data, index, isLast = false, messages, workData }) => {
 						isValid={status.workCity.isValid}
 						isInvalid={status.workCity.isInvalid}
 					/>
-				</Col>
-				<Col>
-          <DropdownGroup
-              label={messages.country}
-              id='work-country'
-              placeholder={messages.workCountry}
-              options={countryOptions}
-              value={data.workCountry}
-              onChange={handleWorkCountryChange}
-              feedbackMessage={messages.entryIsInvalid}
-              isValid={status.workCountry.isValid}
-              isInvalid={status.workCountry.isInvalid}
-            />
 				</Col>
 			</Row>
 

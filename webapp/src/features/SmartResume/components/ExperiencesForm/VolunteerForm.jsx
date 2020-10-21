@@ -259,6 +259,19 @@ const VolunteerForm = ({ data, index, isLast = false, messages, volunteerData })
 						/>
 					</Col>
 				)}
+        <Col>
+          <DropdownGroup
+              label={messages.country}
+              id="volunteer-country"
+              placeholder={messages.experienceCountry}
+              options={countryOptions}
+              value={data.volunteerCountry}
+              onChange={handleCountryChange}
+              feedbackMessage={messages.entryIsInvalid}
+              isValid={status.volunteerCountry.isValid}
+              isInvalid={status.volunteerCountry.isInvalid}
+					/>
+				</Col>
 				<Col>
 					<DropdownGroup
 						label={messages.city}
@@ -270,19 +283,6 @@ const VolunteerForm = ({ data, index, isLast = false, messages, volunteerData })
 						feedbackMessage={messages.entryIsInvalid}
 						isValid={status.volunteerCity.isValid}
 						isInvalid={status.volunteerCity.isInvalid}
-					/>
-				</Col>
-				<Col>
-          <DropdownGroup
-              label={messages.country}
-              id="volunteer-country"
-              placeholder={messages.experienceCountry}
-              options={countryOptions}
-              value={data.volunteerCountry}
-              onChange={handleCountryChange}
-              feedbackMessage={messages.entryIsInvalid}
-              isValid={status.volunteerCountry.isValid}
-              isInvalid={status.volunteerCountry.isInvalid}
 					/>
 				</Col>
 			</Row>

@@ -197,16 +197,16 @@ const EducationForm = ({ data, index, isLast = false, messages }) => {
                         isValid={status.degree.isValid} isInvalid={status.degree.isInvalid} />
                 </Col>
                 <Col>
-                    <DropdownGroup label={messages.schoolCity} id="education-school-city" placeholder={messages.schoolCity}
-                        options={cityOptions} value={data.city}
-                        onChange={handleCityChange} feedbackMessage={messages.entryIsInvalid}
-                        isValid={status.city.isValid} isInvalid={status.city.isInvalid} />
-                </Col>
-                <Col>
                     <DropdownGroup label={messages.schoolCountry} id="education-school-country" placeholder={messages.schoolCountry}
                             options={countryOptions} value={data.country}
                             onChange={handleCountryChange} feedbackMessage={messages.entryIsInvalid}
                             isValid={status.country.isValid} isInvalid={status.country.isInvalid} />
+                </Col>
+                <Col>
+                    <DropdownGroup label={messages.schoolCity} id="education-school-city" placeholder={messages.schoolCity}
+                        options={cityOptions} value={data.city}
+                        onChange={handleCityChange} feedbackMessage={messages.entryIsInvalid}
+                        isValid={status.city.isValid} isInvalid={status.city.isInvalid} />
                 </Col>
             </Row>
 

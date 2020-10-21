@@ -253,6 +253,19 @@ const ProjectForm = ({ data, index, isLast = false, messages, projectData }) => 
 						/>
 					</Col>
 				)}
+        <Col>
+          <DropdownGroup
+              label={messages.country}
+              id='project-country'
+              placeholder={messages.projectCountry}
+              options={countryOptions}
+              value={data.projectCountry}
+              onChange={handleCountryChange}
+              feedbackMessage={messages.entryIsInvalid}
+              isValid={status.projectCountry.isValid}
+              isInvalid={status.projectCountry.isInvalid}
+            />
+				</Col>
 				<Col>
 					<DropdownGroup
 						label={messages.city}
@@ -265,19 +278,6 @@ const ProjectForm = ({ data, index, isLast = false, messages, projectData }) => 
 						isValid={status.projectCity.isValid}
 						isInvalid={status.projectCity.isInvalid}
 					/>
-				</Col>
-				<Col>
-          <DropdownGroup
-              label={messages.country}
-              id='project-country'
-              placeholder={messages.projectCountry}
-              options={countryOptions}
-              value={data.projectCountry}
-              onChange={handleCountryChange}
-              feedbackMessage={messages.entryIsInvalid}
-              isValid={status.projectCountry.isValid}
-              isInvalid={status.projectCountry.isInvalid}
-            />
 				</Col>
 			</Row>
 			<Row>
