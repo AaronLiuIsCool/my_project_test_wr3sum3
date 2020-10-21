@@ -4,11 +4,8 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
-import thumbnail from '../../assets/thumbnail@2x.png'; 
 import { ReactComponent as EditIcon } from '../../assets/edit.svg'; 
 import { ReactComponent as Download } from '../../assets/download.svg'; 
-import { ReactComponent as ShareIcon } from '../../assets/share.svg'; 
-import { ReactComponent as DuplicateIcon } from '../../assets/duplicate.svg'; 
 import { ReactComponent as DeleteIcon } from '../../assets/delete.svg'; 
 
 import { selectUserId } from 'features/App/slicer';
