@@ -18,6 +18,7 @@ import { getLogger } from 'shell/logger';
 import { useI8n } from 'shell/i18n';
 
 import styles from '../../styles/Hub.module.css';
+import { downloadPDF } from 'features/SmartResume/components/ResumePreview/resumeBuilder';
 
 const logger = getLogger('ResumeHubItem');
 const accountServices = new AccountServices();
@@ -40,10 +41,13 @@ const Grid = ({ resume }) => {
         }
     }
 
+    const handleDownloadPDF = (e) => {
+      e.preventDefault();
+      downloadPDF(messages.RPreview);
+    }
     return (
         <div className={styles.itemContainer}>
             <div className={styles.itemContent}>
-                <img src={thumbnail} width={160} height={208} alt="Thumbnail" />
                 <div className={styles.right}>
                     <div className={styles.name}>
                         {resume.alias}
@@ -52,22 +56,13 @@ const Grid = ({ resume }) => {
                         {new Date(resume.createdAt).toLocaleDateString()}
                     </div>
                     <div className={styles.links}>
-                        <Button as={Link} variant="link" to={`/resume/${resume.resumeId}`} className={styles.link} >
-                            <EditIcon /> {messages['hub_item_edit']}
+                        <Button as={Link} variant="link" to={`/resume/${resume.resumeId}`} className={styles.link} ><EditIcon className={styles.svg} /> {messages['hub_item_edit']}
                         </Button>
-                        <Button as={Link} variant="link" className={styles.link} to={'#'}>
-                            <Download /> {messages['hub_item_download']}
-                        </Button>
-                        <Button as={Link} variant="link" className={styles.link} to={'#'}>
-                            <ShareIcon /> {messages['hub_item_share']}
-                        </Button>
-                        <Button as={Link} variant="link" className={styles.link} to={'#'}>
-                            <DuplicateIcon /> {messages['hub_item_duplicate']}
+                        <Button onClick={handleDownloadPDF} as={Link} variant="link" className={styles.link} to={'#'}><Download className={styles.svg} /> {messages['hub_item_download']}
                         </Button>
                     </div>
                     <Button variant="link" className={styles.delete}
-                        onClick={handleDelete} >
-                        <DeleteIcon /> {messages['hub_item_delete']}
+                        onClick={handleDelete} ><DeleteIcon className={styles.svg} /> {messages['hub_item_delete']}
                     </Button>
                 </div>
             </div>
