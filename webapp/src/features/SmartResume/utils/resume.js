@@ -315,6 +315,14 @@ export const generateCertificeRating = (numberOfCertificate, messages) => {
   return certArr;
 };
 
+export const dispatchUpdates = (type) => {
+  const eventName = type;
+  const event = new CustomEvent(eventName, {
+      detail: {}
+  });
+  window.dispatchEvent(event);
+};
+
 const supportedCountries = {
   中国: "cn",
   加拿大: "ca",
@@ -325,6 +333,7 @@ const supportedCountries = {
   印度: "in",
   韩国: "kr",
 };
+
 export const updateCityOptions = (country, setter) => {
   if(supportedCountries[country]) {
     setter(countryBasedCityOptions[supportedCountries[country]])

@@ -13,7 +13,7 @@ import AvatarUpload from './AvatarUpload';
 import { validateBasic, validateBasicEntry } from '../../slicer/basic';
 import { updateStatus, updateAllStatus } from '../../slicer/common';
 import { adaptBasics } from '../../utils/servicesAdaptor';
-import { generateBasicFormRating, generateLayoutRating } from '../../utils/resume';
+import { dispatchUpdates, generateBasicFormRating, generateLayoutRating } from '../../utils/resume';
 import ResumeServices from 'shell/services/ResumeServices';
 import { getLogger } from 'shell/logger';
 
@@ -56,14 +56,21 @@ const BasicForm = ({ data, photoReference, completed, messages }) => {
 		try {
 			const response =
 				data.id === undefined
-					? await resumeServices.createBasics(resumeId, adaptBasics({ completed: true, data }))
-					: await resumeServices.updateBasics(resumeId, adaptBasics({ completed: true, data }));
+				? await resumeServices.createBasics(
+					resumeId,
+					adaptBasics({ completed: true, data })
+					)
+				: await resumeServices.updateBasics(
+					resumeId,
+					adaptBasics({ completed: true, data })
+					);
 			const responseJson = await response.json();
 			id = id || responseJson.id;
 		} catch (exception) {
 			logger.error(exception);
 		} finally {
 			dispatch(actions.updateBasicsId({ id }));
+			dispatchUpdates('update-score');
 		}
 	};
 

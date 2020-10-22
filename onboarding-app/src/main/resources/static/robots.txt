@@ -1,0 +1,224 @@
+# Notice: Collection of data on Smartresume inc through automated means is
+# prohibited unless you have express written permission from Smartresume
+# and may only be conducted for the limited purpose contained in said
+# permission.
+# See: http://www.smartresume.careers/tos
+
+User-agent: Googlebot
+Allow: /
+Disallow: /sign-up
+Disallow: /activate/*
+Disallow: /reset/*
+Disallow: /error
+Disallow: /login
+Disallow: /logout
+Disallow: /wechat-callback
+Disallow: /password-reset
+
+User-agent: Googlebot-Image
+Allow: /
+Disallow: /sign-up
+Disallow: /activate/*
+Disallow: /reset/*
+Disallow: /error
+Disallow: /login
+Disallow: /logout
+Disallow: /wechat-callback
+Disallow: /password-reset
+
+User-agent: Baiduspider-news
+Allow: /
+Disallow: /sign-up
+Disallow: /activate/*
+Disallow: /reset/*
+Disallow: /error
+Disallow: /login
+Disallow: /logout
+Disallow: /wechat-callback
+Disallow: /password-reset
+
+User-agent: Baiduspider
+Allow: /
+Disallow: /sign-up
+Disallow: /activate/*
+Disallow: /reset/*
+Disallow: /error
+Disallow: /login
+Disallow: /logout
+Disallow: /wechat-callback
+Disallow: /password-reset
+
+User-agent: Baiduspider-image
+Allow: /
+Disallow: /sign-up
+Disallow: /activate/*
+Disallow: /reset/*
+Disallow: /error
+Disallow: /login
+Disallow: /logout
+Disallow: /wechat-callback
+Disallow: /password-reset
+
+User-agent: Sosospider
+Allow: /
+Disallow: /sign-up
+Disallow: /activate/*
+Disallow: /reset/*
+Disallow: /error
+Disallow: /login
+Disallow: /logout
+Disallow: /wechat-callback
+Disallow: /password-reset
+
+User-agent: bingbot
+Allow: /
+Disallow: /sign-up
+Disallow: /activate/*
+Disallow: /reset/*
+Disallow: /error
+Disallow: /login
+Disallow: /logout
+Disallow: /wechat-callback
+Disallow: /password-reset
+
+User-agent: 360Spider
+Allow: /
+Disallow: /sign-up
+Disallow: /activate/*
+Disallow: /reset/*
+Disallow: /error
+Disallow: /login
+Disallow: /logout
+Disallow: /wechat-callback
+Disallow: /password-reset
+
+User-agent: HaosouSpider 
+Allow: /
+Disallow: /sign-up
+Disallow: /activate/*
+Disallow: /reset/*
+Disallow: /error
+Disallow: /login
+Disallow: /logout
+Disallow: /wechat-callback
+Disallow: /password-reset
+
+User-agent: yisouspider
+Allow: /
+Disallow: /sign-up
+Disallow: /activate/*
+Disallow: /reset/*
+Disallow: /error
+Disallow: /login
+Disallow: /logout
+Disallow: /wechat-callback
+Disallow: /password-reset
+
+User-agent: YoudaoBot
+Allow: /
+Disallow: /sign-up
+Disallow: /activate/*
+Disallow: /reset/*
+Disallow: /error
+Disallow: /login
+Disallow: /logout
+Disallow: /wechat-callback
+Disallow: /password-reset
+
+User-agent: Sogou Orion spider
+Allow: /
+Disallow: /sign-up
+Disallow: /activate/*
+Disallow: /reset/*
+Disallow: /error
+Disallow: /login
+Disallow: /logout
+Disallow: /wechat-callback
+Disallow: /password-reset
+
+User-agent: Sogou News Spider
+Allow: /
+Disallow: /sign-up
+Disallow: /activate/*
+Disallow: /reset/*
+Disallow: /error
+Disallow: /login
+Disallow: /logout
+Disallow: /wechat-callback
+Disallow: /password-reset
+
+User-agent: Sogou blog
+Allow: /
+Disallow: /sign-up
+Disallow: /activate/*
+Disallow: /reset/*
+Disallow: /error
+Disallow: /login
+Disallow: /logout
+Disallow: /wechat-callback
+Disallow: /password-reset
+
+User-agent: Sogou spider2
+Allow: /
+Disallow: /sign-up
+Disallow: /activate/*
+Disallow: /reset/*
+Disallow: /error
+Disallow: /login
+Disallow: /logout
+Disallow: /wechat-callback
+Disallow: /password-reset
+
+User-agent: Sogou inst spider
+Allow: /
+Disallow: /sign-up
+Disallow: /activate/*
+Disallow: /reset/*
+Disallow: /error
+Disallow: /login
+Disallow: /logout
+Disallow: /wechat-callback
+Disallow: /password-reset
+
+User-agent: Sogou web spider
+Allow: /
+Disallow: /sign-up
+Disallow: /activate/*
+Disallow: /reset/*
+Disallow: /error
+Disallow: /login
+Disallow: /logout
+Disallow: /wechat-callback
+Disallow: /password-reset
+
+User-agent: EasouSpider
+Request-rate: 1/2 # load 1 page per 2 seconds
+Crawl-delay: 10
+Allow: /
+Disallow: /sign-up
+Disallow: /activate/*
+Disallow: /reset/*
+Disallow: /error
+Disallow: /login
+Disallow: /logout
+Disallow: /wechat-callback
+Disallow: /password-reset
+
+User-agent: MSNBot
+Request-rate: 1/2 # load 1 page per 2 seconds
+Crawl-delay: 10
+Allow: /
+Disallow: /sign-up
+Disallow: /activate/*
+Disallow: /reset/*
+Disallow: /error
+Disallow: /login
+Disallow: /logout
+Disallow: /wechat-callback
+Disallow: /password-reset
+
+User-agent: Bytespider
+Disallow: /
+
+User-Agent: *
+Disallow: /

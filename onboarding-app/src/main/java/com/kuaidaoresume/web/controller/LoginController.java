@@ -65,18 +65,9 @@ public class LoginController {
 
         LoginPage loginPage = pageFactory.buildLoginPage();
 
-        try {
-            String wechatCallbackUrl = HelperService.buildUrl("http", "www." + envConfig.getExternalApex() + "/wechat-callback");
-            wechatCallbackUrl = URLEncoder.encode(wechatCallbackUrl, "UTF-8");
-            loginPage.setWechatLoginUrl(
-                    "https://open.weixin.qq.com/connect/qrconnect?" +
-                            "appid=" + WeChatService.WECHAT_APP_ID +
-                            "&redirect_uri=" + wechatCallbackUrl +
-                            "&response_type=code&scope=snsapi_login#wechat_redirect"
-            );
-        } catch (UnsupportedEncodingException exception) {
-            logger.error("Set wechat callback url failed", exception);
-        }
+        String wechatCallbackUrl = HelperService.buildUrl("http", "www." + envConfig.getExternalApex() + "/wechat-callback");
+        loginPage.setWechatLoginUrl(wechatCallbackUrl);
+        loginPage.setWechatAppId(WeChatService.WECHAT_APP_ID);
         loginPage.setReturnTo(returnTo); // for GET
 
         // if logged in - go away
