@@ -66,7 +66,7 @@ public class LoginController {
         LoginPage loginPage = pageFactory.buildLoginPage();
 
         try {
-            String wechatCallbackUrl = HelperService.buildUrl("http", "www." + envConfig.getExternalApex() + "/wechat_callback");
+            String wechatCallbackUrl = HelperService.buildUrl("http", "www." + envConfig.getExternalApex() + "/wechat-callback");
             wechatCallbackUrl = URLEncoder.encode(wechatCallbackUrl, "UTF-8");
             loginPage.setWechatLoginUrl(
                     "https://open.weixin.qq.com/connect/qrconnect?" +

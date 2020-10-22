@@ -62,7 +62,7 @@ public class MappingProperties {
     /**
      * Connect timeout for HTTP requests forwarding.
      */
-    private int connect = 2000;
+    private int connect = 8000; // temp increase KDR to 8000
     /**
      * Read timeout for HTTP requests forwarding.
      */
