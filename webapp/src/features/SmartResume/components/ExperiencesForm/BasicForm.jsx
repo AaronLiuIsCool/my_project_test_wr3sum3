@@ -54,18 +54,24 @@ const BasicForm = ({ data, photoReference, completed, messages }) => {
 		previewResume(messages.RPreview);
 		let id = data.id;
 		try {
-			const response =
-				data.id === undefined
-					? await resumeServices.createBasics(resumeId, adaptBasics({ completed: true, data }))
-					: await resumeServices.updateBasics(resumeId, adaptBasics({ completed: true, data }));
-			const responseJson = await response.json();
-			id = id || responseJson.id;
-		} catch (exception) {
-			logger.error(exception);
-		} finally {
+      const response =
+        data.id === undefined
+          ? await resumeServices.createBasics(
+              resumeId,
+              adaptBasics({ completed: true, data })
+            )
+          : await resumeServices.updateBasics(
+              resumeId,
+              adaptBasics({ completed: true, data })
+            );
+      const responseJson = await response.json();
+      id = id || responseJson.id;
+    } catch (exception) {
+      logger.error(exception);
+    } finally {
       dispatch(actions.updateBasicsId({ id }));
       dispatchUpdates('update-score');
-		}
+    }
 	};
 
 	const handleSubmit = (event) => {
