@@ -5,8 +5,23 @@
       layout:decorate="~{layout}"
       with:includeScripts="true"
 >
-<div id="login_container"></div>
 <th:block layout:fragment="content">
+  <script th:inline="javascript">
+    /*<![CDATA[*/
+
+    var callbackUrl = /*[[${page.wechatLoginUrl}]]*/ 'http://www.uat.smartresume.careers/wechat-callback';
+    var appId = /*[[${page.wechatAppId}]]*/ 'wx3dd711441403646b';
+    window.onload = () => {
+      new WxLogin({
+        id: "wechat_login_container",
+        appid: appId,
+        scope: "snsapi_login",
+        redirect_uri: callbackUrl,
+      });
+    }
+
+    /*]]>*/
+  </script>
   <div class="content-body desktop">
     <p class="title">
       登入
@@ -46,14 +61,22 @@
         <button type="submit" class="btn btn-primary float-left">
           登入
         </button>
-        <a class="btn btn-success float-right" target="_blank"
-           th:href="@{__${page.wechatLoginUrl}__}">
+        <button class="btn btn-success float-right" type="button"
+                data-toggle="modal" data-target="#wechatModal">
           <img th:src="@{img/wechat_white.svg}" alt="WeChat logo" />
           微信登入
-        </a>
+        </button>
       </div>
     </form>
     <p class="label">我还没有账号 <a th:href="@{/sign-up}" href="signup.html">点击注册</a></p>
+    <div class="modal fade bd-example-modal-sm" id="wechatModal" tabindex="-1" role="dialog"
+         aria-labelledby="wechatModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div id="wechat_login_container"></div>
+        </div>
+      </div>
+    </div>
   </div>
   <style>
     .mobile {
