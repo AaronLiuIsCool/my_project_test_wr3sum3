@@ -1,3 +1,4 @@
+import countryBasedCityOptions from 'data/countryBasedCityOptions.json';
 function traverseAndFlatten(obj, flattenObj, parentKey) {
   if (typeof obj === 'object') {
     Object.keys(obj).forEach(key => {
@@ -321,3 +322,22 @@ export const dispatchUpdates = (type) => {
   });
   window.dispatchEvent(event);
 };
+
+const supportedCountries = {
+  中国: "cn",
+  加拿大: "ca",
+  美国: "us",
+  澳大利亚: "au",
+  日本: "jp",
+  英国: "uk",
+  印度: "in",
+  韩国: "kr",
+};
+
+export const updateCityOptions = (country, setter) => {
+  if(supportedCountries[country]) {
+    setter(countryBasedCityOptions[supportedCountries[country]])
+  } else {
+    setter(countryBasedCityOptions['cn'])
+  }
+}

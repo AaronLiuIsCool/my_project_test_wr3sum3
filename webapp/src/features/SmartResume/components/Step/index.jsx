@@ -17,6 +17,7 @@ const getAddMoreForm = (enabled, message, handleAddMore) => {
 
 const Step = ({ id, title, subtitle, children, addMore, icon = false, addMoreMessage, handleAddMore }) => (
     <div id={id}>
+        {title}
         <StepHeader
             title={title}
             subtitle={subtitle}

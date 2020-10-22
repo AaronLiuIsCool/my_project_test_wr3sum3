@@ -10,7 +10,7 @@ import DropdownGroup from 'components/DropdownGroup';
 import RadioButtonGroup from 'components/RadioButtonGroup';
 import Button from 'react-bootstrap/Button';
 import DraftEditor from '../../../../components/DraftEditor/index'
-import { generateSuggestions, isDescending, extractDate, generateLayoutRating, dispatchUpdates } from '../../utils/resume';
+import { generateSuggestions, isDescending, extractDate, generateLayoutRating, dispatchUpdates, updateCityOptions } from '../../utils/resume';
 
 import { ReactComponent as WrittenAssistIcon } from '../../assets/writing_assit.svg';
 
@@ -22,7 +22,7 @@ import ResumeServices from 'shell/services/ResumeServices';
 import { getLogger } from 'shell/logger';
 import { previewResume, wholePageCheck } from '../ResumePreview/resumeBuilder';
 
-import cityOptions from 'data/city.json';
+import countryOptions from 'data/country.json';
 
 const logger = getLogger('ProjectForm');
 const resumeServices = new ResumeServices();
@@ -52,7 +52,7 @@ const ProjectForm = ({ data, index, isLast = false, messages, projectData }) => 
 		projectCountry: {},
 	});
 	const dispatch = useDispatch();
-
+  const [cityOptions, setCityOptions] = useState([]);
 	const save = async () => {
 		previewResume(messages.RPreview);
 		let id = data.id;
@@ -158,11 +158,12 @@ const ProjectForm = ({ data, index, isLast = false, messages, projectData }) => 
 		dispatch(actions.updateProjectCity({ value, index }));
 	};
 
-	const handleCountryChange = (event) => {
-		const value = event.target.value;
-		updateStatus(validateProjectEntry, status, setStatus, 'projectCountry', value);
-		dispatch(actions.updateProjectCountry({ value, index }));
-	};
+  const handleCountryChange = (values) => {
+    const value = values.length === 0 ? null : values[0].data
+    updateCityOptions(value, setCityOptions)
+    updateStatus(validateProjectEntry, status, setStatus, 'projectCountry', value);
+    dispatch(actions.updateProjectCountry({ value, index }));
+  };
 	const handleAssistantClick = () => {
 		dispatch(
 			actions.toggleAssistant({
@@ -253,6 +254,19 @@ const ProjectForm = ({ data, index, isLast = false, messages, projectData }) => 
 						/>
 					</Col>
 				)}
+        <Col>
+          <DropdownGroup
+              label={messages.country}
+              id='project-country'
+              placeholder={messages.projectCountry}
+              options={countryOptions}
+              value={data.projectCountry}
+              onChange={handleCountryChange}
+              feedbackMessage={messages.entryIsInvalid}
+              isValid={status.projectCountry.isValid}
+              isInvalid={status.projectCountry.isInvalid}
+            />
+				</Col>
 				<Col>
 					<DropdownGroup
 						label={messages.city}
@@ -264,18 +278,6 @@ const ProjectForm = ({ data, index, isLast = false, messages, projectData }) => 
 						feedbackMessage={messages.entryIsInvalid}
 						isValid={status.projectCity.isValid}
 						isInvalid={status.projectCity.isInvalid}
-					/>
-				</Col>
-				<Col>
-					<InputGroup
-						label={messages.country}
-						id='project-country'
-						placeholder={messages.projectCountry}
-						value={data.projectCountry}
-						onChange={handleCountryChange}
-						feedbackMessage={messages.entryIsInvalid}
-						isValid={status.projectCountry.isValid}
-						isInvalid={status.projectCountry.isInvalid}
 					/>
 				</Col>
 			</Row>
