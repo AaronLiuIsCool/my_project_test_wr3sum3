@@ -10,7 +10,7 @@ import DropdownGroup from 'components/DropdownGroup';
 import RadioButtonGroup from 'components/RadioButtonGroup';
 import Button from 'react-bootstrap/Button';
 import DraftEditor from '../../../../components/DraftEditor/index'
-import { generateSuggestions, isDescending, extractDate, generateLayoutRating, updateCityOptions } from '../../utils/resume';
+import { generateSuggestions, isDescending, extractDate, generateLayoutRating, dispatchUpdates, updateCityOptions } from '../../utils/resume';
 
 import { ReactComponent as WrittenAssistIcon } from '../../assets/writing_assit.svg';
 
@@ -66,7 +66,8 @@ const VolunteerForm = ({ data, index, isLast = false, messages, volunteerData })
 		} catch (exception) {
 			logger.error(exception);
 		} finally {
-			dispatch(actions.updateVolunteerId({ index, id }));
+      dispatch(actions.updateVolunteerId({ index, id }));
+      dispatchUpdates('update-score');
 		}
 	};
 
