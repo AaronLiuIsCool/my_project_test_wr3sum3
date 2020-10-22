@@ -17,18 +17,18 @@ const CertificateExperience = () => {
 	const dispatch = useDispatch();
 	const messages = useI8n();
 	return (
-		<Step
-			id="certifications"
-			title={messages.certificate}
-			subtitle={messages.certificateInfo}
-			icon="job.svg"
+    <Step
+      id="certifications"
+      title={messages.certificate}
+      subtitle={messages.certificateInfo}
+      icon="job.svg"
       addMore={true}
-      
-			addMoreMessage={messages.addNewCertificate}
-			handleAddMore={() => dispatch(actions.addNewCertificate())}>
-			{getForms(Certificate.data, messages)}
-		</Step>
-	);
+      addMoreMessage={messages.addNewCertificate}
+      handleAddMore={() => dispatch(actions.addNewCertificate())}
+    >
+      {getForms(Certificate.data, messages)}
+    </Step>
+  );
 };
 
 export default CertificateExperience;
