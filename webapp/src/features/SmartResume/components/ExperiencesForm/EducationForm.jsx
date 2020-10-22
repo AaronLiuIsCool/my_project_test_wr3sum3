@@ -21,7 +21,7 @@ import univOptions from 'data/university.json';
 import cityOptions from 'data/city.json';
 
 import { previewResume, wholePageCheck } from '../ResumePreview/resumeBuilder';
-import { generateEducationRating, generateLayoutRating } from '../../utils/resume';
+import { dispatchUpdates, generateEducationRating, generateLayoutRating } from '../../utils/resume';
 
 const logger = getLogger('EducationForm');
 const resumeServices = new ResumeServices();
@@ -67,6 +67,7 @@ const EducationForm = ({ data, index, isLast = false, messages }) => {
             logger.error(exception);
         } finally {
             dispatch(actions.updateEducationId({ index, id }));
+            dispatchUpdates('update-score');
         }
     };
 

@@ -10,7 +10,7 @@ import DropdownGroup from 'components/DropdownGroup';
 import RadioButtonGroup from 'components/RadioButtonGroup';
 import Button from 'react-bootstrap/Button';
 import DraftEditor from '../../../../components/DraftEditor/index'
-import { generateSuggestions, isDescending, extractDate, generateLayoutRating } from '../../utils/resume';
+import { generateSuggestions, isDescending, extractDate, generateLayoutRating, dispatchUpdates } from '../../utils/resume';
 
 import { ReactComponent as WrittenAssistIcon } from '../../assets/writing_assit.svg';
 
@@ -66,7 +66,8 @@ const ProjectForm = ({ data, index, isLast = false, messages, projectData }) => 
 		} catch (exception) {
 			logger.error(exception);
 		} finally {
-			dispatch(actions.updateProjectId({ index, id }));
+      dispatch(actions.updateProjectId({ index, id }));
+      dispatchUpdates('update-score');
 		}
 	};
 

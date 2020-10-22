@@ -313,3 +313,11 @@ export const generateCertificeRating = (numberOfCertificate, messages) => {
 
   return certArr;
 };
+
+export const dispatchUpdates = (type) => {
+  const eventName = type;
+  const event = new CustomEvent(eventName, {
+      detail: {}
+  });
+  window.dispatchEvent(event);
+};

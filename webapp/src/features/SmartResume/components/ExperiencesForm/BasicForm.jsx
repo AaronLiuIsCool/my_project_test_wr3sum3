@@ -13,7 +13,7 @@ import AvatarUpload from './AvatarUpload';
 import { validateBasic, validateBasicEntry } from '../../slicer/basic';
 import { updateStatus, updateAllStatus } from '../../slicer/common';
 import { adaptBasics } from '../../utils/servicesAdaptor';
-import { generateBasicFormRating, generateLayoutRating } from '../../utils/resume';
+import { dispatchUpdates, generateBasicFormRating, generateLayoutRating } from '../../utils/resume';
 import ResumeServices from 'shell/services/ResumeServices';
 import { getLogger } from 'shell/logger';
 
@@ -63,7 +63,8 @@ const BasicForm = ({ data, photoReference, completed, messages }) => {
 		} catch (exception) {
 			logger.error(exception);
 		} finally {
-			dispatch(actions.updateBasicsId({ id }));
+      dispatch(actions.updateBasicsId({ id }));
+      dispatchUpdates('update-score');
 		}
 	};
 
