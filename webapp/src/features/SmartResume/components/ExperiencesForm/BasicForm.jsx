@@ -50,10 +50,10 @@ const BasicForm = ({ data, photoReference, completed, messages }) => {
 	});
 	const dispatch = useDispatch();
 
-	const save = async () => {
-		previewResume(messages.RPreview);
-		let id = data.id;
-		try {
+  const save = async () => {
+    previewResume(messages.RPreview);
+    let id = data.id;
+    try {
       const response =
         data.id === undefined
           ? await resumeServices.createBasics(
@@ -72,7 +72,7 @@ const BasicForm = ({ data, photoReference, completed, messages }) => {
       dispatch(actions.updateBasicsId({ id }));
       dispatchUpdates('update-score');
     }
-	};
+  };
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
