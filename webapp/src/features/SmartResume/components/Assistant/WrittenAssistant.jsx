@@ -20,7 +20,6 @@ function renderTips(tips, handleSelect) {
     ));
 }
 
-// TODO: Standardize this component to be used for more than just Work written assistant
 const WrittenAssistant = ({ trigger, context }) => {
     const [industries, setIndustries] = useState([]);
     const [titles, setTitles] = useState({});
@@ -54,11 +53,9 @@ const WrittenAssistant = ({ trigger, context }) => {
         getTitles();
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
     useEffect(() => {
-      if(industries && titles && industries.length > 0 && titles[industries[0]]) {
-        if(!loaded.current) {
-          getSuggestions(industries[0], titles[industries[0]][0]);
-          loaded.current = true;
-        }
+      if(industries && titles && industries.length > 0 && titles[industries[0]] && !loaded.current) {
+        getSuggestions(industries[0], titles[industries[0]][0]);
+        loaded.current = true;
       }
     }, [industries, titles]) // eslint-disable-line
 
