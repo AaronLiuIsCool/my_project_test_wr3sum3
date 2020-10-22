@@ -164,7 +164,7 @@ public class AccountService {
         final String openId = weChatAccountDto.getOpenid();
         Account account = Account.builder()
                 .email(openId + "@kuaidaoemail.com")
-                .name(":)")
+                .name("未命名")
                 .openid(openId)
 //                .photoUrl(weChatAccountDto.getHeadimgurl()) // TODO: Add these back when we add in avatar
                 .loginType("wechat")
