@@ -9,6 +9,7 @@ import org.springframework.core.io.ClassPathResource;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.util.*;
 
 public class FileUtil {
@@ -16,7 +17,7 @@ public class FileUtil {
     public static Collection<String> loadLinesFromTextFile(String filePath) {
 
         ClassPathResource resource = new ClassPathResource(filePath);
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(resource.getInputStream()))) {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(resource.getInputStream(), Charset.forName("UTF-8")))) {
 
             List<String> lines = new ArrayList<>();
             String line;

@@ -10,14 +10,17 @@ public class LoginPage extends Page {
     private boolean denied;
     private String previousEmail;
     private String returnTo;
+    private String wechatLoginUrl;
 
     // lombok inheritance workaround, details here: https://www.baeldung.com/lombok-builder-inheritance
     @Builder(builderMethodName = "childBuilder")
     public LoginPage(String title, String description, String templateName, String cssId,
-                     String version, boolean denied, String previousEmail, String returnTo) {
+                     String version, boolean denied, String previousEmail, String returnTo,
+                     String wechatLoginUrl) {
         super(title, description, templateName, cssId, version);
         this.denied = denied;
         this.previousEmail = previousEmail;
         this.returnTo = returnTo;
+        this.wechatLoginUrl = wechatLoginUrl;
     }
 }

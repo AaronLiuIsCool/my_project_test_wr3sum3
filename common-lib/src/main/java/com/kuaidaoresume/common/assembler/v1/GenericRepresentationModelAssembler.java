@@ -14,6 +14,8 @@ import org.springframework.hateoas.server.SimpleRepresentationModelAssembler;
 import org.springframework.hateoas.server.core.AnnotationLinkRelationProvider;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 
+import java.util.Objects;
+
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 public class GenericRepresentationModelAssembler<T extends PersistedEntityDto> implements SimpleRepresentationModelAssembler<T> {
@@ -47,7 +49,8 @@ public class GenericRepresentationModelAssembler<T extends PersistedEntityDto> i
 	}
 
 	private Object getId(EntityModel<T> resource) {
-		return resource.getContent().getId();
+		T content = resource.getContent();
+		return Objects.nonNull(content) ? content.getId() : "";
 	}
 
 	public void addLinks(CollectionModel<EntityModel<T>> resources) {

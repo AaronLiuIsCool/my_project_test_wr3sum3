@@ -38,6 +38,7 @@ const ResumePreview = () => {
 
 	const [resumeData, setResumeData] = useState(resume.resumeBuilder.data.base64);
 	const [isResumeTipsModalOpen, setIsResumeTipsModalOpen] = useState(false);
+	const [resumeTipsSymbol, setResumeTipsSymbol] = useState("?");
 	const [isThemeColorModalOpen, setIsThemeColorModalOpen] = useState(false);
 	const [numOfPagesList, setNumOfPagesList] = useState([]);
 
@@ -73,7 +74,12 @@ const ResumePreview = () => {
 
 	function onDocumentLoadSuccess(pdf) {
     setNumOfPagesList(Array.from(Array(pdf.numPages), (v, i) => i + 1));
-  }
+	}
+	
+	function resumeTipsOpenHandler(){
+		setIsResumeTipsModalOpen(!isResumeTipsModalOpen);
+		setResumeTipsSymbol(resumeTipsSymbol === "?" ? "X": "?");
+	}
 
 	return (
 		<div className={styles.container}>
@@ -95,8 +101,8 @@ const ResumePreview = () => {
 					<button onClick={() => downloadPDF(messages.RPreview)}>
 						<img src={DownloadIcon} alt='download' /> {messages.RPreview.downloadResume}
 					</button>
-					<button className={styles.circle} onClick={() => setIsResumeTipsModalOpen(!isResumeTipsModalOpen)}>
-						?
+					<button className={styles.circle} onClick={resumeTipsOpenHandler}>
+						{resumeTipsSymbol}
 					</button>
 				</div>
 			</div>

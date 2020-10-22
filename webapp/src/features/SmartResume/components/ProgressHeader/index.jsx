@@ -11,7 +11,7 @@ import styles from './ProgressHeader.module.css';
 
 const resumeServices = new ResumeServices();
 const logger = getLogger('App');
-const MAXSCORE = 35;
+const MAXSCORE = 100; // TODO: Maybe this can come from the backend
 
 
 const ProgressHeader = ({ setScoreVisible, scoreVisible }) => {
@@ -57,9 +57,6 @@ const ProgressHeader = ({ setScoreVisible, scoreVisible }) => {
 		}
 	}, [resumeId]); // eslint-disable-line
 
-
-
-
 	const scoreRatingColor = {
 		score_A: '#2abc6e',
 		score_B: '#edbc4d',
@@ -76,11 +73,11 @@ const ProgressHeader = ({ setScoreVisible, scoreVisible }) => {
 				</p>
 				<ProgressBar className={styles.progressBar} now={scorePercentage} variant={scoreRating} />
 			</div>
-			<div>
+			<div className={styles.hideSM}>
 				<p className={styles.title}>{messages.intensityScore}</p>
 				<p>{messages.clickForDetails}</p>
 			</div>
-			<div onClick={() => setScoreVisible(!scoreVisible)}>
+			<div className={styles.hideSM} onClick={() => setScoreVisible(!scoreVisible)}>
 				<div className={styles.circle} style={{ color: scoreRatingColor[scoreRating], borderColor: scoreRatingColor[scoreRating] }} onClick={() => {
 					dispatch(
 						actions.toggleAssistant({

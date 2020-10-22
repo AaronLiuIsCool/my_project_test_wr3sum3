@@ -32,7 +32,7 @@ const logger = getLogger('JOBCOLLECTION');
 //     })
 //     return res
 // }
-const formatLocation = (location) => {
+const formatLocation = (location = {}) => {
     return `${location.city} - ${location.country}`;
 };
 const getAllResumeIds = async (userId) => {
