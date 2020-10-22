@@ -20,9 +20,7 @@ const Hub = ({ resumes }) => {
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <span className={styles.title}>
-                {messages['hub_title']}
-            </span>
+                
             <Button as={Link} variant="link" className={styles.action} to='/new'>
                 {messages['hub_action']}
             </Button>
