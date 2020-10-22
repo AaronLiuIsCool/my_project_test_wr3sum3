@@ -27,8 +27,7 @@ const LeftHeader = ({ messages, score, resumeTitle }) => {
     </div>);
 }
 
-const LeftBody = ({ messages, navIndex, setNavIndex, refinementData, workExperiences, setWorkExperiences, resumeData, updateResume }) => {
-  console.log("rrr", refinementData)
+const LeftBody = ({ messages, navIndex, setNavIndex, refinementData = [], workExperiences, setWorkExperiences, resumeData, updateResume }) => {
   return (
     <div className={styles.leftBody}>
       <div className={styles.leftBodyNav}>
@@ -44,8 +43,17 @@ const LeftBody = ({ messages, navIndex, setNavIndex, refinementData, workExperie
       </div>
       <div className={styles.leftBodyContent}>
         {refinementData.map((item, index) => {
-          if (navIndex === index) return <BodyContent summary={item?.summaryZH} key={index} item={item} messages={messages} workExperiences={workExperiences} setWorkExperiences={setWorkExperiences} resumeData={resumeData} />
-          else return <p key={index}></p>;
+          if (navIndex === index) {
+            return (
+              <BodyContent summary={item?.summaryZH} key={index} 
+                item={item} messages={messages} 
+                workExperiences={workExperiences} 
+                setWorkExperiences={setWorkExperiences} 
+                resumeData={resumeData} />
+            )
+          } else {
+            return <p key={index}></p>;
+          }
         })}
       </div>
     </div >
