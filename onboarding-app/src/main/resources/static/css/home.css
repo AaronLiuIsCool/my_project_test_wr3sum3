@@ -56,7 +56,7 @@ nav {
 }
 
 .banner {
-  background-image: url('.//assets/bg-image.png');
+  background-image: url('./assets/bg-image.png');
   height: 50rem;
   background-size: 100%;
   background-position: -40% 0%;
