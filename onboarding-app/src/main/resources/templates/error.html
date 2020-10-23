@@ -1,12 +1,125 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>TBD TF-125 Error Page</title>
-</head>
-<body>
-<div>
-  这个是一个WWW的错误页面。
-</div>
-</body>
-</html>
+<!DOCKTYPE html>
+
+  <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+  <head>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+      integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+      crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+      integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+      crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous" />
+  </head>
+  <style>
+    body {
+      font-family: MicrosoftYaHei, "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
+        "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    }
+
+    a {
+      height: 19px;
+      font-size: 14px;
+      font-weight: bold;
+      line-height: 2.14;
+      color: #3e89ec;
+    }
+
+    a:hover {
+      text-decoration: none;
+    }
+
+    .app {
+      width: 1180px;
+      margin: auto;
+    }
+
+    .app-body {
+      margin-top: 193px;
+    }
+
+    .content {
+      margin: auto;
+      width: 380px;
+    }
+
+    .logo-container {
+      margin: 25px auto 45px;
+      text-align: center;
+    }
+
+    .image-container {
+      margin: 0 auto 40px;
+      width: calc(100% - 160px);
+      text-align: center;
+    }
+
+    .image-container>img {
+      width: 100%;
+      max-width: 300px;
+    }
+
+    .text-content {
+      width: calc(100% - 80px);
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .text-content>h2 {
+      font-size: 30px;
+      font-weight: bold;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: 1.5;
+      letter-spacing: 0.9px;
+      text-align: center;
+      color: #333333;
+      margin-bottom: 18px;
+    }
+
+    .text-content>p {
+      font-family: MicrosoftYaHei;
+      font-size: 16px;
+      font-weight: normal;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: 1.5;
+      letter-spacing: normal;
+      text-align: center;
+      color: #8e94a7;
+      margin-bottom: 10px;
+    }
+
+    .button {
+      margin: 30px auto;
+      text-align: center;
+    }
+
+    .btn {
+      height: 40px;
+    }
+  </style>
+
+  <body class="app">
+    <div class="app-body">
+      <div class="logo-container">
+        <img th:src="@{/img/logo.svg}" />
+      </div>
+      <div class="image-container">
+        <img th:src="@{/img/error.gif}" />
+      </div>
+      <div class="text-content">
+        <h2>不好意思</h2>
+        <p>您找的页面挂了</p>
+      </div>
+      <div class="button">
+        <a href="/" class="btn btn-primary">回到主页</a>
+      </div>
+    </div>
+  </body>
+
+  </html>

@@ -133,7 +133,7 @@ public class AccountService {
                 emailName = AccountConstant.GREETING_WORD_CN_ZH;
             }
 
-            String subject = "Activate your Kuaidaoresume account";
+            String subject = AccountConstant.ACTIVATE_ACCOUNT_EMAIL_TITLE_CN_ZH;
             //this.sendEmail(account.getId(), email, emailName, subject, AccountConstant.ACTIVATE_ACCOUNT_TMPL, true); // for english
             this.sendEmail(account.getId(), email, emailName, subject, AccountConstant.ACTIVATE_ACCOUNT_TMPL_CN_ZH, true); // for chinese
         }
@@ -338,14 +338,17 @@ public class AccountService {
             throw new ServiceException(ResultCode.NOT_FOUND, "No user with that email exists");
         }
 
-        String subject = "Reset your Smartresume password";
+        //String subject = "Reset your Smartresume password";
+        String subject = AccountConstant.RESET_PASSWORD_EMAIL_TITLE_CN_ZH;
+
+
         boolean activate = false; // reset
         //String tmpl = AccountConstant.RESET_PASSWORD_TMPL; // for english
         String tmpl = AccountConstant.RESET_PASSWORD_TMPL_CN_ZH; // for chinese
         if (!account.isConfirmedAndActive()) {
             // Not actually active - make some tweaks for activate instead of password reset
             activate = true; // activate
-            subject = "Activate your Smartresume account";
+            subject = AccountConstant.ACTIVATE_ACCOUNT_EMAIL_TITLE_CN_ZH;
             //tmpl = AccountConstant.ACTIVATE_ACCOUNT_TMPL; // for english
             tmpl = AccountConstant.ACTIVATE_ACCOUNT_TMPL_CN_ZH; // for chinese
         }
@@ -485,7 +488,7 @@ public class AccountService {
 
         EmailRequest emailRequest = EmailRequest.builder()
                 .to(email)
-                .from("aaronliu.dev.canada@gmail.com") //TODO: Aaron Liu update to Eyeshigh customer support as default
+                .from("info@eyeshightc.com")
                 .name(name)
                 .subject(subject)
                 .htmlBody(htmlBody)

@@ -148,51 +148,6 @@ const WrittenAssistant = ({ trigger, context }) => {
     return (
         <div className={styles['inner-container']}>
             <DropdownGroup industries={industries} titles={titles} onSelect={getSuggestions} />
-            {/* <div className="writtenAssistantWidgetHeader">
-                <InputGroup className="mb-3">
-                    <InputGroup.Prepend>
-                        <Form.Control
-                            defaultValue="default"
-                            as="select"
-                            custom
-                            onChange={(e) => {
-                                setIndustry(e.currentTarget.value);
-                            }}
-                        >
-                            <option disabled value="default">
-                                选择行业
-                            </option>
-                            {renderIndustries(industries)}
-                        </Form.Control>
-                    </InputGroup.Prepend>
-                    <Typeahead
-                        id="jobTitle"
-                        labelKey="jobTitle"
-                        options={
-                            industry === ''
-                                ? []
-                                : titles
-                                ? titles[industry]
-                                : []
-                        }
-                        onInputChange={(e) => {
-                            setTitle(e);
-                        }}
-                        onChange={(e) => {
-                            e.length > 0 ? setTitle(e[0]) : setTitle('');
-                        }}
-                        placeholder={'请输入岗位名称'}
-                        defaultValue={context && context.workName}
-                    />
-                    <InputGroup.Append>
-                        <InputGroup.Text>
-                            <Button variant="light" onClick={handleSearch}>
-                                <SearchIcon />
-                            </Button>
-                        </InputGroup.Text>
-                    </InputGroup.Append>
-                </InputGroup>
-            </div> */}
             <div className="tips-container">
                 {renderTips(suggestions, handleTipSelect)}
             </div>

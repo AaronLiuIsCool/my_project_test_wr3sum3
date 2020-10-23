@@ -18,7 +18,7 @@ export default function Page404() {
         <div className={styles.header}>
           <img
             src={process.env.PUBLIC_URL + "/images/logo.png"}
-            alt="404 page not found"
+            alt="logo"
           />
         </div>
         <div className={styles.content}>
@@ -28,7 +28,7 @@ export default function Page404() {
           />
           <p>{messages.notFoundPageContent}</p>
           <Button variant="primary" className="w-100">
-          {messages.refresh}
+            {messages.refresh}
           </Button>
         </div>
       </div>
