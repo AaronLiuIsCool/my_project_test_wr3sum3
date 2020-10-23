@@ -164,7 +164,7 @@ public class AccountService {
         final String openId = weChatAccountDto.getOpenid();
         Account account = Account.builder()
                 .email(openId + "@kuaidaoemail.com")
-                .name(":)")
+                .name("未命名")
                 .openid(openId)
 //                .photoUrl(weChatAccountDto.getHeadimgurl()) // TODO: Add these back when we add in avatar
                 .loginType("wechat")
@@ -283,6 +283,19 @@ public class AccountService {
         }
         // newAccount.setPhotoUrl(Helper.generateGravatarUrl(newAccount.getEmail()));
         try {
+            if(existingAccount.getResumes() != null) {
+                for(Resume resume : existingAccount.getResumes()) {
+                    /**
+                     * 1. we just need to set here because the saveAccountNonEssentialInfo later is transactional and we have cascade
+                     * 2. new account already has the resumes because it was foundByid System.out.println(newAccount.getResumes());
+                     * 3. because we're only updating account, resumes should point to the "new" account,
+                     *    new in the sense that it is updated and needs to be cascaded, whereas account still points to the same resumes.
+                     *    In a sense we're only updating one side of the relationship.
+                     * TODO: decouple resume account as much as possible to a transit/process services or consumer side.
+                     */
+                    resume.setAccount(newAccount);
+                }
+            }
             accountRepo.saveAccountNonEssentialInfo(newAccount.getOpenid(), newAccount.getName(),
                     newAccount.getPhotoUrl(), newAccount.getLoginType(), newAccount.getId());
         } catch (Exception ex) {

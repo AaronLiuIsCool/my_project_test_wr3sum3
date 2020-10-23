@@ -37,26 +37,33 @@ const ProgressHeader = ({ setScoreVisible, scoreVisible }) => {
 
 	useEffect(() => {
 		if (resumeId){
-			getResumeScore(resumeId).then((resumeScoreData) => {
-				const percentage = Math.round(resumeScoreData.totalScore / MAXSCORE * 100);
-				setScorePercentage(percentage)
-				if (percentage < 55) {
-					setScoreRating("score_D");
-				} else if (percentage < 70) {
-					setScoreRating("score_C");
-				} else if (percentage < 85) {
-					setScoreRating("score_B");
-				} else if (percentage <= 100) {
-					setScoreRating("score_A");
-				} else {
-					setScorePercentage(0);
-					setScoreRating("error");
-					logger.error("简历打分异常");
-				}
-			});
+			updateScore();
+      window.addEventListener('update-score', () => {
+        updateScore()
+      })
 		}
 	}, [resumeId]); // eslint-disable-line
-
+  const updateScore = () => {
+    getResumeScore(resumeId).then((resumeScoreData) => {
+      const percentage = Math.round(
+        (resumeScoreData.totalScore / MAXSCORE) * 100
+      );
+      setScorePercentage(percentage);
+      if (percentage < 55) {
+        setScoreRating('score_D');
+      } else if (percentage < 70) {
+        setScoreRating('score_C');
+      } else if (percentage < 85) {
+        setScoreRating('score_B');
+      } else if (percentage <= 100) {
+        setScoreRating('score_A');
+      } else {
+        setScorePercentage(0);
+        setScoreRating('error');
+        logger.error('简历打分异常');
+      }
+    });
+  };
 	const scoreRatingColor = {
 		score_A: '#2abc6e',
 		score_B: '#edbc4d',

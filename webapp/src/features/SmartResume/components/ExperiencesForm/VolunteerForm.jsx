@@ -10,7 +10,7 @@ import DropdownGroup from 'components/DropdownGroup';
 import RadioButtonGroup from 'components/RadioButtonGroup';
 import Button from 'react-bootstrap/Button';
 import DraftEditor from '../../../../components/DraftEditor/index'
-import { generateSuggestions, isDescending, extractDate, generateLayoutRating } from '../../utils/resume';
+import { generateSuggestions, isDescending, extractDate, generateLayoutRating, dispatchUpdates, updateCityOptions } from '../../utils/resume';
 
 import { ReactComponent as WrittenAssistIcon } from '../../assets/writing_assit.svg';
 
@@ -22,7 +22,7 @@ import ResumeServices from 'shell/services/ResumeServices';
 import { getLogger } from 'shell/logger';
 import { previewResume, wholePageCheck } from '../ResumePreview/resumeBuilder';
 
-import cityOptions from 'data/city.json';
+import countryOptions from 'data/country.json';
 
 const logger = getLogger('VolunteerForm');
 const resumeServices = new ResumeServices();
@@ -52,7 +52,7 @@ const VolunteerForm = ({ data, index, isLast = false, messages, volunteerData })
 		volunteerDescription: {},
 	});
 	const dispatch = useDispatch();
-
+  const [cityOptions, setCityOptions] = useState([]);
 	const save = async () => {
 		previewResume(messages.RPreview);
 		let id = data.id;
@@ -66,7 +66,8 @@ const VolunteerForm = ({ data, index, isLast = false, messages, volunteerData })
 		} catch (exception) {
 			logger.error(exception);
 		} finally {
-			dispatch(actions.updateVolunteerId({ index, id }));
+      dispatch(actions.updateVolunteerId({ index, id }));
+      dispatchUpdates('update-score');
 		}
 	};
 
@@ -150,11 +151,12 @@ const VolunteerForm = ({ data, index, isLast = false, messages, volunteerData })
 		dispatch(actions.updateVolunteerCity({ value, index }));
 	};
 
-	const handleCountryChange = (event) => {
-		const value = event.target.value;
-		updateStatus(validateVolunteerEntry, status, setStatus, 'volunteerCountry', value);
+  const handleCountryChange = (values) => {
+    const value = values.length === 0 ? null : values[0].data
+    updateCityOptions(value, setCityOptions)
+    updateStatus(validateVolunteerEntry, status, setStatus, 'volunteerCountry', value);
 		dispatch(actions.updateVolunteerCountry({ value, index }));
-	};
+  };
     
     const handleVolunteerDescriptionEditorChange = (value) => {
         updateStatus(
@@ -258,6 +260,19 @@ const VolunteerForm = ({ data, index, isLast = false, messages, volunteerData })
 						/>
 					</Col>
 				)}
+        <Col>
+          <DropdownGroup
+              label={messages.country}
+              id="volunteer-country"
+              placeholder={messages.experienceCountry}
+              options={countryOptions}
+              value={data.volunteerCountry}
+              onChange={handleCountryChange}
+              feedbackMessage={messages.entryIsInvalid}
+              isValid={status.volunteerCountry.isValid}
+              isInvalid={status.volunteerCountry.isInvalid}
+					/>
+				</Col>
 				<Col>
 					<DropdownGroup
 						label={messages.city}
@@ -269,18 +284,6 @@ const VolunteerForm = ({ data, index, isLast = false, messages, volunteerData })
 						feedbackMessage={messages.entryIsInvalid}
 						isValid={status.volunteerCity.isValid}
 						isInvalid={status.volunteerCity.isInvalid}
-					/>
-				</Col>
-				<Col>
-					<InputGroup
-						label={messages.country}
-						id="volunteer-country"
-						placeholder={messages.experienceCountry}
-						value={data.volunteerCountry}
-						onChange={handleCountryChange}
-						feedbackMessage={messages.entryIsInvalid}
-						isValid={status.volunteerCountry.isValid}
-						isInvalid={status.volunteerCountry.isInvalid}
 					/>
 				</Col>
 			</Row>

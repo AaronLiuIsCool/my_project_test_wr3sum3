@@ -9,14 +9,14 @@ import styles from '../../../styles/JobDetails.module.css';
 
 const jobServices = new JobsServices();
 
-const renderDetail = (data, modalOpenHandler) => (
+const renderDetail = (resumeId, data, modalOpenHandler) => (
     <>
-        <DetailHeader data={data} />
+        <DetailHeader resumeId={resumeId} data={data} />
         <DetailContent data={data} modalOpenHandler={modalOpenHandler}/>
     </>
 );
 
-const JobDetails = ({ data = {}, modalOpenHandler }) => {
+const JobDetails = ({ resumeId, data = {}, modalOpenHandler }) => {
     const [job, setJob] = useState();
     
 
@@ -32,7 +32,7 @@ const JobDetails = ({ data = {}, modalOpenHandler }) => {
 
     return (
         <div className={styles["container-details"]}>
-            {Boolean(job) ? renderDetail(job, modalOpenHandler) : null}
+            {Boolean(job) ? renderDetail(resumeId, job, modalOpenHandler) : null}
         </div>
     );
 };
