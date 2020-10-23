@@ -13,4 +13,10 @@ public class AccountConstant {
     public static final String CONFIRM_EMAIL_TMPL_CN_ZH = "这个是 password changes 之后的 ";
 
     public static final String GREETING_WORD_CN_ZH = "您好";
+
+    // email title
+    public static final String RESET_PASSWORD_EMAIL_TITLE = "Please reset your Smartresume password";
+    public static final String RESET_PASSWORD_EMAIL_TITLE_CN_ZH = "请更改你的快刀简历账户密码";
+    public static final String ACTIVATE_ACCOUNT_EMAIL_TITLE = "Please activate your Smartresume account";
+    public static final String ACTIVATE_ACCOUNT_EMAIL_TITLE_CN_ZH = "欢迎使用快刀简历，请激活账户";
 }
