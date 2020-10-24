@@ -13,20 +13,20 @@ export default class AccountServices extends BaseServices {
   async getAccountInfo(userId) {
     try {
       return await this.get(`v1/account/get?userId=${userId}`);
-    } catch(err) {
+    } catch (err) {
       logger.error(err);
     }
   }
 
-  async addResume(userId, resumeId) {
+  async addResume(userId, resumeId, resumeName) {
     try {
       return await this.post(`v1/account/${userId}/resumes`, {
-        "alias": "<Resume Name>",
+        "alias": resumeName,
         "createdAt": new Date().toISOString(),
         "resumeId": resumeId,
         "thumbnailUri": "thumbnailUri"
       });
-    } catch(err) {
+    } catch (err) {
       logger.error(err);
     }
   }
@@ -34,7 +34,7 @@ export default class AccountServices extends BaseServices {
   async deleteResume(userId, resume) {
     try {
       return await this.delete(`v1/account/${userId}/resumes`, resume);
-    } catch(err) {
+    } catch (err) {
       logger.error(err);
     }
   }

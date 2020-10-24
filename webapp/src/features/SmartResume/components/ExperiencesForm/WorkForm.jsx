@@ -38,7 +38,6 @@ const fields = [
     'workDescription'
 ];
 const WorkForm = ({ data, index, isLast = false, messages, workData }) => {
-	console.log("original Data", data)
 	const trigger = useSelector(assistantSelectors.selectTrigger);
 	const showAssistant = useSelector(assistantSelectors.selectShow);
 	const resumeId = useSelector(selectId);
@@ -56,8 +55,6 @@ const WorkForm = ({ data, index, isLast = false, messages, workData }) => {
 	const dispatch = useDispatch();
 
 	const save = async () => {
-	  console.log("data", data)
-
 		GAEvent('Resume Edit', 'Save work form'); // call GA on save
 		previewResume(messages.RPreview);
 		let id = data.id;
