@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import { previewResume } from './ResumePreview/resumeBuilder';
-import { useHistory } from "react-router-dom";
 
 import { selectLanguage, selectUserId } from 'features/App/slicer';
 import { actions } from 'features/SmartResume/slicer';
@@ -23,7 +22,7 @@ const logger = getLogger('ResumeStarter');
 const accountServices = new AccountServices();
 const resumeServices = new ResumeServices();
 
-async function getResume(dispatch, userId, resumeId, resumeName, language, history) {
+async function getResume(dispatch, resumeId) {
     if (resumeId) {
         try {
             const response = await resumeServices.getResume(resumeId);
@@ -58,7 +57,6 @@ async function getAccountInfoAndSetResumeName(userId, resumeId, setter) {
   }
 }
 const SmartResume = ({ useObserver = false, resumeId }) => {
-    const history = useHistory();
     const dispatch = useDispatch();
     const userId = useSelector(selectUserId);
     const language = useSelector(selectLanguage);
@@ -68,7 +66,7 @@ const SmartResume = ({ useObserver = false, resumeId }) => {
     const [resumeName, setResumeName] = useState('');
     useEffect(() => {
         const updatePreview = async () => {
-            await getResume(dispatch, userId, resumeId, resumeName, language, history);
+            await getResume(dispatch, resumeId);
             previewResume(messages.RPreview);
         }
         updatePreview();
