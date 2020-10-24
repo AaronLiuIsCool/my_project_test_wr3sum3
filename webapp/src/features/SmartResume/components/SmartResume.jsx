@@ -7,6 +7,7 @@ import { useHistory } from "react-router-dom";
 import { selectLanguage, selectUserId } from 'features/App/slicer';
 import { actions } from 'features/SmartResume/slicer';
 import { I8nContext } from 'shell/i18n';
+import AccountServices from 'shell/services/AccountServices';
 import ResumeServices from 'shell/services/ResumeServices';
 import { getLogger } from 'shell/logger';
 
@@ -19,6 +20,7 @@ import zh from '../i18n/zh.json';
 import en from '../i18n/en.json';
 
 const logger = getLogger('ResumeStarter');
+const accountServices = new AccountServices();
 const resumeServices = new ResumeServices();
 
 async function getResume(dispatch, userId, resumeId, resumeName, language, history) {
@@ -60,8 +62,8 @@ const SmartResume = ({ useObserver = false, resumeId }) => {
     const dispatch = useDispatch();
     const userId = useSelector(selectUserId);
     const language = useSelector(selectLanguage);
-    const params = new URLSearchParams(window.location.search);
-    const resumeName = params.get('resumeName');
+    // const params = new URLSearchParams(window.location.search);
+    // const resumeName = params.get('resumeName');
     const messages = language === 'zh' ? zh : en;
     const [resumeName, setResumeName] = useState('');
     useEffect(() => {
