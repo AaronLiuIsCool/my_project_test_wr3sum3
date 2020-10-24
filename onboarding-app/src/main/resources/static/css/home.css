@@ -364,6 +364,7 @@ p.action-item {
   line-height: 39px;
   color: #fff;
   cursor: pointer;
+  text-decoration: none;
 }
 
 @media screen and (max-width: 767px) {
