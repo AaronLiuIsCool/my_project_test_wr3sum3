@@ -8,7 +8,7 @@ import MatchingServices from 'shell/services/MatchingServices';
 import { I8nContext } from 'shell/i18n';
 import { selectLanguage, selectUserId } from 'features/App/slicer';
 
-import JobRefinement from './Jobs/JobRefinement';
+import JobRefinementModal from './Jobs/JobRefinementModal';
 import SearchHeader from './SearchHeader';
 import Jobs from './Jobs';
 
@@ -38,6 +38,28 @@ async function findMatchingJobs(query, country, city, pageNumber) {
     return await matchingServices.searchJobs(query, country, city, pageNumber);
 }
 
+function getQuery(resumeDto = {}) {
+    const {keywords = [], majors = []} = resumeDto;
+    if (majors.length > 0) {
+        return majors[0];
+    } else if (keywords.length > 0) {
+        return keywords[0];
+    }
+    return '';
+}
+
+function getCountry(resumeDto = {}) {
+    const {location} = resumeDto;
+    const country = location?.country || '';
+    return country !== 'undefined' ? country : '';
+}
+
+function getCity(resumeDto = {}) {
+    const {location} = resumeDto;
+    const city = location?.city || '';
+    return city !== 'undefined' ? city : '';
+}
+
 const JobMatcher = ({ resume }) => {
     const language = useSelector(selectLanguage);
     const messages = language === 'zh' ? zh : en;
@@ -50,7 +72,9 @@ const JobMatcher = ({ resume }) => {
     const [city, setCity] = useState();
     const [ready, setReady] = useState(false);
 
-    const [modalOpened, setModalOpened] = useState(false); 
+    const [selectedJob, setSelectedJob] = useState(0);
+
+    const [modalOpened, setModalOpened] = useState(false);
 
     const search = async (query, country, city, pageNumber) => {
         try {
@@ -78,10 +102,14 @@ const JobMatcher = ({ resume }) => {
         search(query, country, city, pageNumber);
     }
 
+
     useEffect(() => {
         getResumeMatchingInfo(resume).then((resumeDto) => {
-            matchingServices.setContext({...resumeDto, userId});
-            handleSearch();
+            matchingServices.setContext({...resumeDto, userId, resumeUuid: resume});
+            const query = getQuery(resumeDto);
+            const country = getCountry(resumeDto);
+            const city = getCity(resumeDto);
+            handleSearch(query, country, city);
             setReady(true);
         });
     }, []); // eslint-disable-line
@@ -94,16 +122,17 @@ const JobMatcher = ({ resume }) => {
         <I8nContext.Provider value={messages}>
             <div className="features job-matcher">
                 <SearchHeader onSearch={handleSearch} initial={{query, country, city}} />
-                <Jobs data={searchResults} pageNumber={resultsPageNumber}
-                    onPageChange={handlePageChange} modalOpenHandler={setModalOpened}/>
-                {modalOpened && <JobRefinement data={searchResults} modalOpenHandler={setModalOpened} />}
+                <Jobs data={searchResults} pageNumber={resultsPageNumber} resumeId={resume}
+                    onPageChange={handlePageChange} modalOpenHandler={setModalOpened} selectedJob={selectedJob} setSelectedJob={setSelectedJob}/>
+                {modalOpened && <JobRefinementModal data={searchResults} modalOpenHandler={setModalOpened} selectedJob={selectedJob}/>}
             </div>
         </I8nContext.Provider>
     );
 };
 
 JobMatcher.propTypes = {
-    resume: PropTypes.string
+    resume: PropTypes.string,
+    page: PropTypes.number
 };
 
 export default JobMatcher;

@@ -84,6 +84,14 @@ public class AccountService {
         return this.convertToDto(account);
     }
 
+    public AccountDto getByOpenId(final String openId) {
+        Account account = accountRepo.findAccountByOpenid(openId);
+        if (account == null) {
+            throw new ServiceException(String.format(("Wechat user with open id %s not found"), openId));
+        }
+        return this.convertToDto(account);
+    }
+
     //public AccountDto create(String name, String email, String phoneNumber) {
     public AccountDto create(String name, String email) {
         if (StringUtils.hasText(email)) {
@@ -125,7 +133,7 @@ public class AccountService {
                 emailName = AccountConstant.GREETING_WORD_CN_ZH;
             }
 
-            String subject = "Activate your Kuaidaoresume account";
+            String subject = AccountConstant.ACTIVATE_ACCOUNT_EMAIL_TITLE_CN_ZH;
             //this.sendEmail(account.getId(), email, emailName, subject, AccountConstant.ACTIVATE_ACCOUNT_TMPL, true); // for english
             this.sendEmail(account.getId(), email, emailName, subject, AccountConstant.ACTIVATE_ACCOUNT_TMPL_CN_ZH, true); // for chinese
         }
@@ -152,11 +160,13 @@ public class AccountService {
                 throw new ServiceException("A wechat user with that email already exists. Try to not use wechat login.");
             }
         }
+
+        final String openId = weChatAccountDto.getOpenid();
         Account account = Account.builder()
-                .email(weChatAccountDto.getEmail())
-                .name(weChatAccountDto.getNickname())
-                .openid(weChatAccountDto.getOpenid())
-                .photoUrl(weChatAccountDto.getHeadimgurl())
+                .email(openId + "@kuaidaoemail.com")
+                .name("未命名")
+                .openid(openId)
+//                .photoUrl(weChatAccountDto.getHeadimgurl()) // TODO: Add these back when we add in avatar
                 .loginType("wechat")
                 .build();
 
@@ -273,6 +283,19 @@ public class AccountService {
         }
         // newAccount.setPhotoUrl(Helper.generateGravatarUrl(newAccount.getEmail()));
         try {
+            if(existingAccount.getResumes() != null) {
+                for(Resume resume : existingAccount.getResumes()) {
+                    /**
+                     * 1. we just need to set here because the saveAccountNonEssentialInfo later is transactional and we have cascade
+                     * 2. new account already has the resumes because it was foundByid System.out.println(newAccount.getResumes());
+                     * 3. because we're only updating account, resumes should point to the "new" account,
+                     *    new in the sense that it is updated and needs to be cascaded, whereas account still points to the same resumes.
+                     *    In a sense we're only updating one side of the relationship.
+                     * TODO: decouple resume account as much as possible to a transit/process services or consumer side.
+                     */
+                    resume.setAccount(newAccount);
+                }
+            }
             accountRepo.saveAccountNonEssentialInfo(newAccount.getOpenid(), newAccount.getName(),
                     newAccount.getPhotoUrl(), newAccount.getLoginType(), newAccount.getId());
         } catch (Exception ex) {
@@ -315,14 +338,17 @@ public class AccountService {
             throw new ServiceException(ResultCode.NOT_FOUND, "No user with that email exists");
         }
 
-        String subject = "Reset your Smartresume password";
+        //String subject = "Reset your Smartresume password";
+        String subject = AccountConstant.RESET_PASSWORD_EMAIL_TITLE_CN_ZH;
+
+
         boolean activate = false; // reset
         //String tmpl = AccountConstant.RESET_PASSWORD_TMPL; // for english
         String tmpl = AccountConstant.RESET_PASSWORD_TMPL_CN_ZH; // for chinese
         if (!account.isConfirmedAndActive()) {
             // Not actually active - make some tweaks for activate instead of password reset
             activate = true; // activate
-            subject = "Activate your Smartresume account";
+            subject = AccountConstant.ACTIVATE_ACCOUNT_EMAIL_TITLE_CN_ZH;
             //tmpl = AccountConstant.ACTIVATE_ACCOUNT_TMPL; // for english
             tmpl = AccountConstant.ACTIVATE_ACCOUNT_TMPL_CN_ZH; // for chinese
         }
@@ -446,21 +472,23 @@ public class AccountService {
             serviceHelper.handleException(logger, ex, errMsg);
             throw new ServiceException(errMsg, ex);
         }
+        Map<String, Object> emailModel = new HashMap();
 
         String htmlBody = null;
         if (activateOrConfirm) { // active or confirm
             htmlBody = String.format(template, name, link.toString(), link.toString(), link.toString());
+            emailModel.put("type", "activateOrConfirm");
         } else { // reset
             htmlBody = String.format(template, link.toString(), link.toString());
+            emailModel.put("type", "resetPassword");
         }
 
-        Map<String, Object> emailModel = new HashMap();
         emailModel.put("name", name);
         emailModel.put("link", link);
 
         EmailRequest emailRequest = EmailRequest.builder()
                 .to(email)
-                .from("aaronliu.dev.canada@gmail.com") //TODO: Aaron Liu update to Eyeshigh customer support as default
+                .from("info@eyeshightc.com")
                 .name(name)
                 .subject(subject)
                 .htmlBody(htmlBody)

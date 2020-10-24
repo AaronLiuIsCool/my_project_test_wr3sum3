@@ -49,6 +49,16 @@
     box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.1);
     padding: 24px 20px;
   }
+  @media only screen and (max-width: 1440px) {
+    .form_body {
+      width: 650px;
+      padding:24px 0;
+      .container{
+        width: 600px;
+        padding: 0;
+      }
+    }
+  }
 
   .form_item {
     label {

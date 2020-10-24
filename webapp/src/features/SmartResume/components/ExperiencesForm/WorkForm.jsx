@@ -20,11 +20,11 @@ import { updateStatus, updateAllStatus } from '../../slicer/common';
 import ResumeServices from 'shell/services/ResumeServices';
 import { getLogger } from 'shell/logger';
 import { previewResume, wholePageCheck } from '../ResumePreview/resumeBuilder';
-import { generateSuggestions, isDescending, extractDate, generateLayoutRating } from '../../utils/resume';
+import { generateSuggestions, isDescending, extractDate, generateLayoutRating, dispatchUpdates, updateCityOptions } from '../../utils/resume';
 
 import DraftEditor from '../../../../components/DraftEditor/index'
 
-import cityOptions from 'data/city.json';
+import countryOptions from 'data/country.json';
 
 const logger = getLogger('WorkForm');
 const resumeServices = new ResumeServices();
@@ -41,7 +41,8 @@ const WorkForm = ({ data, index, isLast = false, messages, workData }) => {
 	const trigger = useSelector(assistantSelectors.selectTrigger);
 	const showAssistant = useSelector(assistantSelectors.selectShow);
 	const resumeId = useSelector(selectId);
-	const [validated, setValidated] = useState(false);
+  const [validated, setValidated] = useState(false);
+  const [cityOptions, setCityOptions] = useState([]);
 	const [status, setStatus] = useState({
 		workName: {},
 		workCompanyName: {},
@@ -65,7 +66,8 @@ const WorkForm = ({ data, index, isLast = false, messages, workData }) => {
 		} catch (exception) {
 			logger.error(exception);
 		} finally {
-			dispatch(actions.updateWorkId({ index, id }));
+      dispatch(actions.updateWorkId({ index, id }));
+      dispatchUpdates('update-score');
 		}
 	};
 
@@ -156,11 +158,12 @@ const WorkForm = ({ data, index, isLast = false, messages, workData }) => {
 		dispatch(actions.updateWorkCity({ value, index }));
 	};
 
-	const handleWorkCountryChange = (event) => {
-		const value = event.target.value;
-		updateStatus(validateWorkEntry, status, setStatus, 'workCountry', value);
-		dispatch(actions.updateWorkCountry({ value, index }));
-	};
+  const handleWorkCountryChange = (values) => {
+    const value = values.length === 0 ? null : values[0].data
+    updateCityOptions(value, setCityOptions)
+    updateStatus(validateWorkEntry, status, setStatus, 'workCountry', value);
+    dispatch(actions.updateWorkCountry({value, index}));
+  };
 
 
 	const handleAssistantClick = () => {
@@ -255,7 +258,19 @@ const WorkForm = ({ data, index, isLast = false, messages, workData }) => {
 						/>
 					</Col>
 				)}
-
+        <Col>
+          <DropdownGroup
+              label={messages.country}
+              id='work-country'
+              placeholder={messages.workCountry}
+              options={countryOptions}
+              value={data.workCountry}
+              onChange={handleWorkCountryChange}
+              feedbackMessage={messages.entryIsInvalid}
+              isValid={status.workCountry.isValid}
+              isInvalid={status.workCountry.isInvalid}
+            />
+				</Col>
 				<Col>
 					<DropdownGroup
 						label={messages.city}
@@ -269,23 +284,10 @@ const WorkForm = ({ data, index, isLast = false, messages, workData }) => {
 						isInvalid={status.workCity.isInvalid}
 					/>
 				</Col>
-				<Col>
-					<InputGroup
-						label={messages.country}
-						id='work-country'
-						placeholder={messages.workCountry}
-						value={data.workCountry}
-						onChange={handleWorkCountryChange}
-						feedbackMessage={messages.entryIsInvalid}
-						isValid={status.workCountry.isValid}
-						isInvalid={status.workCountry.isInvalid}
-					/>
-				</Col>
 			</Row>
 
             <Row>
                 <Col lg="12">
-                    {/*todo: replace with rich text editor */}
                     <div className={assistantContainerClassNames}>
                         <DraftEditor 
                             feedbackMessage={messages.entryIsInvalid}

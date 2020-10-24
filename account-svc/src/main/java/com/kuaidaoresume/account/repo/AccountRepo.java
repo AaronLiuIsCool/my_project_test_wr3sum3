@@ -15,6 +15,8 @@ public interface AccountRepo extends JpaRepository<Account, String> {
 
     Account findAccountByEmail(String email);
 
+    Account findAccountByOpenid(String openid);
+
     // Account findAccountByPhoneNumber(String phoneNumber); not for phase I TODO:Woody
 
     @Modifying(clearAutomatically = true)

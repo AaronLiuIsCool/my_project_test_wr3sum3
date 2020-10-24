@@ -63,7 +63,9 @@ public class JobServiceImpl implements JobService{
     }
 
     @Override
-    @Cacheable(cacheNames = CacheConfig.JOB_CACHE, key = "#uuid", unless = "#result == null")
+    @Cacheable(cacheNames = CacheConfig.JOB_CACHE, key = "#uuid + 'lazy'", unless = "#result == null")
+    //https://docs.spring.io/spring-framework/docs/3.2.x/spring-framework-reference/html/expressions.html
+    //TODO: simpleJobDto to be updated to include more fields
     public Optional<SimpleJobDto> findSimpleJobByUuid(String uuid) {
         Optional<Job> jobOptional = jobRepository.findByUuid(uuid);
         if (!jobOptional.isPresent()) {

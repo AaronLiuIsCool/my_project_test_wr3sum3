@@ -131,22 +131,24 @@ public class ConfirmResetController {
         }
 
         // login user
-        Sessions.loginUser(account.getId(),
-                account.isSupport(),
-                false,
-                appProps.getSigningSecret(),
-                envConfig.getExternalApex(),
-                response);
-        logger.info("user activated account and logged in", "user_id", account.getId());
-
-        String destination = null;
-        if (account.isSupport()) {
-            destination = HelperService.buildUrl("http", "app." + envConfig.getExternalApex());
-        }
-        else {
-            // onboard TODO YS, please feel free to up the redirect url here.
-            destination = HelperService.buildUrl("http", "www." + envConfig.getExternalApex());
-        }
-        return "redirect:" + destination;
+        // TODO AL, YS, RT confirm flow
+//        Sessions.loginUser(account.getId(),
+//                account.isSupport(),
+//                false,
+//                appProps.getSigningSecret(),
+//                envConfig.getExternalApex(),
+//                response);
+//        logger.info("user activated account and logged in", "user_id", account.getId());
+//
+//        String destination = null;
+//        if (account.isSupport()) {
+//            destination = HelperService.buildUrl("http", "app." + envConfig.getExternalApex());
+//        }
+//        else {
+//            // onboard TODO YS, please feel free to up the redirect url here.
+//            destination = HelperService.buildUrl("http", "www." + envConfig.getExternalApex());
+//        }
+        model.addAttribute(Constant.ATTRIBUTE_NAME_PAGE, pageFactory.buildResetCompletePage());
+        return Constant.VIEW_RESET_COMPLETE;
     }
 }

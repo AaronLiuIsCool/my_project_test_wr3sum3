@@ -4,8 +4,10 @@
 }
 
 .header {
-  height: 66px;
-  margin: 28px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 28px 0 40px;
 }
 
 span.title {
@@ -15,35 +17,36 @@ span.title {
 }
 
 a.action {
-  height: 1.625rem;
   font-size: 1.25rem;
   font-weight: bold;
-  line-height: 50px;
   color: #3e89ec;
   float: right;
 }
 
 .itemContainer {
-  width: 480px;
-  height: 350px;
+  width: 235px;
+  height: 300px;
   border-radius: 8px;
   box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.1);
   background-color: #ffffff;
   display: inline-block;
   margin-bottom: 40px;
-  padding: 40px;
+  padding: 20px;
 }
-.itemContainer:nth-child(2n+1) {
-  margin-right: 40px;
+.itemContainer {
+  margin-right: 20px;
+}
+.itemContainer:nth-child(4n) {
+  margin-right: 0;
 }
 
 .itemContent {
-  margin-bottom: 20px;
+  margin-bottom: 44px;
 }
 
 .matchingBtn {
-  width: 25rem;
-  height: 2.563rem;
+  width: 195px;
+  height: 41px;
   font-size: 1rem;
   line-height: 1.88;
   text-align: center;
@@ -51,29 +54,32 @@ a.action {
 }
 
 .right {
-  float: right;
-  width: 200px;
+  font-size: 0;
 }
 
 .name {
-  font-size: 1.25rem;
+  margin-top: 6px;
+  font-size: 20px;
   font-weight: bold;
   color: #333333;
 }
 
 .time {
-  margin-top: 1.25em;
-  height: 1.188rem;
-  font-size: 0.875rem;
-  line-height: 2.14;
+  margin-top: 20px;
+  font-size: 14px;
+  line-height: 1;
   color: #bfc4d3;
 }
 
 .links {
-  margin: 20px 0;
+  margin: 30px 0;
+  display: flex;
 }
 
 .link {
+  width: 50%;
+  display: flex;
+  align-items: center;
   height: 21px;
   border: 0px;
   font-size: 0.875rem;
@@ -82,7 +88,7 @@ a.action {
   padding: 0;
 }
 .link:nth-child(2n+1) {
-  margin-right: 40px;
+  margin-right: 20px;
 }
 .link:nth-child(3), .link:nth-child(4) {
   margin-top: 18px;
@@ -96,7 +102,13 @@ a.action {
   font-size: 0.875rem;
   font-weight: bold;
   color: #d5d9e6;
+  display: flex;
+  align-items: center;
 }
 .delete:hover {
   text-decoration: none;
+}
+
+.svg {
+  margin-right: 10px;
 }

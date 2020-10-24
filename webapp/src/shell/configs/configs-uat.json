@@ -11,6 +11,8 @@
 
   "services-job-baseUrl": "job.uat.smartresume.careers",
 
+  "services-matching-baseUrl": "matching.uat.smartresume.careers",
+
   "services-kdr-baseUrl": "kdr.uat.smartresume.careers",
 
   "services-mail-baseUrl": "mail.uat.smartresume.careers",

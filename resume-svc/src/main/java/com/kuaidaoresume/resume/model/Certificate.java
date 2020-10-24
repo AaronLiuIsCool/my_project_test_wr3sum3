@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.sql.Date;
+import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
@@ -26,9 +26,9 @@ public class Certificate implements ResumeContainable {
     @Column(length = 50)
     private String name;
 
-    private Date issueDate;
+    private LocalDate issueDate;
 
-    private Date expirationDate;
+    private LocalDate expirationDate;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "resume_id", nullable = false)

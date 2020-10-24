@@ -27,5 +27,11 @@
     &.padding-for-nav {
       padding-top: 80px;
     }
+
+    .form-validation-wrapper {
+      .invalid-feedback {
+          display: block;
+      }
+  }
   }
 }

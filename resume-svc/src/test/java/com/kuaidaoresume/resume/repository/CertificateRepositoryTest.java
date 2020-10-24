@@ -14,7 +14,6 @@ import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collection;
@@ -32,13 +31,13 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 @Import(JpaTestConfig.class)
 public class CertificateRepositoryTest {
 
-    private static final Date NOW = Date.valueOf(LocalDate.now());
+    private static final LocalDate NOW = LocalDate.now();
     
     private static final Long CERTIFICATE_ID = 1L;
     private static final String NAME = "CPA";
 
-    private static final Date ISSUE_DATE = Date.valueOf(LocalDate.of(2000, 1, 1));
-    private static final Date EXPIRATION_DATE = Date.valueOf(LocalDate.of(2001, 1, 1));
+    private static final LocalDate ISSUE_DATE = LocalDate.of(2000, 1, 1);
+    private static final LocalDate EXPIRATION_DATE = LocalDate.of(2001, 1, 1);
     
     private Resume resume;
     private Certificate certificate;

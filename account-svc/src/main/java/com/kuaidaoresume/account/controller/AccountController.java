@@ -121,6 +121,26 @@ public class AccountController {
         return genericAccountResponse;
     }
 
+    @GetMapping(path = "/getByOpenId")
+    @Authorize(value = {
+            AuthConstant.AUTHORIZATION_WWW_SERVICE,
+            AuthConstant.AUTHORIZATION_ACCOUNT_SERVICE,
+            AuthConstant.AUTHORIZATION_RESUME_SERVICE,
+            AuthConstant.AUTHORIZATION_WHOAMI_SERVICE,
+            AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
+            AuthConstant.AUTHORIZATION_SUPPORT_USER,
+            AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
+    })
+    public GenericAccountResponse getAccountByOpenId(@RequestParam @NotBlank String openId) {
+//        this.validateAuthenticatedUser(userId); TODO: Once we have open ID, it means we have passed WeChat auth
+        this.validateEnv();
+
+        AccountDto accountDto = accountService.getByOpenId(openId);
+
+        GenericAccountResponse genericAccountResponse = new GenericAccountResponse(accountDto);
+        return genericAccountResponse;
+    }
+
     @PutMapping(path = "/update")
     @Authorize(value = {
             AuthConstant.AUTHORIZATION_WWW_SERVICE,
@@ -133,7 +153,7 @@ public class AccountController {
         this.validateAuthenticatedUser(newAccountDto.getId());
         this.validateEnv();
 
-        AccountDto accountDto =  accountService.update(newAccountDto);
+        AccountDto accountDto = accountService.update(newAccountDto);
 
         GenericAccountResponse genericAccountResponse = new GenericAccountResponse(accountDto);
         return genericAccountResponse;

@@ -11,7 +11,7 @@ import styles from './ProgressHeader.module.css';
 
 const resumeServices = new ResumeServices();
 const logger = getLogger('App');
-const MAXSCORE = 35;
+const MAXSCORE = 100; // TODO: Maybe this can come from the backend
 
 
 const ProgressHeader = ({ setScoreVisible, scoreVisible }) => {
@@ -37,29 +37,33 @@ const ProgressHeader = ({ setScoreVisible, scoreVisible }) => {
 
 	useEffect(() => {
 		if (resumeId){
-			getResumeScore(resumeId).then((resumeScoreData) => {
-				const percentage = Math.round(resumeScoreData.totalScore / MAXSCORE * 100);
-				setScorePercentage(percentage)
-				if (percentage < 55) {
-					setScoreRating("score_D");
-				} else if (percentage < 70) {
-					setScoreRating("score_C");
-				} else if (percentage < 85) {
-					setScoreRating("score_B");
-				} else if (percentage <= 100) {
-					setScoreRating("score_A");
-				} else {
-					setScorePercentage(0);
-					setScoreRating("error");
-					logger.error("简历打分异常");
-				}
-			});
+			updateScore();
+      window.addEventListener('update-score', () => {
+        updateScore()
+      })
 		}
 	}, [resumeId]); // eslint-disable-line
-
-
-
-
+  const updateScore = () => {
+    getResumeScore(resumeId).then((resumeScoreData) => {
+      const percentage = Math.round(
+        (resumeScoreData.totalScore / MAXSCORE) * 100
+      );
+      setScorePercentage(percentage);
+      if (percentage < 55) {
+        setScoreRating('score_D');
+      } else if (percentage < 70) {
+        setScoreRating('score_C');
+      } else if (percentage < 85) {
+        setScoreRating('score_B');
+      } else if (percentage <= 100) {
+        setScoreRating('score_A');
+      } else {
+        setScorePercentage(0);
+        setScoreRating('error');
+        logger.error('简历打分异常');
+      }
+    });
+  };
 	const scoreRatingColor = {
 		score_A: '#2abc6e',
 		score_B: '#edbc4d',
@@ -76,11 +80,11 @@ const ProgressHeader = ({ setScoreVisible, scoreVisible }) => {
 				</p>
 				<ProgressBar className={styles.progressBar} now={scorePercentage} variant={scoreRating} />
 			</div>
-			<div>
+			<div className={styles.hideSM}>
 				<p className={styles.title}>{messages.intensityScore}</p>
 				<p>{messages.clickForDetails}</p>
 			</div>
-			<div onClick={() => setScoreVisible(!scoreVisible)}>
+			<div className={styles.hideSM} onClick={() => setScoreVisible(!scoreVisible)}>
 				<div className={styles.circle} style={{ color: scoreRatingColor[scoreRating], borderColor: scoreRatingColor[scoreRating] }} onClick={() => {
 					dispatch(
 						actions.toggleAssistant({

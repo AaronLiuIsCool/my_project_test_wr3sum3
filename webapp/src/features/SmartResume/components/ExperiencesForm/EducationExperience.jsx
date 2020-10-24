@@ -23,7 +23,7 @@ const EducationExperience = () => {
 			subtitle={messages.educationInfo}
 			icon="education.svg"
 			addMore={true}
-			addMoreMessage={messages.addNewExperience}
+			addMoreMessage={messages.addNewEducationExperience}
 			handleAddMore={() => dispatch(actions.addNewEducation())}>
 			{getForms(education.data, messages)}
 		</Step>

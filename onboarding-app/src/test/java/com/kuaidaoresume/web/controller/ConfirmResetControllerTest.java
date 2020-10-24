@@ -69,7 +69,7 @@ public class ConfirmResetControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name(Constant.VIEW_CONFIRM_RESET))
                 .andExpect(content().string(containsString(pageFactory.buildConfirmResetPage().getDescription())))
-                // TODO TF-125 YS after add token to .andExpect(content().string(containsString(token)))
+                .andExpect(content().string(containsString(token)))
                 .andReturn();
     }
 

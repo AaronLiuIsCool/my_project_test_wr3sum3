@@ -38,6 +38,7 @@ const ResumePreview = () => {
 
 	const [resumeData, setResumeData] = useState(resume.resumeBuilder.data.base64);
 	const [isResumeTipsModalOpen, setIsResumeTipsModalOpen] = useState(false);
+	const [resumeTipsSymbol, setResumeTipsSymbol] = useState("?");
 	const [isThemeColorModalOpen, setIsThemeColorModalOpen] = useState(false);
 	const [numOfPagesList, setNumOfPagesList] = useState([]);
 
@@ -64,8 +65,10 @@ const ResumePreview = () => {
 				return;
 			}
 			const resumeId = data.id;
+			const resumeName = `translated-${resumeId}`;
+			// todo: Need a better way to handle translated resume name
 			window.open(`${resumeId}`, '_blank'); // open translated resume in a new tab
-			accountServices.addResume(userId, resumeId);
+			accountServices.addResume(userId, resumeId, resumeName);
 		} catch (exception) {
 			logger.error(exception);
 		}
@@ -73,7 +76,12 @@ const ResumePreview = () => {
 
 	function onDocumentLoadSuccess(pdf) {
     setNumOfPagesList(Array.from(Array(pdf.numPages), (v, i) => i + 1));
-  }
+	}
+	
+	function resumeTipsOpenHandler(){
+		setIsResumeTipsModalOpen(!isResumeTipsModalOpen);
+		setResumeTipsSymbol(resumeTipsSymbol === "?" ? "X": "?");
+	}
 
 	return (
 		<div className={styles.container}>
@@ -95,8 +103,8 @@ const ResumePreview = () => {
 					<button onClick={() => downloadPDF(messages.RPreview)}>
 						<img src={DownloadIcon} alt='download' /> {messages.RPreview.downloadResume}
 					</button>
-					<button className={styles.circle} onClick={() => setIsResumeTipsModalOpen(!isResumeTipsModalOpen)}>
-						?
+					<button className={styles.circle} onClick={resumeTipsOpenHandler}>
+						{resumeTipsSymbol}
 					</button>
 				</div>
 			</div>
