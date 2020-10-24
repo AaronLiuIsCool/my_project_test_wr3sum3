@@ -7,7 +7,6 @@ import { useHistory } from "react-router-dom";
 import { selectLanguage, selectUserId } from 'features/App/slicer';
 import { actions } from 'features/SmartResume/slicer';
 import { I8nContext } from 'shell/i18n';
-import AccountServices from 'shell/services/AccountServices';
 import ResumeServices from 'shell/services/ResumeServices';
 import { getLogger } from 'shell/logger';
 
@@ -20,10 +19,9 @@ import zh from '../i18n/zh.json';
 import en from '../i18n/en.json';
 
 const logger = getLogger('ResumeStarter');
-const accountServices = new AccountServices();
 const resumeServices = new ResumeServices();
 
-async function getOrCreateResume(dispatch, userId, resumeId, language, history) {
+async function getResume(dispatch, userId, resumeId, resumeName, language, history) {
     if (resumeId) {
         try {
             const response = await resumeServices.getResume(resumeId);
@@ -34,20 +32,7 @@ async function getOrCreateResume(dispatch, userId, resumeId, language, history) 
         }
         return;
     }
-
-    try {
-        const response = await resumeServices.createResume({language});
-        const data = await response.json();
-        const resumeId = data.id;
-        await accountServices.addResume(userId, resumeId);
-        accountServices.addResume(userId, resumeId);
-        dispatch(actions.setId(resumeId));
-        history.replace(`/resume/${resumeId}`);
-    } catch (exception) {
-        logger.error(exception);
-        // TODO: Need to handle retry
-        history.push(`/`);
-    }
+    
 }
 async function getAccountInfoAndSetResumeName(userId, resumeId, setter) {
   try {
@@ -75,11 +60,13 @@ const SmartResume = ({ useObserver = false, resumeId }) => {
     const dispatch = useDispatch();
     const userId = useSelector(selectUserId);
     const language = useSelector(selectLanguage);
+    const params = new URLSearchParams(window.location.search);
+    const resumeName = params.get('resumeName');
     const messages = language === 'zh' ? zh : en;
     const [resumeName, setResumeName] = useState('');
     useEffect(() => {
         const updatePreview = async () => {
-            await getOrCreateResume(dispatch, userId, resumeId, language, history);
+            await getResume(dispatch, userId, resumeId, resumeName, language, history);
             previewResume(messages.RPreview);
         }
         updatePreview();

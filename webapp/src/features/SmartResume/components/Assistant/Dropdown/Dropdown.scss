@@ -1,0 +1,51 @@
+.dropdown-wrapper {
+  position: relative;
+}
+.selected-option {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.625rem;
+  border-radius: 8px;
+  box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.08);
+  background-color: #ffffff;
+  .title {
+    width: 12.5rem;
+    height: 1.313rem;
+    font-family: "微软雅黑";
+    font-size: 1rem;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.5;
+    letter-spacing: normal;
+    text-align: left;
+    color: #333333;
+  }
+}
+
+.dropdown-items {
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 12px 24px 0 rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  padding: 0.625rem 0;
+  position: absolute;
+  top: calc(100% + 0.625rem);
+  .dropdown-item {
+    cursor: pointer;
+    padding: 0.625rem 1.25rem;
+    font-family: "微软雅黑";
+    font-size: 1rem;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.5;
+    letter-spacing: normal;
+    text-align: left;
+
+    &:hover {
+      color: #3e89ec;
+      background-color: #f2f4f9;
+    }
+  }
+}

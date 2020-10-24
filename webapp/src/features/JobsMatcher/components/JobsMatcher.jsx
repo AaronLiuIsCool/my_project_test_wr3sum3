@@ -122,7 +122,7 @@ const JobMatcher = ({ resume }) => {
         <I8nContext.Provider value={messages}>
             <div className="features job-matcher">
                 <SearchHeader onSearch={handleSearch} initial={{query, country, city}} />
-                <Jobs data={searchResults} pageNumber={resultsPageNumber}
+                <Jobs data={searchResults} pageNumber={resultsPageNumber} resumeId={resume}
                     onPageChange={handlePageChange} modalOpenHandler={setModalOpened} selectedJob={selectedJob} setSelectedJob={setSelectedJob}/>
                 {modalOpened && <JobRefinementModal data={searchResults} modalOpenHandler={setModalOpened} selectedJob={selectedJob}/>}
             </div>

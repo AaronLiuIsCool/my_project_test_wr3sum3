@@ -65,8 +65,10 @@ const ResumePreview = () => {
 				return;
 			}
 			const resumeId = data.id;
+			const resumeName = `translated-${resumeId}`;
+			// todo: Need a better way to handle translated resume name
 			window.open(`${resumeId}`, '_blank'); // open translated resume in a new tab
-			accountServices.addResume(userId, resumeId);
+			accountServices.addResume(userId, resumeId, resumeName);
 		} catch (exception) {
 			logger.error(exception);
 		}

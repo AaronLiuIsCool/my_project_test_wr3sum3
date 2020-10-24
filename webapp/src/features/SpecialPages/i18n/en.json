@@ -1,4 +1,5 @@
 {
   "notFoundPageContent": "Page not found",
+  "generalErrorMessage": "Something went wrong, please contact system admin for more details",
   "refresh": "Refresh"
 }

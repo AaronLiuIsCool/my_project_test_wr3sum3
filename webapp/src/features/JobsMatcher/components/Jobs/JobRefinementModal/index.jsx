@@ -16,7 +16,7 @@ const renderModalSteppers = (jobId, resumeId, modalOpenHandler, step, setStep) =
 				<img src={CloseHoverIcon} alt='Close' className='closeIconHover' />
 			</div>
 			{step === 1 && <JROverWriteResume stepHandler={setStep} />}
-			{step === 2 && <JRRenameResume />}
+			{step === 2 && <JRRenameResume jobId={jobId}/>}
 			{step === 3 && <Redirect push to={`/refinement?jobId=${jobId}&resumeId=${resumeId}`} />}
 		</>
 	);

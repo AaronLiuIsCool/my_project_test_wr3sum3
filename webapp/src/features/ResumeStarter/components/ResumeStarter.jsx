@@ -1,10 +1,11 @@
 import React, { useState, useRef } from 'react';
 import Button from 'react-bootstrap/Button';
 import { useI8n } from 'shell/i18n';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import AppServices from 'shell/services/AppServices';
 import { useDispatch } from 'react-redux';
 import { actions } from 'features/SmartResume/slicer';
+import NameResume from './NameResume';
 import { previewResume } from 'features/SmartResume/components/ResumePreview/resumeBuilder';
 
 import styles from '../styles/ResumeStarter.module.css';
@@ -17,6 +18,7 @@ const ResumerStarter = () => {
 	const fileUploadInput = useRef(null);
 
 	const [selectedFile, setSelectedFile] = useState([]);
+	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	const updateBasic = (data) => {
 		dispatch(actions.updateBasicFromResumeSDK({ data }));
@@ -92,8 +94,8 @@ const ResumerStarter = () => {
 					<p className={styles.optionTitle}>{messages.createNewResume}</p>
 					<p className={styles.optionDescription}>{messages.chooseLanguage}</p>
 					<div className={styles.buttonWrapper}>
-						<Button as={Link} to='/resume' className={styles.button}>{messages.language_toggle_zh}</Button>
-						<Button as={Link} to='/resume' className={styles.button}>{messages.language_toggle_en}</Button>
+						<Button onClick={()=>setIsModalOpen(true)} className={styles.button}>{messages.language_toggle_zh}</Button>
+						<Button onClick={()=>setIsModalOpen(true)} className={styles.button}>{messages.language_toggle_en}</Button>
 					</div>
 				</div>
 				<div className={styles.option}>
@@ -107,6 +109,7 @@ const ResumerStarter = () => {
 				<input type='file' ref={fileUploadInput} onChange={onChangeHandler} />
 			</div>
 
+			{isModalOpen ? <NameResume/> : null }
 		</div>
 	);
 };

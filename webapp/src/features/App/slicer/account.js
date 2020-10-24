@@ -10,14 +10,14 @@ const accountSlicer = createSlice({
     },
     deleteResume: (state, action) => {
       const resumeIdForDelete = action.payload;
-      state.resumes = state.resumes.filter(({resumeId}) => resumeId !== resumeIdForDelete);
+      state.resumes = state.resumes.filter(({ resumeId }) => resumeId !== resumeIdForDelete);
     }
   },
 });
 
 export const { updateAccount, deleteResume } = accountSlicer.actions;
 
-export const selectResumes = ({account}) => account.resumes;
-export const selectAccountName = ({account}) => account.name;
+export const selectResumes = ({ account }) => account.resumes;
+export const selectAccountName = ({ account }) => account.name;
 
 export default accountSlicer.reducer;

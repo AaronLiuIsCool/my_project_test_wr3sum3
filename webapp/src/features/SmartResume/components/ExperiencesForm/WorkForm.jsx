@@ -20,7 +20,7 @@ import { updateStatus, updateAllStatus } from '../../slicer/common';
 import ResumeServices from 'shell/services/ResumeServices';
 import { getLogger } from 'shell/logger';
 import { previewResume, wholePageCheck } from '../ResumePreview/resumeBuilder';
-import { generateSuggestions, isDescending, extractDate, generateLayoutRating, updateCityOptions } from '../../utils/resume';
+import { generateSuggestions, isDescending, extractDate, generateLayoutRating, dispatchUpdates, updateCityOptions } from '../../utils/resume';
 
 import DraftEditor from '../../../../components/DraftEditor/index'
 
@@ -38,7 +38,6 @@ const fields = [
     'workDescription'
 ];
 const WorkForm = ({ data, index, isLast = false, messages, workData }) => {
-	console.log("original Data", data)
 	const trigger = useSelector(assistantSelectors.selectTrigger);
 	const showAssistant = useSelector(assistantSelectors.selectShow);
 	const resumeId = useSelector(selectId);
@@ -56,8 +55,6 @@ const WorkForm = ({ data, index, isLast = false, messages, workData }) => {
 	const dispatch = useDispatch();
 
 	const save = async () => {
-	  console.log("data", data)
-
 		GAEvent('Resume Edit', 'Save work form'); // call GA on save
 		previewResume(messages.RPreview);
 		let id = data.id;
@@ -69,7 +66,8 @@ const WorkForm = ({ data, index, isLast = false, messages, workData }) => {
 		} catch (exception) {
 			logger.error(exception);
 		} finally {
-			dispatch(actions.updateWorkId({ index, id }));
+      dispatch(actions.updateWorkId({ index, id }));
+      dispatchUpdates('update-score');
 		}
 	};
 
