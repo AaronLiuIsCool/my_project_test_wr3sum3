@@ -1,12 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import { previewResume } from './ResumePreview/resumeBuilder';
-import { useHistory } from "react-router-dom";
 
 import { selectLanguage, selectUserId } from 'features/App/slicer';
 import { actions } from 'features/SmartResume/slicer';
 import { I8nContext } from 'shell/i18n';
+import AccountServices from 'shell/services/AccountServices';
 import ResumeServices from 'shell/services/ResumeServices';
 import { getLogger } from 'shell/logger';
 
@@ -19,9 +19,10 @@ import zh from '../i18n/zh.json';
 import en from '../i18n/en.json';
 
 const logger = getLogger('ResumeStarter');
+const accountServices = new AccountServices();
 const resumeServices = new ResumeServices();
 
-async function getResume(dispatch, userId, resumeId, resumeName, language, history) {
+async function getResume(dispatch, resumeId) {
     if (resumeId) {
         try {
             const response = await resumeServices.getResume(resumeId);
@@ -34,22 +35,40 @@ async function getResume(dispatch, userId, resumeId, resumeName, language, histo
     }
     
 }
+async function getAccountInfoAndSetResumeName(userId, resumeId, setter) {
+  try {
+    const response = await accountServices.getAccountInfo(userId);
+    if (!response) {
+      logger.warn('No response from account service get');
+    }
 
+    const responseJson = await response.json();
+    if (responseJson.success) {
+      const { resumes } = responseJson.account;
+      const resume = resumes.find((item) => item.resumeId === resumeId);
+      if (resume) {
+        setter(resume.alias);
+      }
+    } else {
+      logger.error(response.message);
+    }
+  } catch (exception) {
+    logger.error(exception);
+  }
+}
 const SmartResume = ({ useObserver = false, resumeId }) => {
-    const history = useHistory();
     const dispatch = useDispatch();
     const userId = useSelector(selectUserId);
     const language = useSelector(selectLanguage);
-    const params = new URLSearchParams(window.location.search);
-    const resumeName = params.get('resumeName');
     const messages = language === 'zh' ? zh : en;
-
+    const [resumeName, setResumeName] = useState('');
     useEffect(() => {
         const updatePreview = async () => {
-            await getResume(dispatch, userId, resumeId, resumeName, language, history);
+            await getResume(dispatch, resumeId);
             previewResume(messages.RPreview);
         }
         updatePreview();
+        getAccountInfoAndSetResumeName(userId, resumeId, setResumeName);
     }, []); // eslint-disable-line
 
     return (
@@ -60,7 +79,7 @@ const SmartResume = ({ useObserver = false, resumeId }) => {
                     <Assistant />
                     <ResumePreview  />
                 </div>
-                <ExperiencesForm useObserver={useObserver} />
+                <ExperiencesForm resumeName={resumeName} useObserver={useObserver} />
             </div>
         </I8nContext.Provider>
     );

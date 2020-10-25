@@ -13,12 +13,14 @@ import ProgressHeader from '../ProgressHeader/index';
 
 import styles from '../../styles/ExperiencesForm.module.css';
 
-const ExperiencesForm = ({ useObserver }) => {
+const ExperiencesForm = ({ useObserver, resumeName }) => {
     const [scoreVisible, setScoreVisible] = useState(false);
     return (
         <div className={styles.container}>
             <ProgressHeader setScoreVisible={setScoreVisible} scoreVisible={scoreVisible}/>
-
+            <h1 className={styles.resumeName}>
+              {resumeName}
+            </h1>
             <ViewObserver enabled={useObserver}>
                 <BasicExperience />
                 <EducationExperience />
