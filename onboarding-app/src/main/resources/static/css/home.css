@@ -56,7 +56,7 @@ nav {
 }
 
 .banner {
-  background-image: url('./assets/bg-image.png');
+  background-image: url('../assets/bg-image.png');
   height: 50rem;
   background-size: 100%;
   background-position: -40% 0%;
@@ -105,7 +105,7 @@ nav {
 }
 .banner-right::after {
   background-size: cover;
-  background-image: url('./assets/Resume_dropshadow.png');
+  background-image: url('../assets/Resume_dropshadow.png');
   content: "";
   display: block;
   position: absolute;
@@ -240,7 +240,7 @@ p > .dot {
 }
 
 a.button {
-  
+
   width: 224px;
   height: 41px;
   border-radius: 4px;
@@ -299,7 +299,7 @@ a.button {
   width: 800px;
   height: 756px;
   position: absolute;
-  background-image: url(./assets/cloud_3.svg);
+  background-image: url(../assets/cloud_3.svg);
   background-position: 0%;
   background-size: contain;
   background-repeat: no-repeat;
@@ -313,7 +313,7 @@ a.button {
   width: 900px;
   height: 800px;
   position: absolute;
-  background-image: url('./assets/cloud_2.svg');
+  background-image: url('../assets/cloud_2.svg');
   background-position: 0%;
   background-repeat: no-repeat;
 }
@@ -331,7 +331,7 @@ a.button {
   width: 740px;
   height: 756px;
   position: absolute;
-  background-image: url('./assets/cloud_4.svg');
+  background-image: url('../assets/cloud_4.svg');
   background-position: 0%;
   background-repeat: no-repeat;
 }
@@ -343,7 +343,7 @@ a.button {
   margin-bottom: 40px;
 }
 .btn-trial {
-  text-align: center; 
+  text-align: center;
   margin-top: 1.75rem
 }
 .text-content > .image-wrapper {
@@ -514,7 +514,7 @@ p.action-item {
       width: calc(100% - 80px);
       margin: 0 auto;
       text-align: center;
-  } 
+  }
   .banner-left > h1 {
       line-height: 1.5;
       font-size: 30px;
