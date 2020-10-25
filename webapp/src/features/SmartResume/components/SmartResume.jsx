@@ -60,8 +60,6 @@ const SmartResume = ({ useObserver = false, resumeId }) => {
     const dispatch = useDispatch();
     const userId = useSelector(selectUserId);
     const language = useSelector(selectLanguage);
-    // const params = new URLSearchParams(window.location.search);
-    // const resumeName = params.get('resumeName');
     const messages = language === 'zh' ? zh : en;
     const [resumeName, setResumeName] = useState('');
     useEffect(() => {
