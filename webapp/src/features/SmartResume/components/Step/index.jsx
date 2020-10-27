@@ -15,7 +15,7 @@ const getAddMoreForm = (enabled, message, handleAddMore) => {
     )
 }
 
-const Step = ({ id, title, subtitle, children, addMore, icon = false, addMoreMessage, handleAddMore }) => (
+const Step = ({ id, title, subtitle, children, addMore, icon = false, addMoreMessage, handleAddMore, showAddButton }) => (
     <div id={id}>
         <StepHeader
             title={title}
@@ -25,7 +25,7 @@ const Step = ({ id, title, subtitle, children, addMore, icon = false, addMoreMes
         <StepContainer>
             {children}
         </StepContainer>
-        {getAddMoreForm(addMore, addMoreMessage, handleAddMore)}
+        {showAddButton ? getAddMoreForm(addMore, addMoreMessage, handleAddMore) : '' /* TODO: 记得改回来 把true删掉*/}
     </div>
 );
 

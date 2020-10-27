@@ -101,6 +101,16 @@ const reducers = {
             "certificateEndDate",
             action.payload.value
         );
+    },
+    removeCertificate: (state, action) => {
+        const index = action.payload.index;
+        if(state.certificate.data.length > 1) {
+            state.certificate.data.splice(index, 1) 
+        } else {
+            state.certificate.data = [{
+                ...certificate
+            }]
+        }        
     }
 };
 

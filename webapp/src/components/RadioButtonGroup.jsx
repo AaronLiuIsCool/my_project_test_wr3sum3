@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Form } from 'react-bootstrap';
 
-const RadioButtonGroup = ({ label, id, values, value, onClickHandler}) => (
+const RadioButtonGroup = ({ label, id, values, value = false, onClickHandler}) => (
 	<Form.Group className="form_item">
 		<Form.Label htmlFor={id}>{label}</Form.Label>
 		<div className="radioButton_container">

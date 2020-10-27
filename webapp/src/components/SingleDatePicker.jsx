@@ -7,7 +7,7 @@ import moment from 'moment';
 import './SingleDatePicker.scss';
 
 const SingleDatePickerWrapper = ({
-    label, id, placeholder, value, onDateChange, monthFormat, displayFormat,
+    label, id, placeholder="", value, onDateChange, monthFormat, displayFormat,
     readOnly = false, allowPastDatesOnly = false, isInvalid, feedbackMessage, isValid
 }) => {
     const [focused, setFocused] = useState(false);

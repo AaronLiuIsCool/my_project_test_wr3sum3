@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Summary } from '../Summary';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col, Form } from 'react-bootstrap';
@@ -17,12 +18,11 @@ import { getLogger } from 'shell/logger';
 import { generateCertificeRating } from '../../utils/resume';
 
 import certificateOptions from 'data/certificate.json';
-import { useEffect } from 'react';
 
 const logger = getLogger('CertificateForm');
 const resumeServices = new ResumeServices();
 
-const CertificateForm = ({ data, index, isLast = false, messages, certData }) => {
+const CertificateForm = ({ data, index, isLast = false, messages, certData = [] }) => {
 	const resumeId = useSelector(selectId);
 	const [validated, setValidated] = useState(false);
 	const [status, setStatus] = useState({
@@ -65,6 +65,7 @@ const CertificateForm = ({ data, index, isLast = false, messages, certData }) =>
 			setValidated(false);
 			return;
 		}
+		toggleShowSummary();
 		setValidated(true);
         dispatch(actions.completeCertificates());
         save();
@@ -94,85 +95,126 @@ const CertificateForm = ({ data, index, isLast = false, messages, certData }) =>
 		updateStatus(validateCertificateEntry, status, setStatus, 'certificateEndDate', value);
 		dispatch(actions.updateCertificateEndDate({ value, index }));
 	};
+	const didMount = useRef(false);
+	const [showSummary, setShowSummary] = useState(false);
+	const toggleShowSummary = () => {
+		setShowSummary(!showSummary);
+	};
+	const handleDelete = (id) => {
+		resumeServices.removeCertificate(id, resumeId)
+		dispatch(actions.removeCertificate({index}))
+	};
+	useEffect(() => {
+		if(data.id && !didMount.current) {
+			setShowSummary(true)
+			didMount.current = true
+		}
+	}, [data])
 
 	return (
-		<Form validated={validated} onSubmit={handleSubmit}>
-			<Row>
-				<Col>
-					<h2 className="form_h2">{messages.enterNewExperience}</h2>
-				</Col>
-			</Row>
-			<Row>
-				<Col lg="4">
-					<DropdownGroup
-						label={messages.certificateName}
-						id="certificate-name"
-						placeholder={messages.enterCertificateName}
-						options={certificateOptions}
-						value={data.certificateName}
-						onChange={handleCertificateChange}
-						feedbackMessage={messages.entryIsInvalid}
-						isValid={status.certificateName.isValid}
-						isInvalid={status.certificateName.isInvalid}
-					/>
-				</Col>
-				<Col lg="2">
-					<RadioButtonGroup
-						label={messages.validForever}
-						id="certificate-currentCertificateFlag"
-						values={[
-							{ label: messages.yes, value: true },
-							{ label: messages.no, value: false },
-						]}
-						value={data.validCertificateFlag}
-						onClickHandler={handleValidCertificateFlag}
-					/>
-				</Col>
+    <div className="form_body">
+      {showSummary ? (
+        <Summary
+          type={'CertificateInfo'}
+          handleClickCallback={toggleShowSummary}
+          roleName={data.certificateName}
+          startDate={data.certificateIssuedDate}
+          endDate={data.certificateEndDate}
+          currentFlag={data.validCertificateFlag}
+        />
+      ) : (
+        <Form validated={validated} onSubmit={handleSubmit}>
+					<Row className="flexie">
+						<Col>
+							<h2 className="form_h2">{messages.enterNewExperience}</h2>
+						</Col>
+						<div className="toggle-up-arrow" onClick={toggleShowSummary}>
+							{data.id && <img src={require('../../assets/arrow-up.svg')} alt="up-arrow" />}
+						</div>
+          </Row>
+          <Row>
+            <Col lg="4">
+              <DropdownGroup
+                label={messages.certificateName}
+                id="certificate-name"
+                placeholder={messages.enterCertificateName}
+                options={certificateOptions}
+                value={data.certificateName}
+                onChange={handleCertificateChange}
+                feedbackMessage={messages.entryIsInvalid}
+                isValid={status.certificateName.isValid}
+                isInvalid={status.certificateName.isInvalid}
+              />
+            </Col>
+            <Col lg="2">
+              <RadioButtonGroup
+                label={messages.validForever}
+                id="certificate-currentCertificateFlag"
+                values={[
+                  { label: messages.yes, value: true },
+                  { label: messages.no, value: false },
+                ]}
+                value={data.validCertificateFlag}
+                onClickHandler={handleValidCertificateFlag}
+              />
+            </Col>
 
-				<Col>
-					<SingleDatePicker
-						label={messages.issueDate}
-						id="certificate-start-date"
-						placeholder={messages.yymmdd}
-						value={data.certificateIssuedDate}
-						monthFormat={messages.monthFormat}
-						displayFormat={messages.dateDisplayFormat}
-						onDateChange={handleCertificateStartDateChange}
-						feedbackMessage={messages.entryIsInvalid}
-						isValid={status.certificateIssuedDate.isValid}
-						isInvalid={status.certificateIssuedDate.isInvalid}
-					/>
-				</Col>
+            <Col>
+              <SingleDatePicker
+                label={messages.issueDate}
+                id="certificate-start-date"
+                placeholder={messages.yymmdd}
+                value={data.certificateIssuedDate}
+                monthFormat={messages.monthFormat}
+                displayFormat={messages.dateDisplayFormat}
+                onDateChange={handleCertificateStartDateChange}
+                feedbackMessage={messages.entryIsInvalid}
+                isValid={status.certificateIssuedDate.isValid}
+                isInvalid={status.certificateIssuedDate.isInvalid}
+              />
+            </Col>
 
-				<Col>
-					{!data.validCertificateFlag && (
-						<SingleDatePicker
-							label={messages.expireDate}
-							id="certificate-end-date"
-							placeholder={messages.yymmdd}
-							value={data.certificateEndDate}
-							monthFormat={messages.monthFormat}
-							displayFormat={messages.dateDisplayFormat}
-							onDateChange={handleCertificateEndDateChange}
-							feedbackMessage={messages.entryIsInvalid}
-							isValid={status.certificateEndDate.isValid}
-							isInvalid={status.certificateEndDate.isInvalid}
-						/>
-					)}
-				</Col>
-			</Row>
+            <Col>
+              {!data.validCertificateFlag && (
+                <SingleDatePicker
+                  label={messages.expireDate}
+                  id="certificate-end-date"
+                  placeholder={messages.yymmdd}
+                  value={data.certificateEndDate}
+                  monthFormat={messages.monthFormat}
+                  displayFormat={messages.dateDisplayFormat}
+                  onDateChange={handleCertificateEndDateChange}
+                  feedbackMessage={messages.entryIsInvalid}
+                  isValid={status.certificateEndDate.isValid}
+                  isInvalid={status.certificateEndDate.isInvalid}
+                />
+              )}
+            </Col>
+          </Row>
 
-			<Row className="form_buttons">
-				<Col className="space_betweens">
-					{/* just a placeholder so we do need to change the css */}
-					<p className="hidden"></p>
-					<Button variant="primary" type="submit">
-						{messages.save}
-					</Button>
-				</Col>
-			</Row>
-		</Form>
-	);
+          <Row className="form_buttons">
+						<Col className="flex-end">
+              {/* just a placeholder so we do need to change the css */}
+              {data.id && (
+                <Button
+                  onClick={() => {
+                    handleDelete(data.id);
+                  }}
+                  variant="light"
+                  className="remove-btn"
+                >
+                  {messages.delete}
+                </Button>
+              )}
+              <Button variant="primary" type="submit">
+                {messages.save}
+              </Button>
+            </Col>
+          </Row>
+        </Form>
+      )}
+    </div>
+  );
 };
 
 CertificateForm.propTypes = {
