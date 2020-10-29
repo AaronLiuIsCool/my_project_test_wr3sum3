@@ -1,0 +1,249 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BasicForm form It should match snapshot 1`] = `
+<div
+  className="form_body"
+>
+  <form
+    className=""
+    onSubmit={[Function]}
+  >
+    <div
+      className="flexie row"
+    >
+      <div>
+        Avatar
+      </div>
+      <div
+        className="toggle-up-arrow"
+        onClick={[Function]}
+      >
+        <img
+          alt="up-arrow"
+          src={
+            Object {
+              "ReactComponent": Object {
+                "$$typeof": Symbol(react.forward_ref),
+                "render": [Function],
+              },
+              "__esModule": true,
+              "default": "arrow-up.svg",
+            }
+          }
+        />
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col"
+      >
+        <div
+          className="form_item form-validation-wrapper form-group"
+        >
+          <label
+            className="form-label"
+            htmlFor="basic-name-cn"
+          />
+          <input
+            className="form-control"
+            id="basic-name-cn"
+            onChange={[Function]}
+            type="text"
+            value="中文"
+          />
+        </div>
+      </div>
+      <div
+        className="col"
+      >
+        <div
+          className="form_item form-validation-wrapper form-group"
+        >
+          <label
+            className="form-label"
+            htmlFor="basic-name-en"
+          />
+          <input
+            className="form-control"
+            id="basic-name-en"
+            onChange={[Function]}
+            type="text"
+            value="English"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col-lg-6"
+      >
+        <div
+          className="form_item form-validation-wrapper form-group"
+        >
+          <label
+            className="form-label"
+            htmlFor="basic-email"
+          />
+          <input
+            className="form-control"
+            id="basic-email"
+            onChange={[Function]}
+            type="text"
+            value="123@asd.ca"
+          />
+        </div>
+      </div>
+      <div
+        className="col-lg-3"
+      >
+        <div
+          className="form_item form-validation-wrapper form-group"
+        >
+          <label
+            className="form-label"
+            htmlFor="basic-phone"
+          />
+          <input
+            className="form-control"
+            id="basic-phone"
+            onChange={[Function]}
+            type="text"
+            value="1231231321"
+          />
+        </div>
+      </div>
+      <div
+        className="col-lg-3"
+      >
+        <div
+          className="form_item form-validation-wrapper form-group"
+        >
+          <label
+            className="form-label"
+            htmlFor="education-city"
+          />
+          <div
+            className="rbt"
+            style={
+              Object {
+                "outline": "none",
+                "position": "relative",
+              }
+            }
+            tabIndex={-1}
+          >
+            <div
+              style={
+                Object {
+                  "display": "flex",
+                  "flex": 1,
+                  "height": "100%",
+                  "position": "relative",
+                }
+              }
+            >
+              <input
+                aria-autocomplete="both"
+                aria-expanded={false}
+                aria-haspopup="listbox"
+                autoComplete="off"
+                className="rbt-input-main form-control rbt-input"
+                onBlur={[Function]}
+                onChange={[Function]}
+                onClick={[Function]}
+                onFocus={[Function]}
+                onKeyDown={[Function]}
+                role="combobox"
+                type="text"
+                value="北京"
+              />
+              <input
+                aria-hidden={true}
+                className="rbt-input-hint"
+                readOnly={true}
+                style={
+                  Object {
+                    "backgroundColor": "transparent",
+                    "borderColor": "transparent",
+                    "boxShadow": "none",
+                    "color": "rgba(0, 0, 0, 0.35)",
+                    "left": 0,
+                    "pointerEvents": "none",
+                    "position": "absolute",
+                    "top": 0,
+                    "width": "100%",
+                  }
+                }
+                tabIndex={-1}
+                value=""
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col"
+      >
+        <div
+          className="form_item form-validation-wrapper form-group"
+        >
+          <label
+            className="form-label"
+            htmlFor="basic-linkedin"
+          />
+          <input
+            className="form-control"
+            id="basic-linkedin"
+            onChange={[Function]}
+            type="text"
+            value="http://www.google.ca"
+          />
+        </div>
+      </div>
+      <div
+        className="col"
+      >
+        <div
+          className="form_item form-validation-wrapper form-group"
+        >
+          <label
+            className="form-label"
+            htmlFor="basic-weblink"
+          />
+          <input
+            className="form-control"
+            id="basic-weblink"
+            onChange={[Function]}
+            type="text"
+            value="http://www.google.ca"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      className="form_buttons row"
+    >
+      <div
+        className="space_betweens col"
+      >
+        <p
+          className="hidden"
+        />
+        <button
+          className="btn btn-primary"
+          disabled={false}
+          type="submit"
+        />
+      </div>
+    </div>
+  </form>
+</div>
+`;

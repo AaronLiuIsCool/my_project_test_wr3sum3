@@ -23,6 +23,8 @@ import { previewResume,
 
 // json data for dropdowns
 import cityOptions from 'data/city.json';
+import { Summary } from '../Summary';
+import { useEffect } from 'react';
 
 const logger = getLogger('BasicForm');
 const resumeServices = new ResumeServices();
@@ -37,6 +39,7 @@ const fields = [
 ];
 
 const BasicForm = ({ data, photoReference, completed, messages }) => {
+	const [showSummary, setShowSummary] = useState(false);
 	const resumeId = useSelector(selectId);
 	const [validated, setValidated] = useState(false);
 	const [status, setStatus] = useState({
@@ -48,8 +51,17 @@ const BasicForm = ({ data, photoReference, completed, messages }) => {
 		linkedin: {},
 		weblink: {},
 	});
+	useEffect(() => {
+		if(completed) {
+			setShowSummary(true)
+		} else {
+      setShowSummary(false)
+    }
+	}, [completed])
 	const dispatch = useDispatch();
-
+  const toggleShowSummary = () => {
+    setShowSummary(!showSummary);
+  };
 	const save = async () => {
 		previewResume(messages.RPreview);
 		let id = data.id;
@@ -75,20 +87,19 @@ const BasicForm = ({ data, photoReference, completed, messages }) => {
 	};
 
 	const handleSubmit = (event) => {
-		event.preventDefault();
-        event.stopPropagation();
-        updateAllStatus(validateBasicEntry, status, setStatus, fields, data)
-		if (!validateBasic(data)) {
-			setValidated(false);
-			return;
-        }
-        
-        handleBasicFormRating(data)
-        
-		setValidated(true);
-		dispatch(actions.completeBasic());
-		save();
-    };
+    event.preventDefault();
+    event.stopPropagation();
+    updateAllStatus(validateBasicEntry, status, setStatus, fields, data);
+    if (!validateBasic(data)) {
+      setValidated(false);
+      return;
+    }
+    toggleShowSummary();
+    handleBasicFormRating(data);
+    setValidated(true);
+    dispatch(actions.completeBasic());
+    save();
+  };
     
     
     const handleBasicFormRating = async ({ avatar, linkedin, weblink }) => {
@@ -147,114 +158,130 @@ const BasicForm = ({ data, photoReference, completed, messages }) => {
 	};
 
 	return (
-		<Form validated={validated} onSubmit={handleSubmit}>
-			<Row>
-				<AvatarUpload photoReference={photoReference}/>
-			</Row>
-			<Row>
-				<Col>
-					<InputGroup
-						label={messages.cnName}
-						id='basic-name-cn'
-						placeholder={messages.enterCnName}
-						value={data.nameCn}
-						onChange={handleNameCnChange}
-						feedbackMessage={messages.entryIsInvalid}
-						isValid={status.nameCn.isValid}
-						isInvalid={status.nameCn.isInvalid}
-					/>
-				</Col>
-				<Col>
-					<InputGroup
-						label={messages.enName}
-						id='basic-name-en'
-						placeholder={messages.enterEnName}
-						value={data.nameEn}
-						onChange={handleNameEnChange}
-						feedbackMessage={messages.entryIsInvalid}
-						isValid={status.nameEn.isValid}
-						isInvalid={status.nameEn.isInvalid}
-					/>
-				</Col>
-			</Row>
+    <div className="form_body">
+      {showSummary ? (
+        <div>
+          <Summary
+            name={data.nameCn}
+            avatar={photoReference}
+            type={'BasicInfo'}
+            handleClickCallback={toggleShowSummary}
+          />
+        </div>
+      ) : (
+        <Form validated={validated} onSubmit={handleSubmit}>
+          <Row className="flexie">
+            <AvatarUpload photoReference={photoReference} />
+            <div className="toggle-up-arrow" onClick={toggleShowSummary}>
+              <img src={require('../../assets/arrow-up.svg')} alt="up-arrow"/>
+            </div>
+          </Row>
+          <Row>
+            <Col>
+              <InputGroup
+                label={messages.cnName}
+                id="basic-name-cn"
+                placeholder={messages.enterCnName}
+                value={data.nameCn}
+                onChange={handleNameCnChange}
+                feedbackMessage={messages.entryIsInvalid}
+                isValid={status.nameCn.isValid}
+                isInvalid={status.nameCn.isInvalid}
+              />
+            </Col>
+            <Col>
+              <InputGroup
+                label={messages.enName}
+                id="basic-name-en"
+                placeholder={messages.enterEnName}
+                value={data.nameEn}
+                onChange={handleNameEnChange}
+                feedbackMessage={messages.entryIsInvalid}
+                isValid={status.nameEn.isValid}
+                isInvalid={status.nameEn.isInvalid}
+              />
+            </Col>
+          </Row>
 
-			<Row>
-				<Col lg='6'>
-					<InputGroup
-						label={messages.email}
-						id='basic-email'
-						placeholder={messages.enterEmail}
-						value={data.email}
-						onChange={handleEmailChange}
-						feedbackMessage={messages.entryIsInvalid}
-						isValid={status.email.isValid}
-						isInvalid={status.email.isInvalid}
-					/>
-				</Col>
-				<Col lg='3'>
-					<InputGroup
-						label={messages.phone}
-						id='basic-phone'
-						placeholder={messages.enterPhone}
-						value={data.phone}
-						onChange={handlePhoneChange}
-						feedbackMessage={messages.entryIsInvalid}
-						isValid={status.phone.isValid}
-						isInvalid={status.phone.isInvalid}
-					/>
-				</Col>
-				<Col lg='3'>
-					<DropdownGroup
-						label={messages.schoolCity}
-						id='education-city'
-						placeholder={messages.schoolCity}
-						options={cityOptions}
-						value={data.city}
-						onChange={handleCityChange}
-						feedbackMessage={messages.entryIsInvalid}
-						isValid={status.city.isValid}
-						isInvalid={status.city.isInvalid}
-					/>
-				</Col>
-			</Row>
-			<Row>
-				<Col>
-					<InputGroup
-						label={messages.linkedin}
-						id='basic-linkedin'
-						placeholder={messages.enterLinkedin}
-						value={data.linkedin}
-						onChange={handleLinkedinChange}
-						feedbackMessage={messages.entryIsInvalid}
-						isValid={status.linkedin.isValid}
-						isInvalid={status.linkedin.isInvalid}
-					/>
-				</Col>
-				<Col>
-					<InputGroup
-						label={messages.weblink}
-						id='basic-weblink'
-						placeholder={messages.enterWeblink}
-						value={data.weblink}
-						onChange={handleWeblinkChange}
-						feedbackMessage={messages.entryIsInvalid}
-						isValid={status.weblink.isValid}
-						isInvalid={status.weblink.isInvalid}
-					/>
-				</Col>
-			</Row>
-			{/* todo: reset button  */}
-			<Row className='form_buttons'>
-				<Col className='space_betweens'>
-					{/* just a placeholder so we do need to change the css */}
-					<p className='hidden'></p>
-					<Button variant='primary' type='submit'>
-						{messages.save}
-					</Button>
-				</Col>
-			</Row>
-		</Form>
-	);
+          <Row>
+            <Col lg="6">
+              <InputGroup
+                label={messages.email}
+                id="basic-email"
+                placeholder={messages.enterEmail}
+                value={data.email}
+                onChange={handleEmailChange}
+                feedbackMessage={messages.entryIsInvalid}
+                isValid={status.email.isValid}
+                isInvalid={status.email.isInvalid}
+              />
+            </Col>
+            <Col lg="3">
+              <InputGroup
+                label={messages.phone}
+                id="basic-phone"
+                placeholder={messages.enterPhone}
+                value={data.phone}
+                onChange={handlePhoneChange}
+                feedbackMessage={messages.entryIsInvalid}
+                isValid={status.phone.isValid}
+                isInvalid={status.phone.isInvalid}
+              />
+            </Col>
+            <Col lg="3">
+              <DropdownGroup
+                label={messages.schoolCity}
+                id="education-city"
+                placeholder={messages.schoolCity}
+                options={cityOptions}
+                value={data.city}
+                onChange={handleCityChange}
+                feedbackMessage={messages.entryIsInvalid}
+                isValid={status.city.isValid}
+                isInvalid={status.city.isInvalid}
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <InputGroup
+                label={messages.linkedin}
+                id="basic-linkedin"
+                placeholder={messages.enterLinkedin}
+                value={data.linkedin}
+                onChange={handleLinkedinChange}
+                feedbackMessage={messages.entryIsInvalid}
+                isValid={status.linkedin.isValid}
+                isInvalid={status.linkedin.isInvalid}
+              />
+            </Col>
+            <Col>
+              <InputGroup
+                label={messages.weblink}
+                id="basic-weblink"
+                placeholder={messages.enterWeblink}
+                value={data.weblink}
+                onChange={handleWeblinkChange}
+                feedbackMessage={messages.entryIsInvalid}
+                isValid={status.weblink.isValid}
+                isInvalid={status.weblink.isInvalid}
+              />
+            </Col>
+          </Row>
+          {/* todo: reset button  */}
+          <Row className="form_buttons">
+            <Col className="space_betweens">
+              {/* just a placeholder so we do need to change the css */}
+              <p className="hidden"></p>
+              <Button variant="primary" type="submit">
+                {messages.save}
+              </Button>
+            </Col>
+          </Row>
+        </Form>
+      )}
+    </div>
+  );
 };
 
 BasicForm.propTypes = {
