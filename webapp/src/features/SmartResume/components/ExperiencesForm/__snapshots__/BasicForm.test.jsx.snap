@@ -17,21 +17,7 @@ exports[`BasicForm form It should match snapshot 1`] = `
       <div
         className="toggle-up-arrow"
         onClick={[Function]}
-      >
-        <img
-          alt="up-arrow"
-          src={
-            Object {
-              "ReactComponent": Object {
-                "$$typeof": Symbol(react.forward_ref),
-                "render": [Function],
-              },
-              "__esModule": true,
-              "default": "arrow-up.svg",
-            }
-          }
-        />
-      </div>
+      />
     </div>
     <div
       className="row"
