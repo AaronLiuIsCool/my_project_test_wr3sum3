@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState }  from 'react';
 
 import Button from 'react-bootstrap/Button';
-import { ReactComponent as BookmarkIcon } from '../../../assets/bookmark.svg';
+import { ReactComponent as BookmarkIconEmpty } from '../../../assets/bookmark.svg';
 // import { ReactComponent as ChatIcon } from '../../../assets/chat-message-sent.svg';
 
 import { timeSince } from '../../../utils/time';
@@ -12,11 +12,26 @@ import styles from '../../../styles/JobDetails.module.css';
 
 const matchingServices = new MatchingServices();
 
+const BookmarkIcon = ({ bookmarked = false }) => {
+    if (bookmarked) {
+        return <div>TODO: Waiting for icon from uiux</div>;
+    }
+    return <BookmarkIconEmpty className={styles["job-details-action-icon"]} />;
+}
+
 const DetailHeader = ({ resumeId, data }) => {
+    const [bookmarked, bookmarkJob] = useState(false);
     const messages = useI8n();
+    
+    useEffect(() => {
+        // TODO: check if this job has been bookmarked
+    }, [data]);
 
     const handleBookmark = async () => {
-        await matchingServices.bookmarkJob(resumeId, data?.uuid);
+        const response = await matchingServices.bookmarkJob(resumeId, data?.uuid);
+        if (response?.success === true) {
+            bookmarkJob(!bookmarked);
+        }
     }
 
     return (
@@ -33,7 +48,7 @@ const DetailHeader = ({ resumeId, data }) => {
             <div className={styles["job-details-actions"]}>
                 <div className={styles["job-details-actions-left"]}>
                     <span className={styles["job-details-action"]} onClick={handleBookmark}>
-                        <BookmarkIcon className={styles["job-details-action-icon"]} />
+                        <BookmarkIcon bookmarked={bookmarked} />
                         {messages["job-details-save"]}
                     </span>
                     {/* <span className={styles["job-details-action"]}>

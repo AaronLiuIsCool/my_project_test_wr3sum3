@@ -1,3 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="14.2" height="18.188" viewBox="0 0 14.2 18.188">
-    <path id="icons8-bookmark" fill="#3e89ec" stroke="#3e89ec" stroke-width="0.2px" d="M7 5v17.889l1.24-.924L14 17.639l5.76 4.326 1.24.924V5zm1.556 1.556h10.888v13.222l-4.983-3.743-.461-.341-.462.34-4.982 3.744z" transform="translate(-6.9 -4.9)"/>
+  <path id="icons8-bookmark" fill="#3e89ec" stroke="#3e89ec" stroke-width="0.2px"
+    d="M7 5v17.889l1.24-.924L14 17.639l5.76 4.326 1.24.924V5zm1.556 1.556h10.888v13.222l-4.983-3.743-.461-.341-.462.34-4.982 3.744z"
+    transform="translate(-6.9 -4.9)" />
 </svg>
