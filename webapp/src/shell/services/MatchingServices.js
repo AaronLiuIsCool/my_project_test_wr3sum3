@@ -14,6 +14,7 @@ export default class MatchingServices extends BaseServices {
 
   setContext(resumeDto) {
     this.resumeDto = resumeDto;
+    this.findMatchingJobs(0);
   }
 
   // 对岗位精修分数+details
@@ -47,7 +48,8 @@ export default class MatchingServices extends BaseServices {
 
   async bookmarkJob(resumeId, jobId) {
     try {
-      await this.post(`v1/matching/resumes/bookmark?jobUuid=${jobId}&resumeUuid=${resumeId}`)
+      const response = await this.post(`v1/matching/resumes/bookmark?jobUuid=${jobId}&resumeUuid=${resumeId}`)
+      return await response.json();
     } catch (err) {
       logger.error(err);
     }
