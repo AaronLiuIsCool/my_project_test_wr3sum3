@@ -25,6 +25,7 @@ import { previewResume,
 import cityOptions from 'data/city.json';
 import { Summary } from '../Summary';
 import { useEffect } from 'react';
+import ArrowUp from '../../assets/arrow-up.svg'; 
 
 const logger = getLogger('BasicForm');
 const resumeServices = new ResumeServices();
@@ -173,7 +174,7 @@ const BasicForm = ({ data, photoReference, completed, messages }) => {
           <Row className="flexie">
             <AvatarUpload photoReference={photoReference} />
             <div className="toggle-up-arrow" onClick={toggleShowSummary}>
-              <img src={require('../../assets/arrow-up.svg')} alt="up-arrow"/>
+              {completed && <img src={ArrowUp} alt="up-arrow"/>}
             </div>
           </Row>
           <Row>

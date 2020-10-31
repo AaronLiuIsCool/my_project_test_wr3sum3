@@ -18,7 +18,7 @@ import { getLogger } from 'shell/logger';
 import { generateCertificeRating } from '../../utils/resume';
 
 import certificateOptions from 'data/certificate.json';
-
+import ArrowUp from '../../assets/arrow-up.svg'; 
 const logger = getLogger('CertificateForm');
 const resumeServices = new ResumeServices();
 
@@ -129,7 +129,7 @@ const CertificateForm = ({ data, index, isLast = false, messages, certData = [] 
 							<h2 className="form_h2">{messages.enterNewExperience}</h2>
 						</Col>
 						<div className="toggle-up-arrow" onClick={toggleShowSummary}>
-							{data.id && <img src={require('../../assets/arrow-up.svg')} alt="up-arrow" />}
+							{data.id && <img src={ArrowUp} alt="up-arrow"/>}
 						</div>
           </Row>
           <Row>
