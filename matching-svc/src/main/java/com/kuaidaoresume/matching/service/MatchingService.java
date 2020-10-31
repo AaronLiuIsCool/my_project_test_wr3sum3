@@ -357,6 +357,32 @@ public class MatchingService {
     }
 
     @Transactional
+    @CacheEvict(cacheNames = "bookmarkedJobs", key = "#resumeUuid")
+    public void unbookmarkJob(String resumeUuid, String jobUuid) {
+        bookmarkedResumeRepository.findByResumeUuid(resumeUuid).ifPresent(bookmarkedResume -> {
+            Collection<Job> bookmarkedJobs = bookmarkedResume.getBookmarkedJobs();
+            bookmarkedJobs.stream()
+                .filter(job -> job.getJobUuid().equals(jobUuid)).findFirst()
+                .ifPresent(toRemove -> {
+                    bookmarkedJobs.remove(toRemove);
+                    bookmarkedResume.setBookmarkedJobs(bookmarkedJobs);
+                    bookmarkedResumeRepository.save(bookmarkedResume);
+                });
+        });
+
+        bookmarkedJobRepository.findByJobUuid(jobUuid).ifPresent(bookmarkedJob -> {
+            Collection<Resume> bookmarkedResumes = bookmarkedJob.getBookmarkedResumes();
+            bookmarkedResumes.stream()
+                .filter(resume -> resume.getResumeUuid().equals(resumeUuid)).findFirst()
+                .ifPresent(toRemove -> {
+                    bookmarkedResumes.remove(toRemove);
+                    bookmarkedJob.setBookmarkedResumes(bookmarkedResumes);
+                    bookmarkedJobRepository.save(bookmarkedJob);
+                });
+        });
+    }
+
+    @Transactional
     public void markJobVisited(String resumeUuid, String jobUuid) {
         Resume resume = getResumeByUuid(resumeUuid);
         Job job = getJobByUuid(jobUuid);
