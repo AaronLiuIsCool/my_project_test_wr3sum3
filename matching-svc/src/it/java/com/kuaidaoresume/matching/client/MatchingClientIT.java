@@ -173,6 +173,25 @@ public class MatchingClientIT {
             AuthConstant.AUTHORIZATION_AUTHENTICATED_USER, JOB_UUID);
         assertTrue(resumeListResponse.isSuccess());
         assertThat(resumeListResponse.getResumeList().getResumes(), is(Arrays.asList(resume)));
+
+        // un-bookmark a bookmarked job
+        response = matchingClient.unbookmarkJob(AuthConstant.AUTHORIZATION_AUTHENTICATED_USER, RESUME_UUID, JOB_UUID);
+        assertTrue(response.isSuccess());
+
+        jobListResponse = matchingClient.getBookmarkedJobs(
+                AuthConstant.AUTHORIZATION_AUTHENTICATED_USER, RESUME_UUID);
+        assertTrue(jobListResponse.isSuccess());
+        assertThat(jobListResponse.getJobList().getJobs(), is(Arrays.asList(anotherJob)));
+
+        // un-bookmark a job that is not bookmarked before should not throw errors
+        response = matchingClient.unbookmarkJob(AuthConstant.AUTHORIZATION_AUTHENTICATED_USER, RESUME_UUID, JOB_UUID);
+        assertTrue(response.isSuccess());
+
+        response = matchingClient.unbookmarkJob(AuthConstant.AUTHORIZATION_AUTHENTICATED_USER, "invalid resume uuid", JOB_UUID);
+        assertTrue(response.isSuccess());
+
+        response = matchingClient.unbookmarkJob(AuthConstant.AUTHORIZATION_AUTHENTICATED_USER, RESUME_UUID, "invalid job uuid");
+        assertTrue(response.isSuccess());
     }
 
     @Test
