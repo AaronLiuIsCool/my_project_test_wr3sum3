@@ -44,6 +44,7 @@
   }
 
   .form_body {
+    margin-bottom: 20px;
     width: 800px;
     border-radius: 8px;
     box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.1);
@@ -52,7 +53,7 @@
   @media only screen and (max-width: 1440px) {
     .form_body {
       width: 650px;
-      padding:24px 0;
+      padding:24px 20px;
       .container{
         width: 600px;
         padding: 0;
@@ -248,5 +249,28 @@
   /* resume preview style  */
   .react-pdf__Page canvas{
     margin:20px auto;
+  }
+  .flexie {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-right: 15px;
+  }
+  .toggle-up-arrow {
+    width: 20px;
+    cursor: pointer;
+    img {
+      width: 100%;
+    }
+  }
+  .flex-end {
+    display: flex;
+    justify-content: flex-end;
+  }
+  .remove-btn {
+    margin-right: 10px;
+    color: #d5d9e6;
+    font-size: 14px;
+    font-weight: bold;
   }
 }

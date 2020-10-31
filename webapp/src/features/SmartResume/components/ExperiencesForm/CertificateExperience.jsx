@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { useI8n } from 'shell/i18n';
@@ -16,8 +16,14 @@ const CertificateExperience = () => {
 	const Certificate = useSelector(certificateSelectors.selectCertificate);
 	const dispatch = useDispatch();
 	const messages = useI8n();
+	const showAddButton = useMemo(() => {
+		return Certificate.data.every(item => item.id)
+	}, [
+		Certificate.data
+	])
 	return (
-    <Step
+		<Step
+			showAddButton={showAddButton}
       id="certifications"
       title={messages.certificate}
       subtitle={messages.certificateInfo}

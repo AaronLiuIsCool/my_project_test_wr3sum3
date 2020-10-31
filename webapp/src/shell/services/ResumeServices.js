@@ -190,6 +190,37 @@ export default class ResumeServices extends BaseServices {
         }
     }
 
+    async removeEducation(educationId, resumeId) {
+        try {
+            return await this.delete(`v1/educations/${educationId}?resumeId=${resumeId}`);
+        } catch (error) {
+            logger.error(error);
+        }
+    }
+    
+    async removeWork(workId, resumeId) {
+        try {
+            return await this.delete(`v1/work-experiences/${workId}?resumeId=${resumeId}`);
+        } catch (error) {
+            logger.error(error);
+        }
+    }
+    
+    async removeProject(projectId, resumeId) {
+        try {
+            return await this.delete(`v1/project-experiences/${projectId}?resumeId=${resumeId}`);
+        } catch (error) {
+            logger.error(error);
+        }
+    }
+    
+    async removeCertificate(certificateId, resumeId) {
+        try {
+            return await this.delete(`v1/certificates/${certificateId}?resumeId=${resumeId}`);
+        } catch (error) {
+            logger.error(error);
+        }
+    }
 }
 
 

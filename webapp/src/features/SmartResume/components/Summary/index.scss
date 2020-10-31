@@ -1,0 +1,43 @@
+.collapsed-section {
+  margin: 0;
+  &.flexie {
+    padding-right: 0;
+  }
+  .left-section {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    h2 {
+      font-size: 40px;
+      color: #333333;
+      font-weight: bold;
+    }
+    h3 {
+      font-size: 20px;
+      font-weight: bold;
+      width: 100%;
+    }
+    .lower-row {
+      span.blue {
+        color: #3e89ec;
+        font-size: 14px;
+        font-weight: bold;
+        margin-right: 20px;
+      }
+      span {
+        font-size: 14px;
+        color: #bababa;
+      }
+    }
+    .image-wrapper {
+      margin-right: 20px;
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      border: 1px solid red;
+      img {
+        width: 100%;
+      }
+    }
+  }
+}

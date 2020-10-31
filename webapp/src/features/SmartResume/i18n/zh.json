@@ -182,5 +182,9 @@
   "volTitle": "志愿者经历",
   "infoComplete": "信息完整度",
   "layout": "简历版式",
-  "expValue": "经历含金量"
+  "expValue": "经历含金量",
+  "present": "至今",
+  "valid_through": "有效期至: ",
+  "forever": "永久有效",
+  "delete": "删除"
 }
