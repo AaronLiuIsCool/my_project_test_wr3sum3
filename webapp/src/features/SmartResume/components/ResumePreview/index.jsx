@@ -27,7 +27,7 @@ const accountServices = new AccountServices();
 const resumeServices = new ResumeServices();
 const appServices = new AppServices();
 
-const ResumePreview = () => {
+const ResumePreview = ({ resumeName }) => {
 	const messages = useI8n();
 
 	const userId = useSelector(selectUserId);
@@ -100,7 +100,7 @@ const ResumePreview = () => {
 					</button>
 					<button onClick={handleTranslate}>{messages.RPreview.smartTranslation}</button>
 					<button onClick={() => adjustToWholePage(messages.RPreview)}>{messages.RPreview.oneClickWholePage}</button>
-					<button onClick={() => downloadPDF(messages.RPreview)}>
+					<button onClick={() => downloadPDF(messages.RPreview, resumeName)}>
 						<img src={DownloadIcon} alt='download' /> {messages.RPreview.downloadResume}
 					</button>
 					<button className={styles.circle} onClick={resumeTipsOpenHandler}>

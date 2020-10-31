@@ -654,12 +654,12 @@ const buildResume = () => {
   });
 };
 
-export const downloadPDF = (messagePR) => {
+export const downloadPDF = (messagePR, resumeName = 'resume') => {
   resumeData = store.getState().resume;
   primaryColor = resumeData.resumeBuilder.data.color;
   messages = messagePR;
   buildResume();
-  doc.save("resume.pdf");
+  doc.save(`${resumeName}.pdf`);
 };
 
 export const previewResume = (messagePR) => {

@@ -50,7 +50,7 @@ const Grid = ({ resume }) => {
                         {resume.alias}
                     </div>
                     <div className={styles.time}>
-                        {new Date(resume.createdAt).toLocaleDateString()}
+                        {new Date(resume.createdAt).toLocaleString() }
                     </div>
                     <div className={styles.links}>
                         <Button as={Link} variant="link" to={`/resume/${resume.resumeId}`} className={styles.link} ><EditIcon className={styles.svg} /> {messages['hub_item_edit']}
