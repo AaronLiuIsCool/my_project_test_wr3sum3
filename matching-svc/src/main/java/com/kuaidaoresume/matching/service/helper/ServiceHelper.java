@@ -2,10 +2,6 @@ package com.kuaidaoresume.matching.service.helper;
 
 import com.github.structlog4j.ILogger;
 import com.github.structlog4j.SLoggerFactory;
-import com.kuaidaoresume.account.client.AccountClient;
-import com.kuaidaoresume.account.dto.TrackEventRequest;
-import com.kuaidaoresume.common.api.BaseResponse;
-import com.kuaidaoresume.common.auth.AuthContext;
 import com.kuaidaoresume.common.env.EnvConfig;
 import com.kuaidaoresume.common.error.ServiceException;
 import com.kuaidaoresume.matching.config.AppConfig;
@@ -13,7 +9,6 @@ import io.sentry.SentryClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -100,10 +95,14 @@ public class ServiceHelper {
 
     // TODO Spencer, please use below utilities for sentry exception logging.
     public void handleErrorAndThrowException(ILogger log, Exception ex, String errMsg) {
+        handleError(log, ex, errMsg);
+        throw new ServiceException(errMsg, ex);
+    }
+
+    public void handleError(ILogger log, Exception ex, String errMsg) {
         log.error(errMsg, ex);
         if (!envConfig.isDebug()) {
             sentryClient.sendException(ex);
         }
-        throw new ServiceException(errMsg, ex);
     }
 }

@@ -77,7 +77,7 @@ const SmartResume = ({ useObserver = false, resumeId }) => {
                 <div className="overlay">
                     <LeftNav />
                     <Assistant />
-                    <ResumePreview  />
+                    <ResumePreview resumeName={resumeName}  />
                 </div>
                 <ExperiencesForm resumeName={resumeName} useObserver={useObserver} />
             </div>

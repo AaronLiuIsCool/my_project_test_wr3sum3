@@ -73,6 +73,11 @@ public interface MatchingClient {
         @RequestHeader(AuthConstant.AUTHORIZATION_HEADER) String authz,
         @RequestParam String resumeUuid, @RequestParam String jobUuid);
 
+    @DeleteMapping("/resumes/bookmark")
+    BaseResponse unbookmarkJob(
+        @RequestHeader(AuthConstant.AUTHORIZATION_HEADER) String authz,
+        @RequestParam String resumeUuid, @RequestParam String jobUuid);
+
     @GetMapping("/jobs/bookmarked")
     JobListResponse getBookmarkedJobs(
         @RequestHeader(AuthConstant.AUTHORIZATION_HEADER) String authz,

@@ -193,6 +193,20 @@ public class MatchingController {
     }
 
     @Authorize(value = {
+      AuthConstant.AUTHORIZATION_WWW_SERVICE,
+      AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
+      AuthConstant.AUTHORIZATION_SUPPORT_USER,
+      AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
+    })
+    @DeleteMapping("/resumes/bookmark")
+    public BaseResponse unbookmarkJob(@RequestParam String resumeUuid, @RequestParam String jobUuid) {
+        matchingService.unbookmarkJob(resumeUuid, jobUuid);
+        BaseResponse baseResponse = new BaseResponse();
+        baseResponse.setMessage(String.format("Job %s is un-bookmarked by resume %s", jobUuid, resumeUuid));
+        return baseResponse;
+    }
+
+    @Authorize(value = {
         AuthConstant.AUTHORIZATION_WWW_SERVICE,
         AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
         AuthConstant.AUTHORIZATION_SUPPORT_USER,
