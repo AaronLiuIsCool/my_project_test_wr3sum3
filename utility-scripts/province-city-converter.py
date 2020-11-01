@@ -16,7 +16,7 @@ rows2 = list(reader2)
 totalrows2 = len(rows2)
 
 
-with open(outputFileName, 'w', encoding='utf8') as outputJSONFile:
+with open(outputFileName, 'w', encoding='utf-8-sig') as outputJSONFile:
   outputJSONFile.write('[\n')
   for index, row in enumerate(rows):
     # Use the ensure_ascii=False to force to encode the value to UTF-8:
