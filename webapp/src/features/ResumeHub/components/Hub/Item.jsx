@@ -10,7 +10,9 @@ import { ReactComponent as DeleteIcon } from '../../assets/delete.svg';
 
 import { selectUserId } from 'features/App/slicer';
 import { deleteResume } from 'features/App/slicer/account';
+import { actions } from 'features/SmartResume/slicer';
 import AccountServices from 'shell/services/AccountServices';
+import ResumeServices from 'shell/services/ResumeServices';
 import { getLogger } from 'shell/logger';
 import { useI8n } from 'shell/i18n';
 
@@ -19,8 +21,21 @@ import { downloadPDF } from 'features/SmartResume/components/ResumePreview/resum
 
 const logger = getLogger('ResumeHubItem');
 const accountServices = new AccountServices();
+const resumeServices = new ResumeServices();
 
-const Grid = ({ resume }) => {
+async function getResume(dispatch, resumeId) {
+    if (resumeId) {
+        try {
+            const resumeData = await resumeServices.getResume(resumeId);
+            dispatch(actions.setResume(resumeData));
+        } catch (exception) {
+            logger.error(exception);
+        }
+        return;
+    }
+}
+
+const Item = ({ resume }) => {
     const messages = useI8n();
     const dispatch = useDispatch();
     const userId = useSelector(selectUserId);
@@ -38,9 +53,10 @@ const Grid = ({ resume }) => {
         }
     }
 
-    const handleDownloadPDF = (e) => {
-      e.preventDefault();
-      downloadPDF(messages.RPreview);
+    const handleDownloadPDF = async () => {
+        dispatch(actions.setAlias(resume?.alias));
+        await getResume(dispatch, resume.resumeId);
+        downloadPDF(messages.RPreview);
     }
     return (
         <div className={styles.itemContainer}>
@@ -50,12 +66,16 @@ const Grid = ({ resume }) => {
                         {resume.alias}
                     </div>
                     <div className={styles.time}>
-                        {new Date(resume.createdAt).toLocaleString() }
+                        {new Date(resume.createdAt).toLocaleString()}
                     </div>
                     <div className={styles.links}>
-                        <Button as={Link} variant="link" to={`/resume/${resume.resumeId}`} className={styles.link} ><EditIcon className={styles.svg} /> {messages['hub_item_edit']}
+                        <Button as={Link} variant="link" to={`/resume/${resume.resumeId}`} className={styles.link} >
+                            <EditIcon className={styles.svg} /> 
+                            {messages['hub_item_edit']}
                         </Button>
-                        <Button onClick={handleDownloadPDF} as={Link} variant="link" className={styles.link} to={'#'}><Download className={styles.svg} /> {messages['hub_item_download']}
+                        <Button variant="link" onClick={handleDownloadPDF} className={styles.link}>
+                            <Download className={styles.svg} /> 
+                            {messages['hub_item_download']}
                         </Button>
                     </div>
                     <Button variant="link" className={styles.delete}
@@ -70,7 +90,7 @@ const Grid = ({ resume }) => {
     );
 }
 
-Grid.propTypes = {
+Item.propTypes = {
     resume: PropTypes.shape({
         resumeId: PropTypes.string.isRequired,
         alias: PropTypes.string.isRequired,
@@ -79,4 +99,4 @@ Grid.propTypes = {
     })
 };
 
-export default Grid;
+export default Item;

@@ -1,0 +1,160 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Hub renders Hub 1`] = `
+<div
+  className="container"
+>
+  <div
+    className="header"
+  >
+    <a
+      className="action btn btn-link"
+      disabled={false}
+      href="/new"
+      onClick={[Function]}
+    />
+  </div>
+  <div
+    className="grid"
+  >
+    <div
+      className="itemContainer"
+    >
+      <div
+        className="itemContent"
+      >
+        <div
+          className="right"
+        >
+          <div
+            className="name"
+          >
+            resume 1 for test
+          </div>
+          <div
+            className="time"
+          >
+            test locale date string
+          </div>
+          <div
+            className="links"
+          >
+            <a
+              className="link btn btn-link"
+              disabled={false}
+              href="/resume/4028b401755f29230175614025980000"
+              onClick={[Function]}
+            >
+              <svg
+                className="svg"
+              >
+                edit.svg
+              </svg>
+            </a>
+            <button
+              className="link btn btn-link"
+              disabled={false}
+              onClick={[Function]}
+              type="button"
+            >
+              <svg
+                className="svg"
+              >
+                download.svg
+              </svg>
+            </button>
+          </div>
+          <button
+            className="delete btn btn-link"
+            disabled={false}
+            onClick={[Function]}
+            type="button"
+          >
+            <svg
+              className="svg"
+            >
+              delete.svg
+            </svg>
+             
+          </button>
+        </div>
+      </div>
+      <a
+        className="matchingBtn btn btn-primary"
+        disabled={false}
+        href="/jobs?resume=4028b401755f29230175614025980000"
+        onClick={[Function]}
+      />
+    </div>
+    <div
+      className="itemContainer"
+    >
+      <div
+        className="itemContent"
+      >
+        <div
+          className="right"
+        >
+          <div
+            className="name"
+          >
+            test 2
+          </div>
+          <div
+            className="time"
+          >
+            test locale date string
+          </div>
+          <div
+            className="links"
+          >
+            <a
+              className="link btn btn-link"
+              disabled={false}
+              href="/resume/4028b401755f292301756311ef930004"
+              onClick={[Function]}
+            >
+              <svg
+                className="svg"
+              >
+                edit.svg
+              </svg>
+            </a>
+            <button
+              className="link btn btn-link"
+              disabled={false}
+              onClick={[Function]}
+              type="button"
+            >
+              <svg
+                className="svg"
+              >
+                download.svg
+              </svg>
+            </button>
+          </div>
+          <button
+            className="delete btn btn-link"
+            disabled={false}
+            onClick={[Function]}
+            type="button"
+          >
+            <svg
+              className="svg"
+            >
+              delete.svg
+            </svg>
+             
+          </button>
+        </div>
+      </div>
+      <a
+        className="matchingBtn btn btn-primary"
+        disabled={false}
+        href="/jobs?resume=4028b401755f292301756311ef930004"
+        onClick={[Function]}
+      />
+    </div>
+  </div>
+</div>
+`;

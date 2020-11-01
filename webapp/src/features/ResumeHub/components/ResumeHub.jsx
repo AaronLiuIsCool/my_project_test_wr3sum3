@@ -18,16 +18,11 @@ const accountServices = new AccountServices();
 
 async function getAccountInfo(userId, dispatch) {
     try {
-        const response = await accountServices.getAccountInfo(userId);
-        if (!response) {
-            logger.warn('No response from account service get');
-        }
-
-        const responseJson = await response.json();
+        const responseJson = await accountServices.getAccountInfo(userId);
         if (responseJson.success) {
             dispatch(updateAccount(responseJson.account));
         } else {
-            logger.error(response.message);
+            logger.error(responseJson.message);
         }
     } catch (exception) {
         logger.error(exception);

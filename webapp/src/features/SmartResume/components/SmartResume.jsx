@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import { previewResume } from './ResumePreview/resumeBuilder';
@@ -25,32 +25,24 @@ const resumeServices = new ResumeServices();
 async function getResume(dispatch, resumeId) {
     if (resumeId) {
         try {
-            const response = await resumeServices.getResume(resumeId);
-            const resumeData = await response.json();
+            const resumeData = await resumeServices.getResume(resumeId);
             dispatch(actions.setResume(resumeData));
         } catch (exception) {
-            logger.error(exception)
+            logger.error(exception);
         }
         return;
     }
-    
 }
-async function getAccountInfoAndSetResumeName(userId, resumeId, setter) {
-  try {
-    const response = await accountServices.getAccountInfo(userId);
-    if (!response) {
-      logger.warn('No response from account service get');
-    }
 
-    const responseJson = await response.json();
+async function getAccountInfoAndSetResumeName(dispatch, userId, resumeId) {
+  try {
+    const responseJson = await accountServices.getAccountInfo(userId);
     if (responseJson.success) {
       const { resumes } = responseJson.account;
       const resume = resumes.find((item) => item.resumeId === resumeId);
-      if (resume) {
-        setter(resume.alias);
-      }
+      dispatch(actions.setAlias(resume?.alias));
     } else {
-      logger.error(response.message);
+      logger.error(responseJson.message);
     }
   } catch (exception) {
     logger.error(exception);
@@ -61,14 +53,16 @@ const SmartResume = ({ useObserver = false, resumeId }) => {
     const userId = useSelector(selectUserId);
     const language = useSelector(selectLanguage);
     const messages = language === 'zh' ? zh : en;
-    const [resumeName, setResumeName] = useState('');
     useEffect(() => {
         const updatePreview = async () => {
-            await getResume(dispatch, resumeId);
+            await Promise.all([
+                getResume(dispatch, resumeId),
+                getAccountInfoAndSetResumeName(dispatch, userId, resumeId)
+            ]);
             previewResume(messages.RPreview);
         }
         updatePreview();
-        getAccountInfoAndSetResumeName(userId, resumeId, setResumeName);
+        
     }, []); // eslint-disable-line
 
     return (
@@ -77,9 +71,9 @@ const SmartResume = ({ useObserver = false, resumeId }) => {
                 <div className="overlay">
                     <LeftNav />
                     <Assistant />
-                    <ResumePreview resumeName={resumeName}  />
+                    <ResumePreview />
                 </div>
-                <ExperiencesForm resumeName={resumeName} useObserver={useObserver} />
+                <ExperiencesForm useObserver={useObserver} />
             </div>
         </I8nContext.Provider>
     );

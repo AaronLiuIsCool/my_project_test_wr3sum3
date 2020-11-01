@@ -1,4 +1,5 @@
 import { jsPDF } from "jspdf";
+
 import { dateRangeBuilder } from "./common";
 import * as Constants from "./Constants";
 
@@ -654,12 +655,12 @@ const buildResume = () => {
   });
 };
 
-export const downloadPDF = (messagePR, resumeName = 'resume') => {
+export const downloadPDF = (messagePR) => {
   resumeData = store.getState().resume;
-  primaryColor = resumeData.resumeBuilder.data.color;
+  primaryColor = resumeData?.resumeBuilder?.data?.color;
   messages = messagePR;
   buildResume();
-  doc.save(`${resumeName}.pdf`);
+  doc.save(`${resumeData?.alias}.pdf`);
 };
 
 export const previewResume = (messagePR) => {

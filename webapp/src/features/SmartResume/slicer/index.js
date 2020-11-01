@@ -17,7 +17,7 @@ export const resumeSlice = createSlice({
     initialState: {
         id: undefined,
         stepIndex: 0,
-
+        alias: '',
         assistant: assistant.initialState,
         photoReference: photoReference.initialState,
         basic: basic.initialState,
@@ -43,6 +43,10 @@ export const resumeSlice = createSlice({
             state.stepIndex = action.payload;
         },
 
+        setAlias: (state, action) => {
+          state.alias = action.payload;
+        },
+
         ...assistant.reducers,
         ...photoReference.reducers,
         ...basic.reducers,
@@ -60,6 +64,7 @@ export const { actions } = resumeSlice;
 
 export const selectId = ({ resume }) => resume.id;
 export const selectStep = ({ resume }) => resume.stepIndex;
+export const selectAlias = ({ resume }) => resume.alias;
 export const selectResume = ({ resume }) => resume;
 export const selectValidatedResume = ({ resume }) => {
   const {photoReference, basic, education, work,

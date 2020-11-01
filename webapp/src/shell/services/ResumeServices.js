@@ -18,7 +18,8 @@ export default class ResumeServices extends BaseServices {
 
     async getResume(resumeId) {
         try {
-            return await this.get(`v1/resumes/${resumeId}`);
+            const response = await this.get(`v1/resumes/${resumeId}`);
+            return await response.json();
         } catch (exception) {
             logger.error(exception);
         }

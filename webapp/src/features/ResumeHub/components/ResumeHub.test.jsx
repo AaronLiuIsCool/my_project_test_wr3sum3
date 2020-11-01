@@ -6,13 +6,16 @@ import store from 'store';
 
 import ResumeHub from './ResumeHub';
 
-
-test('renders ResumeHub', () => {
-    const resumeHub = renderer.create(
-        <Provider store={store}>
-            <ResumeHub />
-        </Provider>
-    ).toJSON();
-
-    expect(resumeHub).toMatchSnapshot();
+describe('ResumeHub', () => {
+    test('renders ResumeHub', () => {
+        const resumeHub = renderer.create(
+            <Provider store={store}>
+                <ResumeHub />
+            </Provider>
+        ).toJSON();
+    
+        expect(resumeHub).toMatchSnapshot();
+    });    
 });
+
+

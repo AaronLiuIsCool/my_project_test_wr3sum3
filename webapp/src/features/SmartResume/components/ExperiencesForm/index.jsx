@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
+import { selectAlias } from 'features/SmartResume/slicer';
 import ViewObserver from './ViewObserver';
 import BasicExperience from './BasicExperience';
 import EducationExperience from './EducationExperience';
@@ -13,8 +15,9 @@ import ProgressHeader from '../ProgressHeader/index';
 
 import styles from '../../styles/ExperiencesForm.module.css';
 
-const ExperiencesForm = ({ useObserver, resumeName }) => {
+const ExperiencesForm = ({ useObserver }) => {
     const [scoreVisible, setScoreVisible] = useState(false);
+    const resumeName = useSelector(selectAlias);
     return (
         <div className={styles.container}>
             <ProgressHeader setScoreVisible={setScoreVisible} scoreVisible={scoreVisible}/>
