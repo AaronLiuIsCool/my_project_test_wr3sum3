@@ -104,6 +104,16 @@ const reducers = {
     },
     updateOtherAward: (state, action) => {
         updateField(state, action.payload.index, "otherAward", action.payload.value);
+    },
+    removeEducation: (state, action) => {
+        const index = action.payload.index;
+        if(state.education.data.length > 1) {
+            state.education.data.splice(index, 1) 
+        } else {
+            state.education.data = [{
+                ...education
+            }]
+        }        
     }
 }
 

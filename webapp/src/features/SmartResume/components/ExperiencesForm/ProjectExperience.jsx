@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { useI8n } from 'shell/i18n';
@@ -16,8 +16,14 @@ const ProjectExperience = () => {
 	const project = useSelector(projectSelectors.selectProject);
 	const dispatch = useDispatch();
 	const messages = useI8n();
+	const showAddButton = useMemo(() => {
+		return project.data.every(item => item.id)
+	}, [
+		project.data
+	])
 	return (
 		<Step
+			showAddButton={showAddButton}
 			id="projectXp"
 			title={messages.project}
 			subtitle={messages.projectInfo}

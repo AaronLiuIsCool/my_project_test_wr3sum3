@@ -1,0 +1,326 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Certificate form It should match snapshot 1`] = `
+<div
+  className="form_body"
+>
+  <form
+    className=""
+    onSubmit={[Function]}
+  >
+    <div
+      className="flexie row"
+    >
+      <div
+        className="col"
+      >
+        <h2
+          className="form_h2"
+        />
+      </div>
+      <div
+        className="toggle-up-arrow"
+        onClick={[Function]}
+      />
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col-lg-4"
+      >
+        <div
+          className="form_item form-validation-wrapper form-group"
+        >
+          <label
+            className="form-label"
+            htmlFor="project-name"
+          />
+          <input
+            className="form-control"
+            id="project-name"
+            onChange={[Function]}
+            type="text"
+          />
+        </div>
+      </div>
+      <div
+        className="col-lg-2"
+      >
+        <div
+          className="form_item form-group"
+        >
+          <label
+            className="form-label"
+            htmlFor="project-currentProjectFlag"
+          />
+          <div
+            className="radioButton_container"
+          >
+            <button
+              className="radioButton"
+              onClick={[Function]}
+              value={true}
+            />
+            <button
+              className="radioButton selected"
+              onClick={[Function]}
+              value={false}
+            />
+          </div>
+        </div>
+      </div>
+      <div
+        className="col"
+      >
+        <div
+          className="form_item form-validation-wrapper form-group"
+        >
+          <label
+            className="form-label"
+            htmlFor="project-company"
+          />
+          <input
+            className="form-control"
+            id="project-company"
+            onChange={[Function]}
+            type="text"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col"
+      >
+        <div
+          className="form_item form-validation-wrapper form_item  form-group"
+        >
+          <label
+            className="form-label"
+            htmlFor="project-enter-date"
+          />
+          <div
+            className="SingleDatePicker SingleDatePicker_1"
+          >
+            <div>
+              <div
+                className="SingleDatePickerInput SingleDatePickerInput_1"
+              >
+                <div
+                  className="DateInput DateInput_1"
+                >
+                  <input
+                    aria-describedby="DateInput__screen-reader-message-project-enter-date"
+                    aria-label=""
+                    autoComplete="off"
+                    className="DateInput_input DateInput_input_1"
+                    disabled={false}
+                    id="project-enter-date"
+                    name="project-enter-date"
+                    onChange={[Function]}
+                    onFocus={[Function]}
+                    onKeyDown={[Function]}
+                    placeholder=""
+                    readOnly={false}
+                    required={false}
+                    type="text"
+                    value=""
+                  />
+                  <p
+                    className="DateInput_screenReaderMessage DateInput_screenReaderMessage_1"
+                    id="DateInput__screen-reader-message-project-enter-date"
+                  >
+                    Navigate forward to interact with the calendar and select a date. Press the question mark key to get the keyboard shortcuts for changing dates.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="col"
+      >
+        <div
+          className="form_item form-validation-wrapper form-group"
+        >
+          <label
+            className="form-label"
+            htmlFor="project-country"
+          />
+          <div
+            className="rbt"
+            style={
+              Object {
+                "outline": "none",
+                "position": "relative",
+              }
+            }
+            tabIndex={-1}
+          >
+            <div
+              style={
+                Object {
+                  "display": "flex",
+                  "flex": 1,
+                  "height": "100%",
+                  "position": "relative",
+                }
+              }
+            >
+              <input
+                aria-autocomplete="both"
+                aria-expanded={false}
+                aria-haspopup="listbox"
+                autoComplete="off"
+                className="rbt-input-main form-control rbt-input"
+                onBlur={[Function]}
+                onChange={[Function]}
+                onClick={[Function]}
+                onFocus={[Function]}
+                onKeyDown={[Function]}
+                role="combobox"
+                type="text"
+                value=""
+              />
+              <input
+                aria-hidden={true}
+                className="rbt-input-hint"
+                readOnly={true}
+                style={
+                  Object {
+                    "backgroundColor": "transparent",
+                    "borderColor": "transparent",
+                    "boxShadow": "none",
+                    "color": "rgba(0, 0, 0, 0.35)",
+                    "left": 0,
+                    "pointerEvents": "none",
+                    "position": "absolute",
+                    "top": 0,
+                    "width": "100%",
+                  }
+                }
+                tabIndex={-1}
+                value=""
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="col"
+      >
+        <div
+          className="form_item form-validation-wrapper form-group"
+        >
+          <label
+            className="form-label"
+            htmlFor="project-city"
+          />
+          <div
+            className="rbt"
+            style={
+              Object {
+                "outline": "none",
+                "position": "relative",
+              }
+            }
+            tabIndex={-1}
+          >
+            <div
+              style={
+                Object {
+                  "display": "flex",
+                  "flex": 1,
+                  "height": "100%",
+                  "position": "relative",
+                }
+              }
+            >
+              <input
+                aria-autocomplete="both"
+                aria-expanded={false}
+                aria-haspopup="listbox"
+                autoComplete="off"
+                className="rbt-input-main form-control rbt-input"
+                onBlur={[Function]}
+                onChange={[Function]}
+                onClick={[Function]}
+                onFocus={[Function]}
+                onKeyDown={[Function]}
+                role="combobox"
+                type="text"
+                value=""
+              />
+              <input
+                aria-hidden={true}
+                className="rbt-input-hint"
+                readOnly={true}
+                style={
+                  Object {
+                    "backgroundColor": "transparent",
+                    "borderColor": "transparent",
+                    "boxShadow": "none",
+                    "color": "rgba(0, 0, 0, 0.35)",
+                    "left": 0,
+                    "pointerEvents": "none",
+                    "position": "absolute",
+                    "top": 0,
+                    "width": "100%",
+                  }
+                }
+                tabIndex={-1}
+                value=""
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col-lg-12"
+      >
+        <div
+          className="writeAssistantContainer"
+        >
+          <div>
+            DraftEditor
+          </div>
+          <span
+            className="writeAssistant"
+          >
+            <svg>
+              writing_assit.svg
+            </svg>
+            <button
+              className="btn btn-link"
+              disabled={false}
+              onClick={[Function]}
+              type="button"
+            />
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      className="form_buttons row"
+    >
+      <div
+        className="flex-end col"
+      >
+        <button
+          className="btn btn-primary"
+          disabled={false}
+          type="submit"
+        />
+      </div>
+    </div>
+  </form>
+</div>
+`;
