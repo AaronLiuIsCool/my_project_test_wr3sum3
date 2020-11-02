@@ -50,8 +50,8 @@ describe('EducationForm form', () => {
     const data = {
       id: 'test',
       schoolName: 'asdasd',
-      startDate: '2020-10-01',
-      graduateDate: '2020-10-02',
+      startDate: '2020-09-10',
+      graduateDate: '2020-09-11',
       major: 'ASD',
       degree: 'dsa',
     };

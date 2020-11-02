@@ -23,8 +23,6 @@ export const Summary = ({
   currentFlag = '',
 }) => {
   const messages = useI8n();
-  console.log(enterSchoolDate);
-  console.log(enterSchoolDate);
   switch (type) {
     case 'BasicInfo':
       return (
