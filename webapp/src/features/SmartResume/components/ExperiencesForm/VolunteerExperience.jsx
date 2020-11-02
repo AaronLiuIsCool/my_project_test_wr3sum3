@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { useI8n } from 'shell/i18n';
@@ -16,8 +16,14 @@ const VolunteerExperience = () => {
 	const volunteer = useSelector(volunteerSelectors.selectVolunteer);
 	const dispatch = useDispatch();
 	const messages = useI8n();
+	const showAddButton = useMemo(() => {
+		return volunteer.data.every(item => item.id)
+	}, [
+		volunteer.data
+	])
 	return (
 		<Step
+			showAddButton={showAddButton}
 			id="otherXp"
 			title={messages.volunteerExperience}
 			subtitle={messages.enterVolunteerExperience}

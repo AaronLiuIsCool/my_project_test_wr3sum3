@@ -108,7 +108,9 @@ const CertificateForm = ({ data, index, isLast = false, messages, certData = [] 
 		if(data.id && !didMount.current) {
 			setShowSummary(true)
 			didMount.current = true
-		}
+		} else if (!data.id && didMount.current) {
+      setShowSummary(false)
+    }
 	}, [data])
 
 	return (

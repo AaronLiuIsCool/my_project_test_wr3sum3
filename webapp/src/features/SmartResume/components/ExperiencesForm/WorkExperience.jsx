@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useMemo } from 'react';
+
 import { useSelector, useDispatch } from 'react-redux';
 
 import { useI8n } from 'shell/i18n';
@@ -14,10 +15,16 @@ const getForms = (WorkData, messages) =>
 
 const WorkExperience = () => {
 	const Work = useSelector(workSelectors.selectWork);
+	const showAddButton = useMemo(() => {
+		return Work.data.every(item => item.id)
+	}, [
+		Work.data
+	])
 	const dispatch = useDispatch();
 	const messages = useI8n();
 	return (
 		<Step
+			showAddButton={showAddButton}
 			id="workXp"
 			title={messages.work}
 			subtitle={messages.workInfo}

@@ -143,6 +143,16 @@ const reducers = {
         action.payload.value : `${state.work.data[index].workDescription}\n${action.payload.value}`;
       updateField( state, index, "workDescription", value);
     },
+    removeWork: (state, action) => {
+        const index = action.payload.index;
+        if(state.work.data.length > 1) {
+            state.work.data.splice(index, 1) 
+        } else {
+            state.work.data = [{
+                ...work
+            }]
+        }        
+    }
 };
 
 const selectors = {
