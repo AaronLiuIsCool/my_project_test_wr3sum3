@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Certificate form It should match snapshot 1`] = `
+exports[`EducationForm form It should match snapshot 1`] = `
 <div
   className="form_body"
 >
@@ -24,7 +24,7 @@ exports[`Certificate form It should match snapshot 1`] = `
           dsa
         </span>
         <span>
-          Invalid date
+          2020-09-30
            -
            
           2020-10-01

@@ -17,7 +17,7 @@ const WorkFormWithProvider = (props) => (
   </Provider>
 );
 
-describe('Certificate form', () => {
+describe('Work form', () => {
   test('should render successfully with input', () => {
     const wrapper = mount(
       <WorkFormWithProvider data={{}} messages={{}} index={0} />

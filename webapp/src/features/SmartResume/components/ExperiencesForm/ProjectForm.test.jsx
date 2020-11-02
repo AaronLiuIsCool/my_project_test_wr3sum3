@@ -18,7 +18,7 @@ const ProjectFormWithProvider = (props) => (
   </Provider>
 );
 
-describe('Certificate form', () => {
+describe('Project form', () => {
   test('should render successfully with input', () => {
     const wrapper = mount(
       <ProjectFormWithProvider data={{}} messages={{}} index={0} />

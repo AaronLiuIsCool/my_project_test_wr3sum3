@@ -17,7 +17,7 @@ const EducationFormWithProvider = (props) => (
   </Provider>
 );
 
-describe('Certificate form', () => {
+describe('EducationForm form', () => {
   test('should render successfully with input', () => {
     const wrapper = mount(
       <EducationFormWithProvider data={{}} messages={{}} index={0} />
@@ -50,7 +50,7 @@ describe('Certificate form', () => {
     const data = {
       id: 'test',
       schoolName: 'asdasd',
-      enterSchoolDate: '2020-10-01',
+      startDate: '2020-10-01',
       graduateDate: '2020-10-02',
       major: 'ASD',
       degree: 'dsa',

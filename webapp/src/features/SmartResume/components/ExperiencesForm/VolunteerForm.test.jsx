@@ -17,7 +17,7 @@ const VolunteerFormWithProvider = (props) => (
   </Provider>
 );
 
-describe('Certificate form', () => {
+describe('Volunteer Form', () => {
   test('should render successfully with input', () => {
     const wrapper = mount(
       <VolunteerFormWithProvider data={{}} messages={{}} index={0} />

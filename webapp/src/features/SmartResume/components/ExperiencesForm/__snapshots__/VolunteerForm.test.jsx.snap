@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Certificate form It should match snapshot 1`] = `
+exports[`Volunteer Form It should match snapshot 1`] = `
 <div
   className="form_body"
 >
