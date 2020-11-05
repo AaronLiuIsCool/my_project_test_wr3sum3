@@ -27,7 +27,7 @@ data:
   JOB_DATASOURCE_URL: TBD
   JOB_DATASOURCE_USERNAME: prod_root_name
   JOB_DATASOURCE_PASSWORD: pw_tbd
-  MATCHING_DATASOURCE_URL: TBD
+  MATCHING_DATASOURCE_URL: mongodb+srv://prod:<password_ask_aaron>@kuaidaoresume-prod-us-w.kxcvj.mongodb.net
   MATCHING_DATASOURCE_USERNAME: prod_root_name
   MATCHING_DATASOURCE_PASSWORD: pw_tbd
   MOCK_JOB_FETCH: set_during_deployment
