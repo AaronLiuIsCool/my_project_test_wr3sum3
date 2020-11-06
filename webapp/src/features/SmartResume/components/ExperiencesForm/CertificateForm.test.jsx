@@ -52,7 +52,7 @@ describe('Certificate form', () => {
       certificateName: 'test',
       certificateIssuedDate: '2020-10-01',
       certificateEndDate: '2020-10-02',
-      validCertificateFlag: false,
+      validCertificateFlag: true,
     };
     const tree = renderer
       .create(
