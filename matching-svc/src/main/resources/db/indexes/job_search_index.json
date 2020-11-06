@@ -4,14 +4,23 @@
   "mappings": {
     "dynamic": false,
     "fields": {
+      "title": {
+        "analyzer": "lucene.whitespace",
+        "ignoreAbove": 255,
+        "type": "string"
+      },
+      "titleForSearch": {
+        "analyzer": "lucene.cjk",
+        "ignoreAbove": 255,
+        "type": "string"
+      },
       "companyName": {
         "analyzer": "lucene.whitespace",
-        "multi": {
-          "chineseAnalyzer": {
-            "analyzer": "lucene.cjk",
-            "type": "string"
-          }
-        },
+        "type": "string"
+      },
+      "companyNameForSearch": {
+        "analyzer": "lucene.cjk",
+        "ignoreAbove": 255,
         "type": "string"
       },
       "keywords": {
@@ -32,17 +41,6 @@
       },
       "relevantMajors": {
         "analyzer": "lucene.keyword",
-        "type": "string"
-      },
-      "title": {
-        "analyzer": "lucene.whitespace",
-        "ignoreAbove": 255,
-        "multi": {
-          "chineseAnalyzer": {
-            "analyzer": "lucene.cjk",
-            "type": "string"
-          }
-        },
         "type": "string"
       }
     }

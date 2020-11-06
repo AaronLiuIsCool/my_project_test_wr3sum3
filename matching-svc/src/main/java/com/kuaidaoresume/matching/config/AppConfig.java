@@ -1,5 +1,6 @@
 package com.kuaidaoresume.matching.config;
 
+import com.huaban.analysis.jieba.JiebaSegmenter;
 import com.kuaidaoresume.common.async.ContextCopyingDecorator;
 import com.kuaidaoresume.common.config.KuaidaoresumeRestConfig;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -58,6 +59,11 @@ public class AppConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public JiebaSegmenter jiebaSegmenter() {
+        return new JiebaSegmenter();
     }
 }
 

@@ -135,15 +135,15 @@ public interface MatchingClient {
     @GetMapping("/jobs/search")
     JobListResponse searchJobs(
         @RequestHeader(AuthConstant.AUTHORIZATION_HEADER) String authz,
-        @RequestParam String country,
-        @RequestParam String city,
+        @RequestParam(required = false) String country,
+        @RequestParam(required = false) String city,
         @RequestParam String term);
 
     @GetMapping("/jobs/paging-search")
     JobListResponse searchJobs(
         @RequestHeader(AuthConstant.AUTHORIZATION_HEADER) String authz,
-        @RequestParam String country,
-        @RequestParam String city,
+        @RequestParam(required = false) String country,
+        @RequestParam(required = false) String city,
         @RequestParam String term,
         @RequestParam @Min(0) int page,
         @RequestParam @Min(1) int pageSize);

@@ -348,8 +348,8 @@ public class MatchingController {
     })
     @GetMapping("/jobs/search")
     public JobListResponse searchJobs(
-        @RequestParam String country,
-        @RequestParam String city,
+        @RequestParam(required = false) String country,
+        @RequestParam(required = false) String city,
         @RequestParam String term) {
 
         Collection<JobDto> jobs = matchingService.searchJobs(buildSearchJobDto(country, city, term));
@@ -364,8 +364,8 @@ public class MatchingController {
     })
     @GetMapping("/jobs/paging-search")
     public JobListResponse searchJobs(
-        @RequestParam String country,
-        @RequestParam String city,
+        @RequestParam(required = false) String country,
+        @RequestParam(required = false) String city,
         @RequestParam String term,
         @RequestParam @Min(0) int page,
         @RequestParam @Min(1) int pageSize) {

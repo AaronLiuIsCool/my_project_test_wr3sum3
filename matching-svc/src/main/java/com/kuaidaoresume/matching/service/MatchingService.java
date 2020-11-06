@@ -13,6 +13,7 @@ import com.kuaidaoresume.matching.repo.*;
 import com.kuaidaoresume.matching.score.rules.IScoreRule;
 import com.kuaidaoresume.matching.score.rules.KeywordScoreRule;
 import com.kuaidaoresume.matching.score.rules.MajorScoreRule;
+import com.kuaidaoresume.matching.service.helper.ChineseHelper;
 import com.kuaidaoresume.matching.service.helper.ServiceHelper;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -37,7 +38,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class MatchingService {
 
-    static ILogger logger = SLoggerFactory.getLogger(MatchingService.class);
+    private static ILogger logger = SLoggerFactory.getLogger(MatchingService.class);
 
     @Autowired
     private final JobRepository jobRepository;
@@ -73,11 +74,22 @@ public class MatchingService {
     private final ServiceHelper serviceHelper;
 
     @Autowired
+    private final ChineseHelper chineseHelper;
+
+    @Autowired
     private final CacheManager cacheManager;
 
     @CacheEvict(cacheNames = {"matchedJobs", "searchJobs"})
     public void addJob(JobDto jobDto) {
         Job job = modelMapper.map(jobDto, Job.class);
+        String title = job.getTitle();
+        if (chineseHelper.containsChinese(title)) {
+            job.setTitleForSearch(chineseHelper.convertChineseForSearch(title));
+        }
+        String companyName = job.getCompanyName();
+        if (chineseHelper.containsChinese(companyName)) {
+            job.setCompanyNameForSearch(chineseHelper.convertChineseForSearch(companyName));
+        }
         job.setActive(true);
         job.setCreatedAt(Instant.now());
         jobRepository.save(job);
@@ -483,8 +495,16 @@ public class MatchingService {
 
     @Cacheable("searchJobs")
     public Collection<JobDto> searchJobs(SearchJobDto searchJobDto) {
-        return jobRepository.searchJobs(searchJobDto.getCountry(), searchJobDto.getCity(), searchJobDto.getTerm())
+        String searchTerm = convertTermForSearchIfNecessary(searchJobDto.getTerm());
+        return jobRepository.searchJobs(searchJobDto.getCountry(), searchJobDto.getCity(), searchTerm)
             .stream().map(job -> modelMapper.map(job, JobDto.class)).collect(Collectors.toList());
+    }
+
+    private String convertTermForSearchIfNecessary(String term) {
+        if (chineseHelper.containsChinese(term)) {
+            term += " " + chineseHelper.convertChineseForSearch(term);
+        }
+        return term;
     }
 
     public Collection<JobDto> searchJobs(SearchJobDto searchJobDto, int page, int pageSize) {
@@ -505,9 +525,9 @@ public class MatchingService {
                 .build();
             logger.info("Search jobs", auditLog);
 
-            return jobRepository.searchJobs(searchJobDto.getCountry(), searchJobDto.getCity(), searchJobDto.getTerm(),
-                page, pageSize).stream().map(job ->
-                modelMapper.map(job, JobDto.class)).collect(Collectors.toList());
+            String searchTerm = convertTermForSearchIfNecessary(searchJobDto.getTerm());
+            return jobRepository.searchJobs(searchJobDto.getCountry(), searchJobDto.getCity(), searchTerm, page, pageSize)
+                .stream().map(job -> modelMapper.map(job, JobDto.class)).collect(Collectors.toList());
         }
     }
 
