@@ -122,7 +122,7 @@ const CertificateForm = ({ data, index, isLast = false, messages, certData = [] 
           roleName={data.certificateName}
           startDate={data.certificateIssuedDate}
           endDate={data.certificateEndDate}
-          currentFlag={data.validCertificateFlag}
+          currentFlag={!data.validCertificateFlag}
         />
       ) : (
         <Form validated={validated} onSubmit={handleSubmit}>
