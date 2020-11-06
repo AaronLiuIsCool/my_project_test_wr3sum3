@@ -27,6 +27,7 @@ data:
   JOB_DATASOURCE_URL: jdbc:mysql://kuaidaoresume-uat1.cm27uwrvuert.ca-central-1.rds.amazonaws.com:3306/kuaidaoresume_job?useUnicode=true&characterEncoding=utf-8
   JOB_DATASOURCE_USERNAME: <Ask Aaron>
   JOB_DATASOURCE_PASSWORD: <check wechat msg>
+  MATCHING_DATASOURCE_URL: mongodb+srv://uat:mongodbroot@kuaidaoresume-uat1.kxcvj.mongodb.net
   MOCK_JOB_FETCH: set_during_deployment
   JOB_CACHE_POLICY_MAXSIZE: PER_NODE
   JOB_CACHE_POLICY_EVICTION: LRU
