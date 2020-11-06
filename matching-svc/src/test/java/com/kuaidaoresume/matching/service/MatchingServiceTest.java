@@ -5,6 +5,7 @@ import com.kuaidaoresume.matching.dto.LocationDto;
 import com.kuaidaoresume.matching.dto.ResumeDto;
 import com.kuaidaoresume.matching.model.*;
 import com.kuaidaoresume.matching.repo.*;
+import com.kuaidaoresume.matching.service.helper.ChineseHelper;
 import com.kuaidaoresume.matching.service.helper.ServiceHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -86,6 +87,9 @@ public class MatchingServiceTest {
     private ServiceHelper serviceHelper;
 
     @Mock
+    private ChineseHelper chineseHelper;
+
+    @Mock
     private CacheManager cacheManager;
 
     @BeforeEach
@@ -95,7 +99,7 @@ public class MatchingServiceTest {
 
         matchingService = new MatchingService(jobRepository, resumeRepository, matchedResumeRepository,
             tailoredResumeRepository, tailoredJobRepository, bookmarkedResumeRepository, bookmarkedJobRepository,
-            visitedResumeRepository, visitedJobRepository, modelMapper, serviceHelper, cacheManager);
+            visitedResumeRepository, visitedJobRepository, modelMapper, serviceHelper, chineseHelper, cacheManager);
     }
 
     private void setupMatchedResumeMocks() {

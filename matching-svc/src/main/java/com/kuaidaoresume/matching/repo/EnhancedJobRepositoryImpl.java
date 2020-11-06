@@ -1,6 +1,7 @@
 package com.kuaidaoresume.matching.repo;
 
 import com.kuaidaoresume.matching.model.Job;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
@@ -58,10 +59,14 @@ public class EnhancedJobRepositoryImpl implements EnhancedJobRepository {
     private Query buildTextSearchQuery(String country, String city, String term) {
         TextCriteria textCriteria = TextCriteria.forDefaultLanguage().matching(term);
         TextQuery query = TextQuery.queryText(textCriteria).sortByScore();
-        query.addCriteria(new Criteria().andOperator(
-            Criteria.where("location.country").is(country),
-            Criteria.where("location.city").is(city),
-            Criteria.where("isActive").is(true)));
+        Criteria searchCriteria = new Criteria().and("isActive").is(true);
+        if (StringUtils.isNotEmpty(country)) {
+            searchCriteria.and("location.country").is(country);
+        }
+        if (StringUtils.isNotEmpty(city)) {
+            searchCriteria.and("location.city").is(city);
+        }
+        query.addCriteria(searchCriteria);
         query.with(Sort.by(Sort.Direction.DESC, "keywords.rating"));
         query.with(Sort.by(Sort.Direction.DESC, "postDate"));
         return query;
