@@ -33,12 +33,18 @@ public class Job {
     private String jobUuid;
 
     @NotNull
-    @TextIndexed(weight=35)
+    @TextIndexed(weight=40)
     private String title;
 
+    @TextIndexed(weight=35)
+    private String titleForSearch;
+
     @NotNull
-    @TextIndexed(weight=25)
+    @TextIndexed(weight=30)
     private String companyName;
+
+    @TextIndexed(weight=25)
+    private String companyNameForSearch;
 
     private Location location;
 
@@ -64,6 +70,7 @@ public class Job {
     private Instant createdAt;
 
     @NotNull
+    @Indexed
     private boolean isActive;
 
 }

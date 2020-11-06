@@ -99,10 +99,10 @@ public class ServiceHelper {
         throw new ServiceException(errMsg, ex);
     }
 
-    public void handleError(ILogger log, Exception ex, String errMsg) {
-        log.error(errMsg, ex);
+    public void handleError(ILogger log, Throwable throwable, String errMsg) {
+        log.error(errMsg, throwable);
         if (!envConfig.isDebug()) {
-            sentryClient.sendException(ex);
+            sentryClient.sendException(throwable);
         }
     }
 }

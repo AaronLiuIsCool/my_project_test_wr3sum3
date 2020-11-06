@@ -9,6 +9,7 @@
   z-index: 1;
 }
 
+
 .container {
   left: -80px;
   opacity: 0;
@@ -113,5 +114,10 @@
 
   100% {
     left: 0;
+  }
+}
+@media screen and (max-width: 1440px) {
+  .container {
+    margin-left: 800px;
   }
 }
