@@ -58,6 +58,7 @@
     "build:ci": "CI=true react-scripts build",
     "test": "REACT_APP_ENV=test react-scripts test",
     "test:nowatch": "REACT_APP_ENV=test CI=true react-scripts test",
+    "test:debug": "react-scripts --inspect-brk test --runInBand --no-cache",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

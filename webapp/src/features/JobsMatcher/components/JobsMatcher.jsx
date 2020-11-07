@@ -1,12 +1,13 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { getLogger } from 'shell/logger';
 import ResumeServices from 'shell/services/ResumeServices';
 import MatchingServices from 'shell/services/MatchingServices';
 import { I8nContext } from 'shell/i18n';
 import { selectLanguage, selectUserId } from 'features/App/slicer';
+import { setBookmarkedList } from 'features/JobsMatcher/slicer';
 
 import JobRefinementModal from './Jobs/JobRefinementModal';
 import SearchHeader from './SearchHeader';
@@ -63,6 +64,7 @@ const JobMatcher = ({ resume }) => {
     const language = useSelector(selectLanguage);
     const messages = language === 'zh' ? zh : en;
 
+    const dispatch = useDispatch();
     const userId = useSelector(selectUserId);
     const [searchResults, setSearchResults] = useState({});
     const [resultsPageNumber, setResultsPageNumber] = useState(0);
@@ -109,6 +111,12 @@ const JobMatcher = ({ resume }) => {
             const city = getCity(resumeDto);
             handleSearch(query, country, city);
             setReady(true);
+        });
+        matchingServices.findBookMarkJobs(resume).then((bookmarkedJobs) => {
+            if (bookmarkedJobs?.success) {
+                const jobs = bookmarkedJobs?.jobList?.jobs?.map(job => job.jobUuid) || [];
+                dispatch(setBookmarkedList(jobs));
+            }
         });
     }, []); // eslint-disable-line
 

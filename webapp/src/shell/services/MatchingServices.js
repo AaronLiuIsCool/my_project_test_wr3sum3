@@ -54,6 +54,14 @@ export default class MatchingServices extends BaseServices {
     }
   }
 
+  async unbookmarkJob(resumeId, jobId) {
+    try {
+      return await this.delete(`v1/matching/resumes/bookmark?jobUuid=${jobId}&resumeUuid=${resumeId}`);
+    } catch (err) {
+      logger.error(err);
+    }
+  }
+
   async findBookMarkJobs(resumeId) {
     try {
       const res = await this.get(`v1/matching/jobs/bookmarked?resumeUuid=${resumeId}`);

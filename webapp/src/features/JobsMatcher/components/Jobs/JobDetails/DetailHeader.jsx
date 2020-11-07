@@ -1,4 +1,5 @@
 import React, { useEffect, useState }  from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Button from 'react-bootstrap/Button';
 import { ReactComponent as BookmarkIconEmpty } from '../../../assets/bookmark.svg';
@@ -8,6 +9,7 @@ import { ReactComponent as BookmarkIconFilled } from '../../../assets/bookmarked
 import { timeSince } from '../../../utils/time';
 import { useI8n } from 'shell/i18n';
 import MatchingServices from 'shell/services/MatchingServices';
+import { selectBookmarkedJobs, addBookmark, removeBookmark } from 'features/JobsMatcher/slicer';
 
 import styles from '../../../styles/JobDetails.module.css';
 
@@ -21,16 +23,29 @@ const BookmarkIcon = ({ bookmarked = false }) => {
 }
 
 const DetailHeader = ({ resumeId, data }) => {
+    const dispatch = useDispatch();
+    const bookmarkedJobs = useSelector(selectBookmarkedJobs);
     const [bookmarked, bookmarkJob] = useState(false);
     const messages = useI8n();
-    
+
     useEffect(() => {
-        // TODO: check if this job has been bookmarked
-    }, [data]);
+        bookmarkJob(bookmarkedJobs.indexOf(data?.uuid) > -1)
+    }, [data, bookmarkedJobs]);
 
     const handleBookmark = async () => {
-        const response = await matchingServices.bookmarkJob(resumeId, data?.uuid);
+        const jobUuid = data?.uuid;
+        
+        if (!jobUuid) {
+            return;
+        }
+
+        const response = bookmarked ? 
+            await matchingServices.unbookmarkJob(resumeId, jobUuid) :
+            await matchingServices.bookmarkJob(resumeId, jobUuid);;
+
         if (response?.success === true) {
+            dispatch(bookmarked ? 
+                removeBookmark(jobUuid) : addBookmark(jobUuid));
             bookmarkJob(!bookmarked);
         }
     }
