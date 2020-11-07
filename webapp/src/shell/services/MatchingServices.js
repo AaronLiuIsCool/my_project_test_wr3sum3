@@ -48,8 +48,7 @@ export default class MatchingServices extends BaseServices {
 
   async bookmarkJob(resumeId, jobId) {
     try {
-      const response = await this.post(`v1/matching/resumes/bookmark?jobUuid=${jobId}&resumeUuid=${resumeId}`)
-      return await response.json();
+      return await this.post(`v1/matching/resumes/bookmark?jobUuid=${jobId}&resumeUuid=${resumeId}`);
     } catch (err) {
       logger.error(err);
     }

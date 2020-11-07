@@ -18,8 +18,7 @@ export default class ResumeServices extends BaseServices {
 
     async getResume(resumeId) {
         try {
-            const response = await this.get(`v1/resumes/${resumeId}`);
-            return await response.json();
+            return await this.get(`v1/resumes/${resumeId}`);
         } catch (exception) {
             logger.error(exception);
         }
@@ -173,9 +172,8 @@ export default class ResumeServices extends BaseServices {
     async getSuggestions(industry, title) {
         let suggestions = [];
         try {
-            const res = await fetch(`/v1/get_suggestions_by_industry_position?industry=${industry}&limit=50&offset=0&position=${title}`);
-            const data = await res.json();
-            suggestions = data.suggestions;
+            const data = await fetch(`/v1/get_suggestions_by_industry_position?industry=${industry}&limit=50&offset=0&position=${title}`);
+            suggestions = data?.suggestions;
         } catch (error) {
             logger.error(error);
         } finally {
@@ -198,7 +196,7 @@ export default class ResumeServices extends BaseServices {
             logger.error(error);
         }
     }
-    
+
     async removeWork(workId, resumeId) {
         try {
             return await this.delete(`v1/work-experiences/${workId}?resumeId=${resumeId}`);
@@ -206,7 +204,7 @@ export default class ResumeServices extends BaseServices {
             logger.error(error);
         }
     }
-    
+
     async removeProject(projectId, resumeId) {
         try {
             return await this.delete(`v1/project-experiences/${projectId}?resumeId=${resumeId}`);
@@ -214,7 +212,7 @@ export default class ResumeServices extends BaseServices {
             logger.error(error);
         }
     }
-    
+
     async removeCertificate(certificateId, resumeId) {
         try {
             return await this.delete(`v1/certificates/${certificateId}?resumeId=${resumeId}`);

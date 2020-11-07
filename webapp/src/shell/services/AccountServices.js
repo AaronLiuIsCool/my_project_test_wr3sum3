@@ -12,8 +12,7 @@ export default class AccountServices extends BaseServices {
 
   async getAccountInfo(userId) {
     try {
-      const response = await this.get(`v1/account/get?userId=${userId}`);
-      return await response.json();
+      return await this.get(`v1/account/get?userId=${userId}`);
     } catch (err) {
       logger.error(err);
     }

@@ -27,13 +27,10 @@ const JRRenameResume = ({jobId}) => {
 		// todo: save resume name
 		const queryParams = new URLSearchParams(history.location.search);
 		let resumeId = queryParams.get('resume');
+		
 		// create a new resume 
-		let response = await resumeServices.getResume(resumeId);
-		const resumeData = await response.json();
-
-
-		response = await resumeServices.createResume(resumeData);
-		const data = await response.json();
+		const resumeData = await resumeServices.getResume(resumeId);
+		const data = await resumeServices.createResume(resumeData);
 
 		if (data.success === false) {
 			logger.error(data.message);

@@ -76,11 +76,9 @@ const VolunteerForm = ({ data, index, isLast = false, messages, volunteerData })
 		previewResume(messages.RPreview);
 		let id = data.id;
 		try {
-			const response =
-				id === undefined
-					? await resumeServices.createVolunteer(resumeId, adaptVolunteer(data))
-					: await resumeServices.updateVolunteer(data.id, adaptVolunteer(data));
-			const responseJson = await response.json();
+			const responseJson = id === undefined ?
+					await resumeServices.createVolunteer(resumeId, adaptVolunteer(data)) :
+					await resumeServices.updateVolunteer(data.id, adaptVolunteer(data));
 			id = id || responseJson.id;
 		} catch (exception) {
 			logger.error(exception);
@@ -92,13 +90,7 @@ const VolunteerForm = ({ data, index, isLast = false, messages, volunteerData })
 
     const handleProjectFormRating = async () => {
         
-        const response = await resumeServices.getRatings(resumeId);
-
-        // TODO: uncomment this
-        const { volunteerExperiences } = await response.json();
-        
-        // todo delete this afterwards
-        // const { volunteerExperiences } = response;
+        const { volunteerExperiences } = await resumeServices.getRatings(resumeId);
         const layoutRating = generateLayoutRating(wholePageCheck(messages.RPreview), messages)
         dispatch(actions.updateLayoutRating(layoutRating))
         const {

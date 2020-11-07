@@ -22,7 +22,7 @@ const BasicFormWithProvider = (props) => (
 describe('BasicForm form', () => {
   test('should render successfully with input', () => {
     const wrapper = mount(
-      <BasicFormWithProvider data={{}} messages={{}} index={0} />
+      <BasicFormWithProvider data={{}} messages={{}} index={0} completed={false} />
     );
     expect(wrapper.find('Form').length).toEqual(1);
   });
@@ -45,7 +45,7 @@ describe('BasicForm form', () => {
   test('It should render <Summary /> after click', () => {
     const data = {};
     const wrapper = mount(
-      <BasicFormWithProvider data={data} messages={{}} index={0} />
+      <BasicFormWithProvider data={data} messages={{}} index={0} completed={false} />
     );
     const btn = wrapper.find('.toggle-up-arrow');
     btn.simulate('click');
@@ -63,7 +63,7 @@ describe('BasicForm form', () => {
       weblink: 'http://www.google.ca',
     };
     const tree = renderer
-      .create(<BasicFormWithProvider data={data} messages={{}} index={0} />)
+      .create(<BasicFormWithProvider data={data} messages={{}} index={0} completed={false} />)
       .toJSON();
     expect(tree).toMatchSnapshot();
   });

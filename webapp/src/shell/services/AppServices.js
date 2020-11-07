@@ -37,9 +37,7 @@ export default class AppServices extends BaseServices {
 
     async resumeSDKUpload(data) {
         try {
-            const resp = await this.post('v1/resumeSDK/upload', data);
-            const response = await resp.json();
-            return response;
+            return await this.post('v1/resumeSDK/upload', data);
         } catch (exception) {
             logger.error(exception);
         }

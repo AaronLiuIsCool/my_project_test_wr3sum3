@@ -33,10 +33,7 @@ const logger = getLogger('App');
 async function isAuthenticated(dispatch) {
   let authInfo = {};
   try {
-    const response = await authServices.findWhoAmI();
-    if (response) {
-      authInfo = await response.json();
-    }
+    authInfo = await authServices.findWhoAmI();
   } catch (exception) {
     logger.error(exception);
   } finally {

@@ -22,8 +22,7 @@ const resumeServices = new ResumeServices();
 async function getResumeMatchingInfo(resumeId) {
     let resumeDto = {};
     try {
-        const response = await resumeServices.getResumeMatchingInfo(resumeId);
-        resumeDto = await response.json();
+        resumeDto = await resumeServices.getResumeMatchingInfo(resumeId);
     } catch (exception) {
         logger.error(exception)
     } finally {
@@ -78,8 +77,7 @@ const JobMatcher = ({ resume }) => {
 
     const search = async (query, country, city, pageNumber) => {
         try {
-            const response = await findMatchingJobs(query, country, city, pageNumber);
-            const data = await response.json();
+            const data = await findMatchingJobs(query, country, city, pageNumber);
             const jobList = data.success ? data.jobList : {};
             setSearchResults(jobList);
         } catch (exception) {
