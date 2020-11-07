@@ -23,7 +23,6 @@ describe('Project form', () => {
     const wrapper = mount(
       <ProjectFormWithProvider data={{}} messages={{}} index={0} />
     );
-    // console.log(wrapper.debug());
     expect(wrapper.find('Form').length).toEqual(1);
   });
 

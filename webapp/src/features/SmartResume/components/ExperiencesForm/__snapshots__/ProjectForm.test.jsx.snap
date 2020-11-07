@@ -40,6 +40,7 @@ exports[`Project form It should match snapshot 1`] = `
             className="form-control"
             id="project-name"
             onChange={[Function]}
+            placeholder=""
             type="text"
           />
         </div>
@@ -84,6 +85,7 @@ exports[`Project form It should match snapshot 1`] = `
             className="form-control"
             id="project-company"
             onChange={[Function]}
+            placeholder=""
             type="text"
           />
         </div>

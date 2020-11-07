@@ -58,7 +58,6 @@ const WorkForm = ({ data, index, isLast = false, messages, workData }) => {
 	const [showSummary, setShowSummary] = useState(false);
 	const dispatch = useDispatch();
 	const toggleShowSummary = () => {
-		console.log('I got called!')
 		setShowSummary(!showSummary);
 	};
 	const save = async () => {
