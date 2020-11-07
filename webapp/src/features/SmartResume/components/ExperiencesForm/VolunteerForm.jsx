@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Summary } from '../Summary';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
@@ -51,6 +52,24 @@ const VolunteerForm = ({ data, index, isLast = false, messages, volunteerData })
 		volunteerCountry: {},
 		volunteerDescription: {},
 	});
+	const didMount = useRef(false);
+	const [showSummary, setShowSummary] = useState(false);
+	const toggleShowSummary = () => {
+		setShowSummary(!showSummary);
+	};
+	const handleDelete = (id) => {
+		resumeServices.removeProject(id, resumeId)
+		dispatch(actions.removeProject({index}))
+	};
+	useEffect(() => {
+		if(data.id && !didMount.current) {
+			setShowSummary(true)
+			didMount.current = true
+		}
+	}, [data])
+	useEffect(() => {
+		updateCityOptions(data.projectCountry, setCityOptions)
+	}, [data.projectCountry])
 	const dispatch = useDispatch();
   const [cityOptions, setCityOptions] = useState([]);
 	const save = async () => {
@@ -98,6 +117,7 @@ const VolunteerForm = ({ data, index, isLast = false, messages, volunteerData })
 			setValidated(false);
 			return;
 		}
+		toggleShowSummary();
 		setValidated(true);
         dispatch(actions.completeVolunteer());
         await save();
@@ -175,143 +195,170 @@ const VolunteerForm = ({ data, index, isLast = false, messages, volunteerData })
 	});
 
 	return (
-		<Form validated={validated} onSubmit={handleSubmit}>
-			<Row>
-				<Col>
-					<h2 className="form_h2">{messages.enterNewExperience}</h2>
-				</Col>
-			</Row>
-			<Row>
-				<Col lg="4">
-					<InputGroup
-						label={messages.participateRole}
-						id="volunteer-name"
-						placeholder={messages.enterParticipateRole}
-						value={data.volunteerRole}
-						onChange={handleVolunteerRoleChange}
-						feedbackMessage={messages.entryIsInvalid}
-						isValid={status.volunteerRole.isValid}
-						isInvalid={status.volunteerRole.isInvalid}
-					/>
-				</Col>
-				<Col lg="2">
-					<RadioButtonGroup
-						label={messages.endOrNot}
-						id="volunteer-currentVolunteerFlag"
-						values={[
-							{ label: messages.yes, value: true },
-							{ label: messages.no, value: false },
-						]}
-						value={data.currentVolunteerFlag}
-						onClickHandler={handleCurrentVolunteerFlagChange}
-						feedbackMessage={messages.entryIsInvalid}
-                        isInvalid={status.currentVolunteerFlag.isInvalid}
-                        isValid={status.currentVolunteerFlag.isValid}
-					/>
-				</Col>
-				<Col>
-					<InputGroup
-						label={messages.companyName}
-						id="volunteer-company"
-						placeholder={messages.enterCompanyName}
-						value={data.volunteerCompanyName}
-                        onChange={handleVolunteerCompanyNameChange}
-                        isValid={status.volunteerCompanyName.isValid}
-						isInvalid={status.volunteerCompanyName.isInvalid}
-					/>
-				</Col>
-			</Row>
-			<Row>
-				<Col>
-					<SingleDatePicker
-						label={messages.volunteerStartDate}
-						id="volunteer-enter-date"
-						placeholder={messages.yymmdd}
-						value={data.volunteerStartDate}
-						monthFormat={messages.monthFormat}
-						displayFormat={messages.dateDisplayFormat}
-						onDateChange={handleVolunteerStartDateChange}
-						feedbackMessage={messages.entryIsInvalid}
-						isValid={status.volunteerStartDate.isValid}
-						isInvalid={status.volunteerStartDate.isInvalid}
-					/>
-				</Col>
-				{data.currentVolunteerFlag && (
-					<Col>
-						<SingleDatePicker
-							label={messages.volunteerEndDate}
-							id="volunteer-graduate-date"
-							placeholder={messages.yymmdd}
-							value={data.volunteerEndDate}
-							monthFormat={messages.monthFormat}
-							displayFormat={messages.dateDisplayFormat}
-							onDateChange={handleVolunteerEndDateChange}
-							feedbackMessage={messages.entryIsInvalid}
-							isValid={status.volunteerEndDate.isValid}
-							isInvalid={status.volunteerEndDate.isInvalid}
-						/>
-					</Col>
-				)}
-        <Col>
-          <DropdownGroup
-              label={messages.country}
-              id="volunteer-country"
-              placeholder={messages.experienceCountry}
-              options={countryOptions}
-              value={data.volunteerCountry}
-              onChange={handleCountryChange}
-              feedbackMessage={messages.entryIsInvalid}
-              isValid={status.volunteerCountry.isValid}
-              isInvalid={status.volunteerCountry.isInvalid}
-					/>
-				</Col>
-				<Col>
-					<DropdownGroup
-						label={messages.city}
-						id="volunteer-city"
-						placeholder={messages.experienceCity}
-						options={cityOptions}
-						value={data.volunteerCity}
-						onChange={handleCityChange}
-						feedbackMessage={messages.entryIsInvalid}
-						isValid={status.volunteerCity.isValid}
-						isInvalid={status.volunteerCity.isInvalid}
-					/>
-				</Col>
-			</Row>
-			<Row>
-				<Col lg="12">
-					{/*todo: replace with rich text editor */}
-					<div className={assistantContainerClassNames}>
-                        <DraftEditor 
-                            feedbackMessage={messages.entryIsInvalid}
-                            isValid={status.volunteerDescription.isValid}
-                            isInvalid={status.volunteerDescription.isInvalid}
-                            label={messages.volunteerDetailsDescription}
-                            handleChangeCallback={handleVolunteerDescriptionEditorChange}
-                            texts={data.volunteerDescription} 
-                            eventName={`volunteer-${index}`}
-                        /> 
-						<span className="writeAssistant">
-							<WrittenAssistIcon />
-							<Button variant="link" onClick={handleAssistantClick}>
-								{messages.writeAssistant}
-							</Button>
-						</span>
-					</div>
-				</Col>
-			</Row>
-			<Row className="form_buttons">
-				<Col className="space_betweens">
-					{/* just a placeholder so we do need to change the css */}
-					<p className="hidden"></p>
-					<Button variant="primary" type="submit">
-						{messages.save}
-					</Button>
-				</Col>
-			</Row>
-		</Form>
-	);
+    <div className="form_body">
+      {showSummary ? (
+        <Summary
+          type={'ProjectInfo'}
+          handleClickCallback={toggleShowSummary}
+          roleName={data.volunteerRole}
+          startDate={data.volunteerStartDate}
+          endDate={data.volunteerEndDate}
+          companyName={data.volunteerCompanyName}
+          currentFlag={data.currentVolunteerFlag}
+        />
+      ) : (
+        <Form validated={validated} onSubmit={handleSubmit}>
+					<Row className="flexie">
+						<Col>
+							<h2 className="form_h2">{messages.enterNewExperience}</h2>
+						</Col>
+						<div className="toggle-up-arrow" onClick={toggleShowSummary}>
+							{data.id && <img src={require('../../assets/arrow-up.svg')} alt="up-arrow" />}
+						</div>
+          </Row>
+          <Row>
+            <Col lg="4">
+              <InputGroup
+                label={messages.participateRole}
+                id="volunteer-name"
+                placeholder={messages.enterParticipateRole}
+                value={data.volunteerRole}
+                onChange={handleVolunteerRoleChange}
+                feedbackMessage={messages.entryIsInvalid}
+                isValid={status.volunteerRole.isValid}
+                isInvalid={status.volunteerRole.isInvalid}
+              />
+            </Col>
+            <Col lg="2">
+              <RadioButtonGroup
+                label={messages.endOrNot}
+                id="volunteer-currentVolunteerFlag"
+                values={[
+                  { label: messages.yes, value: true },
+                  { label: messages.no, value: false },
+                ]}
+                value={data.currentVolunteerFlag}
+                onClickHandler={handleCurrentVolunteerFlagChange}
+                feedbackMessage={messages.entryIsInvalid}
+                isInvalid={status.currentVolunteerFlag.isInvalid}
+                isValid={status.currentVolunteerFlag.isValid}
+              />
+            </Col>
+            <Col>
+              <InputGroup
+                label={messages.companyName}
+                id="volunteer-company"
+                placeholder={messages.enterCompanyName}
+                value={data.volunteerCompanyName}
+                onChange={handleVolunteerCompanyNameChange}
+                isValid={status.volunteerCompanyName.isValid}
+                isInvalid={status.volunteerCompanyName.isInvalid}
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <SingleDatePicker
+                label={messages.volunteerStartDate}
+                id="volunteer-enter-date"
+                placeholder={messages.yymmdd}
+                value={data.volunteerStartDate}
+                monthFormat={messages.monthFormat}
+                displayFormat={messages.dateDisplayFormat}
+                onDateChange={handleVolunteerStartDateChange}
+                feedbackMessage={messages.entryIsInvalid}
+                isValid={status.volunteerStartDate.isValid}
+                isInvalid={status.volunteerStartDate.isInvalid}
+              />
+            </Col>
+            {data.currentVolunteerFlag && (
+              <Col>
+                <SingleDatePicker
+                  label={messages.volunteerEndDate}
+                  id="volunteer-graduate-date"
+                  placeholder={messages.yymmdd}
+                  value={data.volunteerEndDate}
+                  monthFormat={messages.monthFormat}
+                  displayFormat={messages.dateDisplayFormat}
+                  onDateChange={handleVolunteerEndDateChange}
+                  feedbackMessage={messages.entryIsInvalid}
+                  isValid={status.volunteerEndDate.isValid}
+                  isInvalid={status.volunteerEndDate.isInvalid}
+                />
+              </Col>
+            )}
+            <Col>
+              <DropdownGroup
+                label={messages.country}
+                id="volunteer-country"
+                placeholder={messages.experienceCountry}
+                options={countryOptions}
+                value={data.volunteerCountry}
+                onChange={handleCountryChange}
+                feedbackMessage={messages.entryIsInvalid}
+                isValid={status.volunteerCountry.isValid}
+                isInvalid={status.volunteerCountry.isInvalid}
+              />
+            </Col>
+            <Col>
+              <DropdownGroup
+                label={messages.city}
+                id="volunteer-city"
+                placeholder={messages.experienceCity}
+                options={cityOptions}
+                value={data.volunteerCity}
+                onChange={handleCityChange}
+                feedbackMessage={messages.entryIsInvalid}
+                isValid={status.volunteerCity.isValid}
+                isInvalid={status.volunteerCity.isInvalid}
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col lg="12">
+              {/*todo: replace with rich text editor */}
+              <div className={assistantContainerClassNames}>
+                <DraftEditor
+                  feedbackMessage={messages.entryIsInvalid}
+                  isValid={status.volunteerDescription.isValid}
+                  isInvalid={status.volunteerDescription.isInvalid}
+                  label={messages.volunteerDetailsDescription}
+                  handleChangeCallback={handleVolunteerDescriptionEditorChange}
+                  texts={data.volunteerDescription}
+                  eventName={`volunteer-${index}`}
+                />
+                <span className="writeAssistant">
+                  <WrittenAssistIcon />
+                  <Button variant="link" onClick={handleAssistantClick}>
+                    {messages.writeAssistant}
+                  </Button>
+                </span>
+              </div>
+            </Col>
+          </Row>
+          <Row className="form_buttons">
+						<Col className="flex-end">
+              {/* just a placeholder so we do need to change the css */}
+              {data.id && (
+                <Button
+                  onClick={() => {
+                    handleDelete(data.id);
+                  }}
+                  variant="light"
+                  className="remove-btn"
+                >
+                  {messages.delete}
+                </Button>
+              )}
+              <Button variant="primary" type="submit">
+                {messages.save}
+              </Button>
+            </Col>
+          </Row>
+        </Form>
+      )}
+    </div>
+  );
 };
 
 VolunteerForm.propTypes = {

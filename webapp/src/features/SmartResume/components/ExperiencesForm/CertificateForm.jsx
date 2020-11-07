@@ -106,7 +106,9 @@ const CertificateForm = ({ data, index, isLast = false, messages, certData = [] 
 		if(data.id && !didMount.current) {
 			setShowSummary(true)
 			didMount.current = true
-		}
+		} else if (!data.id && didMount.current) {
+      setShowSummary(false)
+    }
 	}, [data])
 
 	return (
@@ -118,7 +120,7 @@ const CertificateForm = ({ data, index, isLast = false, messages, certData = [] 
           roleName={data.certificateName}
           startDate={data.certificateIssuedDate}
           endDate={data.certificateEndDate}
-          currentFlag={data.validCertificateFlag}
+          currentFlag={!data.validCertificateFlag}
         />
       ) : (
         <Form validated={validated} onSubmit={handleSubmit}>

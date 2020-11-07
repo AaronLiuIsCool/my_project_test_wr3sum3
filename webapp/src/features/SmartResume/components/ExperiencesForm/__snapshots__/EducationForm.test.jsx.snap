@@ -1,0 +1,54 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EducationForm form It should match snapshot 1`] = `
+<div
+  className="form_body"
+>
+  <div
+    className="flexie collapsed-section row"
+  >
+    <div
+      className="left-section"
+    >
+      <h3>
+        ASD
+      </h3>
+      <div
+        className="lower-row"
+      >
+        <span
+          className="blue"
+        >
+          asdasd
+           | 
+          dsa
+        </span>
+        <span>
+          2020-09-10
+           -
+           
+          2020-09-11
+        </span>
+      </div>
+    </div>
+    <div
+      className="toggle-up-arrow"
+      onClick={[Function]}
+    >
+      <img
+        alt="arrow-down"
+        src={
+          Object {
+            "ReactComponent": Object {
+              "$$typeof": Symbol(react.forward_ref),
+              "render": [Function],
+            },
+            "__esModule": true,
+            "default": "arrow-down.svg",
+          }
+        }
+      />
+    </div>
+  </div>
+</div>
+`;

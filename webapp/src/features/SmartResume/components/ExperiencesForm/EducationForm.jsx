@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col, Form } from 'react-bootstrap';
@@ -23,6 +23,8 @@ import countryOptions from 'data/country.json';
 import { previewResume, wholePageCheck } from '../ResumePreview/resumeBuilder';
 import { dispatchUpdates, generateEducationRating, generateLayoutRating, updateCityOptions } from '../../utils/resume';
 
+import { Summary } from '../Summary';
+
 const logger = getLogger('EducationForm');
 const resumeServices = new ResumeServices();
 const fields = [
@@ -38,6 +40,8 @@ const fields = [
     'otherAward'
 ];
 const EducationForm = ({ data, index, isLast = false, messages }) => {
+    const [showSummary, setShowSummary] = useState(false);
+    const didMount = useRef(false);
     const resumeId = useSelector(selectId);
     const [validated, setValidated] = useState(false);
     const [cityOptions, setCityOptions] = useState([])
@@ -54,7 +58,9 @@ const EducationForm = ({ data, index, isLast = false, messages }) => {
         otherAward: {}
     });
     const dispatch = useDispatch();
-
+    const toggleShowSummary = () => {
+      setShowSummary(!showSummary);
+    };
 	const save = async () => {
 		previewResume(messages.RPreview);
         let id = data.id;
@@ -79,6 +85,7 @@ const EducationForm = ({ data, index, isLast = false, messages }) => {
             setValidated(false);
             return;
         }
+        toggleShowSummary();
         setValidated(true);
         dispatch(actions.completeEducation());
         await save();
@@ -145,95 +152,219 @@ const EducationForm = ({ data, index, isLast = false, messages }) => {
             details: educationRating
         }))
     }
-    
+    const handleDelete = (id) => {
+        resumeServices.removeEducation(id, resumeId)
+        dispatch(actions.removeEducation({index}))
+    };
+    useEffect(() => {
+      if (data.id && !didMount.current) {
+        setShowSummary(true);
+        didMount.current = true;
+      } else if (!data.id && didMount.current) {
+        setShowSummary(false)
+      }
+    }, [data]);
+    useEffect(() => {
+        updateCityOptions(data.country, setCityOptions)
+    }, [data.country])
     return (
-        <Form validated={validated} onSubmit={handleSubmit} className={`edu-${index}`}>
-            <Row>
-                <Col>
-                    <h2 className="form_h2">{messages.enterSchoolInfo}</h2>
-                </Col>
+      <div className="form_body">
+        {showSummary ? (
+          <Summary
+            type={'EducationInfo'}
+            handleClickCallback={toggleShowSummary}
+            schoolName={data.schoolName}
+            enterSchoolDate={data.startDate}
+            graduateDate={data.graduateDate}
+            major={data.major}
+            degree={data.degree}
+          />
+        ) : (
+          <Form
+            validated={validated}
+            onSubmit={handleSubmit}
+            className={`edu-${index}`}
+          >
+            <Row className="flexie">
+              <Col>
+                <h2 className="form_h2">{messages.enterSchoolInfo}</h2>
+              </Col>
+              <div className="toggle-up-arrow" onClick={toggleShowSummary}>
+                {data.id && <img src={require('../../assets/arrow-up.svg')} alt="up-arrow" />}
+              </div>
             </Row>
             <Row>
-                <Col lg="4">
-                    <DropdownGroup label={messages.schoolName} id="education-school" placeholder={messages.enterSchoolName}
-                        options={univOptions} value={data.schoolName}
-                        onChange={handleSchoolChange} feedbackMessage={messages.entryIsInvalid}
-                        isValid={status.schoolName.isValid} isInvalid={status.schoolName.isInvalid} />
-                </Col>
-                <Col lg="2">
-                    <InputGroup label={messages.graduateGPA} id="education-gpa"
-                        placeholder="4.0?" value={data.gpa}
-                        onChange={handleGPAChange} feedbackMessage={messages.entryIsInvalid}
-                        isValid={status.gpa.isValid} isInvalid={status.gpa.isInvalid} />
-                </Col>
-                <Col>
-                    <SingleDatePicker label={messages.enterSchoolDate} id="education-enter-date"
-                        placeholder={messages.yymmdd} value={data.startDate}
-                        monthFormat={messages.monthFormat} displayFormat={messages.dateDisplayFormat}
-                        onDateChange={handleSchoolStartDateChange} feedbackMessage={messages.entryIsInvalid}
-                        isValid={status.startDate.isValid} isInvalid={status.startDate.isInvalid} />
-                </Col>
-                <Col>
-                    <SingleDatePicker label={messages.graduateDate} id="education-graduate-date"
-                        placeholder={messages.yymmdd} value={data.graduateDate}
-                        monthFormat={messages.monthFormat} displayFormat={messages.dateDisplayFormat}
-                        onDateChange={handleGradDateChange} feedbackMessage={messages.entryIsInvalid}
-                        isValid={status.graduateDate.isValid} isInvalid={status.graduateDate.isInvalid} />
-                </Col>
+              <Col lg="4">
+                <DropdownGroup
+                  label={messages.schoolName}
+                  id="education-school"
+                  placeholder={messages.enterSchoolName}
+                  options={univOptions}
+                  value={data.schoolName}
+                  onChange={handleSchoolChange}
+                  feedbackMessage={messages.entryIsInvalid}
+                  isValid={status.schoolName.isValid}
+                  isInvalid={status.schoolName.isInvalid}
+                />
+              </Col>
+              <Col lg="2">
+                <InputGroup
+                  label={messages.graduateGPA}
+                  id="education-gpa"
+                  placeholder="4.0?"
+                  value={data.gpa}
+                  onChange={handleGPAChange}
+                  feedbackMessage={messages.entryIsInvalid}
+                  isValid={status.gpa.isValid}
+                  isInvalid={status.gpa.isInvalid}
+                />
+              </Col>
+              <Col>
+                <SingleDatePicker
+                  label={messages.enterSchoolDate}
+                  id="education-enter-date"
+                  placeholder={messages.yymmdd}
+                  value={data.startDate}
+                  monthFormat={messages.monthFormat}
+                  displayFormat={messages.dateDisplayFormat}
+                  onDateChange={handleSchoolStartDateChange}
+                  feedbackMessage={messages.entryIsInvalid}
+                  isValid={status.startDate.isValid}
+                  isInvalid={status.startDate.isInvalid}
+                />
+              </Col>
+              <Col>
+                <SingleDatePicker
+                  label={messages.graduateDate}
+                  id="education-graduate-date"
+                  placeholder={messages.yymmdd}
+                  value={data.graduateDate}
+                  monthFormat={messages.monthFormat}
+                  displayFormat={messages.dateDisplayFormat}
+                  onDateChange={handleGradDateChange}
+                  feedbackMessage={messages.entryIsInvalid}
+                  isValid={status.graduateDate.isValid}
+                  isInvalid={status.graduateDate.isInvalid}
+                />
+              </Col>
             </Row>
 
             <Row>
-                <Col>
-                    <DropdownGroup label={messages.major} id="education-major" placeholder={messages.enterMajor}
-                         options={majorOptions} value={data.major}
-                        onChange={handleMajorChange} feedbackMessage={messages.entryIsInvalid}
-                        isValid={status.major.isValid} isInvalid={status.major.isInvalid} />
-                </Col>
-                <Col>
-                    <DropdownGroup label={messages.degree} id="education-degree" placeholder={messages.enterDegree}
-                        options={degreeOptions} value={data.degree}
-                        onChange={handleDegreeChange} feedbackMessage={messages.entryIsInvalid}
-                        isValid={status.degree.isValid} isInvalid={status.degree.isInvalid} />
-                </Col>
-                <Col>
-                    <DropdownGroup label={messages.schoolCountry} id="education-school-country" placeholder={messages.schoolCountry}
-                            options={countryOptions} value={data.country}
-                            onChange={handleCountryChange} feedbackMessage={messages.entryIsInvalid}
-                            isValid={status.country.isValid} isInvalid={status.country.isInvalid} />
-                </Col>
-                <Col>
-                    <DropdownGroup label={messages.schoolCity} id="education-school-city" placeholder={messages.schoolCity}
-                        options={cityOptions} value={data.city}
-                        onChange={handleCityChange} feedbackMessage={messages.entryIsInvalid}
-                        isValid={status.city.isValid} isInvalid={status.city.isInvalid} />
-                </Col>
+              <Col>
+                <DropdownGroup
+                  label={messages.major}
+                  id="education-major"
+                  placeholder={messages.enterMajor}
+                  options={majorOptions}
+                  value={data.major}
+                  onChange={handleMajorChange}
+                  feedbackMessage={messages.entryIsInvalid}
+                  isValid={status.major.isValid}
+                  isInvalid={status.major.isInvalid}
+                />
+              </Col>
+              <Col>
+                <DropdownGroup
+                  label={messages.degree}
+                  id="education-degree"
+                  placeholder={messages.enterDegree}
+                  options={degreeOptions}
+                  value={data.degree}
+                  onChange={handleDegreeChange}
+                  feedbackMessage={messages.entryIsInvalid}
+                  isValid={status.degree.isValid}
+                  isInvalid={status.degree.isInvalid}
+                />
+              </Col>
+              <Col>
+                <DropdownGroup
+                  label={messages.schoolCountry}
+                  id="education-school-country"
+                  placeholder={messages.schoolCountry}
+                  options={countryOptions}
+                  value={data.country}
+                  onChange={handleCountryChange}
+                  feedbackMessage={messages.entryIsInvalid}
+                  isValid={status.country.isValid}
+                  isInvalid={status.country.isInvalid}
+                />
+              </Col>
+              <Col>
+                <DropdownGroup
+                  label={messages.schoolCity}
+                  id="education-school-city"
+                  placeholder={messages.schoolCity}
+                  options={cityOptions}
+                  value={data.city}
+                  onChange={handleCityChange}
+                  feedbackMessage={messages.entryIsInvalid}
+                  isValid={status.city.isValid}
+                  isInvalid={status.city.isInvalid}
+                />
+              </Col>
             </Row>
 
             <Row>
-                <Col>
-                    <InputGroup label={messages.highestAward} id="education-highest-award"
-                        placeholder={messages.enterHighestAward} value={data.highestAward}
-                        onChange={event => dispatch(actions.updateHighestAward({value: event.target.value, index}))}
-                        isValid={status.highestAward.isValid} isInvalid={status.highestAward.isInvalid} />
-                </Col>
-                <Col>
-                    <InputGroup label={messages.otherAward} id="education-other-award"
-                        placeholder={messages.enterOtherAward} value={data.otherAward}
-                        onChange={event => dispatch(actions.updateOtherAward({value: event.target.value, index}))}
-                        isValid={status.otherAward.isValid} isInvalid={status.otherAward.isInvalid} />
-                </Col>
+              <Col>
+                <InputGroup
+                  label={messages.highestAward}
+                  id="education-highest-award"
+                  placeholder={messages.enterHighestAward}
+                  value={data.highestAward}
+                  onChange={(event) =>
+                    dispatch(
+                      actions.updateHighestAward({
+                        value: event.target.value,
+                        index,
+                      })
+                    )
+                  }
+                  isValid={status.highestAward.isValid}
+                  isInvalid={status.highestAward.isInvalid}
+                />
+              </Col>
+              <Col>
+                <InputGroup
+                  label={messages.otherAward}
+                  id="education-other-award"
+                  placeholder={messages.enterOtherAward}
+                  value={data.otherAward}
+                  onChange={(event) =>
+                    dispatch(
+                      actions.updateOtherAward({
+                        value: event.target.value,
+                        index,
+                      })
+                    )
+                  }
+                  isValid={status.otherAward.isValid}
+                  isInvalid={status.otherAward.isInvalid}
+                />
+              </Col>
             </Row>
             <Row className="form_buttons">
-                <Col className="space_betweens">
-                    {/* just a placeholder so we do need to change the css */}
-                    <p className="hidden"></p>
-                    <Button variant="primary" type="submit">
-                        {messages.save}
-                    </Button>
-                </Col>
+              <Col className="flex-end">
+                {/* just a placeholder so we do need to change the css */}
+                {data.id && (
+                  <Button
+                    onClick={() => {
+                      handleDelete(data.id);
+                    }}
+                    variant="light"
+                    className="remove-btn"
+                  >
+                    {messages.delete}
+                  </Button>
+                )}
+                <Button variant="primary" type="submit">
+                  {messages.save}
+                </Button>
+              </Col>
             </Row>
-        </Form>
-    )
+          </Form>
+        )}
+      </div>
+    );
 };
 
 EducationForm.propTypes = {

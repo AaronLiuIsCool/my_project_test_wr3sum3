@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Summary } from '../Summary';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
@@ -51,7 +52,12 @@ const ProjectForm = ({ data, index, isLast = false, messages, projectData }) => 
 		projectCity: {},
 		projectCountry: {},
 	});
+	const didMount = useRef(false);
+	const [showSummary, setShowSummary] = useState(false);
 	const dispatch = useDispatch();
+	const toggleShowSummary = () => {
+		setShowSummary(!showSummary);
+	};
   const [cityOptions, setCityOptions] = useState([]);
 	const save = async () => {
 		previewResume(messages.RPreview);
@@ -97,6 +103,7 @@ const ProjectForm = ({ data, index, isLast = false, messages, projectData }) => 
 			setValidated(false);
 			return;
 		}
+		toggleShowSummary();
 		setValidated(true);
         dispatch(actions.completeProject());
         await save();
@@ -173,142 +180,184 @@ const ProjectForm = ({ data, index, isLast = false, messages, projectData }) => 
 		writeAssistantContainer: true,
 		active: showAssistant && trigger === 'project',
 	});
+	const handleDelete = (id) => {
+		resumeServices.removeProject(id, resumeId)
+		dispatch(actions.removeProject({index}))
+	};
+	useEffect(() => {
+		if (data.id && !didMount.current) {
+      setShowSummary(true);
+      didMount.current = true;
+    } else if (!data.id && didMount.current) {
+      setShowSummary(false)
+    }
+	}, [data])
+	useEffect(() => {
+		updateCityOptions(data.projectCountry, setCityOptions)
+	}, [data.projectCountry])
 
 	return (
-		<Form validated={validated} onSubmit={handleSubmit}>
-			<Row>
-				<Col>
-					<h2 className='form_h2'>{messages.enterNewExperience}</h2>
-				</Col>
-			</Row>
-			<Row>
-				<Col lg='4'>
-					<InputGroup
-						label={messages.participateRole}
-						id='project-name'
-						placeholder={messages.enterParticipateRole}
-						value={data.projectRole}
-						onChange={handleProjectRoleChange}
-						feedbackMessage={messages.entryIsInvalid}
-						isValid={status.projectRole.isValid}
-						isInvalid={status.projectRole.isInvalid}
-					/>
-				</Col>
-				<Col lg='2'>
-					<RadioButtonGroup
-						label={messages.endOrNot}
-						id='project-currentProjectFlag'
-						values={[
-							{ label: messages.yes, value: true },
-							{ label: messages.no, value: false },
-						]}
-						value={data.currentProjectFlag}
-						onClickHandler={handleCurrentProjectFlagChange}
-					/>
-				</Col>
-				<Col>
-					<InputGroup
-						label={messages.companyName}
-						id='project-company'
-						placeholder={messages.enterCompanyName}
-						value={data.projectCompanyName}
-						onChange={handleProjectCompanyNameChange}
-						feedbackMessage={messages.entryIsInvalid}
-						isValid={status.projectCompanyName.isValid}
-						isInvalid={status.projectCompanyName.isInvalid}
-					/>
-				</Col>
-			</Row>
-			<Row>
-				<Col>
-					<SingleDatePicker
-						label={messages.projectStartDate}
-						id='project-enter-date'
-						placeholder={messages.yymmdd}
-						value={data.projectStartDate}
-						monthFormat={messages.monthFormat}
-						displayFormat={messages.dateDisplayFormat}
-						onDateChange={handleProjectStartDateChange}
-						feedbackMessage={messages.entryIsInvalid}
-						isValid={status.projectStartDate.isValid}
-						isInvalid={status.projectStartDate.isInvalid}
-					/>
-				</Col>
-				{data.currentProjectFlag && (
-					<Col>
-						<SingleDatePicker
-							label={messages.projectEndDate}
-							id='project-graduate-date'
-							placeholder={messages.yymmdd}
-							value={data.projectEndDate}
-							monthFormat={messages.monthFormat}
-							displayFormat={messages.dateDisplayFormat}
-							onDateChange={handleProjectEndDateChange}
-							feedbackMessage={messages.entryIsInvalid}
-							isValid={status.projectEndDate.isValid}
-							isInvalid={status.projectEndDate.isInvalid}
-						/>
-					</Col>
-				)}
-        <Col>
-          <DropdownGroup
-              label={messages.country}
-              id='project-country'
-              placeholder={messages.projectCountry}
-              options={countryOptions}
-              value={data.projectCountry}
-              onChange={handleCountryChange}
-              feedbackMessage={messages.entryIsInvalid}
-              isValid={status.projectCountry.isValid}
-              isInvalid={status.projectCountry.isInvalid}
-            />
-				</Col>
-				<Col>
-					<DropdownGroup
-						label={messages.city}
-						id='project-city'
-						placeholder={messages.projectCity}
-						options={cityOptions}
-						value={data.projectCity}
-						onChange={handleCityChange}
-						feedbackMessage={messages.entryIsInvalid}
-						isValid={status.projectCity.isValid}
-						isInvalid={status.projectCity.isInvalid}
-					/>
-				</Col>
-			</Row>
-			<Row>
-				<Col lg='12'>
-					<div className={assistantContainerClassNames}>
-                        <DraftEditor 
-                            feedbackMessage={messages.entryIsInvalid}
-                            isValid={status.projectDescription.isValid}
-                            isInvalid={status.projectDescription.isInvalid}
-                            label={messages.projectDetailsDescription}
-                            handleChangeCallback={handleProjectDescriptionEditorChange}
-                            texts={data.projectDescription} 
-                            eventName={`project-${index}`}
-                        /> 
-						<span className='writeAssistant'>
-							<WrittenAssistIcon />
-							<Button variant='link' onClick={handleAssistantClick}>
-								{messages.writeAssistant}
-							</Button>
-						</span>
-					</div>
-				</Col>
-			</Row>
-			<Row className='form_buttons'>
-				<Col className='space_betweens'>
-					{/* just a placeholder so we do need to change the css */}
-					<p className='hidden'></p>
-					<Button variant='primary' type='submit'>
-						{messages.save}
-					</Button>
-				</Col>
-			</Row>
-		</Form>
-	);
+    <div className="form_body">
+      {showSummary ? (
+        <Summary
+          type={'ProjectInfo'}
+          handleClickCallback={toggleShowSummary}
+          roleName={data.projectRole}
+          startDate={data.projectStartDate}
+          endDate={data.projectEndDate}
+          companyName={data.projectCompanyName}
+          currentFlag={data.currentProjectFlag}
+        />
+      ) : (
+        <Form validated={validated} onSubmit={handleSubmit}>
+					<Row className="flexie">
+						<Col>
+							<h2 className="form_h2">{messages.enterNewExperience}</h2>
+						</Col>
+						<div className="toggle-up-arrow" onClick={toggleShowSummary}>
+							{data.id && <img src={require('../../assets/arrow-up.svg')} alt="up-arrow" />}
+						</div>
+          </Row>
+          <Row>
+            <Col lg="4">
+              <InputGroup
+                label={messages.participateRole}
+                id="project-name"
+                placeholder={messages.enterParticipateRole}
+                value={data.projectRole}
+                onChange={handleProjectRoleChange}
+                feedbackMessage={messages.entryIsInvalid}
+                isValid={status.projectRole.isValid}
+                isInvalid={status.projectRole.isInvalid}
+              />
+            </Col>
+            <Col lg="2">
+              <RadioButtonGroup
+                label={messages.endOrNot}
+                id="project-currentProjectFlag"
+                values={[
+                  { label: messages.yes, value: true },
+                  { label: messages.no, value: false },
+                ]}
+                value={data.currentProjectFlag}
+                onClickHandler={handleCurrentProjectFlagChange}
+              />
+            </Col>
+            <Col>
+              <InputGroup
+                label={messages.companyName}
+                id="project-company"
+                placeholder={messages.enterCompanyName}
+                value={data.projectCompanyName}
+                onChange={handleProjectCompanyNameChange}
+                feedbackMessage={messages.entryIsInvalid}
+                isValid={status.projectCompanyName.isValid}
+                isInvalid={status.projectCompanyName.isInvalid}
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <SingleDatePicker
+                label={messages.projectStartDate}
+                id="project-enter-date"
+                placeholder={messages.yymmdd}
+                value={data.projectStartDate}
+                monthFormat={messages.monthFormat}
+                displayFormat={messages.dateDisplayFormat}
+                onDateChange={handleProjectStartDateChange}
+                feedbackMessage={messages.entryIsInvalid}
+                isValid={status.projectStartDate.isValid}
+                isInvalid={status.projectStartDate.isInvalid}
+              />
+            </Col>
+            {data.currentProjectFlag && (
+              <Col>
+                <SingleDatePicker
+                  label={messages.projectEndDate}
+                  id="project-graduate-date"
+                  placeholder={messages.yymmdd}
+                  value={data.projectEndDate}
+                  monthFormat={messages.monthFormat}
+                  displayFormat={messages.dateDisplayFormat}
+                  onDateChange={handleProjectEndDateChange}
+                  feedbackMessage={messages.entryIsInvalid}
+                  isValid={status.projectEndDate.isValid}
+                  isInvalid={status.projectEndDate.isInvalid}
+                />
+              </Col>
+            )}
+            <Col>
+              <DropdownGroup
+                label={messages.country}
+                id="project-country"
+                placeholder={messages.projectCountry}
+                options={countryOptions}
+                value={data.projectCountry}
+                onChange={handleCountryChange}
+                feedbackMessage={messages.entryIsInvalid}
+                isValid={status.projectCountry.isValid}
+                isInvalid={status.projectCountry.isInvalid}
+              />
+            </Col>
+            <Col>
+              <DropdownGroup
+                label={messages.city}
+                id="project-city"
+                placeholder={messages.projectCity}
+                options={cityOptions}
+                value={data.projectCity}
+                onChange={handleCityChange}
+                feedbackMessage={messages.entryIsInvalid}
+                isValid={status.projectCity.isValid}
+                isInvalid={status.projectCity.isInvalid}
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col lg="12">
+              <div className={assistantContainerClassNames}>
+                <DraftEditor
+                  feedbackMessage={messages.entryIsInvalid}
+                  isValid={status.projectDescription.isValid}
+                  isInvalid={status.projectDescription.isInvalid}
+                  label={messages.projectDetailsDescription}
+                  handleChangeCallback={handleProjectDescriptionEditorChange}
+                  texts={data.projectDescription}
+                  eventName={`project-${index}`}
+                />
+                <span className="writeAssistant">
+                  <WrittenAssistIcon />
+                  <Button variant="link" onClick={handleAssistantClick}>
+                    {messages.writeAssistant}
+                  </Button>
+                </span>
+              </div>
+            </Col>
+          </Row>
+          <Row className="form_buttons">
+					<Col className="flex-end">
+              {/* just a placeholder so we do need to change the css */}
+              {data.id && (
+                <Button
+                  onClick={() => {
+                    handleDelete(data.id);
+                  }}
+                  variant="light"
+                  className="remove-btn"
+                >
+                  {messages.delete}
+                </Button>
+              )}
+              <Button variant="primary" type="submit">
+                {messages.save}
+              </Button>
+            </Col>
+          </Row>
+        </Form>
+      )}
+    </div>
+  );
 };
 
 ProjectForm.propTypes = {
