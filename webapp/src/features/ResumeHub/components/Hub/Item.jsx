@@ -19,6 +19,9 @@ import { useI8n } from 'shell/i18n';
 import styles from '../../styles/Hub.module.css';
 import { downloadPDF } from 'features/SmartResume/components/ResumePreview/resumeBuilder';
 
+import zh from 'features/SmartResume/i18n/zh.json';
+import en from 'features/SmartResume/i18n/en.json';
+
 const logger = getLogger('ResumeHubItem');
 const accountServices = new AccountServices();
 const resumeServices = new ResumeServices();
@@ -28,6 +31,7 @@ async function getResume(dispatch, resumeId) {
         try {
             const resumeData = await resumeServices.getResume(resumeId);
             dispatch(actions.setResume(resumeData));
+            return resumeData;
         } catch (exception) {
             logger.error(exception);
         }
@@ -43,9 +47,8 @@ const Item = ({ resume }) => {
     const handleDelete = async () => {
         dispatch(deleteResume(resume.resumeId));
         try {
-            const response = await accountServices.deleteResume(userId, resume);
-            const responseJson = await response.json();
-            if (!response.success) {
+            const responseJson = await accountServices.deleteResume(userId, resume);
+            if (!responseJson.success) {
                 logger.warn(responseJson.message);
             }
         } catch (exception) {
@@ -55,8 +58,8 @@ const Item = ({ resume }) => {
 
     const handleDownloadPDF = async () => {
         dispatch(actions.setAlias(resume?.alias));
-        await getResume(dispatch, resume.resumeId);
-        downloadPDF(messages.RPreview);
+        const resumeData = await getResume(dispatch, resume.resumeId);
+        downloadPDF(resumeData?.language === 'zh' ? zh : en);
     }
     return (
         <div className={styles.itemContainer}>

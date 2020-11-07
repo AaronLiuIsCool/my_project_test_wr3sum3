@@ -52,14 +52,12 @@ const ResumePreview = ({ resumeName }) => {
 	const handleTranslate = async () => {
 		try {
 			const parsedResume = flatten(resumeAdaptor(validatedResume));
-			let response = await appServices.translate(Object.values(parsedResume));
-			const translations = await response.json();
+			const translations = await appServices.translate(Object.values(parsedResume));
 			Object.keys(parsedResume).forEach((key, index) => {
 				parsedResume[key] = translations[index];
 			});
 			const translatedResume = reconstruct(parsedResume);
-			response = await resumeServices.createResume(translatedResume);
-			const data = await response.json();
+			const data = await resumeServices.createResume(translatedResume);
 			if (data.success === false) {
 				logger.error(data.message);
 				return;

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Form } from 'react-bootstrap';
 
-const InputGroup = ({ label, id, placeholder, type = 'text', value, onChange, isValid, isInvalid, feedbackMessage }) => (
+const InputGroup = ({ label, id, placeholder = '', type = 'text', value, onChange, isValid, isInvalid, feedbackMessage }) => (
 	<Form.Group className="form_item form-validation-wrapper">
 		<Form.Label htmlFor={id}>{label}</Form.Label>
 		<Form.Control type={type} id={id} placeholder={placeholder} value={value} onChange={onChange} isValid={isValid} isInvalid={isInvalid} />
@@ -13,7 +13,7 @@ const InputGroup = ({ label, id, placeholder, type = 'text', value, onChange, is
 InputGroup.propTypes = {
 	label: PropTypes.string,
 	id: PropTypes.string,
-	placeholder: PropTypes.string.isRequired,
+	placeholder: PropTypes.string,
 	type: PropTypes.string,
 	value: PropTypes.string,
 	isValid: PropTypes.bool,

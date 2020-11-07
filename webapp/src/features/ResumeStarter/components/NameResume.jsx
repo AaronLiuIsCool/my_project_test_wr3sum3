@@ -25,8 +25,7 @@ const NameResume = () => {
 
 	const createResume = async (resumeName) => {
 		try {
-			const response = await resumeServices.createResume({ language });
-			const data = await response.json();
+			const data = await resumeServices.createResume({ language });
 			const resumeId = data.id;
 			await accountServices.addResume(userId, resumeId, resumeName);
 			dispatch(actions.setId(resumeId));

@@ -12,8 +12,7 @@ export default class JobsServices extends BaseServices {
 
   async getAllJobs() {
     try {
-      const response = await this.get('v1/jobs/all');
-      return await response.json();
+      return await this.get('v1/jobs/all');
     } catch (err) {
       logger.error(err);
     }
@@ -21,8 +20,7 @@ export default class JobsServices extends BaseServices {
 
   async getJob(uuid) {
     try {
-      const response = await this.get(`v1/jobs/uuid/${uuid}?lazy=false`);
-      return await response.json();
+      return await this.get(`v1/jobs/uuid/${uuid}?lazy=false`);
     } catch (err) {
       logger.error(err);
     }
@@ -57,15 +55,14 @@ export default class JobsServices extends BaseServices {
       suggestions: []
     };
     try {
-      const res = await this.get(`v1/get_suggestions_by_industry_position?industry=${industry}&limit=50&offset=0&position=${title}`)
-      const data = await res.json()
+      const data = await this.get(`v1/get_suggestions_by_industry_position?industry=${industry}&limit=50&offset=0&position=${title}`);
       if (data.success !== false) {
         resObj.suggestions = data.suggestions;
       }
     } catch (error) {
-      logger.error(error)
+      logger.error(error);
     } finally {
-      return resObj
+      return resObj;
     }
   }
 }

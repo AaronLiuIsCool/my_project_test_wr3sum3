@@ -59,10 +59,9 @@ const EducationForm = ({ data, index, isLast = false, messages }) => {
 		previewResume(messages.RPreview);
         let id = data.id;
         try {
-            const response = (id === undefined) ?
+            const responseJson = (id === undefined) ?
                 await resumeServices.createEducation(resumeId, adaptEducation(data)) :
                 await resumeServices.updateEducation(data.id, adaptEducation(data));
-            const responseJson = await response.json();
             id = id || responseJson.id;
         } catch(exception) {
             logger.error(exception);
@@ -136,8 +135,7 @@ const EducationForm = ({ data, index, isLast = false, messages }) => {
     };
     
     const handleEducationFormRatings = async ({gpa, highestAward, otherAward}, index, messages) => {
-        const response = await resumeServices.getRatings(resumeId);
-        const { educations } = await response.json();
+        const { educations } = await resumeServices.getRatings(resumeId);
         const schools = educations || [];
         const educationRating = generateEducationRating({gpa, highestAward, otherAward, schools, index}, messages)
         const layoutRating = generateLayoutRating(wholePageCheck(messages.RPreview), messages)

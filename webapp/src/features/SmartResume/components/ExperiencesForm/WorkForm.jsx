@@ -59,9 +59,9 @@ const WorkForm = ({ data, index, isLast = false, messages, workData }) => {
 		previewResume(messages.RPreview);
 		let id = data.id;
 		try {
-			const response =
-				id === undefined ? await resumeServices.createWork(resumeId, adaptWork(data)) : await resumeServices.updateWork(data.id, adaptWork(data));
-			const responseJson = await response.json();
+			const responseJson = id === undefined ? 
+					await resumeServices.createWork(resumeId, adaptWork(data)) : 
+					await resumeServices.updateWork(data.id, adaptWork(data));
 			id = id || responseJson.id;
 		} catch (exception) {
 			logger.error(exception);
@@ -86,9 +86,7 @@ const WorkForm = ({ data, index, isLast = false, messages, workData }) => {
     };
     
     const handleWorkFormRating = async () => {
-        const response = await resumeServices.getRatings(resumeId);
-
-				const { workExperiences } = await response.json();
+        const { workExperiences } = await resumeServices.getRatings(resumeId);
         const layoutRating = generateLayoutRating(wholePageCheck(messages.RPreview), messages)
         dispatch(actions.updateLayoutRating(layoutRating))
         

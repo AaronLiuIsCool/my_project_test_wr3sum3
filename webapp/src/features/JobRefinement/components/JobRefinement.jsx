@@ -38,8 +38,7 @@ const JobRefinement = () => {
 	const getResumeData = async () => {
 		if (resumeId) {
 			try {
-				const response = await resumeServices.getResume(resumeId);
-				const resumeData = await response.json();
+				const resumeData = await resumeServices.getResume(resumeId);
 				await setResumeData(resumeData);
 				if (resumeData.workExperiences) {
 					await setWorkExperiences(resumeData.workExperiences);
@@ -62,8 +61,7 @@ const JobRefinement = () => {
 	}
 	const jobRefinementSearch = async () => {
 		try {
-			const response = await matchingServices.getJobRefinement(jobId, resumeId);
-			const data = await response.json();
+			const data = await await matchingServices.getJobRefinement(jobId, resumeId);
 			await getResumeData();
 			setRefinementData(data.resumeJobScores);
 			let resumeScore = 0;
