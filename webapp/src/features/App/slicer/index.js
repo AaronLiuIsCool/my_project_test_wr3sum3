@@ -11,7 +11,7 @@ const appSlicers = createSlice({
     },
     updateAuthInfo: (state, action) => {
       const loginBypass = localStorage.getItem('kdr-login-bypass') === 'true'; // TODO: Remove before we go out to prod
-      const authInfo = action.payload;
+      const authInfo = action?.payload || {};
       state.authenticated = loginBypass || authInfo.success;
       state.iam = authInfo.iam;
     }
