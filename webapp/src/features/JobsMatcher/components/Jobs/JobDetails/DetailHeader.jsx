@@ -2,6 +2,7 @@ import React, { useEffect, useState }  from 'react';
 
 import Button from 'react-bootstrap/Button';
 import { ReactComponent as BookmarkIconEmpty } from '../../../assets/bookmark.svg';
+import { ReactComponent as BookmarkIconFilled } from '../../../assets/bookmarked.svg';
 // import { ReactComponent as ChatIcon } from '../../../assets/chat-message-sent.svg';
 
 import { timeSince } from '../../../utils/time';
@@ -14,7 +15,7 @@ const matchingServices = new MatchingServices();
 
 const BookmarkIcon = ({ bookmarked = false }) => {
     if (bookmarked) {
-        return <div>TODO: Waiting for icon from uiux</div>;
+        return <BookmarkIconFilled className={styles["job-details-action-icon"]} />;
     }
     return <BookmarkIconEmpty className={styles["job-details-action-icon"]} />;
 }
