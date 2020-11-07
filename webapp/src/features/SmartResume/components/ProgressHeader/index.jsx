@@ -11,7 +11,7 @@ import styles from './ProgressHeader.module.css';
 
 const resumeServices = new ResumeServices();
 const logger = getLogger('App');
-const MAXSCORE = 100; // TODO: Maybe this can come from the backend
+const MAX_SCORE = 100; // TODO: Maybe this can come from the backend
 
 
 const ProgressHeader = ({ setScoreVisible, scoreVisible }) => {
@@ -26,8 +26,7 @@ const ProgressHeader = ({ setScoreVisible, scoreVisible }) => {
 	async function getResumeScore(resumeId) {
 		let responseJson = {};
 		try {
-			const response = await resumeServices.getScore(resumeId);
-			responseJson = await response.json();
+			responseJson = await resumeServices.getScore(resumeId);
 		} catch (exception) {
 			logger.error(exception)
 		} finally {
@@ -38,15 +37,15 @@ const ProgressHeader = ({ setScoreVisible, scoreVisible }) => {
 	useEffect(() => {
 		if (resumeId){
 			updateScore();
-      window.addEventListener('update-score', () => {
-        updateScore()
-      })
+      		window.addEventListener('update-score', () => {
+        		updateScore()
+      		});
 		}
 	}, [resumeId]); // eslint-disable-line
   const updateScore = () => {
     getResumeScore(resumeId).then((resumeScoreData) => {
       const percentage = Math.round(
-        (resumeScoreData.totalScore / MAXSCORE) * 100
+        (resumeScoreData.totalScore / MAX_SCORE) * 100
       );
       setScorePercentage(percentage);
       if (percentage < 55) {

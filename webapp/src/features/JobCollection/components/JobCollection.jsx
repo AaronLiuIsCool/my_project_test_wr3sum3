@@ -37,17 +37,13 @@ const formatLocation = (location = {}) => {
 };
 const getAllResumeIds = async (userId) => {
     try {
-        const response = await accountServices.getAccountInfo(userId);
-        if (!response) {
-            logger.warn('No response from account service get');
-        }
-        const responseJson = await response.json();
+        const responseJson = await accountServices.getAccountInfo(userId);
         if (responseJson.success) {
             return responseJson.account.resumes.map(
                 (resume) => resume.resumeId
             );
         } else {
-            logger.error(response.message);
+            logger.error(responseJson.message);
             return [];
         }
     } catch (exception) {
@@ -56,12 +52,8 @@ const getAllResumeIds = async (userId) => {
 };
 const getAllBookmarkJobs = async (resumeIds) => {
     const bookmarkJobCalls = resumeIds.map(async (resumeId) => {
-        const response = await matchingServices.findBookMarkJobs(resumeId);
-        if (!response) {
-            logger.warn('No response from account service get');
-        }
-        const responseJson = await response.json();
-        return responseJson.jobList.jobs;
+        const responseJson = await matchingServices.findBookMarkJobs(resumeId);
+        return responseJson?.jobList?.jobs;
     });
     const results = (await Promise.all(bookmarkJobCalls)).reduce((acc, cur) => {
         return acc.concat(cur);
@@ -71,11 +63,7 @@ const getAllBookmarkJobs = async (resumeIds) => {
 
 const getAllTailorJobs = async (resumeIds) => {
     const tailorJobCalls = resumeIds.map(async (resumeId) => {
-        const response = await matchingServices.findTailorJobs(resumeId);
-        if (!response) {
-            logger.warn('No response from account service get');
-        }
-        const responseJson = await response.json();
+        const responseJson = await matchingServices.findTailorJobs(resumeId);
         return responseJson.jobDto === null ? [] : responseJson.jobDto;
     });
     const results = (await Promise.all(tailorJobCalls)).reduce((acc, cur) => {

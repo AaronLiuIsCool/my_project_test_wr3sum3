@@ -63,11 +63,9 @@ const ProjectForm = ({ data, index, isLast = false, messages, projectData }) => 
 		previewResume(messages.RPreview);
 		let id = data.id;
 		try {
-			const response =
-				id === undefined
-					? await resumeServices.createProject(resumeId, adaptProject(data))
-					: await resumeServices.updateProject(data.id, adaptProject(data));
-			const responseJson = await response.json();
+			const responseJson = id === undefined ?
+					await resumeServices.createProject(resumeId, adaptProject(data)) :
+					await resumeServices.updateProject(data.id, adaptProject(data));
 			id = id || responseJson.id;
 		} catch (exception) {
 			logger.error(exception);
@@ -78,9 +76,7 @@ const ProjectForm = ({ data, index, isLast = false, messages, projectData }) => 
 	};
 
     const handleProjectFormRating = async () => {        
-        const response = await resumeServices.getRatings(resumeId);
-
-        const { projectExperiences } = await response.json();
+        const { projectExperiences }  = await resumeServices.getRatings(resumeId);
         
         const layoutRating = generateLayoutRating(wholePageCheck(messages.RPreview), messages)
         dispatch(actions.updateLayoutRating(layoutRating))

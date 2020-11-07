@@ -1,10 +1,16 @@
 import configs from 'shell/configs';
 import {showLoader, hideLoader} from 'shell/loader'
+
 function getHeaders() {
   return new Headers({
     'Content-Type': 'application/json',
     'Authorization': 'basic'
   });
+}
+
+async function fetchToJson(request) {
+  const response = await fetch(request);
+  return await response.json();
 }
 
 export function getServiceUrl(baseUrl, api) {
@@ -19,7 +25,7 @@ export async function get(url,  data, options) {
     headers,
     body: JSON.stringify(data)
   });
-  return await fetch(request);
+  return fetchToJson(request);
 }
 
 export async function post(url, data, options) {
@@ -30,7 +36,7 @@ export async function post(url, data, options) {
     headers,
     body: JSON.stringify(data)
   });
-  return await fetch(request);
+  return fetchToJson(request);
 }
 
 export async function put(url, data, options) {
@@ -41,7 +47,7 @@ export async function put(url, data, options) {
     headers,
     body: JSON.stringify(data)
   });
-  return await fetch(request);
+  return fetchToJson(request);
 }
 
 export async function deletion(url, data, options) {
@@ -52,7 +58,7 @@ export async function deletion(url, data, options) {
     headers,
     body: JSON.stringify(data)
   });
-  return await fetch(request);
+  return fetchToJson(request);
 }
 
 export default class BaseServices {
