@@ -23,7 +23,6 @@ public class Profile {
     private Long id;
 
     @NotNull
-    @URL
     private String url;
 
     @NotNull
