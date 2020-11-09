@@ -22,6 +22,7 @@ import JobsMatcher from 'features/JobsMatcher';
 import JobCollection from 'features/JobCollection';
 import JobRefinement from 'features/JobRefinement';
 import Page404 from 'features/SpecialPages/Page404';
+import Page500 from 'features/SpecialPages/Page500';
 
 import './styles/index.scss';
 
@@ -76,6 +77,7 @@ const App = ({ waitForInit = true }) => {
             <PrivateRoute path="/jobs" component={JobsMatcher} />
             <PrivateRoute path="/refinement" component={JobRefinement} />
             <PrivateRoute path="/collections" component={JobCollection} />
+            <Route path="/error" component={Page500} />
             <Route component={Page404} />
             <Route path="/404" component={Page404} />
           </Switch>
