@@ -4,6 +4,7 @@ import { getLogger } from 'shell/logger';
 
 const logger = getLogger('BaseService');
 
+
 function getHeaders() {
   return new Headers({
     'Content-Type': 'application/json',
