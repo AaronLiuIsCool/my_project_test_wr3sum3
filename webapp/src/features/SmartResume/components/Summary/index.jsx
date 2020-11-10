@@ -51,8 +51,8 @@ export const Summary = ({
                 {schoolName} | {degree}
               </span>
               <span>
-                {moment(new Date(enterSchoolDate)).format(JDBC_DATE_FORMAT)} -{' '}
-                {moment(new Date(graduateDate)).format(JDBC_DATE_FORMAT)}
+                {moment(enterSchoolDate).format(JDBC_DATE_FORMAT)} -{' '}
+                {moment(graduateDate).format(JDBC_DATE_FORMAT)}
               </span>
             </div>
           </div>
@@ -74,10 +74,10 @@ export const Summary = ({
             <div className="lower-row">
               <span className="blue">{companyName}</span>
               <span>
-                {moment(new Date(startDate)).format(JDBC_DATE_FORMAT)} -{' '}
+                {moment(startDate).format(JDBC_DATE_FORMAT)} -{' '}
                 {!currentFlag
                   ? messages.present
-                  : moment(new Date(endDate)).format(JDBC_DATE_FORMAT)}
+                  : moment(endDate).format(JDBC_DATE_FORMAT)}
               </span>
             </div>
           </div>
@@ -98,7 +98,7 @@ export const Summary = ({
               <span className="blue">
               {!currentFlag
                   ? messages.forever
-                  : messages.valid_through + moment(new Date(endDate)).format(JDBC_DATE_FORMAT)}
+                  : messages.valid_through + moment(endDate).format(JDBC_DATE_FORMAT)}
               </span>
             </div>
           </div>

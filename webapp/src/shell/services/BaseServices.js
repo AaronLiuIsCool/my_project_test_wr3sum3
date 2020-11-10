@@ -1,5 +1,9 @@
 import configs from 'shell/configs';
 import {showLoader, hideLoader} from 'shell/loader'
+import { getLogger } from 'shell/logger';
+
+const logger = getLogger('BaseService');
+
 
 function getHeaders() {
   return new Headers({
@@ -8,9 +12,24 @@ function getHeaders() {
   });
 }
 
+const handleError = (error) => {
+  logger.error(error);
+  window.location.href = window.location.origin + "/error";
+};
+
 async function fetchToJson(request) {
-  const response = await fetch(request);
-  return await response.json();
+  let json = {};
+  try {
+    const response = await fetch(request);
+    json = await response.json();
+    if (json?.success === false) {
+      handleError(`BE Failed! ${JSON.stringify(json, null, 2)}`);
+    }
+  } catch (error) {
+    handleError(error);
+  } finally {
+    return json;
+  }
 }
 
 export function getServiceUrl(baseUrl, api) {

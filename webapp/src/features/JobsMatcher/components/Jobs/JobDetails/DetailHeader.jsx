@@ -53,7 +53,7 @@ const DetailHeader = ({ resumeId, data }) => {
     return (
         <div className={styles["job-details-header"]}>
             <div className={styles["job-details-title"]}>
-                {data.positionTitle}
+                <span className={styles["job-details-title-content"]}>{data.positionTitle}</span>
                 <span className={styles["job-details-title-off"]}>{timeSince(data?.postDate)}</span>
             </div>
             <div className={styles["job-details-subtitle"]}>

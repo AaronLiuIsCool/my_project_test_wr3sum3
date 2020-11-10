@@ -21,6 +21,14 @@
   text-overflow: ellipsis;
 }
 
+.job-details-title-content {
+  display: inline-block;
+  width: 360px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .job-details-title-off {
   float: right;
   height: 19px;
