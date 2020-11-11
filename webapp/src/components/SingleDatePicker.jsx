@@ -32,7 +32,7 @@ const SingleDatePickerWrapper = ({
 SingleDatePickerWrapper.propTypes = {
     label: PropTypes.string,
     id: PropTypes.string,
-    placeholder: PropTypes.string.isRequired,
+    placeholder: PropTypes.string,
     value: PropTypes.string,
     onDateChange: PropTypes.func,
     monthFormat: PropTypes.string,

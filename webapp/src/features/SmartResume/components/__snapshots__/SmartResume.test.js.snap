@@ -1,3 +1,2903 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`SmartResume tests renders Smart Resume 1`] = `Object {}`;
+exports[`SmartResume tests renders Smart Resume 1`] = `
+<div
+  className="features smart-resume"
+>
+  <div
+    className="overlay"
+  >
+    <div
+      className="container"
+    >
+      <div
+        className="content"
+      >
+        <a
+          className="navItemSelected"
+          href="/#basicInfo"
+          onClick={[Function]}
+        >
+          基本信息
+        </a>
+        <a
+          className="navItem"
+          href="/#education"
+          onClick={[Function]}
+        >
+          教育背景
+        </a>
+        <a
+          className="navItem"
+          href="/#workXp"
+          onClick={[Function]}
+        >
+          工作经历
+        </a>
+        <a
+          className="navItem"
+          href="/#projectXp"
+          onClick={[Function]}
+        >
+          项目经历
+        </a>
+        <a
+          className="navItem"
+          href="/#otherXp"
+          onClick={[Function]}
+        >
+          其他经历
+        </a>
+        <a
+          className="navItem"
+          href="/#certifications"
+          onClick={[Function]}
+        >
+          技能证书
+        </a>
+      </div>
+    </div>
+    <div
+      className="container"
+    >
+      <div
+        className="previewWrapper"
+        id="displayPDF"
+      >
+        
+      </div>
+      <div
+        className="widgetContainer"
+      >
+        <div>
+          <button
+            className="whiteBtn"
+            onClick={[Function]}
+          >
+            编辑主题色
+             
+            <span
+              className="colorSquare"
+              style={
+                Object {
+                  "backgroundColor": "#3e89ec",
+                }
+              }
+            />
+          </button>
+          <button
+            onClick={[Function]}
+          >
+            智能翻译
+          </button>
+          <button
+            onClick={[Function]}
+          >
+            一键整页
+          </button>
+          <button
+            onClick={[Function]}
+          >
+            <img
+              alt="download"
+              src="download_white.svg"
+            />
+             
+            下载简历
+          </button>
+          <button
+            className="circle"
+            onClick={[Function]}
+          >
+            ?
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    className="container"
+  >
+    <div
+      className="container"
+    >
+      <div
+        className="progress"
+      >
+        <p>
+          <span
+            style={
+              Object {
+                "color": "#ff6565",
+              }
+            }
+          >
+            0
+            %
+          </span>
+           
+          简历完成度
+        </p>
+        <div
+          className="progressBar progress"
+        >
+          <div
+            aria-valuemax={100}
+            aria-valuemin={0}
+            aria-valuenow={0}
+            className="progress-bar bg-score_D"
+            role="progressbar"
+            style={
+              Object {
+                "width": "0%",
+              }
+            }
+          />
+        </div>
+      </div>
+      <div
+        className="hideSM"
+      >
+        <p
+          className="title"
+        >
+          强度评分
+        </p>
+        <p>
+          点击查看详情
+        </p>
+      </div>
+      <div
+        className="hideSM"
+        onClick={[Function]}
+      >
+        <div
+          className="circle"
+          onClick={[Function]}
+          style={
+            Object {
+              "borderColor": "#ff6565",
+              "color": "#ff6565",
+            }
+          }
+        >
+          薄弱
+        </div>
+      </div>
+    </div>
+    <h1
+      className="resumeName"
+    >
+      
+    </h1>
+    <div
+      id="basicInfo"
+    >
+      <div
+        className="form_h1"
+      >
+        <div>
+          <img
+            alt="基本信息 Icon"
+            src="/images/job.svg"
+          />
+          <h1>
+            基本信息
+          </h1>
+        </div>
+        <p>
+          请输入您的一些基本个人信息
+        </p>
+      </div>
+      <div>
+        <div
+          className="form_body"
+        >
+          <form
+            className=""
+            onSubmit={[Function]}
+          >
+            <div
+              className="flexie row"
+            >
+              <div
+                className="avatarContainer"
+              >
+                <div
+                  className="avatarPreviewContainer"
+                  onClick={[Function]}
+                >
+                  <div
+                    className="avatarPreview"
+                  >
+                    <img
+                      alt="avatar"
+                      src="photoupload.svg"
+                    />
+                  </div>
+                  <div
+                    className="avatarPreviewText"
+                    id="upload-photo"
+                  >
+                    上传照片
+                  </div>
+                </div>
+                <div
+                  className="modal modalClosed"
+                >
+                  <h2>
+                    添加头像
+                  </h2>
+                  <div>
+                    <div>
+                      <div
+                        style={
+                          Object {
+                            "border": "2px solid #979797",
+                            "borderRadius": "8px",
+                            "borderStyle": "dashed",
+                            "height": 160,
+                            "textAlign": "center",
+                            "width": 440,
+                          }
+                        }
+                      >
+                        <input
+                          accept="image/jpeg,image/png"
+                          id="avatar_loader-bc52-c0c9-9286"
+                          name="avatar_loader-bc52-c0c9-9286"
+                          onChange={[Function]}
+                          style={
+                            Object {
+                              "height": 0.1,
+                              "opacity": 0,
+                              "overflow": "hidden",
+                              "position": "absolute",
+                              "width": 0.1,
+                              "zIndex": -1,
+                            }
+                          }
+                          type="file"
+                        />
+                        <label
+                          htmlFor="avatar_loader-bc52-c0c9-9286"
+                          style={
+                            Object {
+                              "color": "black",
+                              "cursor": "pointer",
+                              "display": "inline-block",
+                              "fontFamily": "sans-serif",
+                              "fontSize": "1.25em",
+                              "fontWeight": "700",
+                              "lineHeight": "160px",
+                            }
+                          }
+                        >
+                          Choose a file
+                        </label>
+                      </div>
+                    </div>
+                    <div
+                      className="samplesContainer"
+                    >
+                      <h2>
+                        什么样的照片试用于简历?
+                      </h2>
+                      <div
+                        className="samples"
+                      >
+                        <div
+                          className="sample"
+                        >
+                          <img
+                            alt="check mark"
+                            src="/images/good_picture.svg"
+                          />
+                        </div>
+                        <div
+                          className="sample"
+                        >
+                          <img
+                            alt="check mark"
+                            src="/images/good_picture.svg"
+                          />
+                        </div>
+                        <div
+                          className="sample"
+                        >
+                          <img
+                            alt="check mark"
+                            src="/images/bad_picture.svg"
+                          />
+                        </div>
+                        <div
+                          className="sample"
+                        >
+                          <img
+                            alt="check mark"
+                            src="/images/good_picture.svg"
+                          />
+                        </div>
+                        <div
+                          className="sample"
+                        >
+                          <img
+                            alt="check mark"
+                            src="/images/good_picture.svg"
+                          />
+                        </div>
+                        <div
+                          className="sample"
+                        >
+                          <img
+                            alt="check mark"
+                            src="/images/bad_picture.svg"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    className="closeIconContainer"
+                    onClick={[Function]}
+                    style={
+                      Object {
+                        "bottom": "5px",
+                        "right": "10px",
+                      }
+                    }
+                  >
+                    <img
+                      alt="Close"
+                      className="closeIcon"
+                      src="close_regular.svg"
+                    />
+                    <img
+                      alt="Close"
+                      className="closeIconHover"
+                      src="close_hover.svg"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div
+                className="toggle-up-arrow"
+                onClick={[Function]}
+              />
+            </div>
+            <div
+              className="row"
+            >
+              <div
+                className="col"
+              >
+                <div
+                  className="form_item form-validation-wrapper form-group"
+                >
+                  <label
+                    className="form-label"
+                    htmlFor="basic-name-cn"
+                  >
+                    中文姓名
+                  </label>
+                  <input
+                    className="form-control"
+                    id="basic-name-cn"
+                    onChange={[Function]}
+                    placeholder="请输入您的中文全名"
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+              <div
+                className="col"
+              >
+                <div
+                  className="form_item form-validation-wrapper form-group"
+                >
+                  <label
+                    className="form-label"
+                    htmlFor="basic-name-en"
+                  >
+                    英文名称
+                  </label>
+                  <input
+                    className="form-control"
+                    id="basic-name-en"
+                    onChange={[Function]}
+                    placeholder="First & Last Name"
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+            </div>
+            <div
+              className="row"
+            >
+              <div
+                className="col-lg-6"
+              >
+                <div
+                  className="form_item form-validation-wrapper form-group"
+                >
+                  <label
+                    className="form-label"
+                    htmlFor="basic-email"
+                  >
+                    邮箱
+                  </label>
+                  <input
+                    className="form-control"
+                    id="basic-email"
+                    onChange={[Function]}
+                    placeholder="请填写您的邮箱地址"
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+              <div
+                className="col-lg-3"
+              >
+                <div
+                  className="form_item form-validation-wrapper form-group"
+                >
+                  <label
+                    className="form-label"
+                    htmlFor="basic-phone"
+                  >
+                    联系电话
+                  </label>
+                  <input
+                    className="form-control"
+                    id="basic-phone"
+                    onChange={[Function]}
+                    placeholder="输入您的联系电话"
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+              <div
+                className="col-lg-3"
+              >
+                <div
+                  className="form_item form-validation-wrapper form-group"
+                >
+                  <label
+                    className="form-label"
+                    htmlFor="education-city"
+                  >
+                    所在城市
+                  </label>
+                  <div
+                    className="rbt"
+                    style={
+                      Object {
+                        "outline": "none",
+                        "position": "relative",
+                      }
+                    }
+                    tabIndex={-1}
+                  >
+                    <div
+                      style={
+                        Object {
+                          "display": "flex",
+                          "flex": 1,
+                          "height": "100%",
+                          "position": "relative",
+                        }
+                      }
+                    >
+                      <input
+                        aria-autocomplete="both"
+                        aria-expanded={false}
+                        aria-haspopup="listbox"
+                        autoComplete="off"
+                        className="rbt-input-main form-control rbt-input"
+                        onBlur={[Function]}
+                        onChange={[Function]}
+                        onClick={[Function]}
+                        onFocus={[Function]}
+                        onKeyDown={[Function]}
+                        placeholder="所在城市"
+                        role="combobox"
+                        type="text"
+                        value=""
+                      />
+                      <input
+                        aria-hidden={true}
+                        className="rbt-input-hint"
+                        readOnly={true}
+                        style={
+                          Object {
+                            "backgroundColor": "transparent",
+                            "borderColor": "transparent",
+                            "boxShadow": "none",
+                            "color": "rgba(0, 0, 0, 0.35)",
+                            "left": 0,
+                            "pointerEvents": "none",
+                            "position": "absolute",
+                            "top": 0,
+                            "width": "100%",
+                          }
+                        }
+                        tabIndex={-1}
+                        value=""
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              className="row"
+            >
+              <div
+                className="col"
+              >
+                <div
+                  className="form_item form-validation-wrapper form-group"
+                >
+                  <label
+                    className="form-label"
+                    htmlFor="basic-linkedin"
+                  >
+                    个人领英 Linkedin 链接
+                  </label>
+                  <input
+                    className="form-control"
+                    id="basic-linkedin"
+                    onChange={[Function]}
+                    placeholder="请填写您的Linkedin链接"
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+              <div
+                className="col"
+              >
+                <div
+                  className="form_item form-validation-wrapper form-group"
+                >
+                  <label
+                    className="form-label"
+                    htmlFor="basic-weblink"
+                  >
+                    个人 Github 或者作品集链接
+                  </label>
+                  <input
+                    className="form-control"
+                    id="basic-weblink"
+                    onChange={[Function]}
+                    placeholder="请填写您的Github链接或作品集链接"
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+            </div>
+            <div
+              className="form_buttons row"
+            >
+              <div
+                className="space_betweens col"
+              >
+                <p
+                  className="hidden"
+                />
+                <button
+                  className="btn btn-primary"
+                  disabled={false}
+                  type="submit"
+                >
+                  保存
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      
+    </div>
+    <div
+      id="education"
+    >
+      <div
+        className="form_h1"
+      >
+        <div>
+          <img
+            alt="教育背景 Icon"
+            src="/images/education.svg"
+          />
+          <h1>
+            教育背景
+          </h1>
+        </div>
+        <p>
+          请添加关于您教育背景的相关信息
+        </p>
+      </div>
+      <div>
+        <form
+          className="edu-0"
+          onSubmit={[Function]}
+        >
+          <div
+            className="row"
+          >
+            <div
+              className="col"
+            >
+              <h2
+                className="form_h2"
+              >
+                填写院校信息
+              </h2>
+            </div>
+          </div>
+          <div
+            className="row"
+          >
+            <div
+              className="col-lg-4"
+            >
+              <div
+                className="form_item form-validation-wrapper form-group"
+              >
+                <label
+                  className="form-label"
+                  htmlFor="education-school"
+                >
+                  院校名称
+                </label>
+                <div
+                  className="rbt"
+                  style={
+                    Object {
+                      "outline": "none",
+                      "position": "relative",
+                    }
+                  }
+                  tabIndex={-1}
+                >
+                  <div
+                    style={
+                      Object {
+                        "display": "flex",
+                        "flex": 1,
+                        "height": "100%",
+                        "position": "relative",
+                      }
+                    }
+                  >
+                    <input
+                      aria-autocomplete="both"
+                      aria-expanded={false}
+                      aria-haspopup="listbox"
+                      autoComplete="off"
+                      className="rbt-input-main form-control rbt-input"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      onClick={[Function]}
+                      onFocus={[Function]}
+                      onKeyDown={[Function]}
+                      placeholder="请输入学校名字"
+                      role="combobox"
+                      type="text"
+                      value=""
+                    />
+                    <input
+                      aria-hidden={true}
+                      className="rbt-input-hint"
+                      readOnly={true}
+                      style={
+                        Object {
+                          "backgroundColor": "transparent",
+                          "borderColor": "transparent",
+                          "boxShadow": "none",
+                          "color": "rgba(0, 0, 0, 0.35)",
+                          "left": 0,
+                          "pointerEvents": "none",
+                          "position": "absolute",
+                          "top": 0,
+                          "width": "100%",
+                        }
+                      }
+                      tabIndex={-1}
+                      value=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              className="col-lg-2"
+            >
+              <div
+                className="form_item form-validation-wrapper form-group"
+              >
+                <label
+                  className="form-label"
+                  htmlFor="education-gpa"
+                >
+                  毕业GPA
+                </label>
+                <input
+                  className="form-control"
+                  id="education-gpa"
+                  onChange={[Function]}
+                  placeholder="4.0?"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+            <div
+              className="col"
+            >
+              <div
+                className="form_item form-validation-wrapper form_item  form-group"
+              >
+                <label
+                  className="form-label"
+                  htmlFor="education-enter-date"
+                >
+                  入学日期
+                </label>
+                <div
+                  className="SingleDatePicker SingleDatePicker_1"
+                >
+                  <div>
+                    <div
+                      className="SingleDatePickerInput SingleDatePickerInput_1"
+                    >
+                      <div
+                        className="DateInput DateInput_1"
+                      >
+                        <input
+                          aria-describedby="DateInput__screen-reader-message-education-enter-date"
+                          aria-label="年/月/日期"
+                          autoComplete="off"
+                          className="DateInput_input DateInput_input_1"
+                          disabled={false}
+                          id="education-enter-date"
+                          name="education-enter-date"
+                          onChange={[Function]}
+                          onFocus={[Function]}
+                          onKeyDown={[Function]}
+                          placeholder="年/月/日期"
+                          readOnly={false}
+                          required={false}
+                          type="text"
+                          value=""
+                        />
+                        <p
+                          className="DateInput_screenReaderMessage DateInput_screenReaderMessage_1"
+                          id="DateInput__screen-reader-message-education-enter-date"
+                        >
+                          Navigate forward to interact with the calendar and select a date. Press the question mark key to get the keyboard shortcuts for changing dates.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              className="col"
+            >
+              <div
+                className="form_item form-validation-wrapper form_item  form-group"
+              >
+                <label
+                  className="form-label"
+                  htmlFor="education-graduate-date"
+                >
+                  毕业日期
+                </label>
+                <div
+                  className="SingleDatePicker SingleDatePicker_1"
+                >
+                  <div>
+                    <div
+                      className="SingleDatePickerInput SingleDatePickerInput_1"
+                    >
+                      <div
+                        className="DateInput DateInput_1"
+                      >
+                        <input
+                          aria-describedby="DateInput__screen-reader-message-education-graduate-date"
+                          aria-label="年/月/日期"
+                          autoComplete="off"
+                          className="DateInput_input DateInput_input_1"
+                          disabled={false}
+                          id="education-graduate-date"
+                          name="education-graduate-date"
+                          onChange={[Function]}
+                          onFocus={[Function]}
+                          onKeyDown={[Function]}
+                          placeholder="年/月/日期"
+                          readOnly={false}
+                          required={false}
+                          type="text"
+                          value=""
+                        />
+                        <p
+                          className="DateInput_screenReaderMessage DateInput_screenReaderMessage_1"
+                          id="DateInput__screen-reader-message-education-graduate-date"
+                        >
+                          Navigate forward to interact with the calendar and select a date. Press the question mark key to get the keyboard shortcuts for changing dates.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="row"
+          >
+            <div
+              className="col"
+            >
+              <div
+                className="form_item form-validation-wrapper form-group"
+              >
+                <label
+                  className="form-label"
+                  htmlFor="education-major"
+                >
+                  专业
+                </label>
+                <div
+                  className="rbt"
+                  style={
+                    Object {
+                      "outline": "none",
+                      "position": "relative",
+                    }
+                  }
+                  tabIndex={-1}
+                >
+                  <div
+                    style={
+                      Object {
+                        "display": "flex",
+                        "flex": 1,
+                        "height": "100%",
+                        "position": "relative",
+                      }
+                    }
+                  >
+                    <input
+                      aria-autocomplete="both"
+                      aria-expanded={false}
+                      aria-haspopup="listbox"
+                      autoComplete="off"
+                      className="rbt-input-main form-control rbt-input"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      onClick={[Function]}
+                      onFocus={[Function]}
+                      onKeyDown={[Function]}
+                      placeholder="输入所在的专业"
+                      role="combobox"
+                      type="text"
+                      value=""
+                    />
+                    <input
+                      aria-hidden={true}
+                      className="rbt-input-hint"
+                      readOnly={true}
+                      style={
+                        Object {
+                          "backgroundColor": "transparent",
+                          "borderColor": "transparent",
+                          "boxShadow": "none",
+                          "color": "rgba(0, 0, 0, 0.35)",
+                          "left": 0,
+                          "pointerEvents": "none",
+                          "position": "absolute",
+                          "top": 0,
+                          "width": "100%",
+                        }
+                      }
+                      tabIndex={-1}
+                      value=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              className="col"
+            >
+              <div
+                className="form_item form-validation-wrapper form-group"
+              >
+                <label
+                  className="form-label"
+                  htmlFor="education-degree"
+                >
+                  学历
+                </label>
+                <div
+                  className="rbt"
+                  style={
+                    Object {
+                      "outline": "none",
+                      "position": "relative",
+                    }
+                  }
+                  tabIndex={-1}
+                >
+                  <div
+                    style={
+                      Object {
+                        "display": "flex",
+                        "flex": 1,
+                        "height": "100%",
+                        "position": "relative",
+                      }
+                    }
+                  >
+                    <input
+                      aria-autocomplete="both"
+                      aria-expanded={false}
+                      aria-haspopup="listbox"
+                      autoComplete="off"
+                      className="rbt-input-main form-control rbt-input"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      onClick={[Function]}
+                      onFocus={[Function]}
+                      onKeyDown={[Function]}
+                      placeholder="请输入您获得的学历"
+                      role="combobox"
+                      type="text"
+                      value=""
+                    />
+                    <input
+                      aria-hidden={true}
+                      className="rbt-input-hint"
+                      readOnly={true}
+                      style={
+                        Object {
+                          "backgroundColor": "transparent",
+                          "borderColor": "transparent",
+                          "boxShadow": "none",
+                          "color": "rgba(0, 0, 0, 0.35)",
+                          "left": 0,
+                          "pointerEvents": "none",
+                          "position": "absolute",
+                          "top": 0,
+                          "width": "100%",
+                        }
+                      }
+                      tabIndex={-1}
+                      value=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              className="col"
+            >
+              <div
+                className="form_item form-validation-wrapper form-group"
+              >
+                <label
+                  className="form-label"
+                  htmlFor="education-school-country"
+                >
+                  学校所在国家
+                </label>
+                <div
+                  className="rbt"
+                  style={
+                    Object {
+                      "outline": "none",
+                      "position": "relative",
+                    }
+                  }
+                  tabIndex={-1}
+                >
+                  <div
+                    style={
+                      Object {
+                        "display": "flex",
+                        "flex": 1,
+                        "height": "100%",
+                        "position": "relative",
+                      }
+                    }
+                  >
+                    <input
+                      aria-autocomplete="both"
+                      aria-expanded={false}
+                      aria-haspopup="listbox"
+                      autoComplete="off"
+                      className="rbt-input-main form-control rbt-input"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      onClick={[Function]}
+                      onFocus={[Function]}
+                      onKeyDown={[Function]}
+                      placeholder="学校所在国家"
+                      role="combobox"
+                      type="text"
+                      value=""
+                    />
+                    <input
+                      aria-hidden={true}
+                      className="rbt-input-hint"
+                      readOnly={true}
+                      style={
+                        Object {
+                          "backgroundColor": "transparent",
+                          "borderColor": "transparent",
+                          "boxShadow": "none",
+                          "color": "rgba(0, 0, 0, 0.35)",
+                          "left": 0,
+                          "pointerEvents": "none",
+                          "position": "absolute",
+                          "top": 0,
+                          "width": "100%",
+                        }
+                      }
+                      tabIndex={-1}
+                      value=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              className="col"
+            >
+              <div
+                className="form_item form-validation-wrapper form-group"
+              >
+                <label
+                  className="form-label"
+                  htmlFor="education-school-city"
+                >
+                  所在城市
+                </label>
+                <div
+                  className="rbt"
+                  style={
+                    Object {
+                      "outline": "none",
+                      "position": "relative",
+                    }
+                  }
+                  tabIndex={-1}
+                >
+                  <div
+                    style={
+                      Object {
+                        "display": "flex",
+                        "flex": 1,
+                        "height": "100%",
+                        "position": "relative",
+                      }
+                    }
+                  >
+                    <input
+                      aria-autocomplete="both"
+                      aria-expanded={false}
+                      aria-haspopup="listbox"
+                      autoComplete="off"
+                      className="rbt-input-main form-control rbt-input"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      onClick={[Function]}
+                      onFocus={[Function]}
+                      onKeyDown={[Function]}
+                      placeholder="所在城市"
+                      role="combobox"
+                      type="text"
+                      value=""
+                    />
+                    <input
+                      aria-hidden={true}
+                      className="rbt-input-hint"
+                      readOnly={true}
+                      style={
+                        Object {
+                          "backgroundColor": "transparent",
+                          "borderColor": "transparent",
+                          "boxShadow": "none",
+                          "color": "rgba(0, 0, 0, 0.35)",
+                          "left": 0,
+                          "pointerEvents": "none",
+                          "position": "absolute",
+                          "top": 0,
+                          "width": "100%",
+                        }
+                      }
+                      tabIndex={-1}
+                      value=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="row"
+          >
+            <div
+              className="col"
+            >
+              <div
+                className="form_item form-validation-wrapper form-group"
+              >
+                <label
+                  className="form-label"
+                  htmlFor="education-highest-award"
+                >
+                  所获最高奖项 (有任何奖项都是加分好事！)
+                </label>
+                <input
+                  className="form-control"
+                  id="education-highest-award"
+                  onChange={[Function]}
+                  placeholder="请填写您在校期间所获得的最高奖项"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+            <div
+              className="col"
+            >
+              <div
+                className="form_item form-validation-wrapper form-group"
+              >
+                <label
+                  className="form-label"
+                  htmlFor="education-other-award"
+                >
+                  其他获得奖项
+                </label>
+                <input
+                  className="form-control"
+                  id="education-other-award"
+                  onChange={[Function]}
+                  placeholder="请填写您在校期间所获得的其他奖项"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            className="form_buttons row"
+          >
+            <div
+              className="space_betweens col"
+            >
+              <p
+                className="hidden"
+              />
+              <button
+                className="btn btn-primary"
+                disabled={false}
+                type="submit"
+              >
+                保存
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+      
+    </div>
+    <div
+      id="workXp"
+    >
+      <div
+        className="form_h1"
+      >
+        <div>
+          <img
+            alt="工作或实习经历 Icon"
+            src="/images/job.svg"
+          />
+          <h1>
+            工作或实习经历
+          </h1>
+        </div>
+        <p>
+          请您尽可能的表述您前10份的工作/实习/项目经历。从您最近经历开始说起。
+        </p>
+      </div>
+      <div>
+        <form
+          className=""
+          onSubmit={[Function]}
+        >
+          <div
+            className="row"
+          >
+            <div
+              className="col"
+            >
+              <h2
+                className="form_h2"
+              >
+                填写新经历
+              </h2>
+            </div>
+          </div>
+          <div
+            className="row"
+          >
+            <div
+              className="col-lg-4"
+            >
+              <div
+                className="form_item form-validation-wrapper form-group"
+              >
+                <label
+                  className="form-label"
+                  htmlFor="work-name"
+                >
+                  岗位名称
+                </label>
+                <input
+                  className="form-control"
+                  id="work-name"
+                  onChange={[Function]}
+                  placeholder="请填写您的岗位名称"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+            <div
+              className="col-lg-2"
+            >
+              <div
+                className="form_item form-group"
+              >
+                <label
+                  className="form-label"
+                  htmlFor="work-currentWorkFlag"
+                >
+                  是否已离职？
+                </label>
+                <div
+                  className="radioButton_container"
+                >
+                  <button
+                    className="radioButton"
+                    onClick={[Function]}
+                    value={true}
+                  >
+                    是
+                  </button>
+                  <button
+                    className="radioButton selected"
+                    onClick={[Function]}
+                    value={false}
+                  >
+                    否
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div
+              className="col-lg-6"
+            >
+              <div
+                className="form_item form-validation-wrapper form-group"
+              >
+                <label
+                  className="form-label"
+                  htmlFor="work-company"
+                >
+                  单位/公司名称
+                </label>
+                <input
+                  className="form-control"
+                  id="work-company"
+                  onChange={[Function]}
+                  placeholder="请填写您所在的单位/公司名称"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            className="row"
+          >
+            <div
+              className="col"
+            >
+              <div
+                className="form_item form-validation-wrapper form_item  form-group"
+              >
+                <label
+                  className="form-label"
+                  htmlFor="work-start-date"
+                >
+                  入职日期
+                </label>
+                <div
+                  className="SingleDatePicker SingleDatePicker_1"
+                >
+                  <div>
+                    <div
+                      className="SingleDatePickerInput SingleDatePickerInput_1"
+                    >
+                      <div
+                        className="DateInput DateInput_1"
+                      >
+                        <input
+                          aria-describedby="DateInput__screen-reader-message-work-start-date"
+                          aria-label="年/月/日期"
+                          autoComplete="off"
+                          className="DateInput_input DateInput_input_1"
+                          disabled={false}
+                          id="work-start-date"
+                          name="work-start-date"
+                          onChange={[Function]}
+                          onFocus={[Function]}
+                          onKeyDown={[Function]}
+                          placeholder="年/月/日期"
+                          readOnly={false}
+                          required={false}
+                          type="text"
+                          value=""
+                        />
+                        <p
+                          className="DateInput_screenReaderMessage DateInput_screenReaderMessage_1"
+                          id="DateInput__screen-reader-message-work-start-date"
+                        >
+                          Navigate forward to interact with the calendar and select a date. Press the question mark key to get the keyboard shortcuts for changing dates.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              className="col"
+            >
+              <div
+                className="form_item form-validation-wrapper form-group"
+              >
+                <label
+                  className="form-label"
+                  htmlFor="work-country"
+                >
+                  国家
+                </label>
+                <div
+                  className="rbt"
+                  style={
+                    Object {
+                      "outline": "none",
+                      "position": "relative",
+                    }
+                  }
+                  tabIndex={-1}
+                >
+                  <div
+                    style={
+                      Object {
+                        "display": "flex",
+                        "flex": 1,
+                        "height": "100%",
+                        "position": "relative",
+                      }
+                    }
+                  >
+                    <input
+                      aria-autocomplete="both"
+                      aria-expanded={false}
+                      aria-haspopup="listbox"
+                      autoComplete="off"
+                      className="rbt-input-main form-control rbt-input"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      onClick={[Function]}
+                      onFocus={[Function]}
+                      onKeyDown={[Function]}
+                      placeholder="岗位所在国家"
+                      role="combobox"
+                      type="text"
+                      value=""
+                    />
+                    <input
+                      aria-hidden={true}
+                      className="rbt-input-hint"
+                      readOnly={true}
+                      style={
+                        Object {
+                          "backgroundColor": "transparent",
+                          "borderColor": "transparent",
+                          "boxShadow": "none",
+                          "color": "rgba(0, 0, 0, 0.35)",
+                          "left": 0,
+                          "pointerEvents": "none",
+                          "position": "absolute",
+                          "top": 0,
+                          "width": "100%",
+                        }
+                      }
+                      tabIndex={-1}
+                      value=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              className="col"
+            >
+              <div
+                className="form_item form-validation-wrapper form-group"
+              >
+                <label
+                  className="form-label"
+                  htmlFor="work-city"
+                >
+                  城市
+                </label>
+                <div
+                  className="rbt"
+                  style={
+                    Object {
+                      "outline": "none",
+                      "position": "relative",
+                    }
+                  }
+                  tabIndex={-1}
+                >
+                  <div
+                    style={
+                      Object {
+                        "display": "flex",
+                        "flex": 1,
+                        "height": "100%",
+                        "position": "relative",
+                      }
+                    }
+                  >
+                    <input
+                      aria-autocomplete="both"
+                      aria-expanded={false}
+                      aria-haspopup="listbox"
+                      autoComplete="off"
+                      className="rbt-input-main form-control rbt-input"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      onClick={[Function]}
+                      onFocus={[Function]}
+                      onKeyDown={[Function]}
+                      placeholder="岗位所在城市"
+                      role="combobox"
+                      type="text"
+                      value=""
+                    />
+                    <input
+                      aria-hidden={true}
+                      className="rbt-input-hint"
+                      readOnly={true}
+                      style={
+                        Object {
+                          "backgroundColor": "transparent",
+                          "borderColor": "transparent",
+                          "boxShadow": "none",
+                          "color": "rgba(0, 0, 0, 0.35)",
+                          "left": 0,
+                          "pointerEvents": "none",
+                          "position": "absolute",
+                          "top": 0,
+                          "width": "100%",
+                        }
+                      }
+                      tabIndex={-1}
+                      value=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="row"
+          >
+            <div
+              className="col-lg-12"
+            >
+              <div
+                className="writeAssistantContainer"
+              >
+                <div
+                  className="draftjs-editor-container form_item form-validation-wrapper"
+                >
+                  <label
+                    className="form-label"
+                  >
+                    岗位细节描述
+                  </label>
+                  <div
+                    className="DraftEditor-root"
+                  >
+                    <div
+                      className="DraftEditor-editorContainer"
+                    >
+                      <div
+                        aria-expanded={null}
+                        className="notranslate public-DraftEditor-content"
+                        contentEditable={true}
+                        onBeforeInput={[Function]}
+                        onBlur={[Function]}
+                        onCompositionEnd={[Function]}
+                        onCompositionStart={[Function]}
+                        onCopy={[Function]}
+                        onCut={[Function]}
+                        onDragEnd={[Function]}
+                        onDragEnter={[Function]}
+                        onDragLeave={[Function]}
+                        onDragOver={[Function]}
+                        onDragStart={[Function]}
+                        onDrop={[Function]}
+                        onFocus={[Function]}
+                        onInput={[Function]}
+                        onKeyDown={[Function]}
+                        onKeyPress={[Function]}
+                        onKeyUp={[Function]}
+                        onMouseUp={[Function]}
+                        onPaste={[Function]}
+                        onSelect={[Function]}
+                        role="textbox"
+                        spellCheck={true}
+                        style={
+                          Object {
+                            "WebkitUserSelect": "text",
+                            "outline": "none",
+                            "userSelect": "text",
+                            "whiteSpace": "pre-wrap",
+                            "wordWrap": "break-word",
+                          }
+                        }
+                        suppressContentEditableWarning={true}
+                      >
+                        <div
+                          data-contents="true"
+                        >
+                          <ul
+                            className="public-DraftStyleDefault-ul"
+                            data-offset-key="25fo2-0-0"
+                          >
+                            <li
+                              className="public-DraftStyleDefault-unorderedListItem public-DraftStyleDefault-reset public-DraftStyleDefault-depth0 public-DraftStyleDefault-listLTR"
+                              data-block={true}
+                              data-editor="4bb8r"
+                              data-offset-key="25fo2-0-0"
+                            >
+                              <div
+                                className="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+                                data-offset-key="25fo2-0-0"
+                              >
+                                <span
+                                  data-offset-key="25fo2-0-0"
+                                  style={Object {}}
+                                >
+                                  <br
+                                    data-text="true"
+                                  />
+                                </span>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                </div>
+                <span
+                  className="writeAssistant"
+                >
+                  <svg>
+                    writing_assit.svg
+                  </svg>
+                  <button
+                    className="btn btn-link"
+                    disabled={false}
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    经历写作助手
+                  </button>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            className="form_buttons row"
+          >
+            <div
+              className="space_betweens col"
+            >
+              <p
+                className="hidden"
+              />
+              <button
+                className="btn btn-primary"
+                disabled={false}
+                type="submit"
+              >
+                保存
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+      
+    </div>
+    <div
+      id="projectXp"
+    >
+      <div
+        className="form_h1"
+      >
+        <div>
+          <img
+            alt="专业项目经历 Icon"
+            src="/images/project.svg"
+          />
+          <h1>
+            专业项目经历
+          </h1>
+        </div>
+        <p>
+          请您尽可能的表述您前10份的工作/实习/项目经历。从您最近经历开始说起。
+        </p>
+      </div>
+      <div>
+        <form
+          className=""
+          onSubmit={[Function]}
+        >
+          <div
+            className="row"
+          >
+            <div
+              className="col"
+            >
+              <h2
+                className="form_h2"
+              >
+                填写新经历
+              </h2>
+            </div>
+          </div>
+          <div
+            className="row"
+          >
+            <div
+              className="col-lg-4"
+            >
+              <div
+                className="form_item form-validation-wrapper form-group"
+              >
+                <label
+                  className="form-label"
+                  htmlFor="project-name"
+                >
+                  参与身份
+                </label>
+                <input
+                  className="form-control"
+                  id="project-name"
+                  onChange={[Function]}
+                  placeholder="请填写所参与身份的名称"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+            <div
+              className="col-lg-2"
+            >
+              <div
+                className="form_item form-group"
+              >
+                <label
+                  className="form-label"
+                  htmlFor="project-currentProjectFlag"
+                >
+                  是否已结束？
+                </label>
+                <div
+                  className="radioButton_container"
+                >
+                  <button
+                    className="radioButton selected"
+                    onClick={[Function]}
+                    value={true}
+                  >
+                    是
+                  </button>
+                  <button
+                    className="radioButton"
+                    onClick={[Function]}
+                    value={false}
+                  >
+                    否
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div
+              className="col"
+            >
+              <div
+                className="form_item form-validation-wrapper form-group"
+              >
+                <label
+                  className="form-label"
+                  htmlFor="project-company"
+                >
+                  单位/公司名称
+                </label>
+                <input
+                  className="form-control"
+                  id="project-company"
+                  onChange={[Function]}
+                  placeholder="请填写您所在的单位/公司名称"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            className="row"
+          >
+            <div
+              className="col"
+            >
+              <div
+                className="form_item form-validation-wrapper form_item  form-group"
+              >
+                <label
+                  className="form-label"
+                  htmlFor="project-enter-date"
+                >
+                  项目开始时间
+                </label>
+                <div
+                  className="SingleDatePicker SingleDatePicker_1"
+                >
+                  <div>
+                    <div
+                      className="SingleDatePickerInput SingleDatePickerInput_1"
+                    >
+                      <div
+                        className="DateInput DateInput_1"
+                      >
+                        <input
+                          aria-describedby="DateInput__screen-reader-message-project-enter-date"
+                          aria-label="年/月/日期"
+                          autoComplete="off"
+                          className="DateInput_input DateInput_input_1"
+                          disabled={false}
+                          id="project-enter-date"
+                          name="project-enter-date"
+                          onChange={[Function]}
+                          onFocus={[Function]}
+                          onKeyDown={[Function]}
+                          placeholder="年/月/日期"
+                          readOnly={false}
+                          required={false}
+                          type="text"
+                          value=""
+                        />
+                        <p
+                          className="DateInput_screenReaderMessage DateInput_screenReaderMessage_1"
+                          id="DateInput__screen-reader-message-project-enter-date"
+                        >
+                          Navigate forward to interact with the calendar and select a date. Press the question mark key to get the keyboard shortcuts for changing dates.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              className="col"
+            >
+              <div
+                className="form_item form-validation-wrapper form_item  form-group"
+              >
+                <label
+                  className="form-label"
+                  htmlFor="project-graduate-date"
+                >
+                  项目结束时间
+                </label>
+                <div
+                  className="SingleDatePicker SingleDatePicker_1"
+                >
+                  <div>
+                    <div
+                      className="SingleDatePickerInput SingleDatePickerInput_1"
+                    >
+                      <div
+                        className="DateInput DateInput_1"
+                      >
+                        <input
+                          aria-describedby="DateInput__screen-reader-message-project-graduate-date"
+                          aria-label="年/月/日期"
+                          autoComplete="off"
+                          className="DateInput_input DateInput_input_1"
+                          disabled={false}
+                          id="project-graduate-date"
+                          name="project-graduate-date"
+                          onChange={[Function]}
+                          onFocus={[Function]}
+                          onKeyDown={[Function]}
+                          placeholder="年/月/日期"
+                          readOnly={false}
+                          required={false}
+                          type="text"
+                          value=""
+                        />
+                        <p
+                          className="DateInput_screenReaderMessage DateInput_screenReaderMessage_1"
+                          id="DateInput__screen-reader-message-project-graduate-date"
+                        >
+                          Navigate forward to interact with the calendar and select a date. Press the question mark key to get the keyboard shortcuts for changing dates.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              className="col"
+            >
+              <div
+                className="form_item form-validation-wrapper form-group"
+              >
+                <label
+                  className="form-label"
+                  htmlFor="project-country"
+                >
+                  国家
+                </label>
+                <div
+                  className="rbt"
+                  style={
+                    Object {
+                      "outline": "none",
+                      "position": "relative",
+                    }
+                  }
+                  tabIndex={-1}
+                >
+                  <div
+                    style={
+                      Object {
+                        "display": "flex",
+                        "flex": 1,
+                        "height": "100%",
+                        "position": "relative",
+                      }
+                    }
+                  >
+                    <input
+                      aria-autocomplete="both"
+                      aria-expanded={false}
+                      aria-haspopup="listbox"
+                      autoComplete="off"
+                      className="rbt-input-main form-control rbt-input"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      onClick={[Function]}
+                      onFocus={[Function]}
+                      onKeyDown={[Function]}
+                      placeholder="项目所在国家"
+                      role="combobox"
+                      type="text"
+                      value=""
+                    />
+                    <input
+                      aria-hidden={true}
+                      className="rbt-input-hint"
+                      readOnly={true}
+                      style={
+                        Object {
+                          "backgroundColor": "transparent",
+                          "borderColor": "transparent",
+                          "boxShadow": "none",
+                          "color": "rgba(0, 0, 0, 0.35)",
+                          "left": 0,
+                          "pointerEvents": "none",
+                          "position": "absolute",
+                          "top": 0,
+                          "width": "100%",
+                        }
+                      }
+                      tabIndex={-1}
+                      value=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              className="col"
+            >
+              <div
+                className="form_item form-validation-wrapper form-group"
+              >
+                <label
+                  className="form-label"
+                  htmlFor="project-city"
+                >
+                  城市
+                </label>
+                <div
+                  className="rbt"
+                  style={
+                    Object {
+                      "outline": "none",
+                      "position": "relative",
+                    }
+                  }
+                  tabIndex={-1}
+                >
+                  <div
+                    style={
+                      Object {
+                        "display": "flex",
+                        "flex": 1,
+                        "height": "100%",
+                        "position": "relative",
+                      }
+                    }
+                  >
+                    <input
+                      aria-autocomplete="both"
+                      aria-expanded={false}
+                      aria-haspopup="listbox"
+                      autoComplete="off"
+                      className="rbt-input-main form-control rbt-input"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      onClick={[Function]}
+                      onFocus={[Function]}
+                      onKeyDown={[Function]}
+                      placeholder="项目所在城市"
+                      role="combobox"
+                      type="text"
+                      value=""
+                    />
+                    <input
+                      aria-hidden={true}
+                      className="rbt-input-hint"
+                      readOnly={true}
+                      style={
+                        Object {
+                          "backgroundColor": "transparent",
+                          "borderColor": "transparent",
+                          "boxShadow": "none",
+                          "color": "rgba(0, 0, 0, 0.35)",
+                          "left": 0,
+                          "pointerEvents": "none",
+                          "position": "absolute",
+                          "top": 0,
+                          "width": "100%",
+                        }
+                      }
+                      tabIndex={-1}
+                      value=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="row"
+          >
+            <div
+              className="col-lg-12"
+            >
+              <div
+                className="writeAssistantContainer"
+              >
+                <div
+                  className="draftjs-editor-container form_item form-validation-wrapper"
+                >
+                  <label
+                    className="form-label"
+                  >
+                    项目细节描述
+                  </label>
+                  <div
+                    className="DraftEditor-root"
+                  >
+                    <div
+                      className="DraftEditor-editorContainer"
+                    >
+                      <div
+                        aria-expanded={null}
+                        className="notranslate public-DraftEditor-content"
+                        contentEditable={true}
+                        onBeforeInput={[Function]}
+                        onBlur={[Function]}
+                        onCompositionEnd={[Function]}
+                        onCompositionStart={[Function]}
+                        onCopy={[Function]}
+                        onCut={[Function]}
+                        onDragEnd={[Function]}
+                        onDragEnter={[Function]}
+                        onDragLeave={[Function]}
+                        onDragOver={[Function]}
+                        onDragStart={[Function]}
+                        onDrop={[Function]}
+                        onFocus={[Function]}
+                        onInput={[Function]}
+                        onKeyDown={[Function]}
+                        onKeyPress={[Function]}
+                        onKeyUp={[Function]}
+                        onMouseUp={[Function]}
+                        onPaste={[Function]}
+                        onSelect={[Function]}
+                        role="textbox"
+                        spellCheck={true}
+                        style={
+                          Object {
+                            "WebkitUserSelect": "text",
+                            "outline": "none",
+                            "userSelect": "text",
+                            "whiteSpace": "pre-wrap",
+                            "wordWrap": "break-word",
+                          }
+                        }
+                        suppressContentEditableWarning={true}
+                      >
+                        <div
+                          data-contents="true"
+                        >
+                          <ul
+                            className="public-DraftStyleDefault-ul"
+                            data-offset-key="4j4mq-0-0"
+                          >
+                            <li
+                              className="public-DraftStyleDefault-unorderedListItem public-DraftStyleDefault-reset public-DraftStyleDefault-depth0 public-DraftStyleDefault-listLTR"
+                              data-block={true}
+                              data-editor="59qvq"
+                              data-offset-key="4j4mq-0-0"
+                            >
+                              <div
+                                className="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+                                data-offset-key="4j4mq-0-0"
+                              >
+                                <span
+                                  data-offset-key="4j4mq-0-0"
+                                  style={Object {}}
+                                >
+                                  <br
+                                    data-text="true"
+                                  />
+                                </span>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                </div>
+                <span
+                  className="writeAssistant"
+                >
+                  <svg>
+                    writing_assit.svg
+                  </svg>
+                  <button
+                    className="btn btn-link"
+                    disabled={false}
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    经历写作助手
+                  </button>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            className="form_buttons row"
+          >
+            <div
+              className="space_betweens col"
+            >
+              <p
+                className="hidden"
+              />
+              <button
+                className="btn btn-primary"
+                disabled={false}
+                type="submit"
+              >
+                保存
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+      
+    </div>
+    <div
+      id="otherXp"
+    >
+      <div
+        className="form_h1"
+      >
+        <div>
+          <img
+            alt="志愿者经历 Icon"
+            src="/images/volunteer.svg"
+          />
+          <h1>
+            志愿者经历
+          </h1>
+        </div>
+        <p>
+          请您尽可能的表述您志愿者经历。从您最近经历开始说起。
+        </p>
+      </div>
+      <div>
+        <form
+          className=""
+          onSubmit={[Function]}
+        >
+          <div
+            className="row"
+          >
+            <div
+              className="col"
+            >
+              <h2
+                className="form_h2"
+              >
+                填写新经历
+              </h2>
+            </div>
+          </div>
+          <div
+            className="row"
+          >
+            <div
+              className="col-lg-4"
+            >
+              <div
+                className="form_item form-validation-wrapper form-group"
+              >
+                <label
+                  className="form-label"
+                  htmlFor="volunteer-name"
+                >
+                  参与身份
+                </label>
+                <input
+                  className="form-control"
+                  id="volunteer-name"
+                  onChange={[Function]}
+                  placeholder="请填写所参与身份的名称"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+            <div
+              className="col-lg-2"
+            >
+              <div
+                className="form_item form-group"
+              >
+                <label
+                  className="form-label"
+                  htmlFor="volunteer-currentVolunteerFlag"
+                >
+                  是否已结束？
+                </label>
+                <div
+                  className="radioButton_container"
+                >
+                  <button
+                    className="radioButton"
+                    onClick={[Function]}
+                    value={true}
+                  >
+                    是
+                  </button>
+                  <button
+                    className="radioButton selected"
+                    onClick={[Function]}
+                    value={false}
+                  >
+                    否
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div
+              className="col"
+            >
+              <div
+                className="form_item form-validation-wrapper form-group"
+              >
+                <label
+                  className="form-label"
+                  htmlFor="volunteer-company"
+                >
+                  单位/公司名称
+                </label>
+                <input
+                  className="form-control"
+                  id="volunteer-company"
+                  onChange={[Function]}
+                  placeholder="请填写您所在的单位/公司名称"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            className="row"
+          >
+            <div
+              className="col"
+            >
+              <div
+                className="form_item form-validation-wrapper form_item  form-group"
+              >
+                <label
+                  className="form-label"
+                  htmlFor="volunteer-enter-date"
+                >
+                  志愿经历开始时间
+                </label>
+                <div
+                  className="SingleDatePicker SingleDatePicker_1"
+                >
+                  <div>
+                    <div
+                      className="SingleDatePickerInput SingleDatePickerInput_1"
+                    >
+                      <div
+                        className="DateInput DateInput_1"
+                      >
+                        <input
+                          aria-describedby="DateInput__screen-reader-message-volunteer-enter-date"
+                          aria-label="年/月/日期"
+                          autoComplete="off"
+                          className="DateInput_input DateInput_input_1"
+                          disabled={false}
+                          id="volunteer-enter-date"
+                          name="volunteer-enter-date"
+                          onChange={[Function]}
+                          onFocus={[Function]}
+                          onKeyDown={[Function]}
+                          placeholder="年/月/日期"
+                          readOnly={false}
+                          required={false}
+                          type="text"
+                          value=""
+                        />
+                        <p
+                          className="DateInput_screenReaderMessage DateInput_screenReaderMessage_1"
+                          id="DateInput__screen-reader-message-volunteer-enter-date"
+                        >
+                          Navigate forward to interact with the calendar and select a date. Press the question mark key to get the keyboard shortcuts for changing dates.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              className="col"
+            >
+              <div
+                className="form_item form-validation-wrapper form-group"
+              >
+                <label
+                  className="form-label"
+                  htmlFor="volunteer-country"
+                >
+                  国家
+                </label>
+                <div
+                  className="rbt"
+                  style={
+                    Object {
+                      "outline": "none",
+                      "position": "relative",
+                    }
+                  }
+                  tabIndex={-1}
+                >
+                  <div
+                    style={
+                      Object {
+                        "display": "flex",
+                        "flex": 1,
+                        "height": "100%",
+                        "position": "relative",
+                      }
+                    }
+                  >
+                    <input
+                      aria-autocomplete="both"
+                      aria-expanded={false}
+                      aria-haspopup="listbox"
+                      autoComplete="off"
+                      className="rbt-input-main form-control rbt-input"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      onClick={[Function]}
+                      onFocus={[Function]}
+                      onKeyDown={[Function]}
+                      placeholder="经历所在国家"
+                      role="combobox"
+                      type="text"
+                      value=""
+                    />
+                    <input
+                      aria-hidden={true}
+                      className="rbt-input-hint"
+                      readOnly={true}
+                      style={
+                        Object {
+                          "backgroundColor": "transparent",
+                          "borderColor": "transparent",
+                          "boxShadow": "none",
+                          "color": "rgba(0, 0, 0, 0.35)",
+                          "left": 0,
+                          "pointerEvents": "none",
+                          "position": "absolute",
+                          "top": 0,
+                          "width": "100%",
+                        }
+                      }
+                      tabIndex={-1}
+                      value=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              className="col"
+            >
+              <div
+                className="form_item form-validation-wrapper form-group"
+              >
+                <label
+                  className="form-label"
+                  htmlFor="volunteer-city"
+                >
+                  城市
+                </label>
+                <div
+                  className="rbt"
+                  style={
+                    Object {
+                      "outline": "none",
+                      "position": "relative",
+                    }
+                  }
+                  tabIndex={-1}
+                >
+                  <div
+                    style={
+                      Object {
+                        "display": "flex",
+                        "flex": 1,
+                        "height": "100%",
+                        "position": "relative",
+                      }
+                    }
+                  >
+                    <input
+                      aria-autocomplete="both"
+                      aria-expanded={false}
+                      aria-haspopup="listbox"
+                      autoComplete="off"
+                      className="rbt-input-main form-control rbt-input"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      onClick={[Function]}
+                      onFocus={[Function]}
+                      onKeyDown={[Function]}
+                      placeholder="经历所在城市"
+                      role="combobox"
+                      type="text"
+                      value=""
+                    />
+                    <input
+                      aria-hidden={true}
+                      className="rbt-input-hint"
+                      readOnly={true}
+                      style={
+                        Object {
+                          "backgroundColor": "transparent",
+                          "borderColor": "transparent",
+                          "boxShadow": "none",
+                          "color": "rgba(0, 0, 0, 0.35)",
+                          "left": 0,
+                          "pointerEvents": "none",
+                          "position": "absolute",
+                          "top": 0,
+                          "width": "100%",
+                        }
+                      }
+                      tabIndex={-1}
+                      value=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="row"
+          >
+            <div
+              className="col-lg-12"
+            >
+              <div
+                className="writeAssistantContainer"
+              >
+                <div
+                  className="draftjs-editor-container form_item form-validation-wrapper"
+                >
+                  <label
+                    className="form-label"
+                  >
+                    志愿者经历细节描述
+                  </label>
+                  <div
+                    className="DraftEditor-root"
+                  >
+                    <div
+                      className="DraftEditor-editorContainer"
+                    >
+                      <div
+                        aria-expanded={null}
+                        className="notranslate public-DraftEditor-content"
+                        contentEditable={true}
+                        onBeforeInput={[Function]}
+                        onBlur={[Function]}
+                        onCompositionEnd={[Function]}
+                        onCompositionStart={[Function]}
+                        onCopy={[Function]}
+                        onCut={[Function]}
+                        onDragEnd={[Function]}
+                        onDragEnter={[Function]}
+                        onDragLeave={[Function]}
+                        onDragOver={[Function]}
+                        onDragStart={[Function]}
+                        onDrop={[Function]}
+                        onFocus={[Function]}
+                        onInput={[Function]}
+                        onKeyDown={[Function]}
+                        onKeyPress={[Function]}
+                        onKeyUp={[Function]}
+                        onMouseUp={[Function]}
+                        onPaste={[Function]}
+                        onSelect={[Function]}
+                        role="textbox"
+                        spellCheck={true}
+                        style={
+                          Object {
+                            "WebkitUserSelect": "text",
+                            "outline": "none",
+                            "userSelect": "text",
+                            "whiteSpace": "pre-wrap",
+                            "wordWrap": "break-word",
+                          }
+                        }
+                        suppressContentEditableWarning={true}
+                      >
+                        <div
+                          data-contents="true"
+                        >
+                          <ul
+                            className="public-DraftStyleDefault-ul"
+                            data-offset-key="5duao-0-0"
+                          >
+                            <li
+                              className="public-DraftStyleDefault-unorderedListItem public-DraftStyleDefault-reset public-DraftStyleDefault-depth0 public-DraftStyleDefault-listLTR"
+                              data-block={true}
+                              data-editor="6rel2"
+                              data-offset-key="5duao-0-0"
+                            >
+                              <div
+                                className="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+                                data-offset-key="5duao-0-0"
+                              >
+                                <span
+                                  data-offset-key="5duao-0-0"
+                                  style={Object {}}
+                                >
+                                  <br
+                                    data-text="true"
+                                  />
+                                </span>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                </div>
+                <span
+                  className="writeAssistant"
+                >
+                  <svg>
+                    writing_assit.svg
+                  </svg>
+                  <button
+                    className="btn btn-link"
+                    disabled={false}
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    经历写作助手
+                  </button>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            className="form_buttons row"
+          >
+            <div
+              className="space_betweens col"
+            >
+              <p
+                className="hidden"
+              />
+              <button
+                className="btn btn-primary"
+                disabled={false}
+                type="submit"
+              >
+                保存
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+      
+    </div>
+    <div
+      id="certifications"
+    >
+      <div
+        className="form_h1"
+      >
+        <div>
+          <img
+            alt="技能证书 Icon"
+            src="/images/job.svg"
+          />
+          <h1>
+            技能证书
+          </h1>
+        </div>
+        <p>
+          请添加关于您教育背景的相关信息
+        </p>
+      </div>
+      <div>
+        <div
+          className="form_body"
+        >
+          <form
+            className=""
+            onSubmit={[Function]}
+          >
+            <div
+              className="flexie row"
+            >
+              <div
+                className="col"
+              >
+                <h2
+                  className="form_h2"
+                >
+                  填写新经历
+                </h2>
+              </div>
+              <div
+                className="toggle-up-arrow"
+                onClick={[Function]}
+              />
+            </div>
+            <div
+              className="row"
+            >
+              <div
+                className="col-lg-4"
+              >
+                <div
+                  className="form_item form-validation-wrapper form-group"
+                >
+                  <label
+                    className="form-label"
+                    htmlFor="certificate-name"
+                  >
+                    证书名称
+                  </label>
+                  <div
+                    className="rbt"
+                    style={
+                      Object {
+                        "outline": "none",
+                        "position": "relative",
+                      }
+                    }
+                    tabIndex={-1}
+                  >
+                    <div
+                      style={
+                        Object {
+                          "display": "flex",
+                          "flex": 1,
+                          "height": "100%",
+                          "position": "relative",
+                        }
+                      }
+                    >
+                      <input
+                        aria-autocomplete="both"
+                        aria-expanded={false}
+                        aria-haspopup="listbox"
+                        autoComplete="off"
+                        className="rbt-input-main form-control rbt-input"
+                        onBlur={[Function]}
+                        onChange={[Function]}
+                        onClick={[Function]}
+                        onFocus={[Function]}
+                        onKeyDown={[Function]}
+                        placeholder="请输入证书的名称"
+                        role="combobox"
+                        type="text"
+                        value=""
+                      />
+                      <input
+                        aria-hidden={true}
+                        className="rbt-input-hint"
+                        readOnly={true}
+                        style={
+                          Object {
+                            "backgroundColor": "transparent",
+                            "borderColor": "transparent",
+                            "boxShadow": "none",
+                            "color": "rgba(0, 0, 0, 0.35)",
+                            "left": 0,
+                            "pointerEvents": "none",
+                            "position": "absolute",
+                            "top": 0,
+                            "width": "100%",
+                          }
+                        }
+                        tabIndex={-1}
+                        value=""
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                className="col-lg-2"
+              >
+                <div
+                  className="form_item form-group"
+                >
+                  <label
+                    className="form-label"
+                    htmlFor="certificate-currentCertificateFlag"
+                  >
+                    永久有效？
+                  </label>
+                  <div
+                    className="radioButton_container"
+                  >
+                    <button
+                      className="radioButton"
+                      onClick={[Function]}
+                      value={true}
+                    >
+                      是
+                    </button>
+                    <button
+                      className="radioButton selected"
+                      onClick={[Function]}
+                      value={false}
+                    >
+                      否
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div
+                className="col"
+              >
+                <div
+                  className="form_item form-validation-wrapper form_item  form-group"
+                >
+                  <label
+                    className="form-label"
+                    htmlFor="certificate-start-date"
+                  >
+                    颁发时间/获得时间
+                  </label>
+                  <div
+                    className="SingleDatePicker SingleDatePicker_1"
+                  >
+                    <div>
+                      <div
+                        className="SingleDatePickerInput SingleDatePickerInput_1"
+                      >
+                        <div
+                          className="DateInput DateInput_1"
+                        >
+                          <input
+                            aria-describedby="DateInput__screen-reader-message-certificate-start-date"
+                            aria-label="年/月/日期"
+                            autoComplete="off"
+                            className="DateInput_input DateInput_input_1"
+                            disabled={false}
+                            id="certificate-start-date"
+                            name="certificate-start-date"
+                            onChange={[Function]}
+                            onFocus={[Function]}
+                            onKeyDown={[Function]}
+                            placeholder="年/月/日期"
+                            readOnly={false}
+                            required={false}
+                            type="text"
+                            value=""
+                          />
+                          <p
+                            className="DateInput_screenReaderMessage DateInput_screenReaderMessage_1"
+                            id="DateInput__screen-reader-message-certificate-start-date"
+                          >
+                            Navigate forward to interact with the calendar and select a date. Press the question mark key to get the keyboard shortcuts for changing dates.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                className="col"
+              >
+                <div
+                  className="form_item form-validation-wrapper form_item  form-group"
+                >
+                  <label
+                    className="form-label"
+                    htmlFor="certificate-end-date"
+                  >
+                    有效期至
+                  </label>
+                  <div
+                    className="SingleDatePicker SingleDatePicker_1"
+                  >
+                    <div>
+                      <div
+                        className="SingleDatePickerInput SingleDatePickerInput_1"
+                      >
+                        <div
+                          className="DateInput DateInput_1"
+                        >
+                          <input
+                            aria-describedby="DateInput__screen-reader-message-certificate-end-date"
+                            aria-label="年/月/日期"
+                            autoComplete="off"
+                            className="DateInput_input DateInput_input_1"
+                            disabled={false}
+                            id="certificate-end-date"
+                            name="certificate-end-date"
+                            onChange={[Function]}
+                            onFocus={[Function]}
+                            onKeyDown={[Function]}
+                            placeholder="年/月/日期"
+                            readOnly={false}
+                            required={false}
+                            type="text"
+                            value=""
+                          />
+                          <p
+                            className="DateInput_screenReaderMessage DateInput_screenReaderMessage_1"
+                            id="DateInput__screen-reader-message-certificate-end-date"
+                          >
+                            Navigate forward to interact with the calendar and select a date. Press the question mark key to get the keyboard shortcuts for changing dates.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              className="form_buttons row"
+            >
+              <div
+                className="flex-end col"
+              >
+                <button
+                  className="btn btn-primary"
+                  disabled={false}
+                  type="submit"
+                >
+                  保存
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</div>
+`;

@@ -23,10 +23,11 @@ app.use(helmet.noSniff());
 app.use(helmet.xssFilter());
 
 app.use(compression());
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+
 app.use(cookieParser());
-app.use(bodyParser.json());
+
+app.use(bodyParser.json({ limit: '20mb' }));
+app.use(bodyParser.urlencoded({ limit: '20mb', extended: true }));
 
 app.use(express.static(path.join(__dirname, "build")));
 app.use('/v1/translate', authCheck, translateRouter);

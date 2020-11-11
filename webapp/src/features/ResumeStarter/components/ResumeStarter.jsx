@@ -17,7 +17,6 @@ const ResumerStarter = () => {
 	const messages = useI8n();
 	const fileUploadInput = useRef(null);
 
-	const [selectedFile, setSelectedFile] = useState([]);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	const updateBasic = (data) => {
@@ -67,17 +66,25 @@ const ResumerStarter = () => {
 	};
 
 	const onChangeHandler = (e) => {
-		setSelectedFile(e.target.files);
-		handleSubmit();
+		if (e.target.files.length > 0) {
+			handleSubmit(e.target.files[0]);
+		}
 	};
 
-	const handleSubmit = async () => {
-		const data = new FormData();
-		data.append('file', selectedFile[0]);
+	// 把文件转成base64 string 
+	const toBase64 = file => new Promise((resolve, reject) => {
+		const reader = new FileReader();
+		reader.readAsDataURL(file);
+		reader.onload = () => resolve(reader.result);
+		reader.onerror = error => reject(error);
+	});
+
+	const handleSubmit = async (file) => {
+		const data = { base64: await toBase64(file), fileName: file.name };
 
 		const response = await appServices.resumeSDKUpload(data);
 		if (response) {
-			await updateInfo(response.data.result);
+			await updateInfo(response.result);
 			previewResume(messages.RPreview)
 		}
 	};
@@ -94,8 +101,8 @@ const ResumerStarter = () => {
 					<p className={styles.optionTitle}>{messages.createNewResume}</p>
 					<p className={styles.optionDescription}>{messages.chooseLanguage}</p>
 					<div className={styles.buttonWrapper}>
-						<Button onClick={()=>setIsModalOpen(true)} className={styles.button}>{messages.language_toggle_zh}</Button>
-						<Button onClick={()=>setIsModalOpen(true)} className={styles.button}>{messages.language_toggle_en}</Button>
+						<Button onClick={() => setIsModalOpen(true)} className={styles.button}>{messages.language_toggle_zh}</Button>
+						<Button onClick={() => setIsModalOpen(true)} className={styles.button}>{messages.language_toggle_en}</Button>
 					</div>
 				</div>
 				<div className={styles.option}>
@@ -109,7 +116,7 @@ const ResumerStarter = () => {
 				<input type='file' ref={fileUploadInput} onChange={onChangeHandler} />
 			</div>
 
-			{isModalOpen ? <NameResume/> : null }
+			{isModalOpen ? <NameResume /> : null}
 		</div>
 	);
 };

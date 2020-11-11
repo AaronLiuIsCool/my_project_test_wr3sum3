@@ -35,18 +35,18 @@ async function getResume(dispatch, resumeId) {
 }
 
 async function getAccountInfoAndSetResumeName(dispatch, userId, resumeId) {
-  try {
-    const responseJson = await accountServices.getAccountInfo(userId);
-    if (responseJson.success) {
-      const { resumes } = responseJson.account;
-      const resume = resumes.find((item) => item.resumeId === resumeId);
-      dispatch(actions.setAlias(resume?.alias));
-    } else {
-      logger.error(responseJson.message);
+    try {
+        const responseJson = await accountServices.getAccountInfo(userId);
+        if (responseJson.success) {
+            const { resumes } = responseJson.account;
+            const resume = resumes.find((item) => item.resumeId === resumeId);
+            dispatch(actions.setAlias(resume?.alias));
+        } else {
+            logger.error(responseJson.message);
+        }
+    } catch (exception) {
+        logger.error(exception);
     }
-  } catch (exception) {
-    logger.error(exception);
-  }
 }
 const SmartResume = ({ useObserver = false, resumeId }) => {
     const dispatch = useDispatch();
@@ -62,7 +62,7 @@ const SmartResume = ({ useObserver = false, resumeId }) => {
             previewResume(messages.RPreview);
         }
         updatePreview();
-        
+
     }, []); // eslint-disable-line
 
     return (
@@ -80,7 +80,7 @@ const SmartResume = ({ useObserver = false, resumeId }) => {
 };
 
 SmartResume.propTypes = {
-    useObserver: PropTypes.bool 
+    useObserver: PropTypes.bool
 };
 
 export default SmartResume;

@@ -15,6 +15,7 @@ const s3 = new aws.S3();
 
 router.post("/upload", function (req, res) {
   const { fileName, base64, fileType } = req.body;
+  console.log("/upload call", fileName, fileType);
   const buf = new Buffer(
     base64.replace(/^data:image\/\w+;base64,/, ""),
     "base64"
@@ -34,10 +35,12 @@ router.post("/upload", function (req, res) {
       console.log("error", err);
       return res.status(400).json({ status: "failed", error: err });
     } else {
+
       const response = {
         success: true,
         url: `http://${S3_BUCKET_NAME}.s3.${S3_BUCKET_REGION}.amazonaws.com/${fileName}`,
       };
+      console.log("s3 put response", response)
       return res.status(200).json(response);
     }
   });
