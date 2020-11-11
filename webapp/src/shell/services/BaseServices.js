@@ -21,13 +21,9 @@ async function fetchToJson(request) {
   let json = {};
   try {
     const response = await fetch(request);
-    if (!response.ok) {
-      handleError(`Services not OK! ${JSON.stringify(response, null, 2)}`);
-    }
-
-    json = await response.json().catch(() => ({}));;
+    json = await response.json();
     if (json?.success === false) {
-      handleError(`Services failed! ${JSON.stringify(json, null, 2)}`);
+      handleError(`BE Failed! ${JSON.stringify(json, null, 2)}`);
     }
   } catch (error) {
     handleError(error);
