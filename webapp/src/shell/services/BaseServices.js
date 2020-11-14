@@ -1,5 +1,5 @@
 import configs from 'shell/configs';
-import {showLoader, hideLoader} from 'shell/loader'
+import { showLoader, hideLoader } from 'shell/loader'
 import { getLogger } from 'shell/logger';
 
 const logger = getLogger('BaseService');
@@ -40,7 +40,7 @@ export function getServiceUrl(baseUrl, api) {
   return `http://${baseUrl}/${api}`
 }
 
-export async function get(url,  data, options) {
+export async function get(url, data, options) {
   const headers = getHeaders();
   const request = new Request(url, {
     credentials: 'include',

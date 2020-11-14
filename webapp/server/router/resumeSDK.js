@@ -12,7 +12,11 @@ async function resumeSDK(res, data) {
 
   try {
     const resp = await axios.post(url, args);
-    return res.status(200).json(resp.data);
+    const response = {
+      status: resp.data.status,
+      data: resp.data.result
+    }
+    return res.status(200).json(response);
   } catch (err) {
     // Handle Error Here
     console.error(err);
