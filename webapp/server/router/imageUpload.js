@@ -32,7 +32,6 @@ router.post("/upload", function (req, res) {
 
   s3.putObject(params, function (err) {
     if (err) {
-      console.log("error", err);
       return res.status(400).json({ status: "failed", error: err });
     } else {
 

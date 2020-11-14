@@ -1,5 +1,5 @@
 import configs from 'shell/configs';
-import {showLoader, hideLoader} from 'shell/loader'
+import { showLoader, hideLoader } from 'shell/loader'
 import { getLogger } from 'shell/logger';
 
 const logger = getLogger('BaseService');
@@ -21,9 +21,13 @@ async function fetchToJson(request) {
   let json = {};
   try {
     const response = await fetch(request);
-    json = await response.json();
+    if (!response.ok) {
+      handleError(`Services not OK! ${JSON.stringify(response, null, 2)}`);
+    }
+
+    json = await response.json().catch(() => ({}));;
     if (json?.success === false) {
-      handleError(`BE Failed! ${JSON.stringify(json, null, 2)}`);
+      handleError(`Services failed! ${JSON.stringify(json, null, 2)}`);
     }
   } catch (error) {
     handleError(error);
@@ -36,7 +40,7 @@ export function getServiceUrl(baseUrl, api) {
   return `http://${baseUrl}/${api}`
 }
 
-export async function get(url,  data, options) {
+export async function get(url, data, options) {
   const headers = getHeaders();
   const request = new Request(url, {
     credentials: 'include',

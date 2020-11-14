@@ -520,10 +520,41 @@ public class AccountService {
 
     public void addResumeToAccount(String userId, ResumeDto resumeDto) {
         Resume resume = modelMapper.map(resumeDto, Resume.class);
+        resume.setCreatedAt(Instant.now());
         Account account = accountRepo.findAccountById(userId);
         account.getResumes().add(resume);
         resume.setAccount(account);
         accountRepo.save(account);
+    }
+
+    public void updateResume(String resumeId, ResumeDto resumeDto) {
+        Resume toUpdate = resumeRepo.findById(resumeId).orElseThrow(() -> {
+            String errorMessage = String.format("Resume with id %s not found", resumeId);
+            ServiceException serviceException = new ServiceException(ResultCode.NOT_FOUND, errorMessage);
+            serviceHelper.handleException(logger, serviceException, errorMessage);
+            return serviceException;
+        });
+
+        String alias = resumeDto.getAlias();
+        if (!StringUtils.isEmpty(alias)) {
+            toUpdate.setAlias(alias);
+        }
+        String thumbnailUri = resumeDto.getThumbnailUri();
+        if (!StringUtils.isEmpty(thumbnailUri)) {
+            toUpdate.setThumbnailUri(thumbnailUri);
+        }
+
+        Account account = toUpdate.getAccount();
+        List<Resume> resumes = account.getResumes();
+        try {
+            resumes.replaceAll(resume -> resume.getId().equals(resumeId) ? toUpdate : resume);
+            account.setResumes(resumes);
+            accountRepo.save(account);
+        } catch (Exception ex) {
+            String errMsg = "Failed to update resume";
+            serviceHelper.handleException(logger, ex, errMsg);
+            throw new ServiceException(errMsg, ex);
+        }
     }
 
     public void removeResumeFromAccount(String userId, ResumeDto resumeDto) {
