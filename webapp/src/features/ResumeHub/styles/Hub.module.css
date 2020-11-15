@@ -58,12 +58,35 @@ a.action {
 }
 
 .name {
-  margin-top: 6px;
+  border: none;
+  flex: 1;
+  position: relative;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
   font-size: 20px;
   font-weight: bold;
   color: #333333;
+  outline: none;
+  border-bottom: 2px solid transparent;
 }
-
+.name:focus {
+  border-bottom: 2px solid #007af8;
+}
+.aliasContainer {
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+}
+.edit {
+  margin-left: 10px;
+  width: 20px;
+  display: none;
+  cursor: pointer;
+}
+.aliasContainer:hover .edit {
+  display: block;
+}
 .time {
   margin-top: 20px;
   font-size: 14px;

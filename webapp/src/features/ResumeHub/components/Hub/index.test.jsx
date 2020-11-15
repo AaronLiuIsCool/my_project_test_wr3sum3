@@ -19,6 +19,7 @@ const mockData = [{
     "thumbnailUri":"thumbnailUri",
     "createdAt":"2020-10-26T04:02:01Z"
 }];
+jest.mock('moment', () => () => ({format: () => '2018–01–30T12:34:56+00:00'}));
 
 describe('Hub', () => {
     let dateSpy;
