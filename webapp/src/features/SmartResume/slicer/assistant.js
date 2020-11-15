@@ -4,7 +4,11 @@ const initialState = {
 
 const reducers = {
     toggleAssistant: (state, action) => {
-        if (state.assistant.trigger === action.payload.trigger) {
+        if (action.payload.trigger === 'default') {
+            state.assistant.show = false;
+            delete state.assistant.trigger;
+            delete state.assistant.context;
+        } else if (state.assistant.trigger === action.payload.trigger) {
             state.assistant.show = false;
             delete state.assistant.trigger;
             delete state.assistant.context;

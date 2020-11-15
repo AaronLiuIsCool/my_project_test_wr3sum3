@@ -43,8 +43,6 @@ function updateExpFields(state, field, subfield, value) {
 const reducers = {
   updateBasicInfoRating: (state, action) => {
     updateField(state, "basicInfo", action.payload);
-    // console.log(JSON.stringify(action, undefined, 2));
-    // console.log(JSON.stringify(state, undefined, 2));
   },
   updateLayoutRating: (state, action) => {
     updateField(state, "layoutInfo", action.payload);
@@ -53,6 +51,10 @@ const reducers = {
   updateEducationRating: (state, action) => {
     const { index, details } = action.payload;
     updateFieldByIndex(state, "educationInfo", index, details);
+  },
+  
+  clearEducationInfo: (state, action) => {
+    state.ratings.data.educationInfo = []
   },
 
   updateCertificateRating: (state, action) => {
@@ -83,6 +85,12 @@ const reducers = {
         updateExpFields(state, "otherInfo", key, payload[key]);
     }
   },
+  
+  updateToInitalState: (state, action) => {
+    state.ratings.data = {
+      ...ratings,
+    }
+  }
 };
 const selectors = {
   selectRatings: ({ resume }) => resume.ratings,

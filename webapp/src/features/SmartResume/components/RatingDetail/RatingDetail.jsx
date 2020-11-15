@@ -113,6 +113,12 @@ const RatingDetail = () => {
                 amount: [],
                 sorted: []
             });
+            setOtherInfo({
+                ...data.otherInfo,
+                company: [],
+                amount: [],
+                sorted: []
+            });
         } else if (filter === 'exp-value') {
             setWorkInfo({
                 ...data.workInfo,
@@ -122,6 +128,12 @@ const RatingDetail = () => {
             });
             setProjectInfo({
                 ...data.projectInfo,
+                keywords: [],
+                quantify: [],
+                sorted: []
+            });
+            setOtherInfo({
+                ...data.otherInfo,
                 keywords: [],
                 quantify: [],
                 sorted: []
@@ -141,9 +153,17 @@ const RatingDetail = () => {
                 company: [],
                 amount: []
             });
+            setOtherInfo({
+                ...data.otherInfo,
+                keywords: [],
+                quantify: [],
+                company: [],
+                amount: []
+            });
         } else {
             setWorkInfo(EXP_DATA_DEFAULT_SATE);
             setProjectInfo(EXP_DATA_DEFAULT_SATE);
+            setOtherInfo(EXP_DATA_DEFAULT_SATE);
         }
     };
 
@@ -161,7 +181,9 @@ const RatingDetail = () => {
         const { dataset } = e.target;
         const { section, selector } = dataset;
         jumpTo(section);
-        document.querySelector(selector).focus();
+        setTimeout(() => {
+            document.querySelector(selector).focus();
+        }, 0)
     };
     const handleSelect = (option) => {
         applyFilter(option);
@@ -169,21 +191,30 @@ const RatingDetail = () => {
 
     const jumpTo = (section) => {
         const elem = document.querySelector(`#${section}`);
+        Array.from(document.querySelector(`#${section}`).querySelectorAll('.collapsed-section .toggle-up-arrow')).forEach(el => {
+            el.click()
+        })
         elem.scrollIntoView();
         dispatch(actions.moveStep(sectionToIndexMapping[section]));
     };
 
     const handleSpecialNavigate = (section, obj) => {
         const elem = document.querySelector(`#${section}`);
+        Array.from(document.querySelector(`#${section}`).querySelectorAll('.collapsed-section .toggle-up-arrow')).forEach(el => {
+            el.click()
+        })
         elem.scrollIntoView();
-        notifyEditor(obj.eventType, obj.index, {
-            data: {
-                content: obj.content,
-                keywords: obj.keywords,
-                quantify: obj.quantify
-            },
-            type: 'update-content'
-        });
+        setTimeout(() => {
+            notifyEditor(obj.eventType, obj.index, {
+                data: {
+                    content: obj.content,
+                    keywords: obj.keywords,
+                    quantify: obj.quantify
+                },
+                type: 'update-content'
+            });
+        }, 0)
+        
     };
     const notifyEditor = (type, index, detail) => {
         const eventName = `${type}-${index}`;
@@ -230,13 +261,13 @@ const RatingDetail = () => {
                                         </div>
                                     </div>
                                     <div className="nav-btn">
-                                        <button
+                                        { !item.noNav && <button
                                             data-selector={item.selector}
                                             data-section={item.section}
                                             onClick={handleNavigate}
                                         >
                                             {messages.jumpTo}
-                                        </button>
+                                        </button>}
                                     </div>
                                 </div>
                             ))}
@@ -268,13 +299,15 @@ const RatingDetail = () => {
                                             </div>
                                         </div>
                                         <div className="nav-btn">
-                                            <button
+                                        { 
+                                            !item.noNav && <button
                                                 data-selector={item.selector}
                                                 data-section={item.section}
                                                 onClick={handleNavigate}
                                             >
                                                 {messages.jumpTo}
                                             </button>
+                                        }
                                         </div>
                                     </div>
                                 ) : item.school ? (
@@ -329,21 +362,21 @@ const RatingDetail = () => {
                         info={workInfo}
                         handleSpecialNavigate={handleSpecialNavigate}
                         jumpTo={jumpTo}
-                        type={'work'}
+                        type={'workXp'}
                     />
                     <ExpBlocks
                         messages={messages}
                         info={projectInfo}
                         handleSpecialNavigate={handleSpecialNavigate}
                         jumpTo={jumpTo}
-                        type={'project'}
+                        type={'projectXp'}
                     />
                     <ExpBlocks
                         messages={messages}
                         info={otherInfo}
                         handleSpecialNavigate={handleSpecialNavigate}
                         jumpTo={jumpTo}
-                        type={'volunteer'}
+                        type={'otherXp'}
                     />
                     {certInfo.length > 0 &&
                         certInfo.map((item, index) => (
@@ -396,7 +429,11 @@ const RatingDetail = () => {
                                             {messages.resume}
                                             <span>{item.name}</span>
                                         </h4>
-                                        <p>{item.message}</p>
+                                        {
+                                            item.noNav ? <p dangerouslySetInnerHTML={{
+                                                __html: item.message
+                                            }}></p> : <p>{item.message}</p>
+                                        }
                                         <div className="tag">
                                             <span>
                                                 {labelMappings[item.type]}
@@ -405,13 +442,15 @@ const RatingDetail = () => {
                                         </div>
                                     </div>
                                     <div className="nav-btn">
-                                        <button
-                                            onClick={() => {
-                                                jumpTo(item.section);
-                                            }}
-                                        >
-                                            {messages.jumpTo}
-                                        </button>
+                                        { 
+                                            !item.noNav && <button
+                                                onClick={() => {
+                                                    jumpTo(item.section);
+                                                }}
+                                            >
+                                                {messages.jumpTo}
+                                            </button>
+                                        }
                                     </div>
                                 </div>
                             </div>
