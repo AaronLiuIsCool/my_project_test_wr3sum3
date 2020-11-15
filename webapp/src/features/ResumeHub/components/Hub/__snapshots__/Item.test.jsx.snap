@@ -1,0 +1,87 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Item It should match snapshot 1`] = `
+<div
+  className="itemContainer"
+>
+  <div
+    className="itemContent"
+  >
+    <div
+      className="right"
+    >
+      <div
+        className="aliasContainer"
+      >
+        <input
+          className="name"
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          value=""
+        />
+        <div
+          className="edit"
+        >
+          <img
+            alt="edit"
+            src="edit.svg"
+          />
+        </div>
+      </div>
+      <div
+        className="time"
+      >
+        11/10/2020, 4:00:00 PM
+      </div>
+      <div
+        className="links"
+      >
+        <a
+          className="link btn btn-link"
+          disabled={false}
+          href="/resume/123321"
+          onClick={[Function]}
+        >
+          <svg
+            className="svg"
+          >
+            edit.svg
+          </svg>
+        </a>
+        <button
+          className="link btn btn-link"
+          disabled={false}
+          onClick={[Function]}
+          type="button"
+        >
+          <svg
+            className="svg"
+          >
+            download.svg
+          </svg>
+        </button>
+      </div>
+      <button
+        className="delete btn btn-link"
+        disabled={false}
+        onClick={[Function]}
+        type="button"
+      >
+        <svg
+          className="svg"
+        >
+          delete.svg
+        </svg>
+         
+      </button>
+    </div>
+  </div>
+  <a
+    className="matchingBtn btn btn-primary"
+    disabled={false}
+    href="/jobs?resume=123321"
+    onClick={[Function]}
+  />
+</div>
+`;

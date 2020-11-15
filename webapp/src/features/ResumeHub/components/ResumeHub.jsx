@@ -5,7 +5,7 @@ import CallToAction from './CallToAction';
 import Hub from './Hub';
 
 import { selectLanguage, selectUserId } from 'features/App/slicer';
-import { selectResumes, updateAccount } from 'features/App/slicer/account';
+import { selectResumes, updateAccount, selectAccount } from 'features/App/slicer/account';
 import { getLogger } from 'shell/logger';
 import { I8nContext } from 'shell/i18n';
 import AccountServices from 'shell/services/AccountServices';
@@ -29,11 +29,11 @@ async function getAccountInfo(userId, dispatch) {
     }
 }
 
-const renderHub = (resumes = []) => {
+const renderHub = (resumes = [], account={}) => {
     if (resumes.length === 0) {
         return <CallToAction />;
     } else {
-        return <Hub resumes={resumes} />;
+        return <Hub resumes={resumes} account={account}/>;
     }
 }
 
@@ -42,6 +42,7 @@ const ResumeHub = () => {
     const [ready, setReady] = useState(false);
     const userId = useSelector(selectUserId);
     const resumes = useSelector(selectResumes);
+    const account = useSelector(selectAccount);
     const language = useSelector(selectLanguage);
     const messages = language === 'zh' ? zh : en;
 
@@ -56,7 +57,7 @@ const ResumeHub = () => {
     return (
         <I8nContext.Provider value={messages}>
             <div className='features padding-for-nav resumeHub'>
-                {renderHub(resumes)}
+                {renderHub(resumes, account)}
             </div>
         </I8nContext.Provider>
     );
