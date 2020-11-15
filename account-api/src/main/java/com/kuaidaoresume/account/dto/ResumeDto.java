@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import java.time.Instant;
 
 @Data
 @AllArgsConstructor
@@ -16,4 +17,5 @@ public class ResumeDto {
     private String resumeId;
     private String alias;
     private String thumbnailUri;
+    private Instant createdAt;
 }
