@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Resume Preview Snapshot test Snapshot with no data match 1`] = `
+<div
+  className="container"
+>
+  <div
+    className="previewWrapper"
+    id="displayPDF"
+  >
+    
+  </div>
+  <div
+    className="widgetContainer"
+    id="widgetsContainer"
+  >
+    <div>
+      <button
+        className="whiteBtn"
+        onClick={[Function]}
+      >
+        编辑主题色
+         
+        <span
+          className="colorSquare"
+          style={
+            Object {
+              "backgroundColor": "#3e89ec",
+            }
+          }
+        />
+      </button>
+      <button
+        onClick={[Function]}
+      />
+      <button
+        onClick={[Function]}
+      />
+      <button
+        onClick={[Function]}
+      >
+        <img
+          alt="download"
+          src="download_white.svg"
+        />
+         
+      </button>
+      <button
+        className="circle"
+        onClick={[Function]}
+      >
+        ?
+      </button>
+    </div>
+  </div>
+</div>
+`;

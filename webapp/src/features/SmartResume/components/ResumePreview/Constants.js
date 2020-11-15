@@ -20,7 +20,7 @@ export const imageWidth = 20;
 export const imageHeight = 20;
 
 // positions + paddings
-export const startY = pdfTopPadding+5;
+export const startY = pdfTopPadding + 5;
 export const endY = pdfPageHeight - pdfTopPadding;
 export const startX = pdfLeftPadding;
 export const endX = pdfPageWidth - pdfLeftPadding;

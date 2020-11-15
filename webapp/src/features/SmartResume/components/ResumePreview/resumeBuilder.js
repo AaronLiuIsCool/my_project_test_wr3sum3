@@ -30,8 +30,22 @@ let currentYPos = startY;
 
 let primaryColor = Constants.c_blue;
 
-// 一键整页
+// helper function, 计算右侧padding
+const getRightPadding = (content, numOfPadding = 1) => {
+  // regex for alphabets only 
+  const alphabetRegex = /^[A-Za-z0-9\s]*$/;
 
+  // 在当前字体下 getTextWidth(text) 
+  // 计算中文长度和英文长度会有偏差 
+  // 需要手动给英文添加额外padding
+  if (alphabetRegex.test(content)) {
+    return doc.getTextWidth(content) + Constants.defaultPaddingRight * (numOfPadding + 2);
+  }
+  return doc.getTextWidth(content) + Constants.defaultPaddingRight * numOfPadding;
+
+}
+
+// 一键整页
 const adjustToWholePageHelper = () => {
   // 如果简历没有preview 则无法整页
   if (data.length === 0) {
@@ -83,9 +97,8 @@ const adjustToWholePageHelper = () => {
  * read from Redux and prepare Data object
  * the object will be used by both Resume Preview and Resume Download
  * to read the structure of data, please refer to instruction.png
- * the data format looks like sample_data.js
  */
-export const prepareData = () => {
+export const prepareData = (resumeData, messages) => {
   const basicData = resumeData.basic.data;
   const educationData = resumeData.education.data;
   const workData = resumeData.work.data;
@@ -93,7 +106,7 @@ export const prepareData = () => {
   const volunteerData = resumeData.volunteer.data;
   // variable reset
   data = [];
-  doc = new jsPDF("A4");
+  doc = new jsPDF({ format: "A4", lineHeight: 1.5 });
   // define the fonts
   // add the font to jsPDF
   if (process.env.REACT_APP_ENV !== "test") {
@@ -110,9 +123,6 @@ export const prepareData = () => {
     doc.setFont("FZHTJW", "normal"); // set font
   }
 
-  // reset scaled variables
-  // headingLineHeight = scaleFactor * headingLineHeight;
-
   // note change p font since this will break line wrap
   pFontSize = scaleFactor * Constants.pFontSize;
   currentXPos = Constants.startX;
@@ -120,12 +130,10 @@ export const prepareData = () => {
   currentYPos = startY;
   currentPage = 1;
 
-  _perpareDataHeader(basicData, educationData);
-  _perpareWork(workData);
-  _perpareProject(projectData);
-  _perpareVolunteer(volunteerData);
-
-  // dataAdjustAfterBuild();
+  _prepareDataHeader(basicData, educationData);
+  _prepareWork(workData, messages);
+  _prepareProject(projectData, messages);
+  _prepareVolunteer(volunteerData, messages);
 
   return data;
 };
@@ -146,7 +154,53 @@ const _updateCurrentYPos = (increment) => {
   }
 };
 
-const _perpareDataHeader = (basicData, educationData) => {
+/**
+ * helper function: 更新 工作、项目、自愿者中的details 部分
+ * 如果单行文字过长 转换长文字为多行段落descriptionList
+ * 逐行更新descriptionList
+ * @param increment the increment on Y
+ */
+const _updateDetails = (inputDescription) => {
+  _updateCurrentYPos(headingLineHeight / 2);
+
+  // User can write one super long sentence without break, need to auto warp the text
+  // also handle the line height and bullet point alignment
+  doc.setFontSize(pFontSize);
+  const descriptionList = inputDescription.split("\n");
+  descriptionList.forEach((content) => {
+    // remove starting *
+    content = content.slice(1);
+    const wrappedContent = doc.splitTextToSize(
+      content,
+      Constants.pdfPageWidth - Constants.pdfLeftPadding * 2 - 4
+    ); // delete 2 extra characters (bullets point)
+    // 如果在页main最下方 content 过长的话 会超出当前页 所以需要检查wrappedContent的每一行
+    for (let i = 0; i < wrappedContent.length; i++) {
+      if (i === 0) {
+        wrappedContent[i] = "- " + wrappedContent[i];
+      } else {
+        // manually adjust the padding left
+        wrappedContent[i] = "  " + wrappedContent[i];
+      }
+    }
+
+    // 逐行更新 wrappedContent
+    wrappedContent.forEach(content => {
+      data.push({
+        type: "list",
+        y: currentYPos,
+        content: content,
+        page: currentPage,
+      });
+      // increment the height for the next print
+      const height = doc.getTextDimensions(wrappedContent).h / wrappedContent.length;
+      _updateCurrentYPos(height);//如果需要手动调整行间距 可以加在这里
+    });
+    _updateCurrentYPos(paragraphLineHeight / 2);
+  });
+}
+
+const _prepareDataHeader = (basicData, educationData) => {
   // build image
   const img = {
     type: "img",
@@ -158,7 +212,8 @@ const _perpareDataHeader = (basicData, educationData) => {
     format: "PNG",
     page: currentPage,
   };
-  currentXPos += Constants.imageWidth;
+  // start with imageWidth + 3 padding
+  currentXPos += Constants.imageWidth + 3;
   data.push(img);
 
   // build line 1
@@ -172,8 +227,7 @@ const _perpareDataHeader = (basicData, educationData) => {
   };
   // need to set font size in order to get correct width
   doc.setFontSize(Constants.titleFontSize);
-  currentXPos +=
-    doc.getTextWidth(basicData.nameCn) + Constants.defaultPaddingRight * 2;
+  currentXPos += getRightPadding(basicData.nameCn, 2);
   data.push(title);
 
   const schoolName = educationData[0]?.schoolName || "";
@@ -187,8 +241,7 @@ const _perpareDataHeader = (basicData, educationData) => {
 
   // need to set font size in order to get correct width
   doc.setFontSize(Constants.h2FontSize);
-  currentXPos +=
-    doc.getTextWidth(schoolName) + Constants.defaultPaddingRight * 2;
+  currentXPos += getRightPadding(schoolName, 2);
   data.push(school);
 
   const major = {
@@ -203,8 +256,8 @@ const _perpareDataHeader = (basicData, educationData) => {
   currentXPos = Constants.startX;
   data.push(major);
 
-  // build line #2
-  currentXPos += Constants.imageWidth;
+  // build line #2 (start with imageWidth + 3 padding)
+  currentXPos += Constants.imageWidth + 3;
 
   _updateCurrentYPos((headingLineHeight * 1) / 3);
 
@@ -233,9 +286,7 @@ const _perpareDataHeader = (basicData, educationData) => {
   };
 
   doc.setFontSize(Constants.h3FontSize);
-  currentXPos +=
-    doc.getTextWidth(`${basicData.phone},  ${basicData.email}`) +
-    Constants.defaultPaddingRight * 2;
+  currentXPos += getRightPadding(`${basicData.phone},  ${basicData.email}`, 2);
   data.push(contact);
 
   const link = {
@@ -249,7 +300,7 @@ const _perpareDataHeader = (basicData, educationData) => {
   data.push(link);
 };
 
-const _perpareWork = (workData) => {
+const _prepareWork = (workData, messages) => {
   _updateCurrentYPos(h1Padding * 2);
   // draw work title
   if (
@@ -290,7 +341,7 @@ const _perpareWork = (workData) => {
       currentXPos =
         Constants.startX +
         (work.workName
-          ? doc.getTextWidth(work.workName) + Constants.defaultPaddingRight
+          ? getRightPadding(work.workName)
           : 0);
       data.push({
         type: "h3",
@@ -310,7 +361,7 @@ const _perpareWork = (workData) => {
     ) {
       doc.setFontSize(Constants.h3FontSize);
       currentXPos += work.workCompanyName
-        ? doc.getTextWidth(work.workCompanyName) + Constants.defaultPaddingRight
+        ? getRightPadding(work.workCompanyName)
         : 0;
       data.push({
         type: "h3",
@@ -324,46 +375,12 @@ const _perpareWork = (workData) => {
     }
     _updateCurrentYPos(h1Padding * 0.75);
 
-    // work details
-    if (work.workDescription) {
-      _updateCurrentYPos(headingLineHeight / 2);
-
-      // User can write one super long sentence without break, need to auto warp the text
-      // also handle the line height and bullet point alignment
-      doc.setFontSize(pFontSize);
-      const descriptionList = work.workDescription.split("\n");
-
-      descriptionList.forEach((content) => {
-        const wrappedContent = doc.splitTextToSize(
-          content,
-          Constants.pdfPageWidth - Constants.pdfLeftPadding * 2 - 4
-        ); // delete 2 extra characters (bullets point)
-
-        for (let i = 0; i < wrappedContent.length; i++) {
-          if (i === 0) {
-            wrappedContent[i] = "- " + wrappedContent[i];
-          } else {
-            // manually adjust the padding left
-            wrappedContent[i] = "  " + wrappedContent[i];
-          }
-        }
-
-        data.push({
-          type: "list",
-          y: currentYPos,
-          content: wrappedContent,
-          page: currentPage,
-        });
-
-        // increment the height for the next print
-        const height = doc.getTextDimensions(wrappedContent).h;
-        _updateCurrentYPos(height + paragraphLineHeight / 2);
-      });
-    }
+    // render work details
+    work.workDescription && _updateDetails(work.workDescription);
   });
 };
 
-const _perpareProject = (projectData) => {
+const _prepareProject = (projectData, messages) => {
   projectData.forEach((project) => {
     _updateCurrentYPos(h1Padding * 0.5);
     if (project.projectRole) {
@@ -377,8 +394,7 @@ const _perpareProject = (projectData) => {
       currentXPos =
         Constants.startX +
         (project.projectRole
-          ? doc.getTextWidth(project.projectRole) +
-          Constants.defaultPaddingRight
+          ? getRightPadding(project.projectRole)
           : 0);
       data.push({
         type: "h3",
@@ -398,8 +414,7 @@ const _perpareProject = (projectData) => {
     ) {
       doc.setFontSize(Constants.h3FontSize);
       currentXPos += project.projectCompanyName
-        ? doc.getTextWidth(project.projectCompanyName) +
-        Constants.defaultPaddingRight
+        ? getRightPadding(project.projectCompanyName)
         : 0;
       data.push({
         type: "h3",
@@ -415,43 +430,12 @@ const _perpareProject = (projectData) => {
     }
     _updateCurrentYPos(h1Padding * 0.75);
 
-    // project details
-    if (project.projectDescription) {
-      _updateCurrentYPos(headingLineHeight / 2);
-
-      // User can write one super long sentence without break, need to auto warp the text
-      // also handle the line height and bullet point alignment
-      doc.setFontSize(pFontSize);
-      const descriptionList = project.projectDescription.split("\n");
-      descriptionList.forEach((content) => {
-        const wrappedContent = doc.splitTextToSize(
-          content,
-          Constants.pdfPageWidth - Constants.pdfLeftPadding * 2 - 4
-        ); // delete 2 extra characters (bullets point)
-        for (let i = 0; i < wrappedContent.length; i++) {
-          if (i === 0) {
-            wrappedContent[i] = "- " + wrappedContent[i];
-          } else {
-            // manually adjust the padding left
-            wrappedContent[i] = "  " + wrappedContent[i];
-          }
-        }
-
-        data.push({
-          type: "list",
-          y: currentYPos,
-          content: wrappedContent,
-          page: currentPage,
-        });
-        // increment the height for the next print
-        const height = doc.getTextDimensions(wrappedContent).h;
-        _updateCurrentYPos(height + paragraphLineHeight / 2);
-      });
-    }
+    // render project details
+    project.projectDescription && _updateDetails(project.projectDescription);
   });
 };
 
-const _perpareVolunteer = (volunteerData) => {
+const _prepareVolunteer = (volunteerData, messages) => {
   _updateCurrentYPos(h1Padding * 2);
 
   // draw Volunteer title
@@ -493,8 +477,7 @@ const _perpareVolunteer = (volunteerData) => {
       currentXPos =
         Constants.startX +
         (volunteer.volunteerCompanyName
-          ? doc.getTextWidth(volunteer.volunteerCompanyName) +
-          Constants.defaultPaddingRight
+          ? getRightPadding(volunteer.volunteerCompanyName)
           : 0);
       data.push({
         type: "h3",
@@ -514,8 +497,7 @@ const _perpareVolunteer = (volunteerData) => {
     ) {
       doc.setFontSize(Constants.h3FontSize);
       currentXPos += volunteer.volunteerRole
-        ? doc.getTextWidth(volunteer.volunteerRole) +
-        Constants.defaultPaddingRight
+        ? getRightPadding(volunteer.volunteerRole)
         : 0;
       data.push({
         type: "h3",
@@ -532,39 +514,9 @@ const _perpareVolunteer = (volunteerData) => {
 
     _updateCurrentYPos(h1Padding * 0.75);
 
-    // volunteer details
-    if (volunteer.volunteerDescription) {
-      _updateCurrentYPos(headingLineHeight / 2);
-
-      // User can write one super long sentence without break, need to auto warp the text
-      // also handle the line height and bullet point alignment
-      doc.setFontSize(pFontSize);
-      const descriptionList = volunteer.volunteerDescription.split("\n");
-      descriptionList.forEach((content) => {
-        const wrappedContent = doc.splitTextToSize(
-          content,
-          Constants.pdfPageWidth - Constants.pdfLeftPadding * 2 - 4
-        ); // delete 2 extra characters (bullets point)
-        for (let i = 0; i < wrappedContent.length; i++) {
-          if (i === 0) {
-            wrappedContent[i] = "- " + wrappedContent[i];
-          } else {
-            // manually adjust the padding left
-            wrappedContent[i] = "  " + wrappedContent[i];
-          }
-        }
-
-        data.push({
-          type: "list",
-          y: currentYPos,
-          content: wrappedContent,
-          page: currentPage,
-        });
-        // increment the height for the next print
-        const height = doc.getTextDimensions(wrappedContent).h;
-        _updateCurrentYPos(height + paragraphLineHeight / 2);
-      });
-    }
+    // render volunteer details
+    volunteer.volunteerDescription &&
+      _updateDetails(volunteer.volunteerDescription);
   });
 };
 
@@ -592,7 +544,11 @@ const drawText = ({
 };
 
 const buildResume = () => {
-  prepareData();
+  prepareData(resumeData, messages);
+  // 如果最后一行是换页 则移除该数据
+  if (data[data.length - 1].type === "pageBreak") {
+    data.splice(-1, 1);
+  }
   data.forEach((d) => {
     d.doc = doc;
     switch (d.type) {
@@ -690,6 +646,6 @@ export const adjustToWholePage = (messagePR) => {
 export const wholePageCheck = (messagePR) => {
   resumeData = store.getState().resume;
   messages = messagePR;
-  prepareData();
+  prepareData(resumeData, messages);
   return data;
 };
