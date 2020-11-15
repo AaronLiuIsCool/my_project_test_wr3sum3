@@ -295,9 +295,9 @@ public class AccountController {
         AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
         AuthConstant.AUTHORIZATION_RESUME_SERVICE
     })
-    @DeleteMapping(path = "{userId}/resumes")
-    public BaseResponse removeResumeFromAccount(@PathVariable String userId, @RequestBody @Valid ResumeDto resumeDto) {
-        accountService.removeResumeFromAccount(userId, resumeDto);
+    @DeleteMapping(path = "{userId}/resumes/{resumeId}")
+    public BaseResponse removeResumeFromAccount(@PathVariable String userId, @PathVariable String resumeId) {
+        accountService.removeResumeFromAccount(userId, resumeId);
         BaseResponse baseResponse = new BaseResponse();
         baseResponse.setMessage("resume removed");
         return baseResponse;

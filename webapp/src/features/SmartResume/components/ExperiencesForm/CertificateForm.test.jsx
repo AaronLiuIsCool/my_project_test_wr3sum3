@@ -22,7 +22,6 @@ describe('Certificate form', () => {
     const wrapper = mount(
       <CertificateFormWithProvider data={{}} messages={{}} index={0} />
     );
-    // console.log(wrapper.debug());
     expect(wrapper.find('Form').length).toEqual(1);
   });
 

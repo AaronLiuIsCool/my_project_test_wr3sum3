@@ -51,7 +51,7 @@ exports[`Jobs render Jobs with full data 1`] = `
       <div
         className="job-post-time"
       >
-        3 days ago
+        3 days ago(stub time since)
       </div>
     </div>
     <div
@@ -71,7 +71,7 @@ exports[`Jobs render Jobs with full data 1`] = `
       <div
         className="job-post-time"
       >
-        3 days ago
+        3 days ago(stub time since)
       </div>
     </div>
     <div
@@ -91,7 +91,7 @@ exports[`Jobs render Jobs with full data 1`] = `
       <div
         className="job-post-time"
       >
-        3 days ago
+        3 days ago(stub time since)
       </div>
     </div>
     <div
@@ -111,7 +111,7 @@ exports[`Jobs render Jobs with full data 1`] = `
       <div
         className="job-post-time"
       >
-        3 days ago
+        3 days ago(stub time since)
       </div>
     </div>
     <ul

@@ -39,6 +39,7 @@ import javax.persistence.PersistenceContext;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Instant;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
@@ -557,13 +558,17 @@ public class AccountService {
         }
     }
 
-    public void removeResumeFromAccount(String userId, ResumeDto resumeDto) {
-        Resume resume = modelMapper.map(resumeDto, Resume.class);
+    public void removeResumeFromAccount(String userId, String resumeId) {
         Account account = accountRepo.findAccountById(userId);
-        resume.setAccount(account);
-        account.getResumes().remove(resume);
+        Iterator<Resume> iterator = account.getResumes().iterator();
+        while (iterator.hasNext()) {
+            Resume resume = iterator.next();
+            if (resume.getId().equals(resumeId)) {
+                iterator.remove();
+                resumeRepo.delete(resume);
+            }
+        }
         accountRepo.save(account);
-        resumeRepo.delete(resume);
     }
 
     private AccountDto convertToDto(Account account) {
