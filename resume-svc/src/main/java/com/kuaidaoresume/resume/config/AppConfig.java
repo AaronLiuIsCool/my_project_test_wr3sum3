@@ -67,6 +67,7 @@ public class AppConfig {
     @Bean
     public KeywordMatcher keywordMatcher() {
         Collection<String> keywords = FileUtil.getKeywordsFromExcel("matching/keywords.xlsx");
+        keywords.addAll(FileUtil.getKeywordsFromExcel("matching/Chinese_keywords.xlsx"));
         return new InMemoryKeywordMatcher(keywords);
     }
 
