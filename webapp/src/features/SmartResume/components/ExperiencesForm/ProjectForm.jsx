@@ -11,7 +11,7 @@ import DropdownGroup from 'components/DropdownGroup';
 import RadioButtonGroup from 'components/RadioButtonGroup';
 import Button from 'react-bootstrap/Button';
 import DraftEditor from '../../../../components/DraftEditor/index'
-import { generateSuggestions, isDescending, extractDate, generateLayoutRating, dispatchUpdates, updateCityOptions } from '../../utils/resume';
+import { dispatchUpdates, updateCityOptions, updateRating } from '../../utils/resume';
 
 import { ReactComponent as WrittenAssistIcon } from '../../assets/writing_assit.svg';
 
@@ -21,7 +21,7 @@ import { validateProject, validateProjectEntry } from '../../slicer/project';
 import { updateStatus, updateAllStatus } from '../../slicer/common';
 import ResumeServices from 'shell/services/ResumeServices';
 import { getLogger } from 'shell/logger';
-import { previewResume, wholePageCheck } from '../ResumePreview/resumeBuilder';
+import { previewResume } from '../ResumePreview/resumeBuilder';
 
 import countryOptions from 'data/country.json';
 
@@ -75,26 +75,6 @@ const ProjectForm = ({ data, index, isLast = false, messages, projectData }) => 
 		}
 	};
 
-    const handleProjectFormRating = async () => {        
-        const { projectExperiences }  = await resumeServices.getRatings(resumeId);
-        
-        const layoutRating = generateLayoutRating(wholePageCheck(messages.RPreview), messages)
-        dispatch(actions.updateLayoutRating(layoutRating))
-        const {
-            companyArr,
-            keywordsArr,
-            quantifyArr,
-            expArr,
-            sortedArr
-        } = generateSuggestions(projectExperiences, 'projectXp', 'project', isDescending(extractDate(projectData, 'projectStartDate')), messages)
-        dispatch(actions.updateProjectRating({ 
-            'amount': expArr,
-            'company': companyArr,
-            'keywords': keywordsArr,
-            'quantify': quantifyArr,
-            'sorted': sortedArr,
-        }));
-    }
 	const handleSubmit = async (event) => {
 		event.preventDefault();
         event.stopPropagation();
@@ -107,7 +87,7 @@ const ProjectForm = ({ data, index, isLast = false, messages, projectData }) => 
 		setValidated(true);
         dispatch(actions.completeProject());
         await save();
-        handleProjectFormRating();
+        updateRating();
 	};
 
 	const handleProjectRoleChange = (event) => {

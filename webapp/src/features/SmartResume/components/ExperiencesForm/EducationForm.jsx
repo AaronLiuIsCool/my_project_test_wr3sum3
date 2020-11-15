@@ -20,8 +20,8 @@ import majorOptions from 'data/major.json';
 import univOptions from 'data/university.json';
 import countryOptions from 'data/country.json';
 
-import { previewResume, wholePageCheck } from '../ResumePreview/resumeBuilder';
-import { dispatchUpdates, generateEducationRating, generateLayoutRating, updateCityOptions } from '../../utils/resume';
+import { previewResume, } from '../ResumePreview/resumeBuilder';
+import { dispatchUpdates, updateCityOptions, updateRating } from '../../utils/resume';
 
 import { Summary } from '../Summary';
 
@@ -89,9 +89,9 @@ const EducationForm = ({ data, index, isLast = false, messages }) => {
         setValidated(true);
         dispatch(actions.completeEducation());
         await save();
-        handleEducationFormRatings(data, index, messages)
+        updateRating();
     };
-
+    
     const handleSchoolChange = (values) => {
         const value = values.length === 0 ? null : values[0].data
         updateStatus(validateEducationEntry, status, setStatus, 'schoolName', value);
@@ -141,20 +141,10 @@ const EducationForm = ({ data, index, isLast = false, messages }) => {
         dispatch(actions.updateEduCountry({value, index}));
     };
     
-    const handleEducationFormRatings = async ({gpa, highestAward, otherAward}, index, messages) => {
-        const { educations } = await resumeServices.getRatings(resumeId);
-        const schools = educations || [];
-        const educationRating = generateEducationRating({gpa, highestAward, otherAward, schools, index}, messages)
-        const layoutRating = generateLayoutRating(wholePageCheck(messages.RPreview), messages)
-        dispatch(actions.updateLayoutRating(layoutRating))
-        dispatch(actions.updateEducationRating({
-            index,
-            details: educationRating
-        }))
-    }
-    const handleDelete = (id) => {
-        resumeServices.removeEducation(id, resumeId)
+    const handleDelete = async (id) => {
         dispatch(actions.removeEducation({index}))
+        await resumeServices.removeEducation(id, resumeId)
+          updateRating();
     };
     useEffect(() => {
       if (data.id && !didMount.current) {

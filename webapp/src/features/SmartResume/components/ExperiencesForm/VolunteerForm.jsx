@@ -11,7 +11,7 @@ import DropdownGroup from 'components/DropdownGroup';
 import RadioButtonGroup from 'components/RadioButtonGroup';
 import Button from 'react-bootstrap/Button';
 import DraftEditor from '../../../../components/DraftEditor/index'
-import { generateSuggestions, isDescending, extractDate, generateLayoutRating, dispatchUpdates, updateCityOptions } from '../../utils/resume';
+import { dispatchUpdates, updateCityOptions, updateRating } from '../../utils/resume';
 
 import { ReactComponent as WrittenAssistIcon } from '../../assets/writing_assit.svg';
 
@@ -21,7 +21,7 @@ import { validateVolunteer, validateVolunteerEntry } from '../../slicer/voluntee
 import { updateStatus, updateAllStatus } from '../../slicer/common';
 import ResumeServices from 'shell/services/ResumeServices';
 import { getLogger } from 'shell/logger';
-import { previewResume, wholePageCheck } from '../ResumePreview/resumeBuilder';
+import { previewResume } from '../ResumePreview/resumeBuilder';
 
 import countryOptions from 'data/country.json';
 
@@ -88,27 +88,6 @@ const VolunteerForm = ({ data, index, isLast = false, messages, volunteerData })
 		}
 	};
 
-    const handleProjectFormRating = async () => {
-        
-        const { volunteerExperiences } = await resumeServices.getRatings(resumeId);
-        const layoutRating = generateLayoutRating(wholePageCheck(messages.RPreview), messages)
-        dispatch(actions.updateLayoutRating(layoutRating))
-        const {
-            companyArr,
-            keywordsArr,
-            quantifyArr,
-            expArr,
-            sortedArr
-        } = generateSuggestions(volunteerExperiences, 'otherXp', 'volunteer', isDescending(extractDate(volunteerData, 'volunteerStartDate')), messages)
-
-        dispatch(actions.updateVolunteerRating({ 
-            'amount': expArr,
-            'company': companyArr,
-            'keywords': keywordsArr,
-            'quantify': quantifyArr,
-            'sorted': sortedArr,
-        }));
-    }
 	const handleSubmit = async (event) => {
 		event.preventDefault();
         event.stopPropagation();
@@ -121,7 +100,7 @@ const VolunteerForm = ({ data, index, isLast = false, messages, volunteerData })
 		setValidated(true);
         dispatch(actions.completeVolunteer());
         await save();
-        handleProjectFormRating();
+        updateRating();
 	};
 
 	const handleVolunteerRoleChange = (event) => {

@@ -19,10 +19,10 @@ import { validateWork, validateWorkEntry } from '../../slicer/work';
 import { updateStatus, updateAllStatus } from '../../slicer/common';
 import ResumeServices from 'shell/services/ResumeServices';
 import { getLogger } from 'shell/logger';
-import { previewResume, wholePageCheck } from '../ResumePreview/resumeBuilder';
-import { generateSuggestions, isDescending, extractDate, generateLayoutRating, dispatchUpdates, updateCityOptions } from '../../utils/resume';
+import { previewResume } from '../ResumePreview/resumeBuilder';
+import { updateRating, dispatchUpdates, updateCityOptions } from '../../utils/resume';
 
-import DraftEditor from '../../../../components/DraftEditor/index'
+import DraftEditor from '../../../../components/DraftEditor/index';
 
 import countryOptions from 'data/country.json';
 
@@ -31,176 +31,160 @@ import { Summary } from '../Summary';
 const logger = getLogger('WorkForm');
 const resumeServices = new ResumeServices();
 const fields = [
-    'workName',
-    'workCompanyName',
-    'workStartDate',
-    'workEndDate',
-    'workCity',
-    'workCountry',
-    'workDescription'
+  'workName',
+  'workCompanyName',
+  'workStartDate',
+  'workEndDate',
+  'workCity',
+  'workCountry',
+  'workDescription',
 ];
 const WorkForm = ({ data, index, isLast = false, messages, workData }) => {
-	const trigger = useSelector(assistantSelectors.selectTrigger);
-	const showAssistant = useSelector(assistantSelectors.selectShow);
-	const resumeId = useSelector(selectId);
+  const trigger = useSelector(assistantSelectors.selectTrigger);
+  const showAssistant = useSelector(assistantSelectors.selectShow);
+  const resumeId = useSelector(selectId);
   const [validated, setValidated] = useState(false);
   const [cityOptions, setCityOptions] = useState([]);
-	const [status, setStatus] = useState({
-		workName: {},
-		workCompanyName: {},
-		workStartDate: {},
-		workEndDate: {},
-		workCity: {},
-		workCountry: {},
-		workDescription: {},
-	});
-	const didMount = useRef(false);
-	const [showSummary, setShowSummary] = useState(false);
-	const dispatch = useDispatch();
-	const toggleShowSummary = () => {
-		setShowSummary(!showSummary);
-	};
-	const save = async () => {
-		GAEvent('Resume Edit', 'Save work form'); // call GA on save
-		previewResume(messages.RPreview);
-		let id = data.id;
-		try {
-			const responseJson = id === undefined ? 
-					await resumeServices.createWork(resumeId, adaptWork(data)) : 
-					await resumeServices.updateWork(data.id, adaptWork(data));
-			id = id || responseJson.id;
-		} catch (exception) {
-			logger.error(exception);
-		} finally {
+  const [status, setStatus] = useState({
+    workName: {},
+    workCompanyName: {},
+    workStartDate: {},
+    workEndDate: {},
+    workCity: {},
+    workCountry: {},
+    workDescription: {},
+  });
+  const didMount = useRef(false);
+  const [showSummary, setShowSummary] = useState(false);
+  const dispatch = useDispatch();
+  const toggleShowSummary = () => {
+    setShowSummary(!showSummary);
+  };
+  const save = async () => {
+    GAEvent('Resume Edit', 'Save work form'); // call GA on save
+    previewResume(messages.RPreview);
+    let id = data.id;
+    try {
+      const responseJson =
+        id === undefined
+          ? await resumeServices.createWork(resumeId, adaptWork(data))
+          : await resumeServices.updateWork(data.id, adaptWork(data));
+      id = id || responseJson.id;
+    } catch (exception) {
+      logger.error(exception);
+    } finally {
       dispatch(actions.updateWorkId({ index, id }));
       dispatchUpdates('update-score');
-		}
-	};
-
-	const handleSubmit = async (event) => {
-		event.preventDefault();
-        event.stopPropagation();
-        updateAllStatus(validateWorkEntry, status, setStatus, fields, data)
-		if (!validateWork(data)) {
-			setValidated(false);
-			return;
-		}
-		toggleShowSummary();
-		setValidated(true);
-        dispatch(actions.completeWork());
-        await save();
-        handleWorkFormRating();
-    };
-    
-    const handleWorkFormRating = async () => {
-        const { workExperiences } = await resumeServices.getRatings(resumeId);
-        const layoutRating = generateLayoutRating(wholePageCheck(messages.RPreview), messages)
-        dispatch(actions.updateLayoutRating(layoutRating))
-        
-        const {
-            companyArr,
-            keywordsArr,
-            quantifyArr,
-            expArr,
-            sortedArr
-        } = generateSuggestions(workExperiences, 'workXp', 'work', isDescending(extractDate(workData, 'workStartDate')), messages)
-        
-        dispatch(actions.updateWorkRating({ 
-            'amount': expArr,
-            'company': companyArr,
-            'keywords': keywordsArr,
-            'quantify': quantifyArr,
-            'sorted': sortedArr,
-        }));
     }
-    
-    
-    const handleWorkDescriptionEditorChange = (value) => {
-        updateStatus(
-            validateWorkEntry,
-            status,
-            setStatus,
-            'workDescription',
-            value
-        );
-        dispatch(actions.updateWorkDescription({ value, index }));
-    }
-    
-	const handleWorkChange = (event) => {
-		const value = event.target.value;
-		updateStatus(validateWorkEntry, status, setStatus, 'workName', value);
-		dispatch(actions.updateWorkName({ value, index }));
-	};
-
-	const handleCurrentWorkFlagChange = (event) => {
-		event.preventDefault();
-		const value = event.target.value;
-		dispatch(actions.updateCurrentWorkFlag({ value, index }));
-		// reset the end date value if current work is true
-		dispatch(actions.updateWorkEndDate({ value: '', index }));
-	};
-	const handleWorkCompanyNameChange = (event) => {
-		const value = event.target.value;
-		updateStatus(validateWorkEntry, status, setStatus, 'workCompanyName', value);
-		dispatch(actions.updateWorkCompanyName({ value, index }));
-	};
-
-	const handleWorkStartDateChange = (date) => {
-		const value = date ? date.toISOString() : undefined;
-		updateStatus(validateWorkEntry, status, setStatus, 'workStartDate', value);
-		dispatch(actions.updateWorkStartDate({ value, index }));
-	};
-
-	const handleWorkEndDateChange = (date) => {
-		const value = date ? date.toISOString() : undefined;
-		updateStatus(validateWorkEntry, status, setStatus, 'workEndDate', value);
-		dispatch(actions.updateWorkEndDate({ value, index }));
-	};
-
-	const handleWorkCityChange = (values) => {
-		const value = values.length === 0 ? null : values[0].data;
-		updateStatus(validateWorkEntry, status, setStatus, 'workCity', value);
-		dispatch(actions.updateWorkCity({ value, index }));
-	};
-
-  const handleWorkCountryChange = (values) => {
-    const value = values.length === 0 ? null : values[0].data
-    updateCityOptions(value, setCityOptions)
-    updateStatus(validateWorkEntry, status, setStatus, 'workCountry', value);
-    dispatch(actions.updateWorkCountry({value, index}));
   };
 
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    updateAllStatus(validateWorkEntry, status, setStatus, fields, data);
+    if (!validateWork(data)) {
+      setValidated(false);
+      return;
+    }
+    toggleShowSummary();
+    setValidated(true);
+    dispatch(actions.completeWork());
+    await save();
+    updateRating();
+  };
 
-	const handleAssistantClick = () => {
-		dispatch(
-			actions.toggleAssistant({
-				trigger: 'work',
-				context: { index, ...data },
-			})
-		);
-	};
+  const handleWorkDescriptionEditorChange = (value) => {
+    updateStatus(
+      validateWorkEntry,
+      status,
+      setStatus,
+      'workDescription',
+      value
+    );
+    dispatch(actions.updateWorkDescription({ value, index }));
+  };
 
-	const assistantContainerClassNames = classNames({
-		writeAssistantContainer: true,
-		active: showAssistant && trigger === 'work',
-	});
+  const handleWorkChange = (event) => {
+    const value = event.target.value;
+    updateStatus(validateWorkEntry, status, setStatus, 'workName', value);
+    dispatch(actions.updateWorkName({ value, index }));
+  };
 
-	const handleDelete = (id) => {
-		resumeServices.removeWork(id, resumeId)
-		dispatch(actions.removeWork({index}))
-	};
-	useEffect(() => {
-		if (data.id && !didMount.current) {
+  const handleCurrentWorkFlagChange = (event) => {
+    event.preventDefault();
+    const value = event.target.value;
+    dispatch(actions.updateCurrentWorkFlag({ value, index }));
+    // reset the end date value if current work is true
+    dispatch(actions.updateWorkEndDate({ value: '', index }));
+  };
+  const handleWorkCompanyNameChange = (event) => {
+    const value = event.target.value;
+    updateStatus(
+      validateWorkEntry,
+      status,
+      setStatus,
+      'workCompanyName',
+      value
+    );
+    dispatch(actions.updateWorkCompanyName({ value, index }));
+  };
+
+  const handleWorkStartDateChange = (date) => {
+    const value = date ? date.toISOString() : undefined;
+    updateStatus(validateWorkEntry, status, setStatus, 'workStartDate', value);
+    dispatch(actions.updateWorkStartDate({ value, index }));
+  };
+
+  const handleWorkEndDateChange = (date) => {
+    const value = date ? date.toISOString() : undefined;
+    updateStatus(validateWorkEntry, status, setStatus, 'workEndDate', value);
+    dispatch(actions.updateWorkEndDate({ value, index }));
+  };
+
+  const handleWorkCityChange = (values) => {
+    const value = values.length === 0 ? null : values[0].data;
+    updateStatus(validateWorkEntry, status, setStatus, 'workCity', value);
+    dispatch(actions.updateWorkCity({ value, index }));
+  };
+
+  const handleWorkCountryChange = (values) => {
+    const value = values.length === 0 ? null : values[0].data;
+    updateCityOptions(value, setCityOptions);
+    updateStatus(validateWorkEntry, status, setStatus, 'workCountry', value);
+    dispatch(actions.updateWorkCountry({ value, index }));
+  };
+
+  const handleAssistantClick = () => {
+    dispatch(
+      actions.toggleAssistant({
+        trigger: 'work',
+        context: { index, ...data },
+      })
+    );
+  };
+
+  const assistantContainerClassNames = classNames({
+    writeAssistantContainer: true,
+    active: showAssistant && trigger === 'work',
+  });
+
+  const handleDelete = async (id) => {
+    dispatch(actions.removeWork({ index }));
+    await resumeServices.removeWork(id, resumeId);
+    updateRating();
+  };
+  useEffect(() => {
+    if (data.id && !didMount.current) {
       setShowSummary(true);
       didMount.current = true;
     } else if (!data.id && didMount.current) {
-      setShowSummary(false)
+      setShowSummary(false);
     }
-	}, [data])
-	useEffect(() => {
-		updateCityOptions(data.workCountry, setCityOptions)
-}, [data.workCountry])
-	return (
+  }, [data]);
+  useEffect(() => {
+    updateCityOptions(data.workCountry, setCityOptions);
+  }, [data.workCountry]);
+  return (
     <div className="form_body">
       {showSummary ? (
         <Summary
@@ -214,13 +198,18 @@ const WorkForm = ({ data, index, isLast = false, messages, workData }) => {
         />
       ) : (
         <Form validated={validated} onSubmit={handleSubmit}>
-					<Row className="flexie">
-						<Col>
-							<h2 className="form_h2">{messages.enterNewExperience}</h2>
-						</Col>
-						<div className="toggle-up-arrow" onClick={toggleShowSummary}>
-							{data.id && <img src={require('../../assets/arrow-up.svg')} alt="up-arrow" />}
-						</div>
+          <Row className="flexie">
+            <Col>
+              <h2 className="form_h2">{messages.enterNewExperience}</h2>
+            </Col>
+            <div className="toggle-up-arrow" onClick={toggleShowSummary}>
+              {data.id && (
+                <img
+                  src={require('../../assets/arrow-up.svg')}
+                  alt="up-arrow"
+                />
+              )}
+            </div>
           </Row>
           <Row>
             <Col lg="4">
@@ -369,10 +358,10 @@ const WorkForm = ({ data, index, isLast = false, messages, workData }) => {
 };
 
 WorkForm.propTypes = {
-	data: PropTypes.object.isRequired,
-	index: PropTypes.number.isRequired,
-	isLast: PropTypes.bool,
-	messages: PropTypes.object.isRequired,
+  data: PropTypes.object.isRequired,
+  index: PropTypes.number.isRequired,
+  isLast: PropTypes.bool,
+  messages: PropTypes.object.isRequired,
 };
 
 export default WorkForm;
