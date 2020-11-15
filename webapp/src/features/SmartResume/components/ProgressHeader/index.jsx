@@ -71,27 +71,31 @@ const ProgressHeader = ({ setScoreVisible, scoreVisible }) => {
 		error: '#ff6565',
 	};
 
+	
+
+	const viewDetails = () =>{
+		dispatch(
+			actions.toggleAssistant({
+				trigger: 'rating',
+				context: {},
+			})
+		);
+	}
+
 	return (
 		<div className={styles.container}>
 			<div className={styles.progress}>
 				<p>
-					<span style={{ color: scoreRatingColor[scoreRating] }}>{scorePercentage}%</span> {messages.resumeCompletion}
+					<span style={{ color: scoreRatingColor[scoreRating] }}>{messages[`${scoreRating}_MSG`]}</span>
+					<span className={styles.right} onClick={viewDetails}>{messages.clickForDetails}</span>
 				</p>
 				<ProgressBar className={styles.progressBar} now={scorePercentage} variant={scoreRating} />
 			</div>
 			<div className={styles.hideSM}>
-				<p className={styles.title}>{messages.intensityScore}</p>
-				<p>{messages.clickForDetails}</p>
+				
 			</div>
 			<div className={styles.hideSM} onClick={() => setScoreVisible(!scoreVisible)}>
-				<div className={styles.circle} style={{ color: scoreRatingColor[scoreRating], borderColor: scoreRatingColor[scoreRating] }} onClick={() => {
-					dispatch(
-						actions.toggleAssistant({
-							trigger: 'rating',
-							context: {},
-						})
-					);
-				}}>{messages[scoreRating]}</div>
+				<div className={styles.circle} style={{ color: scoreRatingColor[scoreRating], borderColor: scoreRatingColor[scoreRating] }} onClick={viewDetails}>{messages[scoreRating]}</div>
 			</div>
 		</div>
 	);
