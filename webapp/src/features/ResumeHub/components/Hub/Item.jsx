@@ -56,10 +56,8 @@ const Item = ({ resume, account }) => {
         ...account.resumes.find((resume) => resume.resumeId === resumeId),
         alias,
       };
-      console.log('resumeInfo: ', resumeInfo);
       accountServices.updateResume(resumeId, resumeInfo).then((res) => {
-        console.log(res);
-        console.log('Done!');
+        // TODO maybe add toast later
       });
     };
     const handleOnBlur = (resumeId) => {
