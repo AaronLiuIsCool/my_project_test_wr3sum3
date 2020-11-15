@@ -57,8 +57,22 @@ export function reconstruct(flattenResume) {
   return resume;
 }
 
-export const generateBasicFormRating = ({ avatar, linkedin, weblink, messages }) => {
+export const generateBasicFormRating = ({ avatar, linkedin, weblink, messages }, completed) => {
     const basicArr = []
+    
+    if(!completed) {
+      const obj = {
+        section: 'basicInfo',
+        name: messages.basicInfo,
+        type: 'info-complete',
+        message: messages.basicInfoNotCompleted,
+        selector: '#basic-linkedin',
+        noNav: true
+      };
+      basicArr.push(obj);
+      return basicArr
+    }
+    
     if (linkedin === '') {
         const obj = {
             section: 'basicInfo',
@@ -106,11 +120,25 @@ export const generateLayoutRating = (result, messages) => {
       type: "layout",
       message: messages.layoutMessage,
       selector: undefined,
+      noNav: true
     });
   }
   
   return layoutArr
   
+};
+
+const prepareExpArrMessage = (messages, section, length) => {
+  switch (length) {
+    case 0:
+      return messages[`${section}LengthZero`]
+    case 1:
+      return messages[`${section}LengthOne`]
+    case 2:
+      return messages[`${section}LengthTwo`]
+    default:
+      return messages[`${section}LengthOverTwo`]
+  }
 };
 
 export const generateSuggestions = (experience=[], section, eventType, sorted, messages) => {
@@ -120,17 +148,17 @@ export const generateSuggestions = (experience=[], section, eventType, sorted, m
     const sortedArr = [];
     const len = experience.length
     const expArr = [{
-        name: section === 'workXp' ? messages.workExp : section === 'OtherXp' ? messages.otherExp : messages.projectExp,
+        name: section === 'workXp' ? messages.workExp : section === 'otherXp' ? messages.otherExp : messages.projectExp,
         type: 'exp-value',
         green: len > 1,
-        message:
-            len > 2
-                ? messages.expLengthOverTwo
-                : len > 1
-                ? messages.expLengthTwo
-                : len > 0
-                ? messages.expLengthOne
-                : messages.expLengthZero
+        message: prepareExpArrMessage(messages, section, len)
+            // len > 2
+            //     ? messages.expLengthOverTwo.replace('{exp}', messages.expReplacement[section])
+            //     : len > 1
+            //     ? messages.expLengthTwo.replace('{exp}', messages.expReplacement[section])
+            //     : len > 0
+            //     ? messages.expLengthOne.replace('{exp}', messages.expReplacement[section])
+            //     : section === "projectXp" ?  messages.expLengthZeroProject : section === "workXp" ? messages.expLengthZero.replace('{exp}', messages.expReplacement[section]) : messages.expLengthZeroOther
     }];
     if(!sorted) {
        sortedArr.push({
@@ -210,12 +238,40 @@ export const generateSuggestions = (experience=[], section, eventType, sorted, m
     };
 };
 
+export const generateEducationRatings = (educations, schools, messages, completed) => {
+  const resArr = []
+  if(!completed || schools.length < 1) {
+    const obj = {
+      section: "education",
+      name: messages.education,
+      type: "info-complete",
+      message: messages.EduInfoNotCompleted,
+      noNav: true
+      // selector: `.edu-${index} #education-highest-award`,
+    };
+    resArr.push(obj);
+    return resArr
+  }
+  educations.forEach((education, index) => {
+    resArr.push(generateEducationRating(
+      {
+        ...education,
+        schools,
+        index
+      }, messages
+    ))
+  })
+  
+  return resArr
+}
+
+
 export const generateEducationRating = (
   { gpa, highestAward, otherAward, schools, index },
   messages
 ) => {
   const educationArr = [];
-  if (highestAward === "") {
+  if (!highestAward) {
     const obj = {
       section: "education",
       name: messages.highestAwards,
@@ -225,7 +281,7 @@ export const generateEducationRating = (
     };
     educationArr.push(obj);
   }
-  if (otherAward === "") {
+  if (!otherAward) {
     const obj = {
       section: "education",
       name: messages.otherAward,
@@ -307,7 +363,7 @@ export const generateCertificeRating = (numberOfCertificate, messages) => {
     certArr.push({
       type: "exp-value",
       section: "certifications",
-      messages: messages.certificationsMessage,
+      message: messages.certificationsMessage,
       name: messages.certifications,
     });
   }
@@ -341,3 +397,10 @@ export const updateCityOptions = (country, setter) => {
     setter(countryBasedCityOptions['cn'])
   }
 }
+
+export const updateRating = () => {
+  const event = new CustomEvent('update-rating', {
+    detail: {},
+  });
+  window.dispatchEvent(event);
+};

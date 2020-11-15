@@ -13,13 +13,11 @@ import AvatarUpload from './AvatarUpload';
 import { validateBasic, validateBasicEntry } from '../../slicer/basic';
 import { updateStatus, updateAllStatus } from '../../slicer/common';
 import { adaptBasics } from '../../utils/servicesAdaptor';
-import { dispatchUpdates, generateBasicFormRating, generateLayoutRating } from '../../utils/resume';
+import { dispatchUpdates, updateRating } from '../../utils/resume';
 import ResumeServices from 'shell/services/ResumeServices';
 import { getLogger } from 'shell/logger';
 
-import { previewResume, 
-    wholePageCheck 
-} from '../ResumePreview/resumeBuilder';
+import { previewResume } from '../ResumePreview/resumeBuilder';
 
 // json data for dropdowns
 import cityOptions from 'data/city.json';
@@ -75,7 +73,7 @@ const BasicForm = ({ data, photoReference, completed, messages }) => {
 		}
 	};
 
-	const handleSubmit = (event) => {
+	const handleSubmit = async (event) => {
     event.preventDefault();
     event.stopPropagation();
     updateAllStatus(validateBasicEntry, status, setStatus, fields, data);
@@ -84,21 +82,12 @@ const BasicForm = ({ data, photoReference, completed, messages }) => {
       return;
     }
     toggleShowSummary();
-    handleBasicFormRating(data);
     setValidated(true);
     dispatch(actions.completeBasic());
-    save();
+    
+    await save();
+    updateRating();
   };
-    
-    
-    const handleBasicFormRating = async ({ avatar, linkedin, weblink }) => {
-        const basicRating = generateBasicFormRating({ avatar, linkedin, weblink, messages })
-        const layoutRating = generateLayoutRating(wholePageCheck(messages.RPreview), messages)
-        dispatch(actions.updateLayoutRating(layoutRating))
-        dispatch(actions.updateBasicInfoRating(basicRating))
-        
-    }
-    
 
 	const handleNameCnChange = (event) => {
 		const value = event.target.value;
