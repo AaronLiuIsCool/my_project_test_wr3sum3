@@ -1,5 +1,8 @@
 package com.kuaidaoresume.account.service;
 
+import com.kuaidaoresume.account.dto.ResumeDto;
+import com.kuaidaoresume.account.model.Resume;
+import com.kuaidaoresume.account.repo.ResumeRepo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
@@ -23,6 +26,9 @@ import com.kuaidaoresume.mail.client.MailClient;
 import com.kuaidaoresume.mail.dto.EmailRequest;
 
 import java.time.Instant;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -35,6 +41,9 @@ public class AccountServiceTest {
 
     @Mock
     private AccountRepo accountRepo;
+
+    @Mock
+    private ResumeRepo resumeRepo;
 
     @Mock
     private AccountSecretRepo accountSecretRepo;
@@ -78,6 +87,47 @@ public class AccountServiceTest {
 
         Account account1 = modelMapper.map(accountDto, Account.class);
         validateAccount(accountDto, account1);
+    }
+
+    @Test
+    public void test_updateResume() {
+        String resumeId = "aUuid";
+        String originalAlias = "oldAlias";
+        String originalUri = "oldUri";
+        Resume toBeUpdated = Resume.builder()
+            .id(resumeId)
+            .alias(originalAlias)
+            .thumbnailUri(originalUri)
+            .build();
+        Resume anotherResume = Resume.builder()
+            .id("anotherUuid")
+            .alias(originalAlias)
+            .thumbnailUri(originalUri)
+            .build();
+        Account account = Account.builder()
+            .resumes(Arrays.asList(anotherResume, toBeUpdated))
+            .build();
+        toBeUpdated.setAccount(account);
+        anotherResume.setAccount(account);
+
+        String updatedAlias = "newAlias";
+        String updatedUri = "newUri";
+        ResumeDto toUpdate = ResumeDto.builder()
+            .alias(updatedAlias)
+            .thumbnailUri(updatedUri)
+            .build();
+
+        when(resumeRepo.findById(resumeId)).thenReturn(Optional.of(toBeUpdated));
+        accountService.updateResume(resumeId, toUpdate);
+        List<Resume> resumes = account.getResumes();
+
+        Resume notUpdated = resumes.get(0);
+        assertThat(notUpdated.getAlias()).isEqualTo(originalAlias);
+        assertThat(notUpdated.getThumbnailUri()).isEqualTo(originalUri);
+
+        Resume updated = resumes.get(1);
+        assertThat(updated.getAlias()).isEqualTo(updatedAlias);
+        assertThat(updated.getThumbnailUri()).isEqualTo(updatedUri);
     }
 
     void validateAccount(AccountDto accountDto, Account account) {

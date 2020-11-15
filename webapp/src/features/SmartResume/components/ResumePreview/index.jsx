@@ -65,7 +65,7 @@ const ResumePreview = ({ resumeName }) => {
 			const resumeId = data.id;
 			const resumeName = `translated-${resumeId}`;
 			// todo: Need a better way to handle translated resume name
-			window.open(`${resumeId}`, '_blank'); // open translated resume in a new tab
+			window.open(`${resumeId}`, '_blank');
 			accountServices.addResume(userId, resumeId, resumeName);
 		} catch (exception) {
 			logger.error(exception);
@@ -91,7 +91,7 @@ const ResumePreview = ({ resumeName }) => {
 				)}
 			</div>
 
-			<div className={styles.widgetContainer}>
+			<div className={styles.widgetContainer} id="widgetsContainer">
 				<div>
 					<button className={styles.whiteBtn} onClick={() => toggleThemeColorModal()}>
 						{messages.RPreview.editThemeColor} <span className={styles.colorSquare} style={{ backgroundColor: color }}></span>

@@ -46,7 +46,7 @@ public class ResumeClientIT {
     private static final String PROFILE_URL= "http://linkedin.com/dongwang";
     private static final Profile.ProfileType PROFILE_TYPE = Profile.ProfileType.LINKEDIN;
     private static final String LANGUAGE = "en";
-    private static final String INSTITUTION = "UBC";
+    private static final String INSTITUTION = "Carnegie Mellon University";
     private static final String MAJOR = "arts";
     private static final String DEGREE = "master";
     private static final String GPA = "4.0";

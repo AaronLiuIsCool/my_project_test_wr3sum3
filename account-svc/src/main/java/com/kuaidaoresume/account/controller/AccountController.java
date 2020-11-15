@@ -277,12 +277,27 @@ public class AccountController {
     @Authorize(value = {
         AuthConstant.AUTHORIZATION_SUPPORT_USER,
         AuthConstant.AUTHORIZATION_WWW_SERVICE,
+        AuthConstant.AUTHORIZATION_RESUME_SERVICE,
+        AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
+    })
+    @PutMapping(path = "resumes/{resumeId}")
+    public BaseResponse updateResume(@PathVariable String resumeId,
+        @RequestBody @Valid ResumeDto resumeDto) {
+        accountService.updateResume(resumeId, resumeDto);
+        BaseResponse baseResponse = new BaseResponse();
+        baseResponse.setMessage("resume updated");
+        return baseResponse;
+    }
+
+    @Authorize(value = {
+        AuthConstant.AUTHORIZATION_SUPPORT_USER,
+        AuthConstant.AUTHORIZATION_WWW_SERVICE,
         AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
         AuthConstant.AUTHORIZATION_RESUME_SERVICE
     })
-    @DeleteMapping(path = "{userId}/resumes")
-    public BaseResponse removeResumeFromAccount(@PathVariable String userId, @RequestBody @Valid ResumeDto resumeDto) {
-        accountService.removeResumeFromAccount(userId, resumeDto);
+    @DeleteMapping(path = "{userId}/resumes/{resumeId}")
+    public BaseResponse removeResumeFromAccount(@PathVariable String userId, @PathVariable String resumeId) {
+        accountService.removeResumeFromAccount(userId, resumeId);
         BaseResponse baseResponse = new BaseResponse();
         baseResponse.setMessage("resume removed");
         return baseResponse;

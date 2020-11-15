@@ -68,4 +68,10 @@ public interface AccountClient {
     // used after a user clicks a confirmation link in their email.
     @PostMapping(path = "/change_email")
     BaseResponse changeEmail(@RequestHeader(AuthConstant.AUTHORIZATION_HEADER) String authz, @RequestBody @Valid EmailConfirmation request);
+
+    @PutMapping(path = "resumes/{resumeId}")
+    BaseResponse updateResume(
+        @RequestHeader(AuthConstant.AUTHORIZATION_HEADER) String authz,
+        @PathVariable String resumeId,
+        @RequestBody @Valid ResumeDto resumeDto);
 }
