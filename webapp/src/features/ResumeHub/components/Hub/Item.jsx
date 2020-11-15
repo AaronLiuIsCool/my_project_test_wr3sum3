@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
+import moment from 'moment';
 
 import { Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
@@ -23,6 +24,7 @@ import Edit from '../../assets/edit.svg'
 import zh from 'features/SmartResume/i18n/zh.json';
 import en from 'features/SmartResume/i18n/en.json';
 
+const JDBC_DATE_FORMAT = 'YYYY-MM-DD';
 const logger = getLogger('ResumeHubItem');
 const accountServices = new AccountServices();
 const resumeServices = new ResumeServices();
@@ -104,7 +106,7 @@ const Item = ({ resume, account }) => {
                         </div>)}
                     </div>
                     <div className={styles.time}>
-                        {new Date(resume.createdAt).toLocaleString()}
+                        {moment(resume.createdAt).format(JDBC_DATE_FORMAT)}
                     </div>
                     <div className={styles.links}>
                         <Button as={Link} variant="link" to={`/resume/${resume.resumeId}`} className={styles.link} >

@@ -32,7 +32,7 @@ exports[`Item It should match snapshot 1`] = `
       <div
         className="time"
       >
-        11/10/2020, 4:00:00 PM
+        2018–01–30T12:34:56+00:00
       </div>
       <div
         className="links"

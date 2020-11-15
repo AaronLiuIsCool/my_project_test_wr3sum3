@@ -18,6 +18,7 @@ const ItemWithProvider = (props) => (
     </I8nContext.Provider>
   </Provider>
 );
+jest.mock('moment', () => () => ({format: () => '2018–01–30T12:34:56+00:00'}));
 
 describe('Item', () => {
   const showEditIcon = jest.fn();
