@@ -13,7 +13,7 @@ export const h1FontSize = 13;
 export const h2FontSize = 11;
 export const h3FontSize = 11;
 export const pFontSize = 9; // text height = 3.175
-export const headingLineHeight = 10;
+export const headingLineHeight = 7;
 export const paragraphLineHeight = 7;
 
 export const imageWidth = 20;

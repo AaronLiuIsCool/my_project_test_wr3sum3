@@ -10,7 +10,7 @@ import { prepareData } from './resumeBuilder'
 
 const RPmessages = {
   'RPreview': {
-    'editThemeColor': "编辑主题色", "workExperience": "工作经历", "studentWorkAndVolunteer": "学生工作和志愿服务",
+    'editThemeColor': "编辑主题色", "educationBackground": "教育背景", "workExperience": "工作经历", "studentWorkAndVolunteer": "志愿服务", "certificateAndAward": "技能证书 & 获得荣誉", "awards": "获得荣誉", "certificate": "技能证书", "validForever": "永久有效", "expiredAt": "到期",
     "current": "现今",
   }
 };
