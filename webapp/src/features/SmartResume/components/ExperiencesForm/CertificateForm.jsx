@@ -3,7 +3,7 @@ import { Summary } from '../Summary';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col, Form } from 'react-bootstrap';
-
+import { GAEvent } from 'utils/GATracking';
 import SingleDatePicker from 'components/SingleDatePicker';
 import RadioButtonGroup from 'components/RadioButtonGroup';
 import Button from 'react-bootstrap/Button';
@@ -15,7 +15,11 @@ import { validateCertificate, validateCertificateEntry } from '../../slicer/cert
 import { updateStatus } from '../../slicer/common';
 import ResumeServices from 'shell/services/ResumeServices';
 import { getLogger } from 'shell/logger';
+
+// import { generateCertificeRating } from '../../utils/resume';
+import { previewResume } from '../ResumePreview/resumeBuilder';
 import { updateRating } from '../../utils/resume';
+
 
 import certificateOptions from 'data/certificate.json';
 import ArrowUp from '../../assets/arrow-up.svg'; 
@@ -42,6 +46,8 @@ const CertificateForm = ({ data, index, isLast = false, messages, certData = [] 
     // }, []);
     
 	const save = async () => {
+    GAEvent('Resume Edit', 'Save certificate form'); // call GA on save
+    previewResume(messages.RPreview);
 		let id = data.id;
 		try {
 			const responseJson = data.id === undefined ? 

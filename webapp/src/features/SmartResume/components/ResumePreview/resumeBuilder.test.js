@@ -10,7 +10,8 @@ import { prepareData } from './resumeBuilder'
 
 const RPmessages = {
   'RPreview': {
-    'editThemeColor': "编辑主题色", "workExperience": "工作经历", "studentWorkAndVolunteer": "学生工作和志愿服务",
+    'editThemeColor': "编辑主题色", "educationBackground": "教育背景", "workExperience": "工作经历", "studentWorkAndVolunteer": "志愿服务", "certificateAndAward": "技能证书 & 获得荣誉", "awards": "获得荣誉",
+    "certificate": "技能证书", "validForever": "永久有效", "expiredAt": "到期",
     "current": "现今",
   }
 };
@@ -26,7 +27,7 @@ const ResumeBuilderProvider = (props) => (
 const mockData =
   { "id": "4028b401755f292301758093f66c0016", "stepIndex": 0, "assistant": { "show": false }, "basic": { "completed": true, "data": { "id": 1431, "avatar": "", "nameCn": "xiatian yu", "nameEn": "test name", "email": "summer.0808yu@gmail.com", "phone": "6046553326", "city": "肇庆", "country": "undefined", "linkedin": "", "weblink": "" } }, "education": { "completed": false, "data": [{ "schoolName": "", "gpa": "", "startDate": "", "graduateDate": "", "major": "", "degree": "", "city": "", "country": "" }] }, "work": { "completed": false, "data": [{ "workName": "", "currentWorkFlag": false, "workCompanyName": "", "workStartDate": "", "workEndDate": "", "workDescription": "", "workCity": "", "workCountry": "" }] }, "project": { "completed": false, "data": [{ "projectRole": "", "currentProjectFlag": false, "projectCompanyName": "", "projectStartDate": "", "projectEndDate": "", "projectCity": "", "projectCountry": "", "projectDescription": "" }] }, "certificate": { "completed": false, "data": [{ "certificateName": "", "validCertificateFlag": false, "certificateIssuedDate": "", "certificateEndDate": "" }] }, "volunteer": { "completed": false, "data": [{ "volunteerRole": "", "currentVolunteerFlag": false, "volunteerCompanyName": "", "volunteerStartDate": "", "volunteerEndDate": "", "volunteerCity": "", "volunteerCountry": "", "volunteerDescription": "" }] }, "ratings": { "data": { "score": 0, "basicInfo": [], "layoutInfo": [], "educationInfo": [], "workInfo": { "company": [], "keywords": [], "quantify": [], "amount": [], "sorted": [] }, "projectInfo": { "company": [], "keywords": [], "quantify": [], "amount": [], "sorted": [] }, "otherInfo": { "company": [], "keywords": [], "quantify": [], "amount": [], "sorted": [] }, "certInfo": [{ "type": "exp-value", "section": "certifications", "messages": "技能证书，是非常重要的资质证明，您这块背景较为薄弱，建议您查看快课，快速掌握专业技能，提升背景竞争力", "name": "技能证书" }] } }, "resumeBuilder": { "data": { "color": "#3e89ec", "base64": "" } } };
 
-const expectedData = [{ "type": "img", "y": 10, "x": 15, "width": 20, "height": 20, "src": "", "format": "PNG", "page": 1 }, { "type": "title", "y": 20, "x": 38, "content": "xiatian yu", "fontSize": 19, "page": 1 }, { "type": "h2", "y": 20, "x": 74.24550555555555, "content": "", "page": 1 }, { "type": "h3", "y": 20, "x": 82.24550555555555, "content": " ", "page": 1 }, { "type": "background", "y": 23.333333333333332, "x": 38, "color": "#f2f4f9", "page": 1 }, { "type": "h3", "y": 30, "x": 40, "content": "6046553326 summer.0808yu@gmail.com", "page": 1 }, { "type": "link", "y": 30, "x": 118.09144722222221, "content": "", "url": "", "page": 1 }]
+const expectedData = [{ "format": "PNG", "height": 20, "page": 1, "src": "", "type": "img", "width": 20, "x": 15, "y": 10 }, { "content": "xiatian yu", "fontSize": 19, "page": 1, "type": "title", "x": 38, "y": 20 }, { "color": "#f2f4f9", "page": 1, "type": "background", "x": 74.15166666666667, "y": 15.333333333333332 }, { "content": "6046553326 summer.0808yu@gmail.com", "page": 1, "type": "h3", "x": 76.15166666666667, "y": 20 }, { "content": "", "page": 1, "type": "link", "url": "", "x": 153.88222222222223, "y": 20 }]
 
 
 
