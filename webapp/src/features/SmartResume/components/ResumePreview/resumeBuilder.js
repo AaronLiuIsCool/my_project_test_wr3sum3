@@ -15,12 +15,14 @@ let data = [];
 let doc;
 let currentPage = 1;
 
-let scaleFactor = 1; // deafult scale factor
+let scaleFactor = 1; // default scale factor
 // some scaled variables
 let headingLineHeight = Constants.headingLineHeight;
+// todo: revert
 let paragraphLineHeight = Constants.paragraphLineHeight;
 let h1Padding = Constants.h1Padding;
 let pFontSize = Constants.pFontSize;
+let h2FontSize = Constants.h2FontSize;
 let startY = Constants.pdfTopPadding;
 let pdfTopPadding = Constants.pdfTopPadding;
 
@@ -30,8 +32,22 @@ let currentYPos = startY;
 
 let primaryColor = Constants.c_blue;
 
-// 一键整页
+// helper function, 计算右侧padding
+const getRightPadding = (content, numOfPadding = 1) => {
+  // regex for alphabets only 
+  const alphabetRegex = /^[A-Za-z0-9\s]*$/;
 
+  // 在当前字体下 getTextWidth(text) 
+  // 计算中文长度和英文长度会有偏差 
+  // 需要手动给英文添加额外padding
+  if (alphabetRegex.test(content)) {
+    return doc.getTextWidth(content) + Constants.defaultPaddingRight * (numOfPadding + 2);
+  }
+  return doc.getTextWidth(content) + Constants.defaultPaddingRight * numOfPadding;
+
+}
+
+// 一键整页
 const adjustToWholePageHelper = () => {
   // 如果简历没有preview 则无法整页
   if (data.length === 0) {
@@ -69,7 +85,7 @@ const adjustToWholePageHelper = () => {
     } else if (accumulateY > pageHeight * 1) {
       // 超过1页 (不超过1.5页) 变成1页
       scaleFactor *= 0.95;
-    } else if (accumulateY > pageHeight * 0.75) {
+    } else if (accumulateY > pageHeight * 0.65) {
       // 超过0.75页 变成1页
       scaleFactor *= 1.05;
     }
@@ -83,17 +99,17 @@ const adjustToWholePageHelper = () => {
  * read from Redux and prepare Data object
  * the object will be used by both Resume Preview and Resume Download
  * to read the structure of data, please refer to instruction.png
- * the data format looks like sample_data.js
  */
-export const prepareData = () => {
+export const prepareData = (resumeData, messages) => {
   const basicData = resumeData.basic.data;
   const educationData = resumeData.education.data;
   const workData = resumeData.work.data;
   const projectData = resumeData.project.data;
   const volunteerData = resumeData.volunteer.data;
+  const certificateData = resumeData.certificate.data;
   // variable reset
   data = [];
-  doc = new jsPDF("A4");
+  doc = new jsPDF({ format: "A4", lineHeight: 1.5 });
   // define the fonts
   // add the font to jsPDF
   if (process.env.REACT_APP_ENV !== "test") {
@@ -110,22 +126,22 @@ export const prepareData = () => {
     doc.setFont("FZHTJW", "normal"); // set font
   }
 
-  // reset scaled variables
-  // headingLineHeight = scaleFactor * headingLineHeight;
-
   // note change p font since this will break line wrap
-  pFontSize = scaleFactor * Constants.pFontSize;
+  // todo: test
+  // pFontSize = scaleFactor * Constants.pFontSize;
+  pFontSize = Constants.pFontSize;
+  paragraphLineHeight = scaleFactor * Constants.paragraphLineHeight;
+  headingLineHeight = scaleFactor * Constants.headingLineHeight;
   currentXPos = Constants.startX;
   startY = pdfTopPadding;
   currentYPos = startY;
   currentPage = 1;
 
-  _perpareDataHeader(basicData, educationData);
-  _perpareWork(workData);
-  _perpareProject(projectData);
-  _perpareVolunteer(volunteerData);
-
-  // dataAdjustAfterBuild();
+  _prepareHeader(basicData, educationData);
+  _prepareEducation(educationData, messages);
+  _prepareWorkAndProject(workData, projectData, messages);
+  _prepareVolunteer(volunteerData, messages);
+  _prepareAwardAndCertificate(educationData, certificateData, messages);
 
   return data;
 };
@@ -146,7 +162,96 @@ const _updateCurrentYPos = (increment) => {
   }
 };
 
-const _perpareDataHeader = (basicData, educationData) => {
+/**
+ * helper function: 更新 工作、项目、自愿者中的details 部分
+ * 如果单行文字过长 转换长文字为多行段落descriptionList
+ * 逐行更新descriptionList
+ * @param inputDescription {string} the description need to be rendered
+ */
+const _updateDetails = (inputDescription) => {
+  _updateCurrentYPos(headingLineHeight / 2);
+  // User can write one super long sentence without break, need to auto warp the text
+  // also handle the line height and bullet point alignment
+  doc.setFontSize(pFontSize);
+  const descriptionList = inputDescription.split("\n");
+  descriptionList.forEach((content) => {
+    // remove starting *
+    content = content.slice(1);
+    const wrappedContent = doc.splitTextToSize(
+      content,
+      Constants.pdfPageWidth - Constants.pdfLeftPadding * 2 - 4
+    ); // delete 2 extra characters (bullets point)
+    // 如果在页main最下方 content 过长的话 会超出当前页 所以需要检查wrappedContent的每一行
+    for (let i = 0; i < wrappedContent.length; i++) {
+      // 如果是段落显示 并且是第一行 手动加入 "-" 
+      if (i === 0) {
+        wrappedContent[i] = "- " + wrappedContent[i];
+      } else {
+        // manually adjust the padding left
+        wrappedContent[i] = "  " + wrappedContent[i];
+      }
+    }
+
+    // 逐行更新 wrappedContent
+    wrappedContent.forEach(content => {
+      data.push({
+        type: "list",
+        y: currentYPos,
+        content: content,
+        page: currentPage,
+      });
+      // Increment the height for the next print
+      // 如果需要得到字体本身的高度 可以加在这里
+
+      // const height = doc.getTextDimensions(wrappedContent).h / wrappedContent.length;
+      // _updateCurrentYPos(height);
+      _updateCurrentYPos(paragraphLineHeight);
+
+    });
+  });
+}
+
+/**
+ * helper function: 更新 工作、项目、自愿者中的details 部分
+ * 如果单行文字过长 转换长文字为多行段落descriptionList
+ * 逐行更新awards & certificates 
+ * @param inputString {string} the description need to be rendered
+ * @param blockDisplay {boolean} the paragraph starts with a new line or not
+ */
+const _updateInlineList = (inputString, leftStart) => {
+  // User can write one super long sentence without break, need to auto warp the text
+  // also handle the line height and bullet point alignment
+  doc.setFontSize(pFontSize);
+  const descriptionList = inputString.split("\n");
+  descriptionList.forEach((content) => {
+    const wrappedContent = doc.splitTextToSize(
+      content,
+      Constants.pdfPageWidth - Constants.pdfLeftPadding * 2 - 4
+    ); // delete 2 extra characters (bullets point)
+    // 如果在页main最下方 content 过长的话 会超出当前页 所以需要检查wrappedContent的每一行
+    for (let i = 0; i < wrappedContent.length; i++) {
+      // manually adjust the padding left
+      wrappedContent[i] = "  " + wrappedContent[i];
+    }
+
+    // 逐行更新 wrappedContent
+    wrappedContent.forEach(content => {
+      data.push({
+        type: "inlineList",
+        x: leftStart,
+        y: currentYPos,
+        content: content,
+        page: currentPage,
+      });
+      // increment the height for the next print
+      const height = doc.getTextDimensions(wrappedContent).h / wrappedContent.length;
+      _updateCurrentYPos(height);//如果需要手动调整行间距 可以加在这里
+    });
+    _updateCurrentYPos(paragraphLineHeight / 2);
+  });
+}
+
+const _prepareHeader = (basicData, educationData) => {
   // build image
   const img = {
     type: "img",
@@ -158,7 +263,7 @@ const _perpareDataHeader = (basicData, educationData) => {
     format: "PNG",
     page: currentPage,
   };
-  currentXPos += Constants.imageWidth;
+  currentXPos += Constants.imageWidth + Constants.defaultPaddingRight;
   data.push(img);
 
   // build line 1
@@ -172,41 +277,11 @@ const _perpareDataHeader = (basicData, educationData) => {
   };
   // need to set font size in order to get correct width
   doc.setFontSize(Constants.titleFontSize);
-  currentXPos +=
-    doc.getTextWidth(basicData.nameCn) + Constants.defaultPaddingRight * 2;
+  currentXPos += getRightPadding(basicData.nameCn, 2);
   data.push(title);
 
-  const schoolName = educationData[0]?.schoolName || "";
-  const school = {
-    type: "h2",
-    y: startY,
-    x: currentXPos,
-    content: schoolName,
-    page: currentPage,
-  };
-
-  // need to set font size in order to get correct width
-  doc.setFontSize(Constants.h2FontSize);
-  currentXPos +=
-    doc.getTextWidth(schoolName) + Constants.defaultPaddingRight * 2;
-  data.push(school);
-
-  const major = {
-    type: "h3",
-    y: startY,
-    x: currentXPos,
-    content: `${educationData[0].major || ""
-      } ${dateRangeBuilder(educationData[0]?.startDate, educationData[0]?.graduateDate)}`,
-    page: currentPage,
-  };
-  // reset currentXPos
-  currentXPos = Constants.startX;
-  data.push(major);
-
-  // build line #2
-  currentXPos += Constants.imageWidth;
-
-  _updateCurrentYPos((headingLineHeight * 1) / 3);
+  // start with imageWidth + user name
+  _updateCurrentYPos(-(headingLineHeight * 2) / 3);
 
   if (basicData.email || basicData.phone || basicData.linkedin) {
     data.push({
@@ -233,9 +308,7 @@ const _perpareDataHeader = (basicData, educationData) => {
   };
 
   doc.setFontSize(Constants.h3FontSize);
-  currentXPos +=
-    doc.getTextWidth(`${basicData.phone},  ${basicData.email}`) +
-    Constants.defaultPaddingRight * 2;
+  currentXPos += getRightPadding(`${basicData.phone},  ${basicData.email}`, 2);
   data.push(contact);
 
   const link = {
@@ -247,15 +320,79 @@ const _perpareDataHeader = (basicData, educationData) => {
     page: currentPage,
   };
   data.push(link);
+  _updateCurrentYPos(headingLineHeight);
 };
 
-const _perpareWork = (workData) => {
-  _updateCurrentYPos(h1Padding * 2);
-  // draw work title
+const _prepareEducation = (educationData, messages) => {
+  // draw education title
   if (
-    workData.length > 0 &&
-    (workData[0].workName || workData[0].workCompanyName)
+    (educationData.length > 0 &&
+      educationData[0].schoolName)
   ) {
+    _updateCurrentYPos(h1Padding * 2);
+    data.push({
+      type: "h1",
+      y: currentYPos,
+      content: messages.educationBackground,
+      page: currentPage,
+    });
+    _updateCurrentYPos(h1Padding);
+    data.push({
+      type: "underline",
+      y: currentYPos,
+      color: Constants.c_grey,
+      page: currentPage,
+    });
+    _updateCurrentYPos(h1Padding);
+
+    // draw each education line
+    educationData.forEach((education) => {
+      data.push({
+        type: "list",
+        color: Constants.c_grey,
+        y: currentYPos,
+        content: education.schoolName,
+        page: currentPage,
+      });
+
+      // build awards as a string
+      let schoolStr = `${education.major} ${education.degree}`;
+
+      // shift x position
+      doc.setFontSize(pFontSize);
+      let currentXPos = Constants.startX + doc.getTextWidth(education.schoolName) + Constants.defaultPaddingRight * 2;
+      data.push({
+        type: "list",
+        color: Constants.c_black,
+        y: currentYPos,
+        x: currentXPos,
+        content: schoolStr,
+        page: currentPage,
+      });
+
+      // add date
+      doc.setFontSize(Constants.h3FontSize);
+      currentXPos += schoolStr
+        ? getRightPadding(schoolStr)
+        : 0;
+      data.push({
+        type: "h3",
+        y: currentYPos,
+        x: currentXPos,
+        content: `${dateRangeBuilder(education.startDate, education.graduateDate)}`,
+        alignment: "right",
+        page: currentPage,
+      });
+
+      _updateCurrentYPos(paragraphLineHeight);
+    });
+  }
+};
+
+const _prepareWorkAndProject = (workData, projectData, messages) => {
+  _updateCurrentYPos(h1Padding);
+  // draw work title
+  if ((workData.length > 0 && workData[0].workName) || (projectData.length > 0 && projectData[0].projectRole)) {
     data.push({
       type: "h1",
       y: currentYPos,
@@ -272,6 +409,7 @@ const _perpareWork = (workData) => {
     _updateCurrentYPos(h1Padding);
   }
 
+  // deal with work 
   workData.forEach((work) => {
     _updateCurrentYPos(h1Padding * 0.5);
     // draw work detail title line
@@ -286,11 +424,11 @@ const _perpareWork = (workData) => {
 
     // company name
     if (work.workCompanyName) {
-      doc.setFontSize(Constants.h2FontSize);
+      doc.setFontSize(h2FontSize);
       currentXPos =
         Constants.startX +
         (work.workName
-          ? doc.getTextWidth(work.workName) + Constants.defaultPaddingRight
+          ? getRightPadding(work.workName)
           : 0);
       data.push({
         type: "h3",
@@ -310,7 +448,7 @@ const _perpareWork = (workData) => {
     ) {
       doc.setFontSize(Constants.h3FontSize);
       currentXPos += work.workCompanyName
-        ? doc.getTextWidth(work.workCompanyName) + Constants.defaultPaddingRight
+        ? getRightPadding(work.workCompanyName)
         : 0;
       data.push({
         type: "h3",
@@ -322,63 +460,25 @@ const _perpareWork = (workData) => {
         page: currentPage,
       });
     }
-    _updateCurrentYPos(h1Padding * 0.75);
-
-    // work details
-    if (work.workDescription) {
-      _updateCurrentYPos(headingLineHeight / 2);
-
-      // User can write one super long sentence without break, need to auto warp the text
-      // also handle the line height and bullet point alignment
-      doc.setFontSize(pFontSize);
-      const descriptionList = work.workDescription.split("\n");
-
-      descriptionList.forEach((content) => {
-        const wrappedContent = doc.splitTextToSize(
-          content,
-          Constants.pdfPageWidth - Constants.pdfLeftPadding * 2 - 4
-        ); // delete 2 extra characters (bullets point)
-
-        for (let i = 0; i < wrappedContent.length; i++) {
-          if (i === 0) {
-            wrappedContent[i] = "- " + wrappedContent[i];
-          } else {
-            // manually adjust the padding left
-            wrappedContent[i] = "  " + wrappedContent[i];
-          }
-        }
-
-        data.push({
-          type: "list",
-          y: currentYPos,
-          content: wrappedContent,
-          page: currentPage,
-        });
-
-        // increment the height for the next print
-        const height = doc.getTextDimensions(wrappedContent).h;
-        _updateCurrentYPos(height + paragraphLineHeight / 2);
-      });
-    }
+    _updateCurrentYPos(h1Padding * 0.5);
+    // render work details
+    work.workDescription && _updateDetails(work.workDescription);
   });
-};
 
-const _perpareProject = (projectData) => {
+  // deal with project
   projectData.forEach((project) => {
     _updateCurrentYPos(h1Padding * 0.5);
     if (project.projectRole) {
       // draw project detail title line
       data.push({ type: "h2", y: currentYPos, content: project.projectRole });
     }
-
     // project company name
     if (project.projectCompanyName) {
-      doc.setFontSize(Constants.h2FontSize);
+      doc.setFontSize(h2FontSize);
       currentXPos =
         Constants.startX +
         (project.projectRole
-          ? doc.getTextWidth(project.projectRole) +
-          Constants.defaultPaddingRight
+          ? getRightPadding(project.projectRole)
           : 0);
       data.push({
         type: "h3",
@@ -388,7 +488,6 @@ const _perpareProject = (projectData) => {
         page: currentPage,
       });
     }
-
     // date + location
     if (
       project.projectStartDate ||
@@ -398,8 +497,7 @@ const _perpareProject = (projectData) => {
     ) {
       doc.setFontSize(Constants.h3FontSize);
       currentXPos += project.projectCompanyName
-        ? doc.getTextWidth(project.projectCompanyName) +
-        Constants.defaultPaddingRight
+        ? getRightPadding(project.projectCompanyName)
         : 0;
       data.push({
         type: "h3",
@@ -413,46 +511,15 @@ const _perpareProject = (projectData) => {
         page: currentPage,
       });
     }
-    _updateCurrentYPos(h1Padding * 0.75);
+    _updateCurrentYPos(h1Padding * 0.5);
 
-    // project details
-    if (project.projectDescription) {
-      _updateCurrentYPos(headingLineHeight / 2);
-
-      // User can write one super long sentence without break, need to auto warp the text
-      // also handle the line height and bullet point alignment
-      doc.setFontSize(pFontSize);
-      const descriptionList = project.projectDescription.split("\n");
-      descriptionList.forEach((content) => {
-        const wrappedContent = doc.splitTextToSize(
-          content,
-          Constants.pdfPageWidth - Constants.pdfLeftPadding * 2 - 4
-        ); // delete 2 extra characters (bullets point)
-        for (let i = 0; i < wrappedContent.length; i++) {
-          if (i === 0) {
-            wrappedContent[i] = "- " + wrappedContent[i];
-          } else {
-            // manually adjust the padding left
-            wrappedContent[i] = "  " + wrappedContent[i];
-          }
-        }
-
-        data.push({
-          type: "list",
-          y: currentYPos,
-          content: wrappedContent,
-          page: currentPage,
-        });
-        // increment the height for the next print
-        const height = doc.getTextDimensions(wrappedContent).h;
-        _updateCurrentYPos(height + paragraphLineHeight / 2);
-      });
-    }
+    // render project details
+    project.projectDescription && _updateDetails(project.projectDescription);
   });
 };
 
-const _perpareVolunteer = (volunteerData) => {
-  _updateCurrentYPos(h1Padding * 2);
+const _prepareVolunteer = (volunteerData, messages) => {
+  _updateCurrentYPos(h1Padding);
 
   // draw Volunteer title
   if (
@@ -489,12 +556,11 @@ const _perpareVolunteer = (volunteerData) => {
 
     // volunteer company name
     if (volunteer.volunteerRole) {
-      doc.setFontSize(Constants.h2FontSize);
+      doc.setFontSize(h2FontSize);
       currentXPos =
         Constants.startX +
         (volunteer.volunteerCompanyName
-          ? doc.getTextWidth(volunteer.volunteerCompanyName) +
-          Constants.defaultPaddingRight
+          ? getRightPadding(volunteer.volunteerCompanyName)
           : 0);
       data.push({
         type: "h3",
@@ -514,8 +580,7 @@ const _perpareVolunteer = (volunteerData) => {
     ) {
       doc.setFontSize(Constants.h3FontSize);
       currentXPos += volunteer.volunteerRole
-        ? doc.getTextWidth(volunteer.volunteerRole) +
-        Constants.defaultPaddingRight
+        ? getRightPadding(volunteer.volunteerRole)
         : 0;
       data.push({
         type: "h3",
@@ -529,43 +594,104 @@ const _perpareVolunteer = (volunteerData) => {
         page: currentPage,
       });
     }
+    _updateCurrentYPos(h1Padding * 0.5);
 
-    _updateCurrentYPos(h1Padding * 0.75);
-
-    // volunteer details
-    if (volunteer.volunteerDescription) {
-      _updateCurrentYPos(headingLineHeight / 2);
-
-      // User can write one super long sentence without break, need to auto warp the text
-      // also handle the line height and bullet point alignment
-      doc.setFontSize(pFontSize);
-      const descriptionList = volunteer.volunteerDescription.split("\n");
-      descriptionList.forEach((content) => {
-        const wrappedContent = doc.splitTextToSize(
-          content,
-          Constants.pdfPageWidth - Constants.pdfLeftPadding * 2 - 4
-        ); // delete 2 extra characters (bullets point)
-        for (let i = 0; i < wrappedContent.length; i++) {
-          if (i === 0) {
-            wrappedContent[i] = "- " + wrappedContent[i];
-          } else {
-            // manually adjust the padding left
-            wrappedContent[i] = "  " + wrappedContent[i];
-          }
-        }
-
-        data.push({
-          type: "list",
-          y: currentYPos,
-          content: wrappedContent,
-          page: currentPage,
-        });
-        // increment the height for the next print
-        const height = doc.getTextDimensions(wrappedContent).h;
-        _updateCurrentYPos(height + paragraphLineHeight / 2);
-      });
-    }
+    // render volunteer details
+    volunteer.volunteerDescription &&
+      _updateDetails(volunteer.volunteerDescription);
   });
+};
+
+// return an list of awards from educationData list
+const _getAwards = (educationData) => {
+  const awards = [];
+
+  if (educationData.length > 0) {
+    educationData.forEach((edu) => {
+      if (edu.highestAward) {
+        awards.push(edu.highestAward);
+      }
+      if (edu.otherAward) {
+        awards.push(edu.otherAward);
+      }
+    });
+  }
+  return awards;
+}
+
+const _prepareAwardAndCertificate = (educationData, certificateData, messages) => {
+  const awards = _getAwards(educationData);
+  // draw awards + certificate title
+  if (
+    (awards.length > 0) ||
+    (certificateData.length > 0 &&
+      certificateData[0].certificateName)
+  ) {
+    _updateCurrentYPos(h1Padding);
+    data.push({
+      type: "h1",
+      y: currentYPos,
+      content: messages.certificateAndAward,
+      page: currentPage,
+    });
+    _updateCurrentYPos(h1Padding);
+    data.push({
+      type: "underline",
+      y: currentYPos,
+      color: Constants.c_grey,
+      page: currentPage,
+    });
+    _updateCurrentYPos(h1Padding * 1.5);
+    // draw rewards
+    if (awards.length > 0) {
+      // draw award title
+      data.push({
+        type: "h2",
+        y: currentYPos,
+        content: messages.awards,
+        page: currentPage,
+      });
+
+      // build awards as a string
+      let awardStr = "";
+      awards.forEach((award) => {
+        awardStr += " * " + award + " ";
+      });
+      // shift x position
+      doc.setFontSize(h2FontSize);
+      const currentXPos = Constants.startX + doc.getTextWidth(messages.awards) + Constants.defaultPaddingRight;
+      doc.setFontSize(pFontSize);
+      _updateInlineList(awardStr, currentXPos);
+    }
+    // draw certificates
+    if (certificateData.length > 0 && certificateData[0].certificateName) {
+      // draw certificate title
+      data.push({
+        type: "h2",
+        y: currentYPos,
+        content: messages.certificate,
+        page: currentPage,
+      });
+      // build certificate as a string
+      let certificateStr = "";
+      certificateData.forEach((certificate) => {
+        if (!certificate.validCertificateFlag) {
+          certificateStr += ` *  ${certificate.certificateName} ${certificate.certificateEndDate ? certificate.certificateEndDate + messages.expiredAt : ""}`;
+        }
+        else {
+          certificateStr += ` *  ${certificate.certificateName} ${messages.validForever}`;
+        }
+      });
+      // shift x position
+      doc.setFontSize(h2FontSize);
+      const currentXPos = Constants.startX + doc.getTextWidth(messages.certificate) + Constants.defaultPaddingRight;
+      doc.setFontSize(pFontSize);
+      _updateInlineList(certificateStr, currentXPos);
+    }
+  }
+
+
+
 };
 
 const drawText = ({
@@ -592,7 +718,11 @@ const drawText = ({
 };
 
 const buildResume = () => {
-  prepareData();
+  prepareData(resumeData, messages);
+  // 如果最后一行是换页 则移除该数据
+  if (data[data.length - 1].type === "pageBreak") {
+    data.splice(-1, 1);
+  }
   data.forEach((d) => {
     d.doc = doc;
     switch (d.type) {
@@ -616,7 +746,7 @@ const buildResume = () => {
       case "h2":
         // apply h2 style
         d.color = primaryColor;
-        d.fontSize = Constants.h2FontSize;
+        d.fontSize = h2FontSize;
         d.bold = true;
         drawText(d);
         break;
@@ -635,6 +765,11 @@ const buildResume = () => {
         doc.line(d.x, d.y, d.x + doc.getTextWidth(d.content), d.y);
         break;
       case "list":
+        d.color = d.color ? d.color : Constants.c_black;
+        d.fontSize = pFontSize;
+        drawText(d);
+        break;
+      case "inlineList":
         d.color = Constants.c_black;
         d.fontSize = pFontSize;
         drawText(d);
@@ -690,6 +825,6 @@ export const adjustToWholePage = (messagePR) => {
 export const wholePageCheck = (messagePR) => {
   resumeData = store.getState().resume;
   messages = messagePR;
-  prepareData();
+  prepareData(resumeData, messages);
   return data;
 };

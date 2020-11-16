@@ -22,7 +22,6 @@ describe('Certificate form', () => {
     const wrapper = mount(
       <CertificateFormWithProvider data={{}} messages={{}} index={0} />
     );
-    // console.log(wrapper.debug());
     expect(wrapper.find('Form').length).toEqual(1);
   });
 
@@ -52,6 +51,22 @@ describe('Certificate form', () => {
       certificateName: 'test',
       certificateIssuedDate: '2020-10-01',
       certificateEndDate: '2020-10-02',
+      validCertificateFlag: true,
+    };
+    const tree = renderer
+      .create(
+        <CertificateFormWithProvider data={data} messages={{}} index={0} />
+      )
+      .toJSON();
+    expect(tree).toMatchSnapshot();
+  });
+
+  test('It should match snapshot with no Certificate EndDate', () => {
+    const data = {
+      id: 'test',
+      certificateName: 'test',
+      certificateIssuedDate: '2020-10-01',
+      certificateEndDate: '',
       validCertificateFlag: true,
     };
     const tree = renderer

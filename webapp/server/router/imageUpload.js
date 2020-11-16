@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const S3_BUCKET_NAME = "kuaidao-img";
-const S3_BUCKET_REGION = process.env.AWS_BUCKET_REGION;
+const S3_BUCKET_REGION = "ca-central-1";
 
 var aws = require("aws-sdk");
 

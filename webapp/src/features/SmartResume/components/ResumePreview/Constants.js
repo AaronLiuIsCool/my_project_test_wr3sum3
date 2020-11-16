@@ -13,14 +13,14 @@ export const h1FontSize = 13;
 export const h2FontSize = 11;
 export const h3FontSize = 11;
 export const pFontSize = 9; // text height = 3.175
-export const headingLineHeight = 10;
+export const headingLineHeight = 7;
 export const paragraphLineHeight = 7;
 
 export const imageWidth = 20;
 export const imageHeight = 20;
 
 // positions + paddings
-export const startY = pdfTopPadding+5;
+export const startY = pdfTopPadding + 5;
 export const endY = pdfPageHeight - pdfTopPadding;
 export const startX = pdfLeftPadding;
 export const endX = pdfPageWidth - pdfLeftPadding;

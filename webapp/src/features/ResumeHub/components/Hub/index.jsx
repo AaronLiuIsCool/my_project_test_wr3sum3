@@ -10,12 +10,12 @@ import { useI8n } from 'shell/i18n';
 
 import styles from '../../styles/Hub.module.css';
 
-function renderGrid(resumes) {
-    const resumeItems = resumes.map(resume => <Item resume={resume} key={resume.resumeId} />);
+function renderGrid(resumes, account) {
+    const resumeItems = resumes.map(resume => <Item account={account} resume={resume} key={resume.resumeId} />);
     return <Grid>{resumeItems}</Grid>;
 }
 
-const Hub = ({ resumes }) => {
+const Hub = ({ resumes, account }) => {
     const messages = useI8n();
     return (
         <div className={styles.container}>
@@ -25,7 +25,7 @@ const Hub = ({ resumes }) => {
                 {messages['hub_action']}
             </Button>
             </div>
-            {renderGrid(resumes)}
+            {renderGrid(resumes, account)}
         </div>
     );
 }

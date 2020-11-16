@@ -125,7 +125,7 @@ export function adaptCertificate(cert = {}) {
     const data = {
         id,
         certificateName: name,
-        validCertificateFlag: false,
+        validCertificateFlag: !expirationDate,
         certificateIssuedDate: issueDate,
         certificateEndDate: expirationDate,
     };

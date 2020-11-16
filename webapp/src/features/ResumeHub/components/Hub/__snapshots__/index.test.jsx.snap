@@ -27,14 +27,28 @@ exports[`Hub renders Hub 1`] = `
           className="right"
         >
           <div
-            className="name"
+            className="aliasContainer"
           >
-            resume 1 for test
+            <input
+              className="name"
+              onBlur={[Function]}
+              onChange={[Function]}
+              onClick={[Function]}
+              value=""
+            />
+            <div
+              className="edit"
+            >
+              <img
+                alt="edit"
+                src="edit.svg"
+              />
+            </div>
           </div>
           <div
             className="time"
           >
-            test locale date string
+            2018–01–30T12:34:56+00:00
           </div>
           <div
             className="links"
@@ -96,14 +110,28 @@ exports[`Hub renders Hub 1`] = `
           className="right"
         >
           <div
-            className="name"
+            className="aliasContainer"
           >
-            test 2
+            <input
+              className="name"
+              onBlur={[Function]}
+              onChange={[Function]}
+              onClick={[Function]}
+              value=""
+            />
+            <div
+              className="edit"
+            >
+              <img
+                alt="edit"
+                src="edit.svg"
+              />
+            </div>
           </div>
           <div
             className="time"
           >
-            test locale date string
+            2018–01–30T12:34:56+00:00
           </div>
           <div
             className="links"

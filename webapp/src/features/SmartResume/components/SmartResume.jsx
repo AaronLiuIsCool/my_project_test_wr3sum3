@@ -1,15 +1,15 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
-import { previewResume } from './ResumePreview/resumeBuilder';
+import { previewResume, wholePageCheck } from './ResumePreview/resumeBuilder';
 
 import { selectLanguage, selectUserId } from 'features/App/slicer';
-import { actions } from 'features/SmartResume/slicer';
+import { actions, basicSelectors, educationSelectors, workSelectors, projectSelectors, volunteerSelectors, certificateSelectors } from 'features/SmartResume/slicer';
 import { I8nContext } from 'shell/i18n';
 import AccountServices from 'shell/services/AccountServices';
 import ResumeServices from 'shell/services/ResumeServices';
 import { getLogger } from 'shell/logger';
-
+import { generateBasicFormRating, generateLayoutRating, generateEducationRatings, generateSuggestions, isDescending, extractDate, generateCertificeRating } from '../utils/resume';
 import LeftNav from './LeftNav';
 import ExperiencesForm from './ExperiencesForm';
 import Assistant from './Assistant';
@@ -53,6 +53,130 @@ const SmartResume = ({ useObserver = false, resumeId }) => {
     const userId = useSelector(selectUserId);
     const language = useSelector(selectLanguage);
     const messages = language === 'zh' ? zh : en;
+    
+    
+    const afterLoading = useRef(false)
+    const education = useSelector(educationSelectors.selectEducation);
+    const basic = useSelector(basicSelectors.selectBasic);
+    const work = useSelector(workSelectors.selectWork);
+    const project = useSelector(projectSelectors.selectProject);
+    const volunteer = useSelector(volunteerSelectors.selectVolunteer);
+    const certificate = useSelector(certificateSelectors.selectCertificate);
+    
+    const handleFormatRating = () => {
+        const layoutRating = generateLayoutRating(wholePageCheck(messages.RPreview), messages)
+        dispatch(actions.updateLayoutRating(layoutRating))
+    }
+    
+    const handleBasicFormRating = async ({ avatar, linkedin, weblink }, completed) => {
+        const basicRating = generateBasicFormRating({ avatar, linkedin, weblink, messages }, completed)
+        // const layoutRating = generateLayoutRating(wholePageCheck(messages.RPreview), messages)
+        // dispatch(actions.updateLayoutRating(layoutRating))
+        dispatch(actions.updateBasicInfoRating(basicRating))
+        
+    }
+     
+    const handleEducationFormRatings = async (education, educations = []) => {
+        // const { educations } = await resumeServices.getRatings(resumeId);
+        const schools = educations || [];
+        dispatch(actions.clearEducationInfo())
+        const res = generateEducationRatings(education.data, schools, messages, education.completed)        
+        res.forEach((item, index) => {
+            dispatch(actions.updateEducationRating({
+                index,
+                details: item
+            }))
+        })
+    }
+    const handleWorkFormRating = async (data, workExperiences = []) => {
+        // const { workExperiences } = await resumeServices.getRatings(resumeId);
+        const {
+            companyArr,
+            keywordsArr,
+            quantifyArr,
+            expArr,
+            sortedArr
+        } = generateSuggestions(workExperiences, 'workXp', 'work', isDescending(extractDate(data, 'workStartDate')), messages)
+        dispatch(actions.updateWorkRating({ 
+            'amount': expArr,
+            'company': companyArr,
+            'keywords': keywordsArr,
+            'quantify': quantifyArr,
+            'sorted': sortedArr,
+        }));
+    }
+    const handleProjectFormRating = async (data, projectExperiences = []) => {        
+        // const { projectExperiences }  = await resumeServices.getRatings(resumeId);
+        const {
+            companyArr,
+            keywordsArr,
+            quantifyArr,
+            expArr,
+            sortedArr
+        } = generateSuggestions(projectExperiences, 'projectXp', 'project', isDescending(extractDate(data, 'projectStartDate')), messages)
+        dispatch(actions.updateProjectRating({ 
+            'amount': expArr,
+            'company': companyArr,
+            'keywords': keywordsArr,
+            'quantify': quantifyArr,
+            'sorted': sortedArr,
+        }));
+    }
+    const handleVolunteerFormRating = async (data, volunteerExperiences) => {
+        const {
+            companyArr,
+            keywordsArr,
+            quantifyArr,
+            expArr,
+            sortedArr
+        } = generateSuggestions(volunteerExperiences, 'otherXp', 'volunteer', isDescending(extractDate(data, 'volunteerStartDate')), messages)
+
+        dispatch(actions.updateVolunteerRating({ 
+            'amount': expArr,
+            'company': companyArr,
+            'keywords': keywordsArr,
+            'quantify': quantifyArr,
+            'sorted': sortedArr,
+        }));
+    }
+    const handleCertificateFormRating = (certificate) => {
+        const certRating = generateCertificeRating(certificate.length, messages);
+        dispatch(actions.updateCertificateRating({details: certRating}))
+    }
+    
+    useEffect(() => {
+      if (!afterLoading.current) {
+        setTimeout(() => {
+            updateRating();
+        }, 200);
+      }
+    });
+
+    const updateRating = async () => {
+      dispatch(actions.updateToInitalState())
+      const ratings = await resumeServices.getRatings(resumeId);
+      
+      const { educations, workExperiences, projectExperiences, volunteerExperiences } = ratings;
+      handleBasicFormRating(basic.data, basic.completed);
+      handleEducationFormRatings(education, educations);
+      handleWorkFormRating(work.data, workExperiences);
+      handleProjectFormRating(project.data, projectExperiences);
+      handleVolunteerFormRating(volunteer.data, volunteerExperiences)
+      handleCertificateFormRating(certificate.data)
+      handleFormatRating();
+    };
+    
+    const eventListenerCallback = () => {
+        updateRating()
+    }
+    useEffect(() => { // TODO: revisit this afterwards + adding test coverage
+        window.addEventListener('update-rating', eventListenerCallback);
+        return () => {
+            window.removeEventListener('update-rating', eventListenerCallback);
+        };
+    })
+    
+    
     useEffect(() => {
         const updatePreview = async () => {
             await Promise.all([
@@ -60,11 +184,24 @@ const SmartResume = ({ useObserver = false, resumeId }) => {
                 getAccountInfoAndSetResumeName(dispatch, userId, resumeId)
             ]);
             previewResume(messages.RPreview);
+            afterLoading.current = true
         }
         updatePreview();
 
+        
+        return () => {
+          dispatch(
+            actions.toggleAssistant({
+              trigger: 'default',
+              context: {},
+            })
+          );
+        };
+        
     }, []); // eslint-disable-line
 
+    
+    
     return (
         <I8nContext.Provider value={messages}>
             <div className="features smart-resume">

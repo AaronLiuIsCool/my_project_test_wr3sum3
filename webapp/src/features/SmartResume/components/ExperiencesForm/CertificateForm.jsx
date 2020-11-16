@@ -3,7 +3,7 @@ import { Summary } from '../Summary';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col, Form } from 'react-bootstrap';
-
+import { GAEvent } from 'utils/GATracking';
 import SingleDatePicker from 'components/SingleDatePicker';
 import RadioButtonGroup from 'components/RadioButtonGroup';
 import Button from 'react-bootstrap/Button';
@@ -12,16 +12,23 @@ import DropdownGroup from 'components/DropdownGroup';
 import { adaptCertificate } from '../../utils/servicesAdaptor';
 import { actions, selectId } from '../../slicer';
 import { validateCertificate, validateCertificateEntry } from '../../slicer/certificate';
-import { updateStatus } from '../../slicer/common';
+import { updateStatus, updateAllStatus } from '../../slicer/common';
 import ResumeServices from 'shell/services/ResumeServices';
 import { getLogger } from 'shell/logger';
-import { generateCertificeRating } from '../../utils/resume';
+import { previewResume } from '../ResumePreview/resumeBuilder';
+import { updateRating } from '../../utils/resume';
+
 
 import certificateOptions from 'data/certificate.json';
 import ArrowUp from '../../assets/arrow-up.svg'; 
 const logger = getLogger('CertificateForm');
 const resumeServices = new ResumeServices();
-
+const fields = [
+  'certificateName',
+  'certificateIssuedDate',
+  'certificateEndDate',
+  'validCertificateFlag',
+];
 const CertificateForm = ({ data, index, isLast = false, messages, certData = [] }) => {
 	const resumeId = useSelector(selectId);
 	const [validated, setValidated] = useState(false);
@@ -32,16 +39,18 @@ const CertificateForm = ({ data, index, isLast = false, messages, certData = [] 
 	});
 	const dispatch = useDispatch();
     
-    const handleCertificateFormRating = () => {
-        const certRating = generateCertificeRating(certData.length, messages);
-        dispatch(actions.updateCertificateRating({details: certRating}))
-    }
-    useEffect(() => {
-        handleCertificateFormRating()
-        // eslint-disable-next-line
-    }, []);
+  // const handleCertificateFormRating = () => {
+  //     const certRating = generateCertificeRating(certData.length, messages);
+  //     dispatch(actions.updateCertificateRating({details: certRating}))
+  // }
+  // useEffect(() => {
+  //     handleCertificateFormRating()
+  //     // eslint-disable-next-line
+  // }, []);
     
 	const save = async () => {
+    GAEvent('Resume Edit', 'Save certificate form'); // call GA on save
+    previewResume(messages.RPreview);
 		let id = data.id;
 		try {
 			const responseJson = data.id === undefined ? 
@@ -56,9 +65,10 @@ const CertificateForm = ({ data, index, isLast = false, messages, certData = [] 
 	};
 
 	const handleSubmit = (event) => {
-        handleCertificateFormRating();
+        // handleCertificateFormRating();
 		event.preventDefault();
-		event.stopPropagation();
+    event.stopPropagation();
+    updateAllStatus(validateCertificateEntry, status, setStatus, fields, data);
 		if (!validateCertificate(data)) {
 			setValidated(false);
 			return;
@@ -67,7 +77,7 @@ const CertificateForm = ({ data, index, isLast = false, messages, certData = [] 
 		setValidated(true);
         dispatch(actions.completeCertificates());
         save();
-        handleCertificateFormRating()
+        updateRating();
 	};
 
 	const handleCertificateChange = (values) => {
@@ -78,8 +88,9 @@ const CertificateForm = ({ data, index, isLast = false, messages, certData = [] 
 
 	const handleValidCertificateFlag = (event) => {
 		event.preventDefault();
-		const value = event.target.value;
-		dispatch(actions.updateCurrentCertificateFlag({ value, index }));
+    const value = event.target.value;
+    updateStatus(validateCertificateEntry, status, setStatus, 'validCertificateFlag', value);
+		dispatch(actions.updateValidCertificateFlag({ value, index }));
 	};
 
 	const handleCertificateStartDateChange = (date) => {

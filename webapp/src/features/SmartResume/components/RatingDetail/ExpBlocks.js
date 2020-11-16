@@ -20,11 +20,11 @@ export const ExpBlocks = ({
 
   const getTitle = (type) => {
     switch (type) {
-      case "work":
+      case "workXp":
         return messages.workTitle;
-      case "project":
+      case "projectXp":
         return messages.projTitle;
-      case "volunteer":
+      case "otherXp":
         return messages.volTitle;
       default:
         break;
@@ -64,7 +64,7 @@ export const ExpBlocks = ({
                   {messages.expLackOf}
                   <span>{messages.keywords}</span>
                 </h4>
-                <p>{messages.keywordsMessage}</p>
+                <p>{messages.keywordsMessage.replace('{exp}', messages.expReplacement[type])}</p>
                 {info.keywords.map((item, index) => (
                   <RepeatBlock
                     messages={messages}
@@ -88,7 +88,7 @@ export const ExpBlocks = ({
                 <h4>
                   {messages.exp} <span>{messages.notQuantify}</span>
                 </h4>
-                <p>{messages.quantifyMessage}</p>
+                <p>{messages.quantifyMessage.replace('{exp}', messages.expReplacement[type])}}</p>
                 {info.quantify.map((item, index) => (
                   <RepeatBlock
                     messages={messages}

@@ -11,7 +11,11 @@ describe('BaseServices tests', () => {
   let testServices;
 
   beforeEach(() => {
-    global.fetch = jest.fn().mockResolvedValue({json: () => Promise.resolve()});
+    global.fetch = jest.fn()
+            .mockResolvedValue({
+              ok: true,
+              json: () => Promise.resolve()
+            });
     testServices = new TestServices();
   });
 

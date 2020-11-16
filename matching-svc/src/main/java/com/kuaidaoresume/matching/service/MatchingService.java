@@ -236,13 +236,21 @@ public class MatchingService {
     }
 
     private Job getJobByUuid(String jobUuid) {
-        return jobRepository.findByJobUuid(jobUuid).orElseThrow(() ->
-            new ServiceException(ResultCode.NOT_FOUND, String.format("Job Not Found with uuid %s", jobUuid)));
+        return jobRepository.findByJobUuid(jobUuid).orElseThrow(() -> {
+            String errorMessage = String.format("Job Not Found with uuid %s ", jobUuid);
+            ServiceException serviceException = new ServiceException(ResultCode.NOT_FOUND, errorMessage);
+            serviceHelper.handleError(logger, serviceException, errorMessage);
+            return serviceException;
+        });
     }
 
     private Resume getResumeByUuid(String resumeUuid) {
-        return resumeRepository.findByResumeUuid(resumeUuid).orElseThrow(() ->
-            new ServiceException(ResultCode.NOT_FOUND, String.format("Resume Not Found with uuid %s", resumeUuid)));
+        return resumeRepository.findByResumeUuid(resumeUuid).orElseThrow(() -> {
+            String errorMessage = String.format("Resume Not Found with uuid %s ", resumeUuid);
+            ServiceException serviceException = new ServiceException(ResultCode.NOT_FOUND, errorMessage);
+            serviceHelper.handleError(logger, serviceException, errorMessage);
+            return serviceException;
+        });
     }
 
     private TailoredJob buildTailoredJob(String jobUuid, Resume resume) {

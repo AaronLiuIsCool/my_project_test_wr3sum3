@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
+import moment from 'moment';
 
 import { Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
@@ -18,10 +19,12 @@ import { useI8n } from 'shell/i18n';
 
 import styles from '../../styles/Hub.module.css';
 import { downloadPDF } from 'features/SmartResume/components/ResumePreview/resumeBuilder';
+import Edit from '../../assets/edit.svg'
 
 import zh from 'features/SmartResume/i18n/zh.json';
 import en from 'features/SmartResume/i18n/en.json';
 
+const JDBC_DATE_FORMAT = 'YYYY-MM-DD';
 const logger = getLogger('ResumeHubItem');
 const accountServices = new AccountServices();
 const resumeServices = new ResumeServices();
@@ -39,11 +42,32 @@ async function getResume(dispatch, resumeId) {
     }
 }
 
-const Item = ({ resume }) => {
+const Item = ({ resume, account }) => {
     const messages = useI8n();
     const dispatch = useDispatch();
     const userId = useSelector(selectUserId);
-
+    const [showEdit, setShowEdit] = useState(true)
+    const [alias, setAlias] = useState('');
+    useEffect(() => {
+      setAlias(resume.alias);
+    }, [resume.alias]);
+    const updateResumeName = (resumeId) => {
+      const resumeInfo = {
+        ...account.resumes.find((resume) => resume.resumeId === resumeId),
+        alias,
+      };
+      accountServices.updateResume(resumeId, resumeInfo).then((res) => {
+        // TODO maybe add toast later
+      });
+    };
+    const handleOnBlur = (resumeId) => {
+      setShowEdit(true);
+      if (alias === resume.alias) {
+        return;
+      } else {
+        updateResumeName(resumeId);
+      }
+    };
     const handleDelete = async () => {
         dispatch(deleteResume(resume.resumeId));
         try {
@@ -61,15 +85,26 @@ const Item = ({ resume }) => {
         const resumeData = await getResume(dispatch, resume.resumeId);
         downloadPDF(resumeData?.language === 'zh' ? zh : en);
     }
+    
+    const showEditIcon = () => {
+        setShowEdit(false)
+    }
     return (
         <div className={styles.itemContainer}>
             <div className={styles.itemContent}>
                 <div className={styles.right}>
-                    <div className={styles.name}>
-                        {resume.alias}
+                    <div className={styles.aliasContainer}>
+                        <input onBlur={() => {
+                            handleOnBlur(resume.resumeId);                        
+                        }} onClick={() => {showEditIcon()}} onChange={(e) => {
+                            setAlias(e.target.value)
+                        }} className={styles.name} value={alias} />
+                        {showEdit && (<div className={styles.edit}>
+                            <img alt="edit" src={Edit}/>
+                        </div>)}
                     </div>
                     <div className={styles.time}>
-                        {new Date(resume.createdAt).toLocaleString()}
+                        {moment(resume.createdAt).format(JDBC_DATE_FORMAT)}
                     </div>
                     <div className={styles.links}>
                         <Button as={Link} variant="link" to={`/resume/${resume.resumeId}`} className={styles.link} >

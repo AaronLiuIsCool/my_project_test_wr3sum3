@@ -1,10 +1,12 @@
 package com.kuaidaoresume.common.utils;
 
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.util.StringUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -41,7 +43,12 @@ public class FileUtil {
                 Iterator<Cell> cellIterator = row.cellIterator();
                 while (cellIterator.hasNext()) {
                     Cell cell = cellIterator.next();
-                    keywordsSet.add(cell.getStringCellValue());
+                    if (cell.getCellType().equals(CellType.STRING)) {
+                        String keyword = cell.getStringCellValue();
+                        if (!StringUtils.isEmpty(keyword)) {
+                            keywordsSet.add(keyword);
+                        }
+                    }
                 }
             }
             return keywordsSet;
