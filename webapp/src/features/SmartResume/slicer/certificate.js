@@ -21,14 +21,14 @@ export function validateCertificateEntry(name, value, data) {
             } else {
                 return false;
             }
-        case "currentCertificateFlag":
+        case "validCertificateFlag":
             return (
                 value === true ||
                 value === false ||
                 toString.call(value) === "[object Boolean]"
             );
         case "certificateEndDate":
-            if(!data?.currentCertificateFlag) {
+            if (data?.validCertificateFlag) {
                 return true;
             }
             return typeof value === "string" && validateDate(value);
@@ -77,7 +77,7 @@ const reducers = {
     updateCertificateName: (state, action) => {
         updateField(state, action.payload.index, "certificateName", action.payload.value);
     },
-    updateCurrentCertificateFlag: (state, action) => {
+    updateValidCertificateFlag: (state, action) => {
         // convert string to boolean
         updateField(
             state,
@@ -104,13 +104,13 @@ const reducers = {
     },
     removeCertificate: (state, action) => {
         const index = action.payload.index;
-        if(state.certificate.data.length > 1) {
-            state.certificate.data.splice(index, 1) 
+        if (state.certificate.data.length > 1) {
+            state.certificate.data.splice(index, 1)
         } else {
             state.certificate.data = [{
                 ...certificate
             }]
-        }        
+        }
     }
 };
 
