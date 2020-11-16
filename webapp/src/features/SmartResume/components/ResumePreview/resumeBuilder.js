@@ -263,8 +263,7 @@ const _prepareHeader = (basicData, educationData) => {
     format: "PNG",
     page: currentPage,
   };
-  // start with imageWidth + 3 padding
-  currentXPos += Constants.imageWidth + 3;
+  currentXPos += Constants.imageWidth + Constants.defaultPaddingRight;
   data.push(img);
 
   // build line 1

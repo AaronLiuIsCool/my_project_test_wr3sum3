@@ -45,23 +45,23 @@ const AvatarEdit = ({ imagePreview, setImagePreview, closeModalHandler }) => {
 				<div className={styles.samplesContainer}>
 					<h2>{messages.samples}</h2>
 					<div className={styles.samples}>
-						<div className={styles.sample}>
-							<img src={process.env.PUBLIC_URL + '/images/good_picture.svg'} alt='check mark' />
-						</div>
-						<div className={styles.sample}>
-							<img src={process.env.PUBLIC_URL + '/images/good_picture.svg'} alt='check mark' />
-						</div>
-						<div className={styles.sample}>
+						<div className={styles.sample} style={{backgroundImage: `url(${process.env.PUBLIC_URL}/images/bad_photo_1.png)`}}>
 							<img src={process.env.PUBLIC_URL + '/images/bad_picture.svg'} alt='check mark' />
 						</div>
-						<div className={styles.sample}>
-							<img src={process.env.PUBLIC_URL + '/images/good_picture.svg'} alt='check mark' />
-						</div>
-						<div className={styles.sample}>
-							<img src={process.env.PUBLIC_URL + '/images/good_picture.svg'} alt='check mark' />
-						</div>
-						<div className={styles.sample}>
+						<div className={styles.sample} style={{backgroundImage: `url(${process.env.PUBLIC_URL}/images/bad_photo_2.png)`}}>
 							<img src={process.env.PUBLIC_URL + '/images/bad_picture.svg'} alt='check mark' />
+						</div>
+						<div className={styles.sample} style={{backgroundImage: `url(${process.env.PUBLIC_URL}/images/good_photo_1.png)`}}>
+							<img src={process.env.PUBLIC_URL + '/images/good_picture.svg'} alt='check mark' />
+						</div>
+						<div className={styles.sample} style={{backgroundImage: `url(${process.env.PUBLIC_URL}/images/bad_photo_3.png)`}}>
+							<img src={process.env.PUBLIC_URL + '/images/bad_picture.svg'} alt='check mark' />
+						</div>
+						<div className={styles.sample} style={{backgroundImage: `url(${process.env.PUBLIC_URL}/images/bad_photo_4.png)`}}>
+							<img src={process.env.PUBLIC_URL + '/images/bad_picture.svg'} alt='check mark' />
+						</div>
+						<div className={styles.sample} style={{backgroundImage: `url(${process.env.PUBLIC_URL}/images/good_photo_2.png)`}}>
+							<img src={process.env.PUBLIC_URL + '/images/good_picture.svg'} alt='check mark' />
 						</div>
 					</div>
 				</div>
