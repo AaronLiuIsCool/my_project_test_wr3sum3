@@ -170,8 +170,10 @@ const WorkForm = ({ data, index, isLast = false, messages, workData }) => {
 
   const handleDelete = async (id) => {
     dispatch(actions.removeWork({ index }));
-    await resumeServices.removeWork(id, resumeId);
-    updateRating();
+    if (id) {
+      await resumeServices.removeWork(id, resumeId);
+      updateRating();
+    }
   };
   useEffect(() => {
     if (data.id && !didMount.current) {
@@ -335,7 +337,7 @@ const WorkForm = ({ data, index, isLast = false, messages, workData }) => {
           <Row className="form_buttons">
             <Col className="flex-end">
               {/* just a placeholder so we do need to change the css */}
-              {data.id && (
+              {(
                 <Button
                   onClick={() => {
                     handleDelete(data.id);

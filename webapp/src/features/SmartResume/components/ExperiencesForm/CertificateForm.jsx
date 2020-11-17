@@ -104,10 +104,13 @@ const CertificateForm = ({ data, index, isLast = false, messages, certData = [] 
 	const toggleShowSummary = () => {
 		setShowSummary(!showSummary);
 	};
-	const handleDelete = (id) => {
-		resumeServices.removeCertificate(id, resumeId)
-		dispatch(actions.removeCertificate({index}))
-	};
+	const handleDelete = async (id) => {
+    dispatch(actions.removeCertificate({ index }));
+    if (id) {
+      await resumeServices.removeCertificate(id, resumeId);
+      updateRating();
+    }
+  };
 	useEffect(() => {
 		if(data.id && !didMount.current) {
 			setShowSummary(true)
@@ -201,7 +204,7 @@ const CertificateForm = ({ data, index, isLast = false, messages, certData = [] 
           <Row className="form_buttons">
 						<Col className="flex-end">
               {/* just a placeholder so we do need to change the css */}
-              {data.id && (
+              {(
                 <Button
                   onClick={() => {
                     handleDelete(data.id);

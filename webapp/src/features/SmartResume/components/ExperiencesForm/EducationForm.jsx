@@ -142,9 +142,11 @@ const EducationForm = ({ data, index, isLast = false, messages }) => {
     };
     
     const handleDelete = async (id) => {
-        dispatch(actions.removeEducation({index}))
-        await resumeServices.removeEducation(id, resumeId)
-          updateRating();
+      dispatch(actions.removeEducation({ index }));
+      if (id) {
+        await resumeServices.removeEducation(id, resumeId);
+        updateRating();
+      }
     };
     useEffect(() => {
       if (data.id && !didMount.current) {
@@ -335,7 +337,7 @@ const EducationForm = ({ data, index, isLast = false, messages }) => {
             <Row className="form_buttons">
               <Col className="flex-end">
                 {/* just a placeholder so we do need to change the css */}
-                {data.id && (
+                {(
                   <Button
                     onClick={() => {
                       handleDelete(data.id);

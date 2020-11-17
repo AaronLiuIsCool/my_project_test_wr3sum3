@@ -98,6 +98,16 @@ const reducers = {
       const value = state.volunteer.data[index].volunteerDescription.length === 0 ?
         action.payload.value : `${state.volunteer.data[index].volunteerDescription}\n${action.payload.value}`;
       updateField( state, index, "volunteerDescription", value);
+    },
+    removeVolunteer: (state, action) => {
+        const index = action.payload.index;
+        if(state.volunteer.data.length > 1) {
+            state.volunteer.data.splice(index, 1) 
+        } else {
+            state.volunteer.data = [{
+                ...volunteer
+            }]
+        }        
     }
 }
 

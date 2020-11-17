@@ -212,6 +212,14 @@ export default class ResumeServices extends BaseServices {
             logger.error(error);
         }
     }
+    
+    async removeVolunteer(volunteerId, resumeId) {
+        try {
+            return await this.delete(`v1/volunteer-experiences/${volunteerId}?resumeId=${resumeId}`);
+        } catch (error) {
+            logger.error(error);
+        }
+    }
 
     async removeCertificate(certificateId, resumeId) {
         try {

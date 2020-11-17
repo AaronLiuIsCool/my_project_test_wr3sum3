@@ -160,10 +160,13 @@ const ProjectForm = ({ data, index, isLast = false, messages, projectData }) => 
 		writeAssistantContainer: true,
 		active: showAssistant && trigger === 'project',
 	});
-	const handleDelete = (id) => {
-		resumeServices.removeProject(id, resumeId)
-		dispatch(actions.removeProject({index}))
-	};
+	const handleDelete = async (id) => {
+    dispatch(actions.removeProject({ index }));
+    if (id) {
+      await resumeServices.removeProject(id, resumeId);
+      updateRating();
+    }
+  };
 	useEffect(() => {
 		if (data.id && !didMount.current) {
       setShowSummary(true);
@@ -318,7 +321,7 @@ const ProjectForm = ({ data, index, isLast = false, messages, projectData }) => 
           <Row className="form_buttons">
 					<Col className="flex-end">
               {/* just a placeholder so we do need to change the css */}
-              {data.id && (
+              {(
                 <Button
                   onClick={() => {
                     handleDelete(data.id);

@@ -57,10 +57,13 @@ const VolunteerForm = ({ data, index, isLast = false, messages, volunteerData })
 	const toggleShowSummary = () => {
 		setShowSummary(!showSummary);
 	};
-	const handleDelete = (id) => {
-		resumeServices.removeProject(id, resumeId)
-		dispatch(actions.removeProject({index}))
-	};
+	const handleDelete = async (id) => {
+    dispatch(actions.removeVolunteer({ index }));
+    if (id) {
+      await resumeServices.removeVolunteer(id, resumeId);
+      updateRating();
+    }
+  };
 	useEffect(() => {
 		if(data.id && !didMount.current) {
 			setShowSummary(true)
@@ -318,7 +321,7 @@ const VolunteerForm = ({ data, index, isLast = false, messages, volunteerData })
           <Row className="form_buttons">
 						<Col className="flex-end">
               {/* just a placeholder so we do need to change the css */}
-              {data.id && (
+              {(
                 <Button
                   onClick={() => {
                     handleDelete(data.id);
