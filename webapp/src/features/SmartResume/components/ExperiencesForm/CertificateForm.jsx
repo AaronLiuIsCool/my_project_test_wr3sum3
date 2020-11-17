@@ -9,15 +9,19 @@ import RadioButtonGroup from 'components/RadioButtonGroup';
 import Button from 'react-bootstrap/Button';
 import DropdownGroup from 'components/DropdownGroup';
 
-import { adaptCertificate } from '../../utils/servicesAdaptor';
-import { actions, selectId } from '../../slicer';
-import { validateCertificate, validateCertificateEntry } from '../../slicer/certificate';
-import { updateStatus, updateAllStatus } from '../../slicer/common';
+import {adaptCertificate} from '../../utils/servicesAdaptor';
+import {actions, selectId} from '../../slicer';
+import {
+  validateCertificate,
+  validateCertificateEntry,
+} from '../../slicer/certificate';
+import {updateStatus} from '../../slicer/common';
 import ResumeServices from 'shell/services/ResumeServices';
-import { getLogger } from 'shell/logger';
-import { previewResume } from '../ResumePreview/resumeBuilder';
-import { updateRating } from '../../utils/resume';
+import {getLogger} from 'shell/logger';
 
+// import { generateCertificeRating } from '../../utils/resume';
+import {previewResume} from '../ResumePreview/resumeBuilder';
+import {updateRating} from '../../utils/resume';
 
 import certificateOptions from 'data/certificate.json';
 import ArrowUp from '../../assets/arrow-up.svg';
@@ -29,16 +33,22 @@ const fields = [
   'certificateEndDate',
   'validCertificateFlag',
 ];
-const CertificateForm = ({ data, index, isLast = false, messages, certData = [] }) => {
-	const resumeId = useSelector(selectId);
-	const [validated, setValidated] = useState(false);
-	const [status, setStatus] = useState({
-		certificateName: {},
-		certificateIssuedDate: {},
-		certificateEndDate: {},
-	});
-	const dispatch = useDispatch();
-    
+const CertificateForm = ({
+  data,
+  index,
+  isLast = false,
+  messages,
+  certData = [],
+}) => {
+  const resumeId = useSelector(selectId);
+  const [validated, setValidated] = useState(false);
+  const [status, setStatus] = useState({
+    certificateName: {},
+    certificateIssuedDate: {},
+    certificateEndDate: {},
+  });
+  const dispatch = useDispatch();
+
   // const handleCertificateFormRating = () => {
   //     const certRating = generateCertificeRating(certData.length, messages);
   //     dispatch(actions.updateCertificateRating({details: certRating}))
@@ -47,70 +57,101 @@ const CertificateForm = ({ data, index, isLast = false, messages, certData = [] 
   //     handleCertificateFormRating()
   //     // eslint-disable-next-line
   // }, []);
-    
-	const save = async () => {
+
+  const save = async () => {
     GAEvent('Resume Edit', 'Save certificate form'); // call GA on save
     previewResume(messages.RPreview);
-		let id = data.id;
-		try {
-			const responseJson = data.id === undefined ? 
-					await resumeServices.createCertificate(resumeId, adaptCertificate(data)) :
-					await resumeServices.updateCertificate(data.id, adaptCertificate(data));
-			id = id || responseJson.id;
-		} catch (exception) {
-			logger.error(exception);
-		} finally {
-			dispatch(actions.updateCertificateId({ index, id }));
-		}
-	};
+    let id = data.id;
+    try {
+      const responseJson =
+        data.id === undefined
+          ? await resumeServices.createCertificate(
+              resumeId,
+              adaptCertificate(data),
+            )
+          : await resumeServices.updateCertificate(
+              data.id,
+              adaptCertificate(data),
+            );
+      id = id || responseJson.id;
+    } catch (exception) {
+      logger.error(exception);
+    } finally {
+      dispatch(actions.updateCertificateId({index, id}));
+    }
+  };
 
-	const handleSubmit = (event) => {
-        // handleCertificateFormRating();
-		event.preventDefault();
+  const handleSubmit = (event) => {
+    // handleCertificateFormRating();
+    event.preventDefault();
     event.stopPropagation();
     updateAllStatus(validateCertificateEntry, status, setStatus, fields, data);
-		if (!validateCertificate(data)) {
-			setValidated(false);
-			return;
-		}
-		toggleShowSummary();
-		setValidated(true);
-        dispatch(actions.completeCertificates());
-        save();
-        updateRating();
-	};
+    if (!validateCertificate(data)) {
+      setValidated(false);
+      return;
+    }
+    toggleShowSummary();
+    setValidated(true);
+    dispatch(actions.completeCertificates());
+    save();
+    updateRating();
+  };
 
-	const handleCertificateChange = (values) => {
-		const value = values.length === 0 ? null : values[0].data;
-		updateStatus(validateCertificateEntry, status, setStatus, 'certificateName', value);
-		dispatch(actions.updateCertificateName({ value, index }));
-	};
+  const handleCertificateChange = (values) => {
+    const value = values.length === 0 ? null : values[0].data;
+    updateStatus(
+      validateCertificateEntry,
+      status,
+      setStatus,
+      'certificateName',
+      value,
+    );
+    dispatch(actions.updateCertificateName({value, index}));
+  };
 
-	const handleValidCertificateFlag = (event) => {
-		event.preventDefault();
+  const handleValidCertificateFlag = (event) => {
+    event.preventDefault();
     const value = event.target.value;
-    updateStatus(validateCertificateEntry, status, setStatus, 'validCertificateFlag', value);
-		dispatch(actions.updateValidCertificateFlag({ value, index }));
-	};
+    updateStatus(
+      validateCertificateEntry,
+      status,
+      setStatus,
+      'validCertificateFlag',
+      value,
+    );
+    dispatch(actions.updateValidCertificateFlag({value, index}));
+  };
 
-	const handleCertificateStartDateChange = (date) => {
-		const value = date ? date.toISOString() : undefined;
-		updateStatus(validateCertificateEntry, status, setStatus, 'certificateIssuedDate', value);
-		dispatch(actions.updateCertificateIssuedDate({ value, index }));
-	};
+  const handleCertificateStartDateChange = (date) => {
+    const value = date ? date.toISOString() : undefined;
+    updateStatus(
+      validateCertificateEntry,
+      status,
+      setStatus,
+      'certificateIssuedDate',
+      value,
+    );
+    dispatch(actions.updateCertificateIssuedDate({value, index}));
+  };
 
-	const handleCertificateEndDateChange = (date) => {
-		const value = date ? date.toISOString() : undefined;
-		updateStatus(validateCertificateEntry, status, setStatus, 'certificateEndDate', value);
-		dispatch(actions.updateCertificateEndDate({ value, index }));
-	};
-	const didMount = useRef(false);
-	const [showSummary, setShowSummary] = useState(false);
-	const toggleShowSummary = () => {
-		setShowSummary(!showSummary);
-	};
-	const handleDelete = async (id) => {
-    dispatch(actions.removeCertificate({ index }));
+  const handleCertificateEndDateChange = (date) => {
+    const value = date ? date.toISOString() : undefined;
+    updateStatus(
+      validateCertificateEntry,
+      status,
+      setStatus,
+      'certificateEndDate',
+      value,
+    );
+    dispatch(actions.updateCertificateEndDate({value, index}));
+  };
+  const didMount = useRef(false);
+  const [showSummary, setShowSummary] = useState(false);
+  const toggleShowSummary = () => {
+    setShowSummary(!showSummary);
+  };
+  const handleDelete = async (id) => {
+    dispatch(actions.removeCertificate({index}));
     if (id) {
       await resumeServices.removeCertificate(id, resumeId);
       updateRating();
