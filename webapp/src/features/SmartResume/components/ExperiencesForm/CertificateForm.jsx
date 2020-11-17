@@ -49,15 +49,6 @@ const CertificateForm = ({
   });
   const dispatch = useDispatch();
 
-  // const handleCertificateFormRating = () => {
-  //     const certRating = generateCertificeRating(certData.length, messages);
-  //     dispatch(actions.updateCertificateRating({details: certRating}))
-  // }
-  // useEffect(() => {
-  //     handleCertificateFormRating()
-  //     // eslint-disable-next-line
-  // }, []);
-
   const save = async () => {
     GAEvent('Resume Edit', 'Save certificate form'); // call GA on save
     previewResume(messages.RPreview);
