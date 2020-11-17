@@ -60,4 +60,20 @@ describe('Certificate form', () => {
       .toJSON();
     expect(tree).toMatchSnapshot();
   });
+
+  test('It should match snapshot with no Certificate EndDate', () => {
+    const data = {
+      id: 'test',
+      certificateName: 'test',
+      certificateIssuedDate: '2020-10-01',
+      certificateEndDate: '',
+      validCertificateFlag: true,
+    };
+    const tree = renderer
+      .create(
+        <CertificateFormWithProvider data={data} messages={{}} index={0} />
+      )
+      .toJSON();
+    expect(tree).toMatchSnapshot();
+  });
 });
