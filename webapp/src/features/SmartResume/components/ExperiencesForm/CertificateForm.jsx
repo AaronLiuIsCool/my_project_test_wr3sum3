@@ -15,11 +15,9 @@ import {
   validateCertificate,
   validateCertificateEntry,
 } from '../../slicer/certificate';
-import {updateStatus} from '../../slicer/common';
+import {updateStatus, updateAllStatus} from '../../slicer/common';
 import ResumeServices from 'shell/services/ResumeServices';
 import {getLogger} from 'shell/logger';
-
-// import { generateCertificeRating } from '../../utils/resume';
 import {previewResume} from '../ResumePreview/resumeBuilder';
 import {updateRating} from '../../utils/resume';
 
