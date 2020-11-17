@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Summary } from '../Summary';
+import React, {useState, useEffect, useRef} from 'react';
+import {Summary} from '../Summary';
 import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux';
-import { Row, Col, Form } from 'react-bootstrap';
-import { GAEvent } from 'utils/GATracking';
+import {useDispatch, useSelector} from 'react-redux';
+import {Row, Col, Form} from 'react-bootstrap';
+import {GAEvent} from 'utils/GATracking';
 import SingleDatePicker from 'components/SingleDatePicker';
 import RadioButtonGroup from 'components/RadioButtonGroup';
 import Button from 'react-bootstrap/Button';
@@ -20,7 +20,7 @@ import { updateRating } from '../../utils/resume';
 
 
 import certificateOptions from 'data/certificate.json';
-import ArrowUp from '../../assets/arrow-up.svg'; 
+import ArrowUp from '../../assets/arrow-up.svg';
 const logger = getLogger('CertificateForm');
 const resumeServices = new ResumeServices();
 const fields = [
@@ -116,16 +116,16 @@ const CertificateForm = ({ data, index, isLast = false, messages, certData = [] 
       updateRating();
     }
   };
-	useEffect(() => {
-		if(data.id && !didMount.current) {
-			setShowSummary(true)
-			didMount.current = true
-		} else if (!data.id && didMount.current) {
-      setShowSummary(false)
+  useEffect(() => {
+    if (data.id && !didMount.current) {
+      setShowSummary(true);
+      didMount.current = true;
+    } else if (!data.id && didMount.current) {
+      setShowSummary(false);
     }
-	}, [data])
+  }, [data]);
 
-	return (
+  return (
     <div className="form_body">
       {showSummary ? (
         <Summary
@@ -138,13 +138,13 @@ const CertificateForm = ({ data, index, isLast = false, messages, certData = [] 
         />
       ) : (
         <Form validated={validated} onSubmit={handleSubmit}>
-					<Row className="flexie">
-						<Col>
-							<h2 className="form_h2">{messages.enterNewExperience}</h2>
-						</Col>
-						<div className="toggle-up-arrow" onClick={toggleShowSummary}>
-							{data.id && <img src={ArrowUp} alt="up-arrow"/>}
-						</div>
+          <Row className="flexie">
+            <Col>
+              <h2 className="form_h2">{messages.enterNewExperience}</h2>
+            </Col>
+            <div className="toggle-up-arrow" onClick={toggleShowSummary}>
+              {data.id && <img src={ArrowUp} alt="up-arrow" />}
+            </div>
           </Row>
           <Row>
             <Col lg="4">
@@ -165,8 +165,8 @@ const CertificateForm = ({ data, index, isLast = false, messages, certData = [] 
                 label={messages.validForever}
                 id="certificate-currentCertificateFlag"
                 values={[
-                  { label: messages.yes, value: true },
-                  { label: messages.no, value: false },
+                  {label: messages.yes, value: true},
+                  {label: messages.no, value: false},
                 ]}
                 value={data.validCertificateFlag}
                 onClickHandler={handleValidCertificateFlag}
@@ -207,9 +207,9 @@ const CertificateForm = ({ data, index, isLast = false, messages, certData = [] 
           </Row>
 
           <Row className="form_buttons">
-						<Col className="flex-end">
+            <Col className="flex-end">
               {/* just a placeholder so we do need to change the css */}
-              {(
+              {
                 <Button
                   onClick={() => {
                     handleDelete(data.id);
@@ -219,7 +219,7 @@ const CertificateForm = ({ data, index, isLast = false, messages, certData = [] 
                 >
                   {messages.delete}
                 </Button>
-              )}
+              }
               <Button variant="primary" type="submit">
                 {messages.save}
               </Button>
@@ -232,10 +232,10 @@ const CertificateForm = ({ data, index, isLast = false, messages, certData = [] 
 };
 
 CertificateForm.propTypes = {
-	data: PropTypes.object.isRequired,
-	index: PropTypes.number.isRequired,
-	isLast: PropTypes.bool,
-	messages: PropTypes.object.isRequired,
+  data: PropTypes.object.isRequired,
+  index: PropTypes.number.isRequired,
+  isLast: PropTypes.bool,
+  messages: PropTypes.object.isRequired,
 };
 
 export default CertificateForm;
