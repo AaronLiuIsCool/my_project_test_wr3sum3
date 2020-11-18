@@ -31,9 +31,9 @@ export default class AccountServices extends BaseServices {
     }
   }
 
-  async deleteResume(userId, resume) {
+  async deleteResume(userId, resumeId) {
     try {
-      return await this.delete(`v1/account/${userId}/resumes`, resume);
+      return await this.delete(`v1/account/${userId}/resumes/${resumeId}`);
     } catch (err) {
       logger.error(err);
     }
