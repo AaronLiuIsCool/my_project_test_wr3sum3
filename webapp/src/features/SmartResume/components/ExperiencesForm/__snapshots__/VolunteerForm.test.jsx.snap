@@ -317,6 +317,12 @@ exports[`Volunteer Form It should match snapshot 1`] = `
         className="flex-end col"
       >
         <button
+          className="remove-btn btn btn-light"
+          disabled={false}
+          onClick={[Function]}
+          type="button"
+        />
+        <button
           className="btn btn-primary"
           disabled={false}
           type="submit"
