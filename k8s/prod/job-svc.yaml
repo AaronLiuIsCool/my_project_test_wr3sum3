@@ -18,6 +18,11 @@ spec:
         - name: job-svc
           image: kuaidaoresume/job-svc
           imagePullPolicy: Always
+          resources:
+            limits:
+              memory: "4Gi"
+            requests:
+              memory: "3Gi"
           ports:
             - name: http-port
               containerPort: 80
