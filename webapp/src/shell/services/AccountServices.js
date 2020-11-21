@@ -46,4 +46,12 @@ export default class AccountServices extends BaseServices {
       logger.error(err);
     }
   }
+  
+  async updateResume(resumeId, resumeDto,) {
+    try {
+      return await this.put(`/v1/account/resumes/${resumeId}`, resumeDto);
+    } catch (err) {
+      logger.error(err);
+    }
+  }
 }
