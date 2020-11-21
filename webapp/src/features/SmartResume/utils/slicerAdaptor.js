@@ -32,7 +32,6 @@ export function adaptBasics(basics = {}) {
             weblink
         }
     }
-
     return state;
 }
 

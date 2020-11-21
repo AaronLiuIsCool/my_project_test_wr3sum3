@@ -33,9 +33,9 @@ const validateURL = (input) => {
 
 export function validateBasicEntry(name, value) {
     switch (name) {
-        case 'nameEn':
         case 'nameCn':
         case 'city':
+        case 'country':
             if (validateNonEmptyString(value)) {
                 return true;
             } else {
@@ -69,12 +69,12 @@ export const basic = {
     id: undefined,
     avatar: "",
     nameCn: "",
-    nameEn: "",
     email: "",
     phone: "",
     city: "",
     linkedin: "",
-    weblink: ""
+    weblink: "",
+    country: "123"
 }
 
 const initialState = {
@@ -119,6 +119,9 @@ const reducers = {
     },
     updateCity: (state, action) => {
         updateField(state, "city", action.payload.value);
+    },
+    updateCountry: (state, action) => {
+        updateField(state, "country", action.payload.value);
     },
     updateLinkedin: (state, action) => {
         updateField(state, "linkedin", action.payload.value);

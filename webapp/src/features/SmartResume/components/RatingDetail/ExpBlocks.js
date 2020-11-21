@@ -88,7 +88,7 @@ export const ExpBlocks = ({
                 <h4>
                   {messages.exp} <span>{messages.notQuantify}</span>
                 </h4>
-                <p>{messages.quantifyMessage.replace('{exp}', messages.expReplacement[type])}}</p>
+                <p>{messages.quantifyMessage.replace('{exp}', messages.expReplacement[type])}</p>
                 {info.quantify.map((item, index) => (
                   <RepeatBlock
                     messages={messages}
