@@ -43,6 +43,7 @@ public class MatchingController {
     @Authorize(value = {
         AuthConstant.AUTHORIZATION_RESUME_SERVICE,
         AuthConstant.AUTHORIZATION_SUPPORT_USER,
+        AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
         AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
     })
     @PostMapping("/resumes")
