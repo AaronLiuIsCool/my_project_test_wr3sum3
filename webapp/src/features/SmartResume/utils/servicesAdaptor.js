@@ -12,13 +12,12 @@ export function adaptBasics(basics) {
         return undefined;
     }
 
-    const { id, nameCn, nameEn, email, phone, city, linkedin, weblink } = basics.data;
+    const { id, nameCn, email, phone, city, linkedin, weblink, country } = basics.data;
     const data = {
         id,
         fullName: nameCn,
-        alias: nameEn,
         city,
-        country: 'undefined',
+        country,
         email,
         phoneNumber: phone
     };

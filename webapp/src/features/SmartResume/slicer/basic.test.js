@@ -13,7 +13,6 @@ describe("test basic form related functionalities", () => {
     expect(
       validateBasic({
         nameCn: "test name",
-        nameEn: "test name en",
         email: "kuaidao@gmail.com",
         phone: "1234567890",
         city: "Edmonton",
@@ -30,11 +29,6 @@ describe("test basic form related functionalities", () => {
       ["nameCn", 123, false],
       ["nameCn", "u of a", true],
       ["nameCn", "", false],
-
-      ["nameEn", undefined, false],
-      ["nameEn", 123, false],
-      ["nameEn", "u of a", true],
-      ["nameEn", "", false],
 
       ["email", undefined, false],
       ["email", 123, false],
@@ -73,16 +67,6 @@ describe("test basic form related functionalities", () => {
       data: { ...basic, nameCn: "new name" },
     });
 
-    const { basic: updateNameEn } = resumeReducer(initialState, {
-      type: "resume/updateNameEn",
-      payload: {
-        value: "new name",
-      },
-    });
-    expect(updateNameEn).toEqual({
-      completed: false,
-      data: { ...basic, nameEn: "new name" },
-    });
 
     const { basic: updateEmail } = resumeReducer(initialState, {
       type: "resume/updateEmail",
