@@ -90,20 +90,16 @@ nav {
   text-decoration: none;
 }
 .banner-left {
-  position: absolute;
-  left: 23.125rem;
-  top: 14.125rem;
+  margin-top: 73.5px;
 }
 .banner-right {
-  position: absolute;
   width: 400px;
   top: 8.875rem;
   height: 32rem;
   left: 71.875rem;
-  position: relative;
   overflow: visible;
 }
-.banner-right::after {
+/* .banner-right::after {
   background-size: cover;
   background-image: url('../assets/Resume_dropshadow.png');
   content: "";
@@ -113,7 +109,7 @@ nav {
   top: -15%;
   width: 140%;
   height: 140%;
-}
+} */
 .banner-right > img {
   width: 100%;
 }
@@ -366,8 +362,19 @@ p.action-item {
   cursor: pointer;
   text-decoration: none;
 }
-
+.bnanner-container {
+  width: 1180px;
+  display: flex;
+  justify-content: space-between;
+  margin: 140px auto 0;
+}
 @media screen and (max-width: 767px) {
+  .bnanner-container {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    margin: 0 auto;
+  }
   .section02 h2 {
       font-size: 30px;
       margin: 0 auto 32px;
@@ -520,8 +527,7 @@ p.action-item {
   }
   .banner-left {
       width: 100%;
-      top: 30px;
-      left: 0;
+      margin-top: 30px;
   }
   .banner-left > * {
       width: calc(100% - 80px);
@@ -568,5 +574,11 @@ p.action-item {
   }
   .image-text-row:last-child {
       padding-bottom: 0;
+  }
+}
+
+@media screen and (max-width: 1441px) {
+  .svg1::after, .svg2::after, .svg3::after, .svg4::after {
+    display: none;
   }
 }
