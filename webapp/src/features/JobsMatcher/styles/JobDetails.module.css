@@ -97,11 +97,12 @@
 }
 
 .job-details-description {
-  height: 381px;
+  height: calc(100vh - 300px);
   font-size: 16px;
   line-height: 2;
   color: #333333;
   padding: 20px 0;
+  overflow: auto;
 }
 
 .job-details-description-label {
