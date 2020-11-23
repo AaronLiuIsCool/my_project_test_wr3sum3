@@ -1,19 +1,16 @@
 import React, { useState, useRef } from 'react';
 import Button from 'react-bootstrap/Button';
 import { useI8n } from 'shell/i18n';
-import { useHistory } from 'react-router-dom';
 import AppServices from 'shell/services/AppServices';
 import { useDispatch } from 'react-redux';
 import { actions } from 'features/SmartResume/slicer';
 import NameResume from './NameResume';
-import { previewResume } from 'features/SmartResume/components/ResumePreview/resumeBuilder';
 
 import styles from '../styles/ResumeStarter.module.css';
 const appServices = new AppServices();
 
 const ResumerStarter = () => {
 	const dispatch = useDispatch();
-	const history = useHistory();
 	const messages = useI8n();
 	const fileUploadInput = useRef(null);
 
@@ -61,8 +58,6 @@ const ResumerStarter = () => {
 		updateWork(data);
 		updateProject(data);
 		updateCertificate(data);
-		// redirect user to builder page
-		history.push('/resume');
 	};
 
 	const onChangeHandler = (e) => {
@@ -87,7 +82,7 @@ const ResumerStarter = () => {
 		const response = await appServices.resumeSDKUpload(data);
 		if (response?.status?.message === "success") {
 			await updateInfo(response.data);
-			previewResume(messages.RPreview)
+			setIsModalOpen(true)
 		}
 	};
 
