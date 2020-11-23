@@ -4,5 +4,7 @@
     "applied": "已经申请",
     "postedDate": "发布日期",
     "jobLocation": "岗位所在地",
-    "applyJob": "申请工作"
+    "applyJob": "申请工作",
+    "sortByTimestampDecending": "发布日期（近-远）",
+    "sortByTimestampAscending": "发布日期（远-近）"
   }

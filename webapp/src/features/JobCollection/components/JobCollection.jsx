@@ -8,7 +8,7 @@ import en from '../i18n/en.json';
 import moment from 'moment';
 
 import JobCard from './JobCard';
-import { ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
+import { ToggleButton, ToggleButtonGroup, Dropdown } from 'react-bootstrap';
 import AccountServices from 'shell/services/AccountServices';
 import MatchingServices from 'shell/services/MatchingServices';
 import { getLogger } from 'shell/logger';
@@ -19,6 +19,8 @@ const accountServices = new AccountServices();
 const matchingServices = new MatchingServices();
 const JDBC_DATE_FORMAT = 'YYYY-MM-DD';
 const logger = getLogger('JOBCOLLECTION');
+const options = [0, 1];
+
 
 // TODO: 这个可能会需要 因为可能一个有两个resume有同一个收藏的job
 // const removeDuplicates = (arr, key) => {
@@ -73,6 +75,7 @@ const getAllTailorJobs = async (resumeIds) => {
 };
 const tailoredJobs = new Set();
 const bookmarkedJobs = new Set();
+
 const JobCollection = () => {
     const userId = useSelector(selectUserId);
 
@@ -80,12 +83,23 @@ const JobCollection = () => {
     const messages = language === 'zh' ? zh : en;
 
     const [jobsToBeDisplayed, setJobsToBeDisplayed] = useState([]);
+    const [chosenValue, setChosenValue] = useState(options[0]);
+
+    ///let chosenValue = options[0];
+const OnSelect = (eventKey, event) =>{ // user can change the "default value"
+    setChosenValue(eventKey)
+    jobsToBeDisplayed.sort((a, b) => (
+        chosenValue === null ? new Date(a.postDate).getTime() - new Date(b.postDate).getTime()
+        : new Date(b.postDate).getTime() - new Date(a.postDate).getTime()
+        ))
+    setJobsToBeDisplayed(jobsToBeDisplayed)
+}
 
     const applyFilter = (bookmark) => {
         if (bookmark) {
-            setJobsToBeDisplayed(bookmarkedJobs);
+            setJobsToBeDisplayed(Array.from(bookmarkedJobs));
         } else {
-            setJobsToBeDisplayed(tailoredJobs);
+            setJobsToBeDisplayed(Array.from(tailoredJobs));
         }
     };
 
@@ -94,7 +108,7 @@ const JobCollection = () => {
             if (res.length > 0) {
                 getAllBookmarkJobs(res).then((allBookmarkJobs) => {
                     allBookmarkJobs.forEach((aJob) => (bookmarkedJobs.add(aJob)))
-                    setJobsToBeDisplayed(bookmarkedJobs);
+                    setJobsToBeDisplayed(Array.from(bookmarkedJobs));
                 });
                 getAllTailorJobs(res).then((allTailorJobs) => {
                     allTailorJobs.forEach((aJob) => (tailoredJobs.add(aJob)))
@@ -107,6 +121,7 @@ const JobCollection = () => {
     return (
         <I8nContext.Provider value={messages}>
             <div className="features padding-for-nav job-collection">
+            <div>
                 {/* <h1>{messages.heading}</h1> */}
                 <div className="btn-container">
                     <ToggleButtonGroup
@@ -125,8 +140,26 @@ const JobCollection = () => {
                         </ToggleButton> */}
                     </ToggleButtonGroup>
                 </div>
+                <div class="btn btn-secondary dropdown-toggle float-right">
+                    <p>排序</p>
+                    <Dropdown onSelect={OnSelect}>
+                        <Dropdown.Toggle id="dropdown-basic" >
+                        {chosenValue === null  ?  messages.sortByTimestampAscending : messages.sortByTimestampDecending }
+                    </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                        {options.map(option => (
+                            <Dropdown.Item
+                            eventKey={option}
+                            key={option}>
+                            {chosenValue === null  ?  messages.sortByTimestampAscending : messages.sortByTimestampDecending }
+                            </Dropdown.Item>
+                        ))}
+                    </Dropdown.Menu>
+                    </Dropdown>
+                </div>
+            </div>
                 <div>
-                    {Array.from(jobsToBeDisplayed).map((job, index) => (
+                {jobsToBeDisplayed.map((job, index) => (
                         <JobCard
                             key={job.jobUuid + index}
                             id={job.jobUuid}
