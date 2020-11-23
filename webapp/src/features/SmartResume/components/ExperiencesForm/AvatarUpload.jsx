@@ -3,8 +3,11 @@ import React, { useState, useEffect } from 'react';
 import { useI8n } from 'shell/i18n';
 
 import AvatarEdit from 'components/AvatarEdit';
+import { previewResume } from '../ResumePreview/resumeBuilder';
 
 import styles from '../../styles/AvatarUpload.module.css';
+import { useDispatch } from 'react-redux';
+import { actions } from 'features/SmartResume/slicer';
 import PhotoUploadIcon from '../../assets/photoupload.svg';
 import CloseHoverIcon from '../../assets/close_hover.svg';
 import CloseRegularIcon from '../../assets/close_regular.svg';
@@ -12,6 +15,7 @@ import CloseRegularIcon from '../../assets/close_regular.svg';
 const AvatarUpload = ({photoReference}) => {
 	const messages = useI8n();
 	const [modalOpen, setModalOpen] = useState(false);
+	const dispatch = useDispatch();
 	const [avatar, setAvatar] = useState(null);
 
 	function toDataUrl(url, callback) {
@@ -30,9 +34,13 @@ const AvatarUpload = ({photoReference}) => {
 
 	useEffect(() => {
 		if (photoReference?.url){
-		  toDataUrl(photoReference.url, setAvatar);
+			toDataUrl(photoReference.url, setAvatar);
+			if (avatar){
+				dispatch(actions.updateAvatar({ value: avatar }));
+				previewResume(messages.RPreview, true);
+			}
 		}
-	}, [photoReference]);
+	}, [photoReference, avatar, dispatch, messages.RPreview]);
 	
 	return (
 		<div className={styles.avatarContainer}>

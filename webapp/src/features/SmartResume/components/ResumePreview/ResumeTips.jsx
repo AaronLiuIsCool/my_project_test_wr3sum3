@@ -25,7 +25,7 @@ const ResumeTips = () => {
         <Accordion>
           {
             resumeTipsData[optionsState].map((item, index) => (
-              <Card className={styles.card}>
+              <Card key={index} className={styles.card}>
                 <Card.Header className={styles.cardHader}>
                   <Accordion.Toggle as={Button} variant="link" eventKey={index+1}>
                     {item.q}
