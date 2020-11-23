@@ -3,7 +3,7 @@ import './JobCard.scss';
 import { Button } from 'react-bootstrap';
 import { useI8n } from 'shell/i18n';
 
-const JobCard = ({ applied, title, company, date, location, id }) => {
+const JobCard = ({ applied, title, url, company, date, location, id }) => {
     const messages = useI8n();
 
     const handleRemove = (event) => {
@@ -34,7 +34,7 @@ const JobCard = ({ applied, title, company, date, location, id }) => {
                     <div>
                         <span className="company">{company}</span>
                         <span className="date">
-                            {messages['appliedDate']}：{date}
+                            {messages['postedDate']}：{date}
                         </span>
                         <span className="location">
                             {messages['jobLocation']}： {location}
@@ -46,6 +46,7 @@ const JobCard = ({ applied, title, company, date, location, id }) => {
                         <Button
                             data-id={id}
                             className="apply-btn"
+                            href={url}
                             onClick={handleApply}
                         >
                             {messages['applyJob']}
