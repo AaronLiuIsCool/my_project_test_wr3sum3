@@ -13,6 +13,9 @@ import DropdownGroup from 'components/DropdownGroup';
 import KButton from 'components/KButton';
 import {ReactComponent as WrittenAssistIcon} from '../../assets/writing_assit.svg';
 
+import ArrowUp from '../../assets/arrow-up.png'; 
+import ArrowUpActive from '../../assets/arrow-up-active.png'; 
+
 import {adaptWork} from '../../utils/servicesAdaptor';
 import {actions, selectId, assistantSelectors} from '../../slicer';
 import {validateWork, validateWorkEntry} from '../../slicer/work';
@@ -91,7 +94,6 @@ const WorkForm = ({data, index, isLast = false, messages, workData}) => {
       setValidated(false);
       return;
     }
-    toggleShowSummary();
     setValidated(true);
     dispatch(actions.completeWork());
     await save();
@@ -211,10 +213,7 @@ const WorkForm = ({data, index, isLast = false, messages, workData}) => {
             </Col>
             <div className="toggle-up-arrow" onClick={toggleShowSummary}>
               {data.id && (
-                <img
-                  src={require('../../assets/arrow-up.svg')}
-                  alt="up-arrow"
-                />
+                <><img className="hide-on-hover" src={ArrowUp} alt="up-arrow"/><img className="display-on-hover" src={ArrowUpActive} alt="up-arrow-active"/></>
               )}
             </div>
           </Row>

@@ -9,6 +9,9 @@ import RadioButtonGroup from 'components/RadioButtonGroup';
 import Button from 'react-bootstrap/Button';
 import DropdownGroup from 'components/DropdownGroup';
 
+import ArrowUp from '../../assets/arrow-up.png'; 
+import ArrowUpActive from '../../assets/arrow-up-active.png'; 
+
 import {adaptCertificate} from '../../utils/servicesAdaptor';
 import {actions, selectId} from '../../slicer';
 import {
@@ -22,7 +25,6 @@ import {previewResume} from '../ResumePreview/resumeBuilder';
 import {updateRating} from '../../utils/resume';
 
 import certificateOptions from 'data/certificate.json';
-import ArrowUp from '../../assets/arrow-up.svg';
 const logger = getLogger('CertificateForm');
 const resumeServices = new ResumeServices();
 const fields = [
@@ -80,7 +82,6 @@ const CertificateForm = ({
       setValidated(false);
       return;
     }
-    toggleShowSummary();
     setValidated(true);
     dispatch(actions.completeCertificates());
     save();
@@ -174,7 +175,7 @@ const CertificateForm = ({
               <h2 className="form_h2">{messages.enterNewExperience}</h2>
             </Col>
             <div className="toggle-up-arrow" onClick={toggleShowSummary}>
-              {data.id && <img src={ArrowUp} alt="up-arrow" />}
+              {data.id && <><img className="hide-on-hover" src={ArrowUp} alt="up-arrow"/><img className="display-on-hover" src={ArrowUpActive} alt="up-arrow-active"/></>}
             </div>
           </Row>
           <Row>

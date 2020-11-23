@@ -5,6 +5,9 @@ import classNames from 'classnames';
 import {useDispatch, useSelector} from 'react-redux';
 import {Row, Col, Form} from 'react-bootstrap';
 
+import ArrowUp from '../../assets/arrow-up.png'; 
+import ArrowUpActive from '../../assets/arrow-up-active.png'; 
+
 import SingleDatePicker from 'components/SingleDatePicker';
 import InputGroup from 'components/InputGroup';
 import DropdownGroup from 'components/DropdownGroup';
@@ -88,7 +91,6 @@ const ProjectForm = ({data, index, isLast = false, messages, projectData}) => {
       setValidated(false);
       return;
     }
-    toggleShowSummary();
     setValidated(true);
     dispatch(actions.completeProject());
     await save();
@@ -234,10 +236,7 @@ const ProjectForm = ({data, index, isLast = false, messages, projectData}) => {
             </Col>
             <div className="toggle-up-arrow" onClick={toggleShowSummary}>
               {data.id && (
-                <img
-                  src={require('../../assets/arrow-up.svg')}
-                  alt="up-arrow"
-                />
+                <><img className="hide-on-hover" src={ArrowUp} alt="up-arrow"/><img className="display-on-hover" src={ArrowUpActive} alt="up-arrow-active"/></>
               )}
             </div>
           </Row>
