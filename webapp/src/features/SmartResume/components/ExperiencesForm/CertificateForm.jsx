@@ -33,7 +33,6 @@ const fields = [
   'certificateEndDate',
   'validCertificateFlag',
 ];
-
 const CertificateForm = ({
   data,
   index,
