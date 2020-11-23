@@ -1,7 +1,7 @@
 export function adaptBasics(basics = {}) {
     const { id, fullName = '', alias = '',
         city = '', country = '', email = '',
-        phoneNumber = '', profiles = [] } = basics;
+        phoneNumber = '', profiles = [], avatar="" } = basics;
     let linkedin = '';
     let weblink = '';
     profiles.forEach(({ type, url }) => {
@@ -21,7 +21,7 @@ export function adaptBasics(basics = {}) {
         completed: id !== undefined,
         data: {
             id,
-            avatar: '',
+            avatar,
             nameCn: fullName,
             nameEn: alias,
             email,
@@ -171,7 +171,7 @@ export function adaptVolunteers(volunteers = []) {
 export function resumeAdaptor(resume) {
     return {
         id: resume.id,
-        photoReference: resume.photoReference,
+        photoReference: { url: resume.photoReference },
         basic: adaptBasics(resume.basicInfo),
         education: adaptEducations(resume.educations),
         work: adaptWorks(resume.workExperiences),

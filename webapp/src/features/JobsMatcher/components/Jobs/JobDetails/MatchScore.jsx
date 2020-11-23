@@ -1,3 +1,5 @@
+// Note: this component has been removed from Jobs listing page, not sure if we need it or not in the future
+
 import React from 'react';
 
 import Button from 'react-bootstrap/Button';

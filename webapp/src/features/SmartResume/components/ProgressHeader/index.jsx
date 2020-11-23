@@ -65,7 +65,7 @@ const ProgressHeader = ({ setScoreVisible, scoreVisible }) => {
   };
 	const scoreRatingColor = {
 		score_A: '#2abc6e',
-		score_B: '#edbc4d',
+		score_B: '#3e89ec',
 		score_C: '#edbc4d',
 		score_D: '#ff6565',
 		error: '#ff6565',

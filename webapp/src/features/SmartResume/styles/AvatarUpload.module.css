@@ -1,6 +1,7 @@
 .avatarContainer {
   position: relative;
   margin-bottom: 10px;
+  padding-left: 15px;
 }
 
 .avatarPreviewContainer {

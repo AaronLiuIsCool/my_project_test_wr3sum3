@@ -71,8 +71,8 @@ const getAllTailorJobs = async (resumeIds) => {
     }, []);
     return results;
 };
-const tailoredJobs = [];
-const bookmarkedJobs = [];
+const tailoredJobs = new Set();
+const bookmarkedJobs = new Set();
 const JobCollection = () => {
     const userId = useSelector(selectUserId);
 
@@ -93,11 +93,11 @@ const JobCollection = () => {
         getAllResumeIds(userId).then((res) => {
             if (res.length > 0) {
                 getAllBookmarkJobs(res).then((allBookmarkJobs) => {
-                    bookmarkedJobs.push(...allBookmarkJobs);
+                    allBookmarkJobs.forEach((aJob) => (bookmarkedJobs.add(aJob)))
                     setJobsToBeDisplayed(bookmarkedJobs);
                 });
                 getAllTailorJobs(res).then((allTailorJobs) => {
-                    tailoredJobs.push(...allTailorJobs);
+                    allTailorJobs.forEach((aJob) => (tailoredJobs.add(aJob)))
                 });
             }
         });
@@ -107,7 +107,7 @@ const JobCollection = () => {
     return (
         <I8nContext.Provider value={messages}>
             <div className="features padding-for-nav job-collection">
-                <h1>{messages.heading}</h1>
+                {/* <h1>{messages.heading}</h1> */}
                 <div className="btn-container">
                     <ToggleButtonGroup
                         type="radio"
@@ -120,18 +120,19 @@ const JobCollection = () => {
                         <ToggleButton className="bookmark" value={'bookmark'}>
                             {messages['bookmarkedJobs']}
                         </ToggleButton>
-                        <ToggleButton className="tailor" value={'tailor'}>
+                        {/* <ToggleButton className="tailor" value={'tailor'}>
                             {messages['tailoredJobs']}
-                        </ToggleButton>
+                        </ToggleButton> */}
                     </ToggleButtonGroup>
                 </div>
                 <div>
-                    {jobsToBeDisplayed.map((job, index) => (
+                    {Array.from(jobsToBeDisplayed).map((job, index) => (
                         <JobCard
                             key={job.jobUuid + index}
                             id={job.jobUuid}
                             applied={false}
                             title={job.title}
+                            url={job.url}
                             company={job.companyName}
                             date={moment(new Date(job.postDate)).format(
                                 JDBC_DATE_FORMAT

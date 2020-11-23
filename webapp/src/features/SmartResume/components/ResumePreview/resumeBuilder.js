@@ -18,7 +18,6 @@ let currentPage = 1;
 let scaleFactor = 1; // default scale factor
 // some scaled variables
 let headingLineHeight = Constants.headingLineHeight;
-// todo: revert
 let paragraphLineHeight = Constants.paragraphLineHeight;
 let h1Padding = Constants.h1Padding;
 let pFontSize = Constants.pFontSize;
@@ -34,6 +33,9 @@ let primaryColor = Constants.c_blue;
 
 // helper function, 计算右侧padding
 const getRightPadding = (content, numOfPadding = 1) => {
+  if (!content) {
+    return;
+  }
   // regex for alphabets only 
   const alphabetRegex = /^[A-Za-z0-9\s]*$/;
 
@@ -69,7 +71,7 @@ const adjustToWholePageHelper = () => {
   if (
     accumulateY <= pageHeight * 0.75 ||
     (accumulateY >= pageHeight * 0.9 && accumulateY <= pageHeight) ||
-    (accumulateY >= pageHeight * 1.8 && accumulateY <= pageHeight * 2)
+    (accumulateY >= pageHeight * 1.87 && accumulateY <= pageHeight * 2)
   ) {
     previewResume(messages);
     return;
@@ -127,8 +129,6 @@ export const prepareData = (resumeData, messages) => {
   }
 
   // note change p font since this will break line wrap
-  // todo: test
-  // pFontSize = scaleFactor * Constants.pFontSize;
   pFontSize = Constants.pFontSize;
   paragraphLineHeight = scaleFactor * Constants.paragraphLineHeight;
   headingLineHeight = scaleFactor * Constants.headingLineHeight;
@@ -137,9 +137,10 @@ export const prepareData = (resumeData, messages) => {
   currentYPos = startY;
   currentPage = 1;
 
-  _prepareHeader(basicData, educationData);
+  _prepareHeader(basicData, messages);
   _prepareEducation(educationData, messages);
-  _prepareWorkAndProject(workData, projectData, messages);
+  _prepareWork(workData, messages);
+  _prepareProject(projectData, messages);
   _prepareVolunteer(volunteerData, messages);
   _prepareAwardAndCertificate(educationData, certificateData, messages);
 
@@ -185,7 +186,7 @@ const _updateDetails = (inputDescription) => {
     for (let i = 0; i < wrappedContent.length; i++) {
       // 如果是段落显示 并且是第一行 手动加入 "-" 
       if (i === 0) {
-        wrappedContent[i] = "- " + wrappedContent[i];
+        wrappedContent[i] = "■ " + wrappedContent[i];
       } else {
         // manually adjust the padding left
         wrappedContent[i] = "  " + wrappedContent[i];
@@ -251,7 +252,7 @@ const _updateInlineList = (inputString, leftStart) => {
   });
 }
 
-const _prepareHeader = (basicData, educationData) => {
+const _prepareHeader = (basicData, messages) => {
   // build image
   const img = {
     type: "img",
@@ -263,7 +264,7 @@ const _prepareHeader = (basicData, educationData) => {
     format: "PNG",
     page: currentPage,
   };
-  currentXPos += Constants.imageWidth + Constants.defaultPaddingRight;
+  currentXPos += Constants.imageWidth + Constants.defaultPaddingRight * 2;
   data.push(img);
 
   // build line 1
@@ -280,8 +281,9 @@ const _prepareHeader = (basicData, educationData) => {
   currentXPos += getRightPadding(basicData.nameCn, 2);
   data.push(title);
 
-  // start with imageWidth + user name
-  _updateCurrentYPos(-(headingLineHeight * 2) / 3);
+  // Second line: email + Phone
+  _updateCurrentYPos(headingLineHeight / 2);
+  currentXPos = Constants.startX + Constants.imageWidth + Constants.defaultPaddingRight * 2;
 
   if (basicData.email || basicData.phone || basicData.linkedin) {
     data.push({
@@ -295,31 +297,43 @@ const _prepareHeader = (basicData, educationData) => {
   }
 
   // add some padding left
-  currentXPos += Constants.defaultPaddingRight;
+  currentXPos += Constants.defaultPaddingRight * 2;
   const contact = {
     type: "h3",
     y: currentYPos,
     x: currentXPos,
     content:
-      basicData.phone || basicData.email
-        ? `${basicData.phone} ${basicData.email}`
+      basicData.city || basicData.phone || basicData.email
+        ? `${basicData.city}  ${basicData.phone}  ${basicData.email}`
         : "",
     page: currentPage,
   };
 
   doc.setFontSize(Constants.h3FontSize);
-  currentXPos += getRightPadding(`${basicData.phone},  ${basicData.email}`, 2);
+  currentXPos += getRightPadding(`${basicData.city}  ${basicData.phone}  ${basicData.email}`, 2);
   data.push(contact);
 
   const link = {
     type: "link",
     y: currentYPos,
     x: currentXPos,
-    content: basicData.linkedin ? "linkedIn" : "",
+    content: basicData.linkedin ? messages.linkedIn : "",
     url: basicData.linkedin,
     page: currentPage,
   };
   data.push(link);
+
+  currentXPos += getRightPadding(messages.linkedIn, 2);
+
+  const link2 = {
+    type: "link",
+    y: currentYPos,
+    x: currentXPos,
+    content: basicData.weblink ? messages.weblink : "",
+    url: basicData.weblink,
+    page: currentPage,
+  };
+  data.push(link2);
   _updateCurrentYPos(headingLineHeight);
 };
 
@@ -343,24 +357,29 @@ const _prepareEducation = (educationData, messages) => {
       color: Constants.c_grey,
       page: currentPage,
     });
-    _updateCurrentYPos(h1Padding);
+    _updateCurrentYPos(paragraphLineHeight);
 
     // draw each education line
     educationData.forEach((education) => {
+      const educationTitleStr = `${education.degree}   ${education.schoolName}   ${education.country}`;
       data.push({
         type: "list",
-        color: Constants.c_grey,
+        color: primaryColor,
+        fontSize: h2FontSize,
+        bold: true,
         y: currentYPos,
-        content: education.schoolName,
+        content: educationTitleStr,
         page: currentPage,
       });
 
       // build awards as a string
-      let schoolStr = `${education.major} ${education.degree}`;
+      let schoolStr = `${education.major}   GPA: ${education.gpa}`;
 
       // shift x position
+      doc.setFontSize(h2FontSize);
+      let currentXPos = Constants.startX + doc.getTextWidth(educationTitleStr) + Constants.defaultPaddingRight * 2;
       doc.setFontSize(pFontSize);
-      let currentXPos = Constants.startX + doc.getTextWidth(education.schoolName) + Constants.defaultPaddingRight * 2;
+
       data.push({
         type: "list",
         color: Constants.c_black,
@@ -379,7 +398,7 @@ const _prepareEducation = (educationData, messages) => {
         type: "h3",
         y: currentYPos,
         x: currentXPos,
-        content: `${dateRangeBuilder(education.startDate, education.graduateDate)}`,
+        content: `${dateRangeBuilder(education.startDate, education.graduateDate, messages)}`,
         alignment: "right",
         page: currentPage,
       });
@@ -389,10 +408,10 @@ const _prepareEducation = (educationData, messages) => {
   }
 };
 
-const _prepareWorkAndProject = (workData, projectData, messages) => {
+const _prepareWork = (workData, messages) => {
   _updateCurrentYPos(h1Padding);
   // draw work title
-  if ((workData.length > 0 && workData[0].workName) || (projectData.length > 0 && projectData[0].projectRole)) {
+  if (workData.length > 0 && workData[0].workName) {
     data.push({
       type: "h1",
       y: currentYPos,
@@ -406,7 +425,7 @@ const _prepareWorkAndProject = (workData, projectData, messages) => {
       color: Constants.c_grey,
       page: currentPage,
     });
-    _updateCurrentYPos(h1Padding);
+    _updateCurrentYPos(h1Padding * 1.5);
   }
 
   // deal with work 
@@ -428,13 +447,14 @@ const _prepareWorkAndProject = (workData, projectData, messages) => {
       currentXPos =
         Constants.startX +
         (work.workName
-          ? getRightPadding(work.workName)
+          ? getRightPadding(work.workName) + 0.5
           : 0);
       data.push({
         type: "h3",
         y: currentYPos,
         x: currentXPos,
-        content: work.workCompanyName,
+        content: `${work.workCompanyName}   ${work.workCity
+          }   ${work.workCountry}`,
         page: currentPage,
       });
     }
@@ -442,28 +462,48 @@ const _prepareWorkAndProject = (workData, projectData, messages) => {
     // date + location
     if (
       work.workStartDate ||
-      work.workEndDate ||
-      work.workCity ||
-      work.workCountry
+      work.workEndDate
     ) {
       doc.setFontSize(Constants.h3FontSize);
-      currentXPos += work.workCompanyName
-        ? getRightPadding(work.workCompanyName)
+      currentXPos += (work.workCompanyName || work.workCity || work.workCountry)
+        ? getRightPadding(`${work.workCompanyName}   ${work.workCity
+          }   ${work.workCountry}`)
         : 0;
       data.push({
         type: "h3",
         y: currentYPos,
         x: currentXPos,
-        content: `${dateRangeBuilder(work.workStartDate, work.workEndDate)}  ${work.workCity
-          } ${work.workCountry}`,
+        content: dateRangeBuilder(work.workStartDate, work.workEndDate, messages),
         alignment: "right",
         page: currentPage,
       });
     }
-    _updateCurrentYPos(h1Padding * 0.5);
+    _updateCurrentYPos(h1Padding);
     // render work details
     work.workDescription && _updateDetails(work.workDescription);
   });
+
+};
+
+const _prepareProject = (projectData, messages) => {
+  _updateCurrentYPos(h1Padding);
+  // draw project title
+  if (projectData.length > 0 && projectData[0].projectRole) {
+    data.push({
+      type: "h1",
+      y: currentYPos,
+      content: messages.projectExperience,
+      page: currentPage,
+    });
+    _updateCurrentYPos(h1Padding);
+    data.push({
+      type: "underline",
+      y: currentYPos,
+      color: Constants.c_grey,
+      page: currentPage,
+    });
+    _updateCurrentYPos(h1Padding * 1.5);
+  }
 
   // deal with project
   projectData.forEach((project) => {
@@ -484,34 +524,32 @@ const _prepareWorkAndProject = (workData, projectData, messages) => {
         type: "h3",
         y: currentYPos,
         x: currentXPos,
-        content: project.projectCompanyName,
+        content: `${project.projectCompanyName}   ${project.projectCity}   ${project.projectCountry}`,
         page: currentPage,
       });
     }
     // date + location
     if (
       project.projectStartDate ||
-      project.projectEndDate ||
-      project.projectCity ||
-      project.projectCountry
+      project.projectEndDate
     ) {
       doc.setFontSize(Constants.h3FontSize);
       currentXPos += project.projectCompanyName
-        ? getRightPadding(project.projectCompanyName)
+        ? getRightPadding(`${project.projectCompanyName}   ${project.projectCity}   ${project.projectCountry}`)
         : 0;
       data.push({
         type: "h3",
         y: currentYPos,
         x: currentXPos,
-        content: `${dateRangeBuilder(
+        content: dateRangeBuilder(
           project.projectStartDate,
-          project.projectEndDate
-        )} ${project.projectCity} ${project.projectCountry}`,
+          project.projectEndDate, messages
+        ),
         alignment: "right",
         page: currentPage,
       });
     }
-    _updateCurrentYPos(h1Padding * 0.5);
+    _updateCurrentYPos(h1Padding);
 
     // render project details
     project.projectDescription && _updateDetails(project.projectDescription);
@@ -539,7 +577,7 @@ const _prepareVolunteer = (volunteerData, messages) => {
       color: Constants.c_grey,
       page: currentPage,
     });
-    _updateCurrentYPos(h1Padding);
+    _updateCurrentYPos(h1Padding * 1.5);
   }
 
   volunteerData.forEach((volunteer) => {
@@ -566,7 +604,7 @@ const _prepareVolunteer = (volunteerData, messages) => {
         type: "h3",
         y: currentYPos,
         x: currentXPos,
-        content: volunteer.volunteerRole,
+        content: `${volunteer.volunteerRole}   ${volunteer.volunteerCity}   ${volunteer.volunteerCountry}`,
         page: currentPage,
       });
     }
@@ -574,13 +612,11 @@ const _prepareVolunteer = (volunteerData, messages) => {
     // date + location
     if (
       volunteer.volunteerStartDate ||
-      volunteer.volunteerEndDate ||
-      volunteer.volunteerCity ||
-      volunteer.volunteerCountry
+      volunteer.volunteerEndDate
     ) {
       doc.setFontSize(Constants.h3FontSize);
       currentXPos += volunteer.volunteerRole
-        ? getRightPadding(volunteer.volunteerRole)
+        ? getRightPadding(`${volunteer.volunteerRole}   ${volunteer.volunteerCity}   ${volunteer.volunteerCountry}`)
         : 0;
       data.push({
         type: "h3",
@@ -588,13 +624,13 @@ const _prepareVolunteer = (volunteerData, messages) => {
         x: currentXPos,
         content: `${dateRangeBuilder(
           volunteer.volunteerStartDate,
-          volunteer.volunteerEndDate
-        )} ${volunteer.volunteerCity} ${volunteer.volunteerCountry}`,
+          volunteer.volunteerEndDate, messages
+        )}`,
         alignment: "right",
         page: currentPage,
       });
     }
-    _updateCurrentYPos(h1Padding * 0.5);
+    _updateCurrentYPos(h1Padding);
 
     // render volunteer details
     volunteer.volunteerDescription &&
@@ -641,7 +677,7 @@ const _prepareAwardAndCertificate = (educationData, certificateData, messages) =
       color: Constants.c_grey,
       page: currentPage,
     });
-    _updateCurrentYPos(h1Padding * 1.5);
+    _updateCurrentYPos(paragraphLineHeight);
     // draw rewards
     if (awards.length > 0) {
       // draw award title
@@ -689,8 +725,6 @@ const _prepareAwardAndCertificate = (educationData, certificateData, messages) =
       _updateInlineList(certificateStr, currentXPos);
     }
   }
-
-
 
 };
 
@@ -766,7 +800,8 @@ const buildResume = () => {
         break;
       case "list":
         d.color = d.color ? d.color : Constants.c_black;
-        d.fontSize = pFontSize;
+        d.fontSize = d.fontSize ? d.fontSize : pFontSize;
+        d.bold = d.bold ? true : false;
         drawText(d);
         break;
       case "inlineList":

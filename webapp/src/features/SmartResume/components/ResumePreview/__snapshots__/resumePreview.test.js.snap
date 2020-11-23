@@ -32,10 +32,14 @@ exports[`Resume Preview Snapshot test Snapshot with no data match 1`] = `
       </button>
       <button
         onClick={[Function]}
-      />
+      >
+        智能翻译
+      </button>
       <button
         onClick={[Function]}
-      />
+      >
+        一键整页
+      </button>
       <button
         onClick={[Function]}
       >
@@ -44,6 +48,7 @@ exports[`Resume Preview Snapshot test Snapshot with no data match 1`] = `
           src="download_white.svg"
         />
          
+        下载简历
       </button>
       <button
         className="circle"

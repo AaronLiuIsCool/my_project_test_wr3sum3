@@ -139,14 +139,13 @@ const BasicForm = ({ data, photoReference, completed, messages }) => {
 		updateStatus(validateBasicEntry, status, setStatus, 'weblink', value);
 		dispatch(actions.updateWeblink({ value }));
 	};
-
 	return (
     <div className="form_body">
       {showSummary ? (
         <div>
           <Summary
             name={data.nameCn}
-            avatar={photoReference}
+            avatar={photoReference?.url}
             type={'BasicInfo'}
             handleClickCallback={toggleShowSummary}
           />

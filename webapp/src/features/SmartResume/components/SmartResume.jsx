@@ -22,11 +22,31 @@ const logger = getLogger('ResumeStarter');
 const accountServices = new AccountServices();
 const resumeServices = new ResumeServices();
 
+const getBase64FromUrl = async (url) => {
+    const data = await fetch(url);
+    const blob = await data.blob();
+    return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(blob); 
+        reader.onloadend = function() {
+        const base64data = reader.result;   
+        resolve(base64data);
+        }
+    });
+}
+
 async function getResume(dispatch, resumeId) {
     if (resumeId) {
         try {
             const resumeData = await resumeServices.getResume(resumeId);
-            dispatch(actions.setResume(resumeData));
+
+            // convert url to base64 string and store avatar
+            if (resumeData.photoReference){
+                const base64 = await getBase64FromUrl(resumeData.photoReference);
+                resumeData.basicInfo['avatar'] = base64;
+
+            }
+            await dispatch(actions.setResume(resumeData));
         } catch (exception) {
             logger.error(exception);
         }

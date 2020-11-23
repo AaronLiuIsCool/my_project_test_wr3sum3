@@ -104,15 +104,16 @@
   "score_B": "良好",
   "score_C": "及格",
   "score_D": "薄弱",
-  "score_A_MSG": "简历强度：优秀，简历信息完整缺表达专业，牛人你真棒！",
-  "score_B_MSG": "简历强度：良好，简历信息完整，参考‘写作助手’专业术语继续提升吧！",
-  "score_C_MSG": "简历强度：及格，简历信息有所缺失，继续加油哦！",
-  "score_D_MSG": "简历强度：及格，简历信息有所缺失，继续加油哦！",
+  "score_A_MSG": "简历强度:简历信息完整, 表达专业 牛人你真棒！",
+  "score_B_MSG": "简历强度:简历信息完整, 参考‘写作助手’专业术语继续提升吧！",
+  "score_C_MSG": "简历强度:及格, 简历信息有所缺失, 继续加油哦！",
+  "score_D_MSG": "简历强度:薄弱, 简历信息较少, 请前往补全更多信息！",
   "RPreview": {
     "linkedinLink": "领英链接",
     "githubLink": "Github链接",
     "educationBackground": "教育背景",
     "workExperience": "工作经历",
+    "projectExperience": "项目经历",
     "studentWorkAndVolunteer": "志愿服务",
     "certificateAndAward": "技能证书 & 获得荣誉",
     "awards": "获得荣誉",
@@ -125,7 +126,9 @@
     "oneClickWholePage": "一键整页",
     "downloadResume": "下载简历",
     "perparingResume": "生成中..",
-    "downLoadResume": "下载简历"
+    "downLoadResume": "下载简历",
+    "linkedIn": "领英链接",
+    "weblink": "项目集链接"
   },
   "resumeTips": {
     "resumeTips": "简历编写小帖士"

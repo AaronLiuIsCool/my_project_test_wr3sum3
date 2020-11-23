@@ -1,4 +1,4 @@
-import {getLogger} from 'shell/logger';
+import { getLogger } from 'shell/logger';
 import BaseServices from './BaseServices';
 
 import workWrittenAssistantData from './mocks/workWrittenAssistantData.json';
@@ -192,7 +192,7 @@ export default class ResumeServices extends BaseServices {
     } catch (error) {
       logger.error(error);
     } finally {
-      return {suggestions};
+      return { suggestions };
     }
   }
 

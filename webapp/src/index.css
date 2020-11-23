@@ -1,4 +1,4 @@
-html{
+html {
   width: 100%;
   height: 100%;
 }
@@ -7,16 +7,13 @@ body {
   width: 100%;
   height: 100%;
   margin: 0;
-  font-family: 'MicrosoftYaHei', 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'MicrosoftYaHei', 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
 #root {
@@ -24,34 +21,42 @@ code {
   height: 100%;
 }
 
-
 /* close icon style  */
-.closeIconContainer{
+
+.closeIconContainer {
   width: 40px;
   height: 40px;
-  position:absolute;
+  position: absolute;
   z-index: 1;
-  cursor:pointer;
+  cursor: pointer;
 }
 
-.closeIconContainer:hover .closeIcon{
+.closeIconContainer:hover .closeIcon {
   display: none;
 }
-.closeIconContainer .closeIconHover{
+
+.closeIconContainer .closeIconHover {
   display: none;
 }
-.closeIconContainer:hover .closeIconHover{
+
+.closeIconContainer:hover .closeIconHover {
   display: block;
 }
 
 /* react bootstrap progress bar style  */
-.bg-score_A{
+
+.bg-score_A {
   background-color: #2abc6e!important;
 }
-.bg-score_B,
-.bg-score_C{
+
+.bg-score_B {
+  background-color: #3e89ec!important;
+}
+
+.bg-score_C {
   background-color: #edbc4d!important;
 }
-.bg-score_D{
+
+.bg-score_D {
   background-color: #ff6565!important;
 }
