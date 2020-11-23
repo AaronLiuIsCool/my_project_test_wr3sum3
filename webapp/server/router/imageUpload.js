@@ -15,7 +15,6 @@ const s3 = new aws.S3();
 
 router.post("/upload", function (req, res) {
   const { fileName, base64, fileType } = req.body;
-  console.log("/upload call", fileName, fileType);
   const buf = new Buffer(
     base64.replace(/^data:image\/\w+;base64,/, ""),
     "base64"

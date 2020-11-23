@@ -263,6 +263,15 @@
       width: 100%;
     }
   }
+  .display-on-hover {
+    display: none;
+  }
+  .toggle-up-arrow:hover .display-on-hover {
+    display: block;
+  }
+  .toggle-up-arrow:hover .hide-on-hover {
+    display: none;
+  }
   .flex-end {
     display: flex;
     justify-content: flex-end;

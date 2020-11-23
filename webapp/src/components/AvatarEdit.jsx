@@ -40,32 +40,30 @@ const AvatarEdit = ({ imagePreview, setImagePreview, closeModalHandler }) => {
 
 	return (
 		<div>
-			<Avatar width={440} imageWidth={440} height={160} cropRadius={50} onCrop={onCrop} onClose={onClose} />
-			{imagePreview == null && (
-				<div className={styles.samplesContainer}>
-					<h2>{messages.samples}</h2>
-					<div className={styles.samples}>
-						<div className={styles.sample} style={{backgroundImage: `url(${process.env.PUBLIC_URL}/images/bad_photo_1.png)`}}>
-							<img src={process.env.PUBLIC_URL + '/images/bad_picture.svg'} alt='check mark' />
-						</div>
-						<div className={styles.sample} style={{backgroundImage: `url(${process.env.PUBLIC_URL}/images/bad_photo_2.png)`}}>
-							<img src={process.env.PUBLIC_URL + '/images/bad_picture.svg'} alt='check mark' />
-						</div>
-						<div className={styles.sample} style={{backgroundImage: `url(${process.env.PUBLIC_URL}/images/good_photo_1.png)`}}>
-							<img src={process.env.PUBLIC_URL + '/images/good_picture.svg'} alt='check mark' />
-						</div>
-						<div className={styles.sample} style={{backgroundImage: `url(${process.env.PUBLIC_URL}/images/bad_photo_3.png)`}}>
-							<img src={process.env.PUBLIC_URL + '/images/bad_picture.svg'} alt='check mark' />
-						</div>
-						<div className={styles.sample} style={{backgroundImage: `url(${process.env.PUBLIC_URL}/images/bad_photo_4.png)`}}>
-							<img src={process.env.PUBLIC_URL + '/images/bad_picture.svg'} alt='check mark' />
-						</div>
-						<div className={styles.sample} style={{backgroundImage: `url(${process.env.PUBLIC_URL}/images/good_photo_2.png)`}}>
-							<img src={process.env.PUBLIC_URL + '/images/good_picture.svg'} alt='check mark' />
-						</div>
+			<Avatar width={440} height={300} cropRadius={50} onCrop={onCrop} onClose={onClose} />
+			<div className={styles.samplesContainer}>
+				<h2>{messages.samples}</h2>
+				<div className={styles.samples}>
+					<div className={styles.sample} style={{backgroundImage: `url(${process.env.PUBLIC_URL}/images/bad_photo_1.png)`}}>
+						<img src={process.env.PUBLIC_URL + '/images/bad_picture.svg'} alt='check mark' />
+					</div>
+					<div className={styles.sample} style={{backgroundImage: `url(${process.env.PUBLIC_URL}/images/bad_photo_2.png)`}}>
+						<img src={process.env.PUBLIC_URL + '/images/bad_picture.svg'} alt='check mark' />
+					</div>
+					<div className={styles.sample} style={{backgroundImage: `url(${process.env.PUBLIC_URL}/images/good_photo_1.png)`}}>
+						<img src={process.env.PUBLIC_URL + '/images/good_picture.svg'} alt='check mark' />
+					</div>
+					<div className={styles.sample} style={{backgroundImage: `url(${process.env.PUBLIC_URL}/images/bad_photo_3.png)`}}>
+						<img src={process.env.PUBLIC_URL + '/images/bad_picture.svg'} alt='check mark' />
+					</div>
+					<div className={styles.sample} style={{backgroundImage: `url(${process.env.PUBLIC_URL}/images/bad_photo_4.png)`}}>
+						<img src={process.env.PUBLIC_URL + '/images/bad_picture.svg'} alt='check mark' />
+					</div>
+					<div className={styles.sample} style={{backgroundImage: `url(${process.env.PUBLIC_URL}/images/good_photo_2.png)`}}>
+						<img src={process.env.PUBLIC_URL + '/images/good_picture.svg'} alt='check mark' />
 					</div>
 				</div>
-			)}
+			</div>
 			{imagePreview && (
 				<div className={styles.photoEditButton}>
 					<Button variant='primary' className='w-100' onClick={onSave}>

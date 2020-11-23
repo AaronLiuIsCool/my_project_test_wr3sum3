@@ -71,7 +71,7 @@ const Item = ({ resume, account }) => {
     const handleDelete = async () => {
         dispatch(deleteResume(resume.resumeId));
         try {
-            const responseJson = await accountServices.deleteResume(userId, resume);
+            const responseJson = await accountServices.deleteResume(userId, resume.resumeId);
             if (!responseJson.success) {
                 logger.warn(responseJson.message);
             }

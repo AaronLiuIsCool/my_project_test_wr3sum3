@@ -1,32 +1,39 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux';
-import { Row, Col, Form, Button } from 'react-bootstrap';
+import {useDispatch, useSelector} from 'react-redux';
+import {Row, Col, Form, Button} from 'react-bootstrap';
 
-import { GAEvent } from 'utils/GATracking';
+import {GAEvent} from 'utils/GATracking';
 
 import SingleDatePicker from 'components/SingleDatePicker';
 import InputGroup from 'components/InputGroup';
 import RadioButtonGroup from 'components/RadioButtonGroup';
 import DropdownGroup from 'components/DropdownGroup';
 import KButton from 'components/KButton';
-import { ReactComponent as WrittenAssistIcon } from '../../assets/writing_assit.svg';
+import {ReactComponent as WrittenAssistIcon} from '../../assets/writing_assit.svg';
 
-import { adaptWork } from '../../utils/servicesAdaptor';
-import { actions, selectId, assistantSelectors } from '../../slicer';
-import { validateWork, validateWorkEntry } from '../../slicer/work';
-import { updateStatus, updateAllStatus } from '../../slicer/common';
+import ArrowUp from '../../assets/arrow-up.png'; 
+import ArrowUpActive from '../../assets/arrow-up-active.png'; 
+
+import {adaptWork} from '../../utils/servicesAdaptor';
+import {actions, selectId, assistantSelectors} from '../../slicer';
+import {validateWork, validateWorkEntry} from '../../slicer/work';
+import {updateStatus, updateAllStatus} from '../../slicer/common';
 import ResumeServices from 'shell/services/ResumeServices';
-import { getLogger } from 'shell/logger';
-import { previewResume } from '../ResumePreview/resumeBuilder';
-import { updateRating, dispatchUpdates, updateCityOptions } from '../../utils/resume';
+import {getLogger} from 'shell/logger';
+import {previewResume} from '../ResumePreview/resumeBuilder';
+import {
+  updateRating,
+  dispatchUpdates,
+  updateCityOptions,
+} from '../../utils/resume';
 
 import DraftEditor from '../../../../components/DraftEditor/index';
 
 import countryOptions from 'data/country.json';
 
-import { Summary } from '../Summary';
+import {Summary} from '../Summary';
 
 const logger = getLogger('WorkForm');
 const resumeServices = new ResumeServices();
@@ -39,7 +46,8 @@ const fields = [
   'workCountry',
   'workDescription',
 ];
-const WorkForm = ({ data, index, isLast = false, messages, workData }) => {
+
+const WorkForm = ({data, index, isLast = false, messages, workData}) => {
   const trigger = useSelector(assistantSelectors.selectTrigger);
   const showAssistant = useSelector(assistantSelectors.selectShow);
   const resumeId = useSelector(selectId);
@@ -73,7 +81,7 @@ const WorkForm = ({ data, index, isLast = false, messages, workData }) => {
     } catch (exception) {
       logger.error(exception);
     } finally {
-      dispatch(actions.updateWorkId({ index, id }));
+      dispatch(actions.updateWorkId({index, id}));
       dispatchUpdates('update-score');
     }
   };
@@ -86,7 +94,6 @@ const WorkForm = ({ data, index, isLast = false, messages, workData }) => {
       setValidated(false);
       return;
     }
-    toggleShowSummary();
     setValidated(true);
     dispatch(actions.completeWork());
     await save();
@@ -99,23 +106,23 @@ const WorkForm = ({ data, index, isLast = false, messages, workData }) => {
       status,
       setStatus,
       'workDescription',
-      value
+      value,
     );
-    dispatch(actions.updateWorkDescription({ value, index }));
+    dispatch(actions.updateWorkDescription({value, index}));
   };
 
   const handleWorkChange = (event) => {
     const value = event.target.value;
     updateStatus(validateWorkEntry, status, setStatus, 'workName', value);
-    dispatch(actions.updateWorkName({ value, index }));
+    dispatch(actions.updateWorkName({value, index}));
   };
 
   const handleCurrentWorkFlagChange = (event) => {
     event.preventDefault();
     const value = event.target.value;
-    dispatch(actions.updateCurrentWorkFlag({ value, index }));
+    dispatch(actions.updateCurrentWorkFlag({value, index}));
     // reset the end date value if current work is true
-    dispatch(actions.updateWorkEndDate({ value: '', index }));
+    dispatch(actions.updateWorkEndDate({value: '', index}));
   };
   const handleWorkCompanyNameChange = (event) => {
     const value = event.target.value;
@@ -124,27 +131,27 @@ const WorkForm = ({ data, index, isLast = false, messages, workData }) => {
       status,
       setStatus,
       'workCompanyName',
-      value
+      value,
     );
-    dispatch(actions.updateWorkCompanyName({ value, index }));
+    dispatch(actions.updateWorkCompanyName({value, index}));
   };
 
   const handleWorkStartDateChange = (date) => {
     const value = date ? date.toISOString() : undefined;
     updateStatus(validateWorkEntry, status, setStatus, 'workStartDate', value);
-    dispatch(actions.updateWorkStartDate({ value, index }));
+    dispatch(actions.updateWorkStartDate({value, index}));
   };
 
   const handleWorkEndDateChange = (date) => {
     const value = date ? date.toISOString() : undefined;
     updateStatus(validateWorkEntry, status, setStatus, 'workEndDate', value);
-    dispatch(actions.updateWorkEndDate({ value, index }));
+    dispatch(actions.updateWorkEndDate({value, index}));
   };
 
   const handleWorkCityChange = (values) => {
     const value = values.length === 0 ? null : values[0].data;
     updateStatus(validateWorkEntry, status, setStatus, 'workCity', value);
-    dispatch(actions.updateWorkCity({ value, index }));
+    dispatch(actions.updateWorkCity({value, index}));
   };
 
   const handleWorkCountryChange = (values) => {
@@ -158,8 +165,8 @@ const WorkForm = ({ data, index, isLast = false, messages, workData }) => {
     dispatch(
       actions.toggleAssistant({
         trigger: 'work',
-        context: { index, ...data },
-      })
+        context: {index, ...data},
+      }),
     );
   };
 
@@ -169,9 +176,11 @@ const WorkForm = ({ data, index, isLast = false, messages, workData }) => {
   });
 
   const handleDelete = async (id) => {
-    dispatch(actions.removeWork({ index }));
-    await resumeServices.removeWork(id, resumeId);
-    updateRating();
+    dispatch(actions.removeWork({index}));
+    if (id) {
+      await resumeServices.removeWork(id, resumeId);
+      updateRating();
+    }
   };
   useEffect(() => {
     if (data.id && !didMount.current) {
@@ -204,10 +213,7 @@ const WorkForm = ({ data, index, isLast = false, messages, workData }) => {
             </Col>
             <div className="toggle-up-arrow" onClick={toggleShowSummary}>
               {data.id && (
-                <img
-                  src={require('../../assets/arrow-up.svg')}
-                  alt="up-arrow"
-                />
+                <><img className="hide-on-hover" src={ArrowUp} alt="up-arrow"/><img className="display-on-hover" src={ArrowUpActive} alt="up-arrow-active"/></>
               )}
             </div>
           </Row>
@@ -229,8 +235,8 @@ const WorkForm = ({ data, index, isLast = false, messages, workData }) => {
                 label={messages.stillAtWork}
                 id="work-currentWorkFlag"
                 values={[
-                  { label: messages.yes, value: true },
-                  { label: messages.no, value: false },
+                  {label: messages.yes, value: true},
+                  {label: messages.no, value: false},
                 ]}
                 value={data.currentWorkFlag}
                 onClickHandler={handleCurrentWorkFlagChange}
@@ -335,7 +341,7 @@ const WorkForm = ({ data, index, isLast = false, messages, workData }) => {
           <Row className="form_buttons">
             <Col className="flex-end">
               {/* just a placeholder so we do need to change the css */}
-              {data.id && (
+              {
                 <Button
                   onClick={() => {
                     handleDelete(data.id);
@@ -345,7 +351,7 @@ const WorkForm = ({ data, index, isLast = false, messages, workData }) => {
                 >
                   {messages.delete}
                 </Button>
-              )}
+              }
               <KButton variant="primary" type="submit">
                 {messages.save}
               </KButton>

@@ -1,7 +1,7 @@
-.container{
+.container {
   position: sticky;
   left: 1000px;
-  bottom: 100px;
+  bottom: 20px;
   width: 360px;
   height: 740px;
   border-radius: 8px;
@@ -12,14 +12,15 @@
   overflow: auto;
   max-height: 70%;
 }
-.header{
+
+.header {
   font-size: 24px;
   padding: 1.25rem 0;
 }
 
-.dropdown select{
+.dropdown select {
   height: 42px;
-  width:100%;
+  width: 100%;
   padding: 0.625rem;
   border-radius: 8px;
   border: solid 1px rgba(0, 0, 0, 0.08);
@@ -28,46 +29,49 @@
   font-weight: bold;
 }
 
-.card{
-  border:none;
+.card {
+  border: none;
 }
-.cardHader,
-.cardBody{
-  text-align:left;
+
+.cardHader, .cardBody {
+  text-align: left;
   color: #333;
 }
-.cardHader{
-  background:white;
-  border:none;
+
+.cardHader {
+  background: white;
+  border: none;
   padding: 0.75rem 0;
 }
-.cardHader button{
+
+.cardHader button {
   font-size: 16px;
   font-weight: bold;
-  border:none;
+  border: none;
   color: #333;
-  background:white;
-  text-align:left;
-  padding:0;
+  background: white;
+  text-align: left;
+  padding: 0;
 }
-.cardHader button:hover{
+
+.cardHader button:hover {
   text-decoration: none;
 }
-.cardHader button:active,
-.cardHader button:focus{
-  outline:none;
+
+.cardHader button:active, .cardHader button:focus {
+  outline: none;
   box-shadow: none;
 }
 
-.cardBody{
+.cardBody {
   border-radius: 4px;
   background-color: #f2f4f9;
   font-size: 14px;
-  position:relative;
+  position: relative;
 }
 
 @media only screen and (max-width: 1440px) {
-  .container{
+  .container {
     bottom: 20px;
   }
 }

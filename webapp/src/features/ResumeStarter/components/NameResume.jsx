@@ -31,9 +31,7 @@ const NameResume = () => {
 			dispatch(actions.setId(resumeId));
 			history.push(`/resume/${resumeId}`);
 		} catch (exception) {
-			console.log("err", exception)
 			logger.error(exception);
-			// TODO: Need to handle retry
 			history.push('/');
 		}
 	}

@@ -1,9 +1,12 @@
 import React from 'react';
-import { Row } from 'react-bootstrap';
+import {Row} from 'react-bootstrap';
 import PhotoUploadIcon from '../../assets/photoupload.svg';
 import moment from 'moment';
 import './index.scss';
-import { useI8n } from 'shell/i18n';
+import {useI8n} from 'shell/i18n';
+
+import ArrowDown from '../../assets/arrow-down.png';
+import ArrowDownActive from '../../assets/arrow-down-active.png';
 
 const JDBC_DATE_FORMAT = 'YYYY-MM-DD';
 export const Summary = ({
@@ -34,10 +37,14 @@ export const Summary = ({
             <h2>{name}</h2>
           </div>
           <div className="toggle-up-arrow" onClick={handleClickCallback}>
-            <img
-              src={require('../../assets/arrow-down.svg')}
-              alt="arrow-down"
-            />
+            <>
+              <img className="hide-on-hover" src={ArrowDown} alt="up-arrow" />
+              <img
+                className="display-on-hover"
+                src={ArrowDownActive}
+                alt="up-arrow-active"
+              />
+            </>
           </div>
         </Row>
       );
@@ -57,10 +64,14 @@ export const Summary = ({
             </div>
           </div>
           <div className="toggle-up-arrow" onClick={handleClickCallback}>
-            <img
-              src={require('../../assets/arrow-down.svg')}
-              alt="arrow-down"
-            />
+            <>
+              <img className="hide-on-hover" src={ArrowDown} alt="up-arrow" />
+              <img
+                className="display-on-hover"
+                src={ArrowDownActive}
+                alt="up-arrow-active"
+              />
+            </>
           </div>
         </Row>
       );
@@ -82,10 +93,14 @@ export const Summary = ({
             </div>
           </div>
           <div className="toggle-up-arrow" onClick={handleClickCallback}>
-            <img
-              src={require('../../assets/arrow-down.svg')}
-              alt="arrow-down"
-            />
+            <>
+              <img className="hide-on-hover" src={ArrowDown} alt="up-arrow" />
+              <img
+                className="display-on-hover"
+                src={ArrowDownActive}
+                alt="up-arrow-active"
+              />
+            </>
           </div>
         </Row>
       );
@@ -96,17 +111,22 @@ export const Summary = ({
             <h3>{roleName}</h3>
             <div className="lower-row">
               <span className="blue">
-              {!currentFlag
+                {!currentFlag
                   ? messages.forever
-                  : messages.valid_through + moment(endDate).format(JDBC_DATE_FORMAT)}
+                  : messages.valid_through +
+                    moment(endDate).format(JDBC_DATE_FORMAT)}
               </span>
             </div>
           </div>
           <div className="toggle-up-arrow" onClick={handleClickCallback}>
-            <img
-              src={require('../../assets/arrow-down.svg')}
-              alt="arrow-down"
-            />
+            <>
+              <img className="hide-on-hover" src={ArrowDown} alt="up-arrow" />
+              <img
+                className="display-on-hover"
+                src={ArrowDownActive}
+                alt="up-arrow-active"
+              />
+            </>
           </div>
         </Row>
       );
@@ -115,10 +135,14 @@ export const Summary = ({
         <Row className="flexie collapsed-section">
           <div>{type}</div>
           <div className="toggle-up-arrow" onClick={handleClickCallback}>
-            <img
-              src={require('../../assets/arrow-down.svg')}
-              alt="arrow-down"
-            />
+            <>
+              <img className="hide-on-hover" src={ArrowDown} alt="up-arrow" />
+              <img
+                className="display-on-hover"
+                src={ArrowDownActive}
+                alt="up-arrow-active"
+              />
+            </>
           </div>
         </Row>
       );

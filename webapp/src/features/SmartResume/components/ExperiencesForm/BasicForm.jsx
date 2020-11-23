@@ -13,46 +13,51 @@ import AvatarUpload from './AvatarUpload';
 import { validateBasic, validateBasicEntry } from '../../slicer/basic';
 import { updateStatus, updateAllStatus } from '../../slicer/common';
 import { adaptBasics } from '../../utils/servicesAdaptor';
-import { dispatchUpdates, updateRating } from '../../utils/resume';
+import { dispatchUpdates, updateRating, updateCityOptions } from '../../utils/resume';
 import ResumeServices from 'shell/services/ResumeServices';
 import { getLogger } from 'shell/logger';
 
 import { previewResume } from '../ResumePreview/resumeBuilder';
 
 // json data for dropdowns
-import cityOptions from 'data/city.json';
+import countryOptions from 'data/country.json';
 import { Summary } from '../Summary';
 import { useEffect } from 'react';
-import ArrowUp from '../../assets/arrow-up.svg'; 
+import ArrowUp from '../../assets/arrow-up.png'; 
+import ArrowUpActive from '../../assets/arrow-up-active.png'; 
 
 const logger = getLogger('BasicForm');
 const resumeServices = new ResumeServices();
 const fields = [
     'nameCn',
-    'nameEn',
     'email',
     'phone',
     'city',
     'linkedin',
-    'weblink'
+    'weblink',
+    'country'
 ];
 
 const BasicForm = ({ data, photoReference, completed, messages }) => {
 	const [showSummary, setShowSummary] = useState(false);
 	const resumeId = useSelector(selectId);
-	const [validated, setValidated] = useState(false);
+  const [validated, setValidated] = useState(false);
+  const [cityOptions, setCityOptions] = useState([]);
 	const [status, setStatus] = useState({
 		nameCn: {},
-		nameEn: {},
 		email: {},
 		phone: {},
 		city: {},
 		linkedin: {},
-		weblink: {},
+    weblink: {},
+    country: {}
 	});
 	useEffect(() => {
     setShowSummary(Boolean(completed));
-	}, [completed])
+  }, [completed])
+  useEffect(() => {
+    updateCityOptions(data.country, setCityOptions);
+  }, [data.country]);
 	const dispatch = useDispatch();
   const toggleShowSummary = () => {
     setShowSummary(!showSummary);
@@ -81,7 +86,6 @@ const BasicForm = ({ data, photoReference, completed, messages }) => {
       setValidated(false);
       return;
     }
-    toggleShowSummary();
     setValidated(true);
     dispatch(actions.completeBasic());
     
@@ -95,12 +99,6 @@ const BasicForm = ({ data, photoReference, completed, messages }) => {
 		dispatch(actions.updateNameCn({ value }));
 	};
 
-	const handleNameEnChange = (event) => {
-		const value = event.target.value;
-		updateStatus(validateBasicEntry, status, setStatus, 'nameEn', value);
-		dispatch(actions.updateNameEn({ value }));
-	};
-
 	const handleEmailChange = (event) => {
 		const value = event.target.value;
 		updateStatus(validateBasicEntry, status, setStatus, 'email', value);
@@ -111,7 +109,14 @@ const BasicForm = ({ data, photoReference, completed, messages }) => {
 		const value = event.target.value;
 		updateStatus(validateBasicEntry, status, setStatus, 'phone', value);
 		dispatch(actions.updatePhone({ value }));
-	};
+  };
+  
+  const handleCountryChange = (values) => {
+    const value = values.length === 0 ? null : values[0].data;
+    updateCityOptions(value, setCityOptions);
+    updateStatus(validateBasicEntry, status, setStatus, 'country', value);
+    dispatch(actions.updateCountry({ value }));
+  }
 
 	const handleCityChange = (values) => {
 		const value = values.length === 0 ? null : values[0].data;
@@ -134,14 +139,13 @@ const BasicForm = ({ data, photoReference, completed, messages }) => {
 		updateStatus(validateBasicEntry, status, setStatus, 'weblink', value);
 		dispatch(actions.updateWeblink({ value }));
 	};
-
 	return (
     <div className="form_body">
       {showSummary ? (
         <div>
           <Summary
             name={data.nameCn}
-            avatar={photoReference}
+            avatar={photoReference?.url}
             type={'BasicInfo'}
             handleClickCallback={toggleShowSummary}
           />
@@ -151,7 +155,7 @@ const BasicForm = ({ data, photoReference, completed, messages }) => {
           <Row className="flexie">
             <AvatarUpload photoReference={photoReference} />
             <div className="toggle-up-arrow" onClick={toggleShowSummary}>
-              {completed && <img src={ArrowUp} alt="up-arrow"/>}
+              {completed && <><img className="hide-on-hover" src={ArrowUp} alt="up-arrow"/><img className="display-on-hover" src={ArrowUpActive} alt="up-arrow-active"/></>}
             </div>
           </Row>
           <Row>
@@ -167,21 +171,6 @@ const BasicForm = ({ data, photoReference, completed, messages }) => {
                 isInvalid={status.nameCn.isInvalid}
               />
             </Col>
-            <Col>
-              <InputGroup
-                label={messages.enName}
-                id="basic-name-en"
-                placeholder={messages.enterEnName}
-                value={data.nameEn}
-                onChange={handleNameEnChange}
-                feedbackMessage={messages.entryIsInvalid}
-                isValid={status.nameEn.isValid}
-                isInvalid={status.nameEn.isInvalid}
-              />
-            </Col>
-          </Row>
-
-          <Row>
             <Col lg="6">
               <InputGroup
                 label={messages.email}
@@ -194,7 +183,11 @@ const BasicForm = ({ data, photoReference, completed, messages }) => {
                 isInvalid={status.email.isInvalid}
               />
             </Col>
-            <Col lg="3">
+          </Row>
+
+          <Row>
+            
+            <Col lg="6">
               <InputGroup
                 label={messages.phone}
                 id="basic-phone"
@@ -204,6 +197,19 @@ const BasicForm = ({ data, photoReference, completed, messages }) => {
                 feedbackMessage={messages.entryIsInvalid}
                 isValid={status.phone.isValid}
                 isInvalid={status.phone.isInvalid}
+              />
+            </Col>
+            <Col lg="3">
+              <DropdownGroup
+                label={messages.country}
+                id="basic-country"
+                placeholder={messages.country}
+                options={countryOptions}
+                value={data.country}
+                onChange={handleCountryChange}
+                feedbackMessage={messages.entryIsInvalid}
+                isValid={status.country.isValid}
+                isInvalid={status.country.isInvalid}
               />
             </Col>
             <Col lg="3">
