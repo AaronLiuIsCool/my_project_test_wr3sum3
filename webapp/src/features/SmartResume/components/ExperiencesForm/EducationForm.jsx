@@ -18,6 +18,9 @@ import {updateStatus, updateAllStatus} from '../../slicer/common';
 import ResumeServices from 'shell/services/ResumeServices';
 import {getLogger} from 'shell/logger';
 
+import ArrowUp from '../../assets/arrow-up.png'; 
+import ArrowUpActive from '../../assets/arrow-up-active.png'; 
+
 import degreeOptions from 'data/degree.json';
 import majorOptions from 'data/major.json';
 import univOptions from 'data/university.json';
@@ -93,7 +96,6 @@ const EducationForm = ({data, index, isLast = false, messages}) => {
       setValidated(false);
       return;
     }
-    toggleShowSummary();
     setValidated(true);
     dispatch(actions.completeEducation());
     await save();
@@ -203,10 +205,7 @@ const EducationForm = ({data, index, isLast = false, messages}) => {
             </Col>
             <div className="toggle-up-arrow" onClick={toggleShowSummary}>
               {data.id && (
-                <img
-                  src={require('../../assets/arrow-up.svg')}
-                  alt="up-arrow"
-                />
+                <><img className="hide-on-hover" src={ArrowUp} alt="up-arrow"/><img className="display-on-hover" src={ArrowUpActive} alt="up-arrow-active"/></>
               )}
             </div>
           </Row>

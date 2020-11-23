@@ -33,17 +33,14 @@ exports[`Work form It should match snapshot 1`] = `
       onClick={[Function]}
     >
       <img
-        alt="arrow-down"
-        src={
-          Object {
-            "ReactComponent": Object {
-              "$$typeof": Symbol(react.forward_ref),
-              "render": [Function],
-            },
-            "__esModule": true,
-            "default": "arrow-down.svg",
-          }
-        }
+        alt="up-arrow"
+        className="hide-on-hover"
+        src="arrow-down.png"
+      />
+      <img
+        alt="up-arrow-active"
+        className="display-on-hover"
+        src="arrow-down-active.png"
       />
     </div>
   </div>

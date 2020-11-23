@@ -23,7 +23,8 @@ import { previewResume } from '../ResumePreview/resumeBuilder';
 import countryOptions from 'data/country.json';
 import { Summary } from '../Summary';
 import { useEffect } from 'react';
-import ArrowUp from '../../assets/arrow-up.svg'; 
+import ArrowUp from '../../assets/arrow-up.png'; 
+import ArrowUpActive from '../../assets/arrow-up-active.png'; 
 
 const logger = getLogger('BasicForm');
 const resumeServices = new ResumeServices();
@@ -82,11 +83,9 @@ const BasicForm = ({ data, photoReference, completed, messages }) => {
     event.stopPropagation();
     updateAllStatus(validateBasicEntry, status, setStatus, fields, data);
     if (!validateBasic(data)) {
-      console.log(111111)
       setValidated(false);
       return;
     }
-    toggleShowSummary();
     setValidated(true);
     dispatch(actions.completeBasic());
     
@@ -156,7 +155,7 @@ const BasicForm = ({ data, photoReference, completed, messages }) => {
           <Row className="flexie">
             <AvatarUpload photoReference={photoReference} />
             <div className="toggle-up-arrow" onClick={toggleShowSummary}>
-              {completed && <img src={ArrowUp} alt="up-arrow"/>}
+              {completed && <><img className="hide-on-hover" src={ArrowUp} alt="up-arrow"/><img className="display-on-hover" src={ArrowUpActive} alt="up-arrow-active"/></>}
             </div>
           </Row>
           <Row>
