@@ -46,6 +46,7 @@ const fields = [
   'workCountry',
   'workDescription',
 ];
+
 const WorkForm = ({data, index, isLast = false, messages, workData}) => {
   const trigger = useSelector(assistantSelectors.selectTrigger);
   const showAssistant = useSelector(assistantSelectors.selectShow);
