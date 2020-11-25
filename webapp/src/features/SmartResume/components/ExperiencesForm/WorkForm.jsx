@@ -158,7 +158,7 @@ const WorkForm = ({data, index, isLast = false, messages, workData}) => {
     const value = values.length === 0 ? null : values[0].data;
     updateCityOptions(value, setCityOptions);
     updateStatus(validateWorkEntry, status, setStatus, 'workCountry', value);
-    dispatch(actions.updateWorkCountry({ value, index }));
+    dispatch(actions.updateWorkCountry({value, index}));
   };
 
   const handleAssistantClick = () => {

@@ -89,10 +89,11 @@ const JobCollection = () => {
 const OnSelect = (eventKey, event) =>{ // user can change the "default value"
     setChosenValue(eventKey)
     jobsToBeDisplayed.sort((a, b) => (
-        chosenValue === null ? new Date(a.postDate).getTime() - new Date(b.postDate).getTime()
-        : new Date(b.postDate).getTime() - new Date(a.postDate).getTime()
+        chosenValue === null ?  new Date(b.postDate).getTime() - new Date(a.postDate).getTime() :
+        new Date(a.postDate).getTime() - new Date(b.postDate).getTime()
         ))
     setJobsToBeDisplayed(jobsToBeDisplayed)
+    console.log(jobsToBeDisplayed)
 }
 
     const applyFilter = (bookmark) => {
@@ -140,7 +141,7 @@ const OnSelect = (eventKey, event) =>{ // user can change the "default value"
                         </ToggleButton> */}
                     </ToggleButtonGroup>
                 </div>
-                <div class="btn btn-secondary dropdown-toggle float-right">
+                <div className="btn btn-secondary dropdown-toggle float-right">
                     <p>排序</p>
                     <Dropdown onSelect={OnSelect}>
                         <Dropdown.Toggle id="dropdown-basic" >
@@ -151,7 +152,7 @@ const OnSelect = (eventKey, event) =>{ // user can change the "default value"
                             <Dropdown.Item
                             eventKey={option}
                             key={option}>
-                            {chosenValue === null  ?  messages.sortByTimestampAscending : messages.sortByTimestampDecending }
+                            {option === 0  ?  messages.sortByTimestampAscending : messages.sortByTimestampDecending }
                             </Dropdown.Item>
                         ))}
                     </Dropdown.Menu>

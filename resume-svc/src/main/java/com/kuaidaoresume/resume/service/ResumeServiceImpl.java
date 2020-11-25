@@ -1,5 +1,7 @@
 package com.kuaidaoresume.resume.service;
 
+import com.github.structlog4j.ILogger;
+import com.github.structlog4j.SLoggerFactory;
 import com.kuaidaoresume.common.dto.LocationDto;
 import com.kuaidaoresume.common.matching.KeywordMatcher;
 import com.kuaidaoresume.resume.dto.ResumeMatchingDto;
@@ -11,6 +13,7 @@ import com.kuaidaoresume.resume.repository.ResumeContainableRepositoryFactory;
 import com.kuaidaoresume.resume.repository.ResumeRepository;
 import com.kuaidaoresume.resume.service.rating.ResumeRatingFacade;
 import com.kuaidaoresume.resume.service.score.ResumeScoreFacade;
+import com.kuaidaoresume.resume.utils.ResumeServiceHelper;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.compress.utils.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +52,10 @@ public class ResumeServiceImpl implements ResumeService {
 
     @Autowired
     private final CacheManager cacheManager;
+
+    static ILogger logger = SLoggerFactory.getLogger(ResumeService.class);
+
+    private final ResumeServiceHelper serviceHelper;
 
     @CacheEvict(cacheNames = "resumes", key = "#resumeId")
     @Override
@@ -236,7 +243,13 @@ public class ResumeServiceImpl implements ResumeService {
         T existed = (T) resumeContainableRepository.findById(id).orElseThrow(() ->
             new EntityNotFoundException((String.format("Entity Not Found with id %s", id))));
         toUpdate.setResume(existed.getResume());
-        resumeContainableRepository.save(toUpdate);
+        try {
+            resumeContainableRepository.save(toUpdate);
+        }
+        catch(Exception exception) {
+            String exceptionMsg = "Unable to update resume:" + id;
+            serviceHelper.handleException(logger, exception, exceptionMsg);
+        }
     }
 
     @CacheEvict(cacheNames = "resumes", key = "#resumeId")
@@ -368,6 +381,10 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     private Supplier<EntityNotFoundException> resumeNotFoundException(String resumeId) {
+        String exceptionMsg = "Resume Not Found with id " + resumeId;
+        if(serviceHelper != null) {
+            serviceHelper.handleException(logger, new EntityNotFoundException(exceptionMsg), exceptionMsg);
+        }
         return () -> new EntityNotFoundException(String.format("Resume Not Found with id %s", resumeId));
     }
 }
