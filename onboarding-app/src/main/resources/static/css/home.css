@@ -235,6 +235,22 @@ p > .dot {
   width: 100%;
 }
 
+.signupButton {
+  padding: 0 35px;
+  cursor: pointer;
+  border: none;
+  border-radius: 15px;
+}
+
+.signupButton:hover {
+  color: #fff;
+  background-color: #3e89ec;
+}
+
+.login:hover {
+  color: #3e89ec;
+}
+
 a.button {
 
   width: 224px;
