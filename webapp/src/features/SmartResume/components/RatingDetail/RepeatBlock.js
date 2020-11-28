@@ -1,13 +1,18 @@
 import React from "react";
 
-export const RepeatBlock = ({item, handleSpecialNavigate, messages}) => {
+export const RepeatBlock = ({positive = false, feedback, item, handleSpecialNavigate, messages}) => {
   return (
     <div className="repeat-block">
       <div>
         <p>{item.position}</p>
         <h5>{item.company}</h5>
+        {positive && <p className="full-width">
+          <span style={{fontWeight: 'bold'}}>关键字：</span>
+          {feedback.map((e, index) => <span key={index} className="keywords">{e}</span>)}
+        </p>}
       </div>
-      <div className="nav-btn">
+      {
+        !positive && <div className="nav-btn">
         <button
           data-obj={item.quantify}
           data-section={item.section}
@@ -18,6 +23,7 @@ export const RepeatBlock = ({item, handleSpecialNavigate, messages}) => {
           {messages.jumpTo}
         </button>
       </div>
+      }
     </div>
   );
 };

@@ -139,6 +139,15 @@
           margin-bottom: 0.938rem;
           max-width: 200px;
         }
+        p.full-width {
+          max-width: 280px;
+          line-break: anywhere;
+        }
+        .keywords {
+          font-weight: 500;
+          color: #2abc6e;
+          margin-right: 10px;
+        }
         .tag {
           display: inline-block;
           border-radius: 4px;
