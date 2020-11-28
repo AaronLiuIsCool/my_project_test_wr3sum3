@@ -89,7 +89,7 @@ const JobCollection = () => {
 const OnSelect = (eventKey, event) =>{ // user can change the "default value"
     setChosenValue(eventKey)
     jobsToBeDisplayed.sort((a, b) => (
-        chosenValue === null ?  new Date(b.postDate).getTime() - new Date(a.postDate).getTime() :
+        chosenValue === null || chosenValue === 0  ?  new Date(b.postDate).getTime() - new Date(a.postDate).getTime() :
         new Date(a.postDate).getTime() - new Date(b.postDate).getTime()
         ))
     setJobsToBeDisplayed(jobsToBeDisplayed)
@@ -141,15 +141,15 @@ const OnSelect = (eventKey, event) =>{ // user can change the "default value"
                         </ToggleButton> */}
                     </ToggleButtonGroup>
                 </div>
-                <div className="btn btn-secondary dropdown-toggle float-right">
-                    <p>排序</p>
-                    <Dropdown onSelect={OnSelect}>
-                        <Dropdown.Toggle id="dropdown-basic" >
-                        {chosenValue === null  ?  messages.sortByTimestampAscending : messages.sortByTimestampDecending }
+                <div className="sort-container">
+                    <p className="sort-container header">排序</p>
+                    <Dropdown onSelect={OnSelect} className="sort-container dropdown">
+                        <Dropdown.Toggle className="sort-container dropdown" >
+                        {chosenValue === null || chosenValue === 0  ?  messages.sortByTimestampAscending : messages.sortByTimestampDecending }
                     </Dropdown.Toggle>
-                        <Dropdown.Menu>
+                        <Dropdown.Menu className="sort-container dropdown">
                         {options.map(option => (
-                            <Dropdown.Item
+                            <Dropdown.Item className="sort-container dropdown"
                             eventKey={option}
                             key={option}>
                             {option === 0  ?  messages.sortByTimestampAscending : messages.sortByTimestampDecending }
@@ -159,7 +159,7 @@ const OnSelect = (eventKey, event) =>{ // user can change the "default value"
                     </Dropdown>
                 </div>
             </div>
-                <div>
+                <div className="jobCards all">
                 {jobsToBeDisplayed.map((job, index) => (
                         <JobCard
                             key={job.jobUuid + index}
