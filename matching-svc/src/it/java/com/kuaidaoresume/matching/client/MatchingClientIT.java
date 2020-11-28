@@ -3,6 +3,7 @@ package com.kuaidaoresume.matching.client;
 import com.kuaidaoresume.common.api.BaseResponse;
 import com.kuaidaoresume.common.auth.AuthConstant;
 import com.kuaidaoresume.matching.dto.*;
+import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,6 +101,13 @@ public class MatchingClientIT {
     public void test_addResume() {
         BaseResponse response = matchingClient.addResume(AuthConstant.AUTHORIZATION_RESUME_SERVICE, resume);
         assertTrue(response.isSuccess());
+
+        ResumeDto emptyResume = ResumeDto.builder()
+            .resumeUuid(UUID.randomUUID().toString())
+            .userId(USER_UUID)
+            .build();
+        response = matchingClient.addResume(AuthConstant.AUTHORIZATION_RESUME_SERVICE, emptyResume);
+        assertTrue(response.isSuccess());
     }
 
     @Test
@@ -112,6 +120,21 @@ public class MatchingClientIT {
         ResumeListResponse resumeListResponse = matchingClient.findMatchedResumes(AuthConstant.AUTHORIZATION_AUTHENTICATED_USER, this.job);
         assertTrue(resumeListResponse.isSuccess());
         assertThat(resumeListResponse.getResumeList().getResumes(), is(Arrays.asList(resume)));
+
+        ResumeDto emptyResume = ResumeDto.builder()
+            .resumeUuid(UUID.randomUUID().toString())
+            .userId(USER_UUID)
+            .build();
+        jobListResponse = matchingClient.findMatchedJobs(AuthConstant.AUTHORIZATION_AUTHENTICATED_USER, emptyResume);
+        assertTrue(jobListResponse.isSuccess());
+        assertThat(jobListResponse.getJobList().getJobs(), is(Lists.emptyList()));
+
+        emptyResume.setLocation(location);
+        emptyResume.setKeywords(Arrays.asList(KEYWORD));
+        emptyResume.setMajors(Arrays.asList(MAJOR));
+        jobListResponse = matchingClient.findMatchedJobs(AuthConstant.AUTHORIZATION_AUTHENTICATED_USER, emptyResume);
+        assertTrue(jobListResponse.isSuccess());
+        assertThat(jobListResponse.getJobList().getJobs(), is(Arrays.asList(this.job)));
     }
 
     @Test

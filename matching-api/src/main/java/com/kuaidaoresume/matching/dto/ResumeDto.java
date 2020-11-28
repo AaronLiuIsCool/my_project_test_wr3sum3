@@ -26,7 +26,6 @@ public class ResumeDto {
 
     private String resumeName;
 
-    @NotNull
     private LocationDto location;
 
     private Collection<String> majors;

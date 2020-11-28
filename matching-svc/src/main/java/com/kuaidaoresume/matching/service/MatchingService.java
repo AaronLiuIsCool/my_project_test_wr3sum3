@@ -151,12 +151,16 @@ public class MatchingService {
             matchedJobs = matchedResume.getMatchedJobs();
         } else {
             LocationDto resumeLocation = resumeDto.getLocation();
-            Collection<String> majors = resumeDto.getMajors() != null ? resumeDto.getMajors() : Lists.newArrayList();
-            Collection<String> keywords = resumeDto.getKeywords() != null ? resumeDto.getKeywords() : Lists.newArrayList();
-            matchedJobs = jobRepository.findMatchedJobs(
-                resumeLocation.getCountry(), resumeLocation.getCity(), majors, keywords);
+            if (Objects.nonNull(resumeLocation)) {
+                Collection<String> majors = resumeDto.getMajors() != null ? resumeDto.getMajors() : Lists.newArrayList();
+                Collection<String> keywords = resumeDto.getKeywords() != null ? resumeDto.getKeywords() : Lists.newArrayList();
+                matchedJobs = jobRepository.findMatchedJobs(
+                        resumeLocation.getCountry(), resumeLocation.getCity(), majors, keywords);
 
-            saveMatchedResumeAsync(matchedResume, matchedJobs);
+                saveMatchedResumeAsync(matchedResume, matchedJobs);
+            } else {
+                matchedJobs = Lists.newArrayList();
+            }
         }
         return matchedJobs.stream().map(job ->
             modelMapper.map(job, JobDto.class)).collect(Collectors.toList());

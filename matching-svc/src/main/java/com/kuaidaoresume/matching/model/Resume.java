@@ -37,7 +37,6 @@ public class Resume {
 
     private String resumeName;
 
-    @NotNull
     private Location location;
 
     private Collection<String> majors;
