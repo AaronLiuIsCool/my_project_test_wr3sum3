@@ -1,7 +1,7 @@
 import React from 'react';
 import {RepeatBlock} from './RepeatBlock';
 
-const renderFeedback = (good = '', bad) => {
+const renderFeedback = (good = '', bad = '') => {
   return (
     <>
       {good}
@@ -57,12 +57,8 @@ const renderKeywordsPositiveFeedback = (source, type, messages) => {
   return (
     <div className="action-item pass">
       <div className="action-details">
-        <h4>
-          {messages.keywordsMetHeader}
-        </h4>
-        <p className="full-width">
-          {messages.keywordsMetMessage}
-        </p>
+        <h4>{messages.keywordsMetHeader}</h4>
+        <p className="full-width">{messages.keywordsMetMessage}</p>
         {aspect.map((item, index) => (
           <RepeatBlock
             positive={true}
@@ -128,12 +124,8 @@ const renderQuantifyPositiveFeedback = (source, type, messages) => {
   return (
     <div className="action-item pass">
       <div className="action-details">
-        <h4>
-          {messages.quantifyMetHeader}
-        </h4>
-        <p className="full-width">
-          {messages.quantifyMetMessage}
-        </p>
+        <h4>{messages.quantifyMetHeader}</h4>
+        <p className="full-width">{messages.quantifyMetMessage}</p>
         {aspect.map((item, index) => (
           <RepeatBlock
             positive={true}
@@ -208,18 +200,16 @@ export const ExpBlocks = ({
           </h3>
 
           {/* 专业术语 */}
-          {
-            info.keywords.length > 0 &&
-              renderFeedback(
-                renderKeywordsPositiveFeedback(info.keywords, type, messages),
-                renderKeywordsNegativeFeedback(
-                  info.keywords,
-                  handleSpecialNavigate,
-                  type,
-                  messages,
-                ),
-              )
-          }
+          {info.keywords.length > 0 &&
+            renderFeedback(
+              renderKeywordsPositiveFeedback(info.keywords, type, messages),
+              renderKeywordsNegativeFeedback(
+                info.keywords,
+                handleSpecialNavigate,
+                type,
+                messages,
+              ),
+            )}
           {/* 数量术语 */}
           {info.quantify.length > 0 &&
             renderFeedback(
@@ -230,8 +220,7 @@ export const ExpBlocks = ({
                 type,
                 messages,
               ),
-            )
-          }
+            )}
           {/* 公司质量 */}
           {info.company.length > 0 &&
             info.company.map((item, index) => (

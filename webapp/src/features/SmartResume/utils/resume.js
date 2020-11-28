@@ -57,12 +57,6 @@ export function reconstruct(flattenResume) {
   return resume;
 }
 
-/**
- * @param
- */
-export const getRatingBlocks = () => {
-  
-}
 
 export const generateBasicFormRatingBlock = (name, type,  message, selector, noNav = false) => {
   return {
@@ -153,10 +147,6 @@ const prepareExpArrMessage = (messages, section, length) => {
       return messages[`${section}LengthOverTwo`]
   }
 };
-
-export const prepareKeywordsArr = () => {
-  // Positive and Negative feedback generation
-}
 
 // helper function of generateSuggestions
 export const prepareExpArr = (section, messages, expLength) => {

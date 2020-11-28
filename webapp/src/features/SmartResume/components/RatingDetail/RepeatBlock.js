@@ -7,7 +7,7 @@ export const RepeatBlock = ({positive = false, feedback, item, handleSpecialNavi
         <p>{item.position}</p>
         <h5>{item.company}</h5>
         {positive && <p className="full-width">
-          <span style={{fontWeight: 'bold'}}>关键字：</span>
+          <span style={{fontWeight: 'bold'}}>{messages.keyword}</span>
           {feedback.map((e, index) => <span key={index} className="keywords">{e}</span>)}
         </p>}
       </div>
