@@ -57,75 +57,82 @@ export function reconstruct(flattenResume) {
   return resume;
 }
 
+
+export const generateBasicFormRatingBlock = (name, type,  message, selector, noNav = false) => {
+  return {
+    section: 'basicInfo',
+    name,
+    type,
+    message,
+    selector,
+    noNav,
+  };
+};
+
 export const generateBasicFormRating = ({ avatar, linkedin, weblink, messages }, completed) => {
     const basicArr = []
-    
-    if(!completed) {
-      const obj = {
-        section: 'basicInfo',
-        name: messages.basicInfo,
-        type: 'info-complete',
-        message: messages.basicInfoNotCompleted,
-        selector: '#basic-linkedin',
-        noNav: true
-      };
-      basicArr.push(obj);
-      return basicArr
+    if (!completed) {
+      basicArr.push(
+        generateBasicFormRatingBlock(
+          messages.basicInfo,
+          'info-complete',
+          messages.basicInfoNotCompleted,
+          '#basic-linkedin',
+          true,
+        ),
+      );
+      return basicArr;
     }
-    
     if (linkedin === '') {
-        const obj = {
-            section: 'basicInfo',
-            name: messages.linkedinAccount,
-            type: 'info-complete',
-            message: messages.linkedinMessage,
-            selector: '#basic-linkedin'
-        };
-        basicArr.push(obj);
+      basicArr.push(
+        generateBasicFormRatingBlock(
+          messages.linkedinAccount,
+          'info-complete',
+          messages.linkedinMessage,
+          '#basic-linkedin',
+        ),
+      );
     }
     if (weblink === '') {
-        const obj = {
-            section: 'basicInfo',
-            name: messages.personalWebsite,
-            type: 'info-complete',
-            message: messages.websiteMessage,
-            selector: '#basic-weblink'
-        };
-        basicArr.push(obj);
+      basicArr.push(
+        generateBasicFormRatingBlock(
+          messages.personalWebsite,
+          'info-complete',
+          messages.websiteMessage,
+          '#basic-weblink',
+        ),
+      );
     }
     if(avatar === '') {
-        const obj = {
-            section: 'basicInfo',
-            name: messages.uploadPhoto,
-            type: 'layout',
-            message: messages.photoMessage,
-            selector: '#upload-photo'
-        }
-        basicArr.push(obj)
-        
+      basicArr.push(
+        generateBasicFormRatingBlock(
+          messages.uploadPhoto,
+          'layout',
+          messages.photoMessage,
+          '#upload-photo',
+        ),
+      );
     }
     return basicArr
 }
 
 export const generateLayoutRating = (result, messages) => {
-    const layoutArr = []
-    
-  const { page, y } = result[result.length - 1];
+  const layoutArr = [];
+
+  const {page, y} = result[result.length - 1];
   if (page === 1) {
   } else if (page > 1 && y > 39) {
     layoutArr.push({
       section: 'basicInfo',
       prefix: messages.resume,
       name: messages.notAlign,
-      type: "layout",
+      type: 'layout',
       message: messages.layoutMessage,
       selector: undefined,
-      noNav: true
+      noNav: true,
     });
   }
-  
-  return layoutArr
-  
+  return layoutArr;
 };
 
 const prepareExpArrMessage = (messages, section, length) => {
@@ -141,33 +148,113 @@ const prepareExpArrMessage = (messages, section, length) => {
   }
 };
 
-export const generateSuggestions = (experience=[], section, eventType, sorted, messages) => {
+// helper function of generateSuggestions
+export const prepareExpArr = (section, messages, expLength) => {
+  return [
+    {
+      name:
+        section === 'workXp'
+          ? messages.workExp
+          : section === 'otherXp'
+          ? messages.otherExp
+          : messages.projectExp,
+      type: 'exp-value',
+      green: expLength > 1,
+      message: prepareExpArrMessage(messages, section, expLength),
+    },
+  ];
+};
+
+// helper function of generateSuggestions
+export const prepareNotSortedArr = (section, messages) => {
+  return {
+    name: messages.sorted,
+    type: 'layout',
+    section,
+    message: messages.sortedMessage,
+  };
+};
+
+export const prepareCompanyArr = (section, rating, orgnization, messages) => {
+  return {
+    type: 'exp-value',
+    message: `${messages.employedAt1}${orgnization}${messages.employedAt2}${
+      rating === 'GREAT' ? messages.employedAt3 : messages.employedAt4
+    }${messages.employedAt5}`,
+    // TODO: Restructure this with new wording in the future ^
+    section,
+    selector: '',
+    name:
+      rating === 'GREAT'
+        ? messages.nationalInfluence
+        : messages.globalInfluence,
+  };
+};
+
+export const prepareNegativeExpressionArr = (
+  eventType,
+  content,
+  section,
+  companyName,
+  position,
+  index,
+  aspect,
+  expression,
+) => {
+  return {
+    eventType,
+    content,
+    name: '',
+    type: 'expression',
+    section,
+    company: companyName,
+    position,
+    index,
+    [aspect]: expression,
+  };
+};
+
+const preparePositiveExpressionArr = (
+  eventType,
+  content,
+  section,
+  companyName,
+  position,
+  index,
+  aspect,
+  expression,
+  messages,
+) => {
+  const feedback = expression.flat();
+  return {
+    eventType,
+    content,
+    name: '',
+    type: 'expression',
+    section,
+    company: companyName,
+    position,
+    index,
+    feedback,
+    [aspect]: expression,
+  }
+}
+
+export const generateSuggestions = (experience=[], section, eventType, sorted, messages) => {  
     const keywordsArr = [];
     const quantifyArr = [];
     const companyArr = [];
     const sortedArr = [];
-    const len = experience.length
-    const expArr = [{
-        name: section === 'workXp' ? messages.workExp : section === 'otherXp' ? messages.otherExp : messages.projectExp,
-        type: 'exp-value',
-        green: len > 1,
-        message: prepareExpArrMessage(messages, section, len)
-            // len > 2
-            //     ? messages.expLengthOverTwo.replace('{exp}', messages.expReplacement[section])
-            //     : len > 1
-            //     ? messages.expLengthTwo.replace('{exp}', messages.expReplacement[section])
-            //     : len > 0
-            //     ? messages.expLengthOne.replace('{exp}', messages.expReplacement[section])
-            //     : section === "projectXp" ?  messages.expLengthZeroProject : section === "workXp" ? messages.expLengthZero.replace('{exp}', messages.expReplacement[section]) : messages.expLengthZeroOther
-    }];
-    if(!sorted) {
-       sortedArr.push({
-           name: messages.sorted,
-           type: 'layout',
-           section,
-           message: messages.sortedMessage
-       }) 
+    const expLength = experience.length;
+    
+    // generate message based on number of experiences user entered
+    const expArr = prepareExpArr(section, messages, expLength);
+    
+    // generate sorted message, if any
+    if (!sorted) {
+      sortedArr.push(prepareNotSortedArr(section, messages));
     }
+    
     experience.forEach((exp, index) => {
         const ratingDetail = exp.bullets || [];
         const position = exp.role;
@@ -175,60 +262,80 @@ export const generateSuggestions = (experience=[], section, eventType, sorted, m
         const content = ratingDetail.map((item) => item.bullet);
         const keywords = ratingDetail.map((item) => item.keywords);
         const quantify = ratingDetail.map((item) => item.numericWords);
+        
         if(exp.rating !== 'MEDIOCRE') {
-            const companyObj = {
-                type: 'exp-value',
-                message: `${messages.employedAt1}${exp.orgnization}${messages.employedAt2}${
-                    exp.rating === 'GREAT' ? messages.employedAt3 : messages.employedAt4
-                }${messages.employedAt5}`,
-                section,
-                selector: '',
-                name:
-                    exp.rating === 'GREAT'
-                        ? messages.nationalInfluence
-                        : messages.globalInfluence
-            };
-            companyArr.push(companyObj);
+            companyArr.push(
+              prepareCompanyArr(section, exp.rating, exp.organization, messages)
+            );
         }
         
         
         const keywordsSuggestions =
             keywords.filter((e) => e.length > 0).length / keywords.length <
             0.5;
+
         const quantifySuggestions =
             quantify.filter((e) => e.length > 0).length / quantify.length <
             0.5;
 
         if (keywordsSuggestions) {
-            keywordsArr.push({
-                eventType,
-                content,
-                name: '',
-                type: 'expression',
-                section,
-                company: companyName,
-                position,
-                index,
-                keywords
-            });
+          keywordsArr.push(
+            prepareNegativeExpressionArr(
+              eventType,
+              content,
+              section,
+              companyName,
+              position,
+              index,
+              'keywords',
+              keywords,
+            ),
+          );
         } else {
+          keywordsArr.push(
+            preparePositiveExpressionArr(
+              eventType,
+              content,
+              section,
+              companyName,
+              position,
+              index,
+              'keywords',
+              keywords,
+              messages,
+            ),
+          );
         }
         if (quantifySuggestions) {
-            quantifyArr.push({
-                eventType,
-                content,
-                name: '',
-                type: 'expression',
-                section,
-                position,
-                company: companyName,
-                index,
-                quantify
-            });
+          quantifyArr.push(
+            prepareNegativeExpressionArr(
+              eventType,
+              content,
+              section,
+              companyName,
+              position,
+              index,
+              'quantify',
+              quantify,
+            ),
+          );
         } else {
+          quantifyArr.push(
+            preparePositiveExpressionArr(
+              eventType,
+              content,
+              section,
+              companyName,
+              position,
+              index,
+              'quantify',
+              quantify,
+              messages,
+            ),
+          );
         }
     });
-
+    
     return {
         companyArr,
         expArr,
@@ -246,8 +353,8 @@ export const generateEducationRatings = (educations, schools, messages, complete
       name: messages.education,
       type: "info-complete",
       message: messages.EduInfoNotCompleted,
-      noNav: true
-      // selector: `.edu-${index} #education-highest-award`,
+      noNav: true,
+      selector: '',
     };
     resArr.push(obj);
     return resArr
@@ -292,7 +399,7 @@ export const generateEducationRating = (
     educationArr.push(obj);
   }
   if (gpa !== "") {
-    const gpaNum = gpa - 0;
+    const gpaNum = Number(gpa);
     const gpaObj = {
       section: "education",
       name: messages.graduateGPA,
