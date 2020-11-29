@@ -10,6 +10,7 @@ import Loader from './components/Loader';
 import * as serviceWorker from './serviceWorker';
 import { GAInitialize } from './utils/GATracking';
 
+import 'utils/sentry';
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 import 'bootstrap/dist/css/bootstrap.css';

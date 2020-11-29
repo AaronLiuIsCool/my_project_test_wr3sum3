@@ -1,4 +1,5 @@
 import { getLogger } from './index';
+import * as Sentry from "@sentry/browser";
 
 describe("logger tests", () => {
 
@@ -6,7 +7,7 @@ describe("logger tests", () => {
     global.console.info = jest.fn();
     global.console.log = jest.fn();
     global.console.warn = jest.fn();
-    global.console.error = jest.fn();
+    Sentry.captureException = jest.fn();
   });
 
   afterEach(() => {
@@ -28,8 +29,7 @@ describe("logger tests", () => {
     expect(global.console.warn.mock.calls[0]).toEqual(['[Test]', 'this is a warn']);
 
     logger.error("this is a error");
-    expect(global.console.error).toHaveBeenCalledTimes(1);
-    expect(global.console.error.mock.calls[0]).toEqual(['[Test]', 'this is a error']);
+    expect(Sentry.captureException).toHaveBeenCalledTimes(1);
   });
 });
 
