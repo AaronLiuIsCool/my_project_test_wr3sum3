@@ -1,26 +1,5 @@
 package com.kuaidaoresume.account.controller;
 
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringUtils;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.cloud.netflix.ribbon.RibbonAutoConfiguration;
-import org.springframework.cloud.openfeign.EnableFeignClients;
-import org.springframework.cloud.openfeign.FeignAutoConfiguration;
-import org.springframework.cloud.openfeign.ribbon.FeignRibbonClientAutoConfiguration;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.Profile;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
 import com.kuaidaoresume.account.TestConfig;
 import com.kuaidaoresume.account.client.AccountClient;
 import com.kuaidaoresume.account.dto.*;
@@ -33,14 +12,26 @@ import com.kuaidaoresume.common.auth.AuthConstant;
 import com.kuaidaoresume.common.env.EnvConfig;
 import com.kuaidaoresume.mail.client.MailClient;
 import com.kuaidaoresume.mail.dto.EmailRequest;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.time.Instant;
+import feign.FeignException;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
@@ -67,6 +58,9 @@ public class AccountControllerTest {
     AccountSecretRepo accountSecretRepo;
 
     private Account newAccount;
+
+    @Rule
+    public ExpectedException exceptionRule = ExpectedException.none();
 
     @Before
     public void setUp() {
@@ -115,6 +109,7 @@ public class AccountControllerTest {
         assertThat(foundAccountDto.isConfirmedAndActive()).isTrue();
 
         // account not found
+        exceptionRule.expect(FeignException.class);
         emailConfirmation = EmailConfirmation.builder()
                 .userId("not_existing_id")
                 .email(changedEmail)

@@ -3,10 +3,9 @@ package com.kuaidaoresume.matching.service;
 import com.github.structlog4j.ILogger;
 import com.github.structlog4j.SLoggerFactory;
 import com.google.common.collect.Lists;
-import com.kuaidaoresume.common.api.ResultCode;
 import com.kuaidaoresume.common.auditlog.LogEntry;
 import com.kuaidaoresume.common.auth.AuthContext;
-import com.kuaidaoresume.common.error.ServiceException;
+import com.kuaidaoresume.common.error.ResourceNotFoundException;
 import com.kuaidaoresume.matching.dto.*;
 import com.kuaidaoresume.matching.model.*;
 import com.kuaidaoresume.matching.repo.*;
@@ -242,18 +241,18 @@ public class MatchingService {
     private Job getJobByUuid(String jobUuid) {
         return jobRepository.findByJobUuid(jobUuid).orElseThrow(() -> {
             String errorMessage = String.format("Job Not Found with uuid %s ", jobUuid);
-            ServiceException serviceException = new ServiceException(ResultCode.NOT_FOUND, errorMessage);
-            serviceHelper.handleError(logger, serviceException, errorMessage);
-            return serviceException;
+            ResourceNotFoundException resourceNotFoundException = new ResourceNotFoundException(errorMessage);
+            serviceHelper.handleError(logger, resourceNotFoundException, errorMessage);
+            return resourceNotFoundException;
         });
     }
 
     private Resume getResumeByUuid(String resumeUuid) {
         return resumeRepository.findByResumeUuid(resumeUuid).orElseThrow(() -> {
             String errorMessage = String.format("Resume Not Found with uuid %s ", resumeUuid);
-            ServiceException serviceException = new ServiceException(ResultCode.NOT_FOUND, errorMessage);
-            serviceHelper.handleError(logger, serviceException, errorMessage);
-            return serviceException;
+            ResourceNotFoundException resourceNotFoundException = new ResourceNotFoundException(errorMessage);
+            serviceHelper.handleError(logger, resourceNotFoundException, errorMessage);
+            return resourceNotFoundException;
         });
     }
 

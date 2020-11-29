@@ -2,9 +2,9 @@ package com.kuaidaoresume.job.service;
 
 import com.github.structlog4j.ILogger;
 import com.github.structlog4j.SLoggerFactory;
-import com.kuaidaoresume.common.api.ResultCode;
 import com.kuaidaoresume.common.auditlog.LogEntry;
 import com.kuaidaoresume.common.auth.AuthContext;
+import com.kuaidaoresume.common.error.ResourceNotFoundException;
 import com.kuaidaoresume.common.error.ServiceException;
 import com.kuaidaoresume.job.dto.SuggestionDto;
 import com.kuaidaoresume.job.dto.SuggestionListDto;
@@ -100,8 +100,7 @@ public class SuggestionServiceImpl implements SuggestionService {
         Suggestion existingSuggestion = suggestionRepository
                 .findSuggestionById(newSuggestion.getId());
         if (existingSuggestion == null) {
-            throw new ServiceException(ResultCode.NOT_FOUND,
-                    String.format("Suggestion with id %s not found", newSuggestion.getId()));
+            throw new ResourceNotFoundException(String.format("Suggestion with id %s not found", newSuggestion.getId()));
         }
         entityManager.detach(existingSuggestion);
 

@@ -2,7 +2,12 @@ package com.kuaidaoresume.account.service.helper;
 
 import com.github.structlog4j.ILogger;
 import com.github.structlog4j.SLoggerFactory;
-import com.google.common.collect.Maps;
+import com.kuaidaoresume.account.config.AppConfig;
+import com.kuaidaoresume.account.model.Account;
+import com.kuaidaoresume.account.repo.AccountRepo;
+import com.kuaidaoresume.common.env.EnvConfig;
+import com.kuaidaoresume.common.error.ResourceNotFoundException;
+import com.kuaidaoresume.common.error.ServiceException;
 import io.intercom.api.Avatar;
 import io.intercom.api.CustomAttribute;
 import io.intercom.api.Event;
@@ -12,19 +17,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-import com.kuaidaoresume.account.config.AppConfig;
-import com.kuaidaoresume.account.model.Account;
-import com.kuaidaoresume.account.repo.AccountRepo;
-//import com.kuaidaoresume.bot.dto.GreetingRequest;
-import com.kuaidaoresume.common.api.BaseResponse;
-import com.kuaidaoresume.common.api.ResultCode;
-import com.kuaidaoresume.common.auth.AuthConstant;
-import com.kuaidaoresume.common.env.EnvConfig;
-import com.kuaidaoresume.common.error.ServiceException;
 
 import java.time.Instant;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @RequiredArgsConstructor
@@ -47,7 +41,7 @@ public class ServiceHelper {
 
         Account account = accountRepo.findAccountById(userId);
         if (account == null) {
-            throw new ServiceException(ResultCode.NOT_FOUND, String.format("User with id %s not found", userId));
+            throw new ResourceNotFoundException(String.format("User with id %s not found", userId));
         }
         //if (StringUtils.isEmpty(account.getPhoneNumber()) && StringUtils.isEmpty(account.getEmail())) { not for phase I TODO:Woody
         if (StringUtils.isEmpty(account.getEmail())) {

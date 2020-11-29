@@ -3,6 +3,7 @@ package com.kuaidaoresume.common.error;
 import com.github.structlog4j.ILogger;
 import com.github.structlog4j.SLoggerFactory;
 import org.hibernate.validator.internal.engine.path.PathImpl;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
@@ -28,6 +29,7 @@ public class GlobalExceptionTranslator {
     static final ILogger logger = SLoggerFactory.getLogger(GlobalExceptionTranslator.class);
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public BaseResponse handleError(MissingServletRequestParameterException e) {
         logger.warn("Missing Request Parameter", e);
         String message = String.format("Missing Request Parameter: %s", e.getParameterName());
@@ -39,6 +41,7 @@ public class GlobalExceptionTranslator {
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public BaseResponse handleError(MethodArgumentTypeMismatchException e) {
         logger.warn("Method Argument Type Mismatch", e);
         String message = String.format("Method Argument Type Mismatch: %s", e.getName());
@@ -50,6 +53,7 @@ public class GlobalExceptionTranslator {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public BaseResponse handleError(MethodArgumentNotValidException e) {
         logger.warn("Method Argument Not Valid", e);
         BindingResult result = e.getBindingResult();
@@ -63,6 +67,7 @@ public class GlobalExceptionTranslator {
     }
 
     @ExceptionHandler(BindException.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public BaseResponse handleError(BindException e) {
         logger.warn("Bind Exception", e);
         FieldError error = e.getFieldError();
@@ -75,6 +80,7 @@ public class GlobalExceptionTranslator {
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public BaseResponse handleError(ConstraintViolationException e) {
         logger.warn("Constraint Violation", e);
         Set<ConstraintViolation<?>> violations = e.getConstraintViolations();
@@ -89,6 +95,7 @@ public class GlobalExceptionTranslator {
     }
 
     @ExceptionHandler(NoHandlerFoundException.class)
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
     public BaseResponse handleError(NoHandlerFoundException e) {
         logger.error("404 Not Found", e);
         return BaseResponse
@@ -98,7 +105,19 @@ public class GlobalExceptionTranslator {
                 .build();
     }
 
+    @ExceptionHandler(ResourceNotFoundException.class)
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    public BaseResponse handleError(ResourceNotFoundException e) {
+        logger.error("404 Not Found", e);
+        return BaseResponse
+                .builder()
+                .code(ResultCode.NOT_FOUND)
+                .message(e.getMessage())
+                .build();
+    }
+
     @ExceptionHandler(HttpMessageNotReadableException.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public BaseResponse handleError(HttpMessageNotReadableException e) {
         logger.error("Message Not Readable", e);
         return BaseResponse
@@ -109,6 +128,7 @@ public class GlobalExceptionTranslator {
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    @ResponseStatus(value = HttpStatus.METHOD_NOT_ALLOWED)
     public BaseResponse handleError(HttpRequestMethodNotSupportedException e) {
         logger.error("Request Method Not Supported", e);
         return BaseResponse
@@ -119,6 +139,7 @@ public class GlobalExceptionTranslator {
     }
 
     @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
+    @ResponseStatus(value = HttpStatus.UNSUPPORTED_MEDIA_TYPE)
     public BaseResponse handleError(HttpMediaTypeNotSupportedException e) {
         logger.error("Media Type Not Supported", e);
         return BaseResponse
@@ -129,6 +150,7 @@ public class GlobalExceptionTranslator {
     }
 
     @ExceptionHandler(ServiceException.class)
+    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     public BaseResponse handleError(ServiceException e) {
         logger.error("Service Exception", e);
         return BaseResponse
@@ -139,6 +161,7 @@ public class GlobalExceptionTranslator {
     }
 
     @ExceptionHandler(PermissionDeniedException.class)
+    @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
     public BaseResponse handleError(PermissionDeniedException e) {
         logger.error("Permission Denied", e);
         return BaseResponse
@@ -149,6 +172,7 @@ public class GlobalExceptionTranslator {
     }
 
     @ExceptionHandler(Throwable.class)
+    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     public BaseResponse handleError(Throwable e) {
         logger.error("Internal Server Error", e);
         return BaseResponse

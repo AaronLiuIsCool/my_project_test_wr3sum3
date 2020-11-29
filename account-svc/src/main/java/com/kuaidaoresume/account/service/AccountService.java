@@ -6,6 +6,7 @@ import com.kuaidaoresume.account.dto.WechatAccountDto;
 import com.kuaidaoresume.account.dto.ResumeDto;
 import com.kuaidaoresume.account.model.Resume;
 import com.kuaidaoresume.account.repo.ResumeRepo;
+import com.kuaidaoresume.common.error.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -233,8 +234,7 @@ public class AccountService {
 
         Account existingAccount = accountRepo.findAccountById(newAccount.getId());
         if (existingAccount == null) {
-            throw new ServiceException(ResultCode.NOT_FOUND,
-                    String.format("User with id %s not found", newAccount.getId()));
+            throw new ResourceNotFoundException(String.format("User with id %s not found", newAccount.getId()));
         }
         entityManager.detach(existingAccount);
 
@@ -336,7 +336,7 @@ public class AccountService {
 
         Account account = accountRepo.findAccountByEmail(email);
         if(account == null) {
-            throw new ServiceException(ResultCode.NOT_FOUND, "No user with that email exists");
+            throw new ResourceNotFoundException("No user with that email exists");
         }
 
         //String subject = "Reset your Smartresume password";
@@ -362,7 +362,7 @@ public class AccountService {
     public void requestEmailChange(String userId, String email) {
         Account account = accountRepo.findAccountById(userId);
         if (account == null) {
-            throw new ServiceException(ResultCode.NOT_FOUND, String.format("User with id %s not found", userId));
+            throw new ResourceNotFoundException(String.format("User with id %s not found", userId));
         }
 
         String subject = "Confirm Your New Email Address";
@@ -376,7 +376,7 @@ public class AccountService {
 
         int affected = accountRepo.updateEmailAndActivateById(email, userId);
         if (affected != 1) {
-            throw new ServiceException(ResultCode.NOT_FOUND, "user with specified id not found");
+            throw new ResourceNotFoundException("user with specified id not found");
         }
 
         serviceHelper.syncUserAsync(userId);
@@ -399,7 +399,7 @@ public class AccountService {
 
         int affected = accountSecretRepo.updatePasswordHashById(pwHash, userId);
         if (affected != 1) {
-            throw new ServiceException(ResultCode.NOT_FOUND, "user with specified id not found");
+            throw new ResourceNotFoundException("user with specified id not found");
         }
 
         LogEntry auditLog = LogEntry.builder()
@@ -417,8 +417,7 @@ public class AccountService {
     public AccountDto verifyPassword(String email, String password) {
         AccountSecret accountSecret = accountSecretRepo.findAccountSecretByEmail(email);
         if (accountSecret == null) {
-            throw new ServiceException(ResultCode.NOT_FOUND,
-                    "account with specified email not found");
+            throw new ResourceNotFoundException("account with specified email not found");
         }
 
         if (!accountSecret.isConfirmedAndActive()) {
@@ -531,9 +530,9 @@ public class AccountService {
     public void updateResume(String resumeId, ResumeDto resumeDto) {
         Resume toUpdate = resumeRepo.findById(resumeId).orElseThrow(() -> {
             String errorMessage = String.format("Resume with id %s not found", resumeId);
-            ServiceException serviceException = new ServiceException(ResultCode.NOT_FOUND, errorMessage);
-            serviceHelper.handleException(logger, serviceException, errorMessage);
-            return serviceException;
+            ResourceNotFoundException resourceNotFoundException = new ResourceNotFoundException(errorMessage);
+            serviceHelper.handleException(logger, resourceNotFoundException, errorMessage);
+            return resourceNotFoundException;
         });
 
         String alias = resumeDto.getAlias();

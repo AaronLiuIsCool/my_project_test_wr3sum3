@@ -304,11 +304,14 @@ public class ResumeServiceImpl implements ResumeService {
         extractKeywordsFromExperience(keywords, resume.getProjectExperiences());
         extractKeywordsFromExperience(keywords, resume.getVolunteerExperiences());
         BasicInfo basicInfo = resume.getBasicInfo();
-        LocationDto location = LocationDto.builder()
-            .country(basicInfo.getCountry())
-            .state(basicInfo.getProvince())
-            .city(basicInfo.getCity())
-            .build();
+        LocationDto location = null;
+        if (Objects.nonNull(basicInfo)) {
+            location = LocationDto.builder()
+                    .country(basicInfo.getCountry())
+                    .state(basicInfo.getProvince())
+                    .city(basicInfo.getCity())
+                    .build();
+        }
         return ResumeMatchingDto.builder()
             .location(location)
             .majors(majors)
