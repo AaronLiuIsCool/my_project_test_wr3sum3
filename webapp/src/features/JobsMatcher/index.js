@@ -17,7 +17,7 @@ const LazyLoadJobMatcher = ({ location }) => {
 
   return (
     <Suspense fallback={<LoadFallbackComponent />}>
-      <JobMatcher resume={resumeId} page={page} />
+      <JobMatcher resumeId={resumeId} page={page} />
     </Suspense>
   );
 };

@@ -60,7 +60,7 @@ function getCity(resumeDto = {}) {
     return city !== 'undefined' ? city : '';
 }
 
-const JobMatcher = ({ resume }) => {
+const JobMatcher = ({ resumeId }) => {
     const language = useSelector(selectLanguage);
     const messages = language === 'zh' ? zh : en;
 
@@ -94,7 +94,9 @@ const JobMatcher = ({ resume }) => {
         setCountry(country);
         setCity(city);
 
-        search(query, country, city, 0);
+        if (query){
+            search(query, country, city, 0);
+        }
     };
 
     const handlePageChange = (pageNumber) => {
@@ -104,15 +106,15 @@ const JobMatcher = ({ resume }) => {
 
 
     useEffect(() => {
-        getResumeMatchingInfo(resume).then((resumeDto) => {
-            matchingServices.setContext({...resumeDto, userId, resumeUuid: resume});
+        getResumeMatchingInfo(resumeId).then((resumeDto) => {
+            matchingServices.setContext({...resumeDto, userId, resumeUuid: resumeId});
             const query = getQuery(resumeDto);
             const country = getCountry(resumeDto);
             const city = getCity(resumeDto);
             handleSearch(query, country, city);
             setReady(true);
         });
-        matchingServices.findBookMarkJobs(resume).then((bookmarkedJobs) => {
+        matchingServices.findBookMarkJobs(resumeId).then((bookmarkedJobs) => {
             if (bookmarkedJobs?.success) {
                 const jobs = bookmarkedJobs?.jobList?.jobs?.map(job => job.jobUuid) || [];
                 dispatch(setBookmarkedList(jobs));
@@ -128,7 +130,7 @@ const JobMatcher = ({ resume }) => {
         <I8nContext.Provider value={messages}>
             <div className="features job-matcher">
                 <SearchHeader onSearch={handleSearch} initial={{query, country, city}} />
-                <Jobs data={searchResults} pageNumber={resultsPageNumber} resumeId={resume}
+                <Jobs data={searchResults} pageNumber={resultsPageNumber} resumeId={resumeId}
                     onPageChange={handlePageChange} modalOpenHandler={setModalOpened} selectedJob={selectedJob} setSelectedJob={setSelectedJob}/>
                 {modalOpened && <JobRefinementModal data={searchResults} modalOpenHandler={setModalOpened} selectedJob={selectedJob}/>}
             </div>
@@ -137,7 +139,7 @@ const JobMatcher = ({ resume }) => {
 };
 
 JobMatcher.propTypes = {
-    resume: PropTypes.string,
+    resumeId: PropTypes.string,
     page: PropTypes.number
 };
 
