@@ -285,7 +285,7 @@ const ProjectForm = ({data, index, isLast = false, messages, projectData}) => {
                 id="project-enter-date"
                 placeholder={messages.yymmdd}
                 value={data.projectStartDate}
-                monthFormat={messages.monthFormat}
+                
                 displayFormat={messages.dateDisplayFormat}
                 onDateChange={handleProjectStartDateChange}
                 feedbackMessage={messages.entryIsInvalid}
@@ -300,7 +300,7 @@ const ProjectForm = ({data, index, isLast = false, messages, projectData}) => {
                   id="project-graduate-date"
                   placeholder={messages.yymmdd}
                   value={data.projectEndDate}
-                  monthFormat={messages.monthFormat}
+                  
                   displayFormat={messages.dateDisplayFormat}
                   onDateChange={handleProjectEndDateChange}
                   feedbackMessage={messages.entryIsInvalid}

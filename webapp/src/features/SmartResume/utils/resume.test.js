@@ -141,7 +141,6 @@ const messages = {
   issueDate: '颁发时间/获得时间',
   expireDate: '有效期至',
   yymmdd: '年/月/日期',
-  monthFormat: 'YYYY[年]MMMM',
   dateDisplayFormat: 'YYYY/MM/DD',
   clickForDetails: '点击查看强度详情',
   score_A: '优秀',

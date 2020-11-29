@@ -95,9 +95,8 @@
   "validForever": "永久有效？",
   "issueDate": "颁发时间/获得时间",
   "expireDate": "有效期至",
-  "yymmdd": "年/月/日期",
-  "monthFormat": "YYYY[年]MMMM",
-  "dateDisplayFormat": "YYYY/MM/DD",
+  "yymmdd": "年/月",
+  "dateDisplayFormat": "YYYY/MM",
   "clickForDetails": "点击查看强度详情",
   "score_A": "优秀",
   "score_B": "良好",
@@ -214,6 +213,64 @@
     "workXp": "工作实习",
     "projectXp": "项目",
     "otherXp": "志愿者"
+  },
+  "datePicker": {
+    "lang": {
+      "placeholder": "请选择日期",
+      "yearPlaceholder": "请选择年份",
+      "quarterPlaceholder": "请选择季度",
+      "monthPlaceholder": "请选择月份",
+      "weekPlaceholder": "请选择周",
+      "rangePlaceholder": [
+        "开始日期",
+        "结束日期"
+      ],
+      "rangeYearPlaceholder": [
+        "开始年份",
+        "结束年份"
+      ],
+      "rangeMonthPlaceholder": [
+        "开始月份",
+        "结束月份"
+      ],
+      "rangeWeekPlaceholder": [
+        "开始周",
+        "结束周"
+      ],
+      "locale": "zh_CN",
+      "today": "今天",
+      "now": "此刻",
+      "backToToday": "返回今天",
+      "ok": "确 定",
+      "timeSelect": "选择时间",
+      "dateSelect": "选择日期",
+      "weekSelect": "选择周",
+      "clear": "清除",
+      "month": "月",
+      "year": "年",
+      "previousMonth": "上个月 (翻页上键)",
+      "nextMonth": "下个月 (翻页下键)",
+      "monthSelect": "选择月份",
+      "yearSelect": "选择年份",
+      "decadeSelect": "选择年代",
+      "yearFormat": "YYYY年",
+      "dayFormat": "D日",
+      "dateFormat": "YYYY年M月D日",
+      "dateTimeFormat": "YYYY年M月D日 HH时mm分ss秒",
+      "previousYear": "上一年 (Control键加左方向键)",
+      "nextYear": "下一年 (Control键加右方向键)",
+      "previousDecade": "上一年代",
+      "nextDecade": "下一年代",
+      "previousCentury": "上一世纪",
+      "nextCentury": "下一世纪"
+    },
+    "timePickerLocale": {
+      "placeholder": "请选择时间",
+      "rangePlaceholder": [
+        "开始时间",
+        "结束时间"
+      ]
+    }
   },
   "quantifyMetMessage": "您以下经历描述，对经历过程、结果，进行了量化表达，可以可以！！介绍过往经历，量化过程以及成就，展示了结果导向的表述思路，是现实工作场景中非常倡导的，您还可以参考“经历撰写助手”，进一步完善经历描述：",
   "quantifyMetHeader": "经历详情已量化表达！",

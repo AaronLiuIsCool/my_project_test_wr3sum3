@@ -263,7 +263,7 @@ const WorkForm = ({data, index, isLast = false, messages, workData}) => {
                 id="work-start-date"
                 placeholder={messages.yymmdd}
                 value={data.workStartDate}
-                monthFormat={messages.monthFormat}
+                
                 displayFormat={messages.dateDisplayFormat}
                 onDateChange={handleWorkStartDateChange}
                 feedbackMessage={messages.entryIsInvalid}
@@ -279,7 +279,7 @@ const WorkForm = ({data, index, isLast = false, messages, workData}) => {
                   id="work-end-date"
                   placeholder={messages.yymmdd}
                   value={data.workEndDate}
-                  monthFormat={messages.monthFormat}
+                  
                   displayFormat={messages.dateDisplayFormat}
                   onDateChange={handleWorkEndDateChange}
                   feedbackMessage={messages.entryIsInvalid}

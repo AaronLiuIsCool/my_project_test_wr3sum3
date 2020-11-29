@@ -305,7 +305,7 @@ const VolunteerForm = ({
                 id="volunteer-enter-date"
                 placeholder={messages.yymmdd}
                 value={data.volunteerStartDate}
-                monthFormat={messages.monthFormat}
+                
                 displayFormat={messages.dateDisplayFormat}
                 onDateChange={handleVolunteerStartDateChange}
                 feedbackMessage={messages.entryIsInvalid}
@@ -320,7 +320,7 @@ const VolunteerForm = ({
                   id="volunteer-graduate-date"
                   placeholder={messages.yymmdd}
                   value={data.volunteerEndDate}
-                  monthFormat={messages.monthFormat}
+                  
                   displayFormat={messages.dateDisplayFormat}
                   onDateChange={handleVolunteerEndDateChange}
                   feedbackMessage={messages.entryIsInvalid}

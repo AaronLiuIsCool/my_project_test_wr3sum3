@@ -241,7 +241,7 @@ const EducationForm = ({data, index, isLast = false, messages}) => {
                 id="education-enter-date"
                 placeholder={messages.yymmdd}
                 value={data.startDate}
-                monthFormat={messages.monthFormat}
+                
                 displayFormat={messages.dateDisplayFormat}
                 onDateChange={handleSchoolStartDateChange}
                 feedbackMessage={messages.entryIsInvalid}
@@ -255,7 +255,7 @@ const EducationForm = ({data, index, isLast = false, messages}) => {
                 id="education-graduate-date"
                 placeholder={messages.yymmdd}
                 value={data.graduateDate}
-                monthFormat={messages.monthFormat}
+                
                 displayFormat={messages.dateDisplayFormat}
                 onDateChange={handleGradDateChange}
                 feedbackMessage={messages.entryIsInvalid}

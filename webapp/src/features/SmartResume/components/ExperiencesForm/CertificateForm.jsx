@@ -211,7 +211,7 @@ const CertificateForm = ({
                 id="certificate-start-date"
                 placeholder={messages.yymmdd}
                 value={data.certificateIssuedDate}
-                monthFormat={messages.monthFormat}
+                
                 displayFormat={messages.dateDisplayFormat}
                 onDateChange={handleCertificateStartDateChange}
                 feedbackMessage={messages.entryIsInvalid}
@@ -227,7 +227,7 @@ const CertificateForm = ({
                   id="certificate-end-date"
                   placeholder={messages.yymmdd}
                   value={data.certificateEndDate}
-                  monthFormat={messages.monthFormat}
+                  
                   displayFormat={messages.dateDisplayFormat}
                   onDateChange={handleCertificateEndDateChange}
                   feedbackMessage={messages.entryIsInvalid}
