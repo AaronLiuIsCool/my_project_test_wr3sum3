@@ -1,0 +1,40 @@
+{
+  "heading": "账号管理",
+  "basicInfo": "基本信息",
+  "accountManagement": "账号管理",
+  "wechat": "微信",
+  "email": "邮箱",
+  "password": "密码",
+  "bind": "前往绑定",
+  "unbind": "解除绑定",
+  "binded": "已绑定",
+  "notBinded": "未绑定",
+  "reset": "重置",
+  "enterEmailAddress": "请输入您所要绑定的邮箱",
+  "save": "保存",
+  "avatar": "头像",
+  "name": "姓名",
+  "updateEmail": "更换邮箱",
+  "gender": "性别",
+  "identity": "身份",
+  "genderOptions": [
+    {
+      "key": "male",
+      "value": "男"
+    },
+    {
+      "key": "female",
+      "value": "女"
+    }
+  ],
+  "identityOptions": [
+    {
+      "key": "male",
+      "value": "男"
+    },
+    {
+      "key": "female",
+      "value": "女"
+    }
+  ]
+}
