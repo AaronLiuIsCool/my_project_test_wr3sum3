@@ -22,7 +22,6 @@ public class Award {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotNull
-    @Size(min = 2, max = 50)
     @Column(length = 50)
     private String name;
     @NotNull

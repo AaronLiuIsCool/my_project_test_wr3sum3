@@ -14,9 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit4.SpringRunner;
 import com.kuaidaoresume.account.model.AccountSecret;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -53,6 +55,15 @@ public class AccountRepoTest {
     public void createSampleAccount() {
         accountRepo.save(newAccount);
         assertTrue(accountRepo.existsById(newAccount.getId()));
+    }
+
+    @Test
+    public void saveAccountWithResume() {
+        Resume resume = Resume.builder().id("aUuid").alias("a").createdAt(Instant.now()).build();
+        resume.setAccount(newAccount);
+        newAccount.getResumes().add(resume);
+        Account saved = accountRepo.save(newAccount);
+        assertNotNull(saved);
     }
 
     @Test

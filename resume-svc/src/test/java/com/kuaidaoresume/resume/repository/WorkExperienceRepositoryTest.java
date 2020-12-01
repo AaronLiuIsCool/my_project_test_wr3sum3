@@ -22,6 +22,7 @@ import java.util.Collection;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
@@ -150,5 +151,22 @@ public class WorkExperienceRepositoryTest {
         workExperienceRepository.save(experience1);
         workExperienceRepository.deleteAll(workExperienceRepository.findAllByResumeId(resume.getId()));
         assertThat(workExperienceRepository.findAllByResumeId(resume.getId()).size(), is(0));
+    }
+
+    @Test
+    public void whenSaveWithoutMinConstraints_thenSucceed() {
+        String shortText = "a";
+        workExperience = WorkExperience.builder()
+                .role(shortText)
+                .organization(shortText)
+                .city(CITY)
+                .country(COUNTRY)
+                .startDate(NOW)
+                .endDate(NOW)
+                .description(shortText)
+                .resume(resume)
+                .build();
+        WorkExperience saved = workExperienceRepository.save(workExperience);
+        assertNotNull(saved);
     }
 }
