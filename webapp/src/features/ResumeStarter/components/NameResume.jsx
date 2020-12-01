@@ -15,7 +15,7 @@ const logger = getLogger('ResumeStarter');
 const accountServices = new AccountServices();
 const resumeServices = new ResumeServices();
 
-const NameResume = () => {
+const NameResume = ({ importedResumeData }) => {
 	const history = useHistory();
 	const messages = useI8n();
 	const userId = useSelector(selectUserId);
@@ -25,7 +25,7 @@ const NameResume = () => {
 
 	const createResume = async (resumeName) => {
 		try {
-			const data = await resumeServices.createResume({ language });
+			const data = await resumeServices.createResume({ language, ...importedResumeData });
 			const resumeId = data.id;
 			await accountServices.addResume(userId, resumeId, resumeName);
 			dispatch(actions.setId(resumeId));
@@ -37,7 +37,7 @@ const NameResume = () => {
 	}
 	const handleRenameResume = e => {
 		e.preventDefault();
-		createResume(inputValue);
+		createResume(inputValue, importedResumeData);
 	};
 
 	return (

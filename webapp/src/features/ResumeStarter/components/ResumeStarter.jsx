@@ -6,6 +6,10 @@ import { useDispatch } from 'react-redux';
 import { actions } from 'features/SmartResume/slicer';
 import NameResume from './NameResume';
 
+import { resumeAdaptorForSDK } from '../../SmartResume/utils/servicesAdaptor';
+
+import store from "store";
+
 import styles from '../styles/ResumeStarter.module.css';
 const appServices = new AppServices();
 
@@ -14,6 +18,7 @@ const ResumerStarter = () => {
 	const messages = useI8n();
 	const fileUploadInput = useRef(null);
 
+	const [importedResumeData, setImportedResumeData] = useState({});
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	const updateBasic = (data) => {
@@ -66,6 +71,15 @@ const ResumerStarter = () => {
 		}
 	};
 
+	const updateImportedResumeData = () => {
+		
+		setTimeout(()=>{
+			const	resumeData = resumeAdaptorForSDK(store.getState().resume);
+			setImportedResumeData(resumeData)
+		},0)
+
+	}
+
 	// 把文件转成base64 string 
 	const toBase64 = file => new Promise((resolve, reject) => {
 		const reader = new FileReader();
@@ -78,10 +92,10 @@ const ResumerStarter = () => {
 		// remove "data:application/pdf;base64," from base64 string
 		const base64Str = await toBase64(file);
 		const data = { base64: base64Str.slice(28), fileName: file.name };
-
 		const response = await appServices.resumeSDKUpload(data);
 		if (response?.status?.message === "success") {
 			await updateInfo(response.data);
+			updateImportedResumeData()
 			setIsModalOpen(true)
 		}
 	};
@@ -89,6 +103,11 @@ const ResumerStarter = () => {
 	const fileUpload = () => {
 		fileUploadInput.current.click();
 	};
+
+	const createNewResumeFromBeginning = () => {
+		setIsModalOpen(true);
+		setImportedResumeData({});
+	}
 
 	return (
 		<div className={styles.container}>
@@ -98,8 +117,8 @@ const ResumerStarter = () => {
 					<p className={styles.optionTitle}>{messages.createNewResume}</p>
 					<p className={styles.optionDescription}>{messages.chooseLanguage}</p>
 					<div className={styles.buttonWrapper}>
-						<Button onClick={() => setIsModalOpen(true)} className={styles.button}>{messages.language_toggle_zh}</Button>
-						<Button onClick={() => setIsModalOpen(true)} className={styles.button}>{messages.language_toggle_en}</Button>
+						<Button onClick={createNewResumeFromBeginning} className={styles.button}>{messages.language_toggle_zh}</Button>
+						<Button onClick={createNewResumeFromBeginning} className={styles.button}>{messages.language_toggle_en}</Button>
 					</div>
 				</div>
 				<div className={styles.option}>
@@ -113,7 +132,7 @@ const ResumerStarter = () => {
 				<input type='file' ref={fileUploadInput} onChange={onChangeHandler} />
 			</div>
 
-			{isModalOpen ? <NameResume /> : null}
+			{isModalOpen ? <NameResume importedResumeData={importedResumeData}/> : null}
 		</div>
 	);
 };

@@ -13,7 +13,9 @@ function getHeaders() {
 
 const handleError = (error) => {
   logger.error(error);
-  window.location.href = window.location.origin + "/error";
+  if (error?.code === 'INTERNAL_SERVER_ERROR'){
+    window.location.href = window.location.origin + "/error";
+  }
 };
 
 async function fetchToJson(request) {
