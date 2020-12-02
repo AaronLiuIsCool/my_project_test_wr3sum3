@@ -1,4 +1,4 @@
-import { getLogger } from 'shell/logger';
+import {getLogger} from 'shell/logger';
 import BaseServices from './BaseServices';
 
 const logger = getLogger('AccountService');
@@ -21,10 +21,10 @@ export default class AccountServices extends BaseServices {
   async addResume(userId, resumeId, resumeName) {
     try {
       return await this.post(`v1/account/${userId}/resumes`, {
-        "alias": resumeName,
-        "createdAt": new Date().toISOString(),
-        "resumeId": resumeId,
-        "thumbnailUri": "thumbnailUri"
+        alias: resumeName,
+        createdAt: new Date().toISOString(),
+        resumeId: resumeId,
+        thumbnailUri: 'thumbnailUri',
       });
     } catch (err) {
       logger.error(err);
@@ -39,9 +39,33 @@ export default class AccountServices extends BaseServices {
     }
   }
 
-  async updateResume(resumeId, resumeDto,) {
+  async updateResume(resumeId, resumeDto) {
     try {
       return await this.put(`/v1/account/resumes/${resumeId}`, resumeDto);
+    } catch (err) {
+      logger.error(err);
+    }
+  }
+
+  async updateAccountInfo(payload) {
+    try {
+      return await this.put('v1/account/update', payload);
+    } catch (err) {
+      logger.error(err);
+    }
+  }
+
+  async passwordResetRequest(payload) {
+    try {
+      return await this.post('/v1/account/request_password_reset', payload);
+    } catch (err) {
+      logger.error(err);
+    }
+  }
+
+  async emailChangeRequest(payload) {
+    try {
+      return await this.post('/v1/account/request_email_change', payload);
     } catch (err) {
       logger.error(err);
     }

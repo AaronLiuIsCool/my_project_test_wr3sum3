@@ -1,0 +1,57 @@
+.account-management {
+  * {
+    font-family: MicrosoftYaHei;
+  }
+  width: 1000px;
+  margin: 0 auto;
+  h1 {
+    margin: 2.5rem 0;
+    font-size: 30px;
+    color: #333333;
+  }
+  .btn-group-vertical > .btn:not(:last-child):not(.dropdown-toggle),
+  .btn-group-vertical > .btn-group:not(:last-child) > .btn {
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+  }
+  .content-container {
+    display: flex;
+  }
+  .left-container {
+    width: 10rem;
+    .btn-group-vertical {
+      width: 100%;
+      label {
+        input {
+          display: none;
+        }
+        line-height: 60px;
+        width: 160px;
+        height: 60px;
+        border-radius: 8px;
+        color: #bfc4d3;
+        border: solid 1px #f0f0f0;
+        background-color: #ffffff;
+        margin-bottom: 0.625rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      label.active,
+      label:active {
+        font-weight: 900;
+        color: #3e89ec;
+        border-color: #3e89ec;
+        background-color: #ffffff;
+      }
+    }
+  }
+  .right-container {
+    flex: 1;
+    margin-left: 1.25rem;
+    border: 1px solid #f0f0f0;
+    border-radius: 8px;
+    height: 450px;
+    padding: 2.5rem;
+  }
+}
