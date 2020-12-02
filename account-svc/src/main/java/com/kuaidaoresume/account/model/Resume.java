@@ -20,7 +20,6 @@ public class Resume {
     @Id
     private String id;
 
-    @Size(min = 3, max = 50)
     @Column(length = 50)
     private String alias;
 

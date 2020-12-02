@@ -22,7 +22,6 @@ public class Certificate implements ResumeContainable {
     private Long id;
 
     @NotNull
-    @Size(min = 2, max = 50)
     @Column(length = 50)
     private String name;
 

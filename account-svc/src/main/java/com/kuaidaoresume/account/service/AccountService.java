@@ -40,10 +40,7 @@ import javax.persistence.PersistenceContext;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Instant;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
+import java.util.*;
 
 import static java.util.stream.Collectors.toList;
 
@@ -81,7 +78,7 @@ public class AccountService {
     public AccountDto get(String userId) {
         Account account = accountRepo.findAccountById(userId);
         if (account == null) {
-            throw new ServiceException(String.format("User with id %s not found", userId));
+            throw new ResourceNotFoundException(String.format("User with id %s not found", userId));
         }
         return this.convertToDto(account);
     }
@@ -89,7 +86,7 @@ public class AccountService {
     public AccountDto getByOpenId(final String openId) {
         Account account = accountRepo.findAccountByOpenid(openId);
         if (account == null) {
-            throw new ServiceException(String.format(("Wechat user with open id %s not found"), openId));
+            throw new ResourceNotFoundException(String.format(("Wechat user with open id %s not found"), openId));
         }
         return this.convertToDto(account);
     }
@@ -437,7 +434,7 @@ public class AccountService {
 
         Account account = accountRepo.findAccountById(accountSecret.getId());
         if (account == null) {
-            throw new ServiceException(String.format(
+            throw new ResourceNotFoundException(String.format(
                     "User with id %s not found", accountSecret.getId()));
         }
 
@@ -522,7 +519,14 @@ public class AccountService {
         Resume resume = modelMapper.map(resumeDto, Resume.class);
         resume.setCreatedAt(Instant.now());
         Account account = accountRepo.findAccountById(userId);
-        account.getResumes().add(resume);
+        if (Objects.isNull(account)) {
+            throw new ResourceNotFoundException(String.format("User with id %s not found", userId));
+        }
+        List<Resume> resumes = account.getResumes();
+        if (Objects.isNull(resumes)) {
+            resumes = new ArrayList<>();
+        }
+        resumes.add(resume);
         resume.setAccount(account);
         accountRepo.save(account);
     }

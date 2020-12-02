@@ -88,4 +88,20 @@ public class BasicInfoRepositoryTest {
         BasicInfo updated = basicInfoRepository.save(basicInfo);
         assertThat(updated.getPhoneNumber(), is(newPhoneNo));
     }
+
+    @Test
+    public void whenSavedWithoutMinConstraints_thenSucceed() {
+        Resume resume = resumeRepository.save(Resume.builder().language("en").build());
+        BasicInfo basicInfo = BasicInfo.builder()
+                .fullName("D")
+                .alias("J")
+                .country("Russia")
+                .city("Beijing")
+                .email("spy@whitehouse.com")
+                .phoneNumber("123456789")
+                .resume(resume)
+                .build();
+        BasicInfo saved = basicInfoRepository.save(basicInfo);
+        assertNotNull(saved);
+    }
 }

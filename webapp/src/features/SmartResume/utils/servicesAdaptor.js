@@ -3,8 +3,8 @@ import moment from 'moment';
 const JDBC_DATE_FORMAT = 'YYYY-MM-DD';
 
 function getDateString(date) {
-  const dateValue = moment(date);
-  return dateValue.isValid() ? dateValue.format(JDBC_DATE_FORMAT) : undefined;
+    const dateValue = moment(date);
+    return dateValue.isValid() ? dateValue.format(JDBC_DATE_FORMAT) : undefined;
 }
 
 export function adaptBasics(basics) {
@@ -16,11 +16,12 @@ export function adaptBasics(basics) {
     const data = {
         id,
         fullName: nameCn,
-        city,
-        country,
+        city: city? city: "  ",
+        country : country ? country : "  ",
         email,
         phoneNumber: phone
     };
+
     if (typeof linkedin === 'string' && linkedin.length > 0) {
         data.profiles = data.profiles || [];
         data.profiles.push({
@@ -28,7 +29,7 @@ export function adaptBasics(basics) {
             url: linkedin
         });
     }
-    if (typeof linkedin === 'string' && weblink.length > 0) {
+    if (typeof weblink === 'string' && weblink.length > 0) {
         data.profiles = data.profiles || [];
         data.profiles.push({
             type: 'OTHER',
@@ -46,20 +47,32 @@ export function adaptEducation(edu) {
         id,
         institution: schoolName,
         major,
-        gpa,
-        city,
-        country,
+        city: city? city: "  ",
+        country: country ? country : "  ",
         degree,
         startDate: getDateString(startDate),
         endDate: getDateString(graduateDate)
     };
 
+    try {
+        const inputGPA = Number(gpa);
+        if (gpa <= 4 && gpa >= 1) {
+            data['gpa'] = inputGPA.toString();
+        }
+    }
+    finally {
+        if (!data['gpa']){
+            data['gpa'] = '4';
+        }
+      }
+
+    
     data.awards = data.awards || [];
     if (highestAward) {
-      data.awards.push({ name: highestAward });
+        data.awards.push({ name: highestAward });
     }
     if (otherAward) {
-      data.awards.push({ name: otherAward });
+        data.awards.push({ name: otherAward });
     }
 
     return data;
@@ -80,9 +93,9 @@ export function adaptWork(work) {
     const data = {
         id,
         role: workName,
-        organization: workCompanyName,
-        city: workCity,
-        country: workCountry,
+        organization: workCompanyName ? workCompanyName : "  ",
+        city: workCity ? workCity : "  ",
+        country:  workCountry ? workCountry : "  ",
         description: workDescription,
         startDate: getDateString(workStartDate),
         endDate: getDateString(workEndDate)
@@ -106,9 +119,9 @@ export function adaptProject(project) {
     const data = {
         id,
         role: projectRole,
-        organization: projectCompanyName,
-        city: projectCity,
-        country: projectCountry,
+        organization: projectCompanyName ? projectCompanyName : "  ",
+        city: projectCity ? projectCity : "  ",
+        country: projectCountry ? projectCountry : "  ",
         description: projectDescription,
         startDate: getDateString(projectStartDate),
         endDate: getDateString(projectEndDate)
@@ -147,16 +160,18 @@ export function adaptVolunteer(volunteer) {
     const { id, volunteerRole, volunteerCompanyName, volunteerStartDate, volunteerEndDate,
         volunteerCity, volunteerCountry, volunteerDescription } = volunteer;
 
-    return {
+    
+    const data = {
         id,
         role: volunteerRole,
-        organization: volunteerCompanyName,
+        organization: volunteerCompanyName ? volunteerCompanyName : "  ",
         startDate: getDateString(volunteerStartDate),
         endDate: getDateString(volunteerEndDate),
         description: volunteerDescription,
-        city: volunteerCity,
-        country: volunteerCountry
-    }
+        city: volunteerCity ? volunteerCity : "  ",
+        country: volunteerCountry ? volunteerCountry : "  "
+    };
+    return data;
 }
 
 export function adaptVolunteers(volunteers) {
@@ -176,5 +191,27 @@ export function resumeAdaptor(resume, type = 'new') {
         projectExperiences: adaptProjects(resume.project),
         certificates: adaptCertificates(resume.certificate),
         volunteerExperiences: adaptVolunteers(resume.volunteer)
+    };
+}
+
+
+export function resumeAdaptorForSDK(resume) {
+    const basic = { ...resume.basic, completed: true };
+    const work = { ...resume.work, completed: true };
+    const education = { ...resume.education, completed: true };
+    const project = { ...resume.project, completed: true };
+    let certificate = null;
+    if (resume.certificate.data.name) {
+        certificate = { ...resume.certificate, completed: true };
+    }
+
+    return {
+        language: 'zh',
+        basicInfo: adaptBasics(basic),
+        educations: adaptEducations(education),
+        workExperiences: adaptWorks(work),
+        projectExperiences: adaptProjects(project),
+        certificates: (certificate ? adaptCertificates(certificate) : []),
+        volunteerExperiences: [] // note: resumeSDK doesn't have any volunteer related results
     };
 }

@@ -21,22 +21,18 @@ public abstract class Experience implements ResumeContainable {
     protected Long id;
 
     @NotNull
-    @Size(min = 2, max = 50)
     @Column(length = 50)
     protected String role;
 
     @NotNull
-    @Size(min = 2, max = 50)
     @Column(length = 50)
     private String organization;
 
     @NotNull
-    @Size(min = 2, max = 100)
     @Column(length = 100)
     private String city;
 
     @NotNull
-    @Size(min = 2, max = 60)
     @Column(length = 60)
     private String country;
 
@@ -46,7 +42,6 @@ public abstract class Experience implements ResumeContainable {
     private LocalDate endDate;
 
     @NotNull
-    @Size(min = 3, max = 2000)
     @Column(length = 2000)
     private String description;
 

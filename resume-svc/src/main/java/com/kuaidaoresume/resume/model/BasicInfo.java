@@ -26,22 +26,18 @@ public class BasicInfo implements ResumeContainable {
     private Long id;
 
     @NotNull
-    @Size(min = 2, max = 50)
     @Column(length = 50)
     private String fullName;
 
-    @Size(min = 2, max = 20)
     @Column(length = 20)
     private String alias;
 
     @NotNull
-    @Size(min = 2, max = 60)
     @Column(length = 60)
     private String country;
     private String province;
 
     @NotNull
-    @Size(min = 2, max = 100)
     @Column(length = 100)
     private String city;
 

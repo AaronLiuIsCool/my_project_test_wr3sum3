@@ -22,12 +22,10 @@ public class Suggestion {
     private long id;
 
     @NotNull
-    @Size(min = 2, max = 75)
     @Column(name = "industry", length = 75)
     private String industry;
 
     @NotNull
-    @Size(min = 2, max = 75)
     @Column(name = "position_title", length = 75)
     private String positionTitle;
 
