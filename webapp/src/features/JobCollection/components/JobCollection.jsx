@@ -73,6 +73,7 @@ const getAllTailorJobs = async (resumeIds) => {
     }, []);
     return results;
 };
+const jobStore = {};
 const tailoredJobs = new Set();
 const bookmarkedJobs = new Set();
 
@@ -98,9 +99,9 @@ const OnSelect = (eventKey, event) =>{ // user can change the "default value"
 
     const applyFilter = (bookmark) => {
         if (bookmark) {
-            setJobsToBeDisplayed(Array.from(bookmarkedJobs));
+            setJobsToBeDisplayed(Array.from(bookmarkedJobs).map(id => jobStore[id]));
         } else {
-            setJobsToBeDisplayed(Array.from(tailoredJobs));
+            setJobsToBeDisplayed(Array.from(tailoredJobs).map(id => jobStore[id]));
         }
     };
 
@@ -108,11 +109,12 @@ const OnSelect = (eventKey, event) =>{ // user can change the "default value"
         getAllResumeIds(userId).then((res) => {
             if (res.length > 0) {
                 getAllBookmarkJobs(res).then((allBookmarkJobs) => {
-                    allBookmarkJobs.forEach((aJob) => (bookmarkedJobs.add(aJob)))
-                    setJobsToBeDisplayed(Array.from(bookmarkedJobs));
+                    allBookmarkJobs.forEach((aJob) => (jobStore[aJob.jobUuid] = aJob))
+                    allBookmarkJobs.forEach((aJob) => (bookmarkedJobs.add(aJob.jobUuid)))
+                    setJobsToBeDisplayed(Array.from(bookmarkedJobs).map(id => jobStore[id]));
                 });
                 getAllTailorJobs(res).then((allTailorJobs) => {
-                    allTailorJobs.forEach((aJob) => (tailoredJobs.add(aJob)))
+                    allTailorJobs.forEach((aJob) => (tailoredJobs.add(aJob.jobUuid)))
                 });
             }
         });
