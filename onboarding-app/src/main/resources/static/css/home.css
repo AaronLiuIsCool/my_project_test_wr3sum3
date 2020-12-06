@@ -25,7 +25,7 @@ nav {
   padding-right: 2.5rem;
 }
 .right > a {
-  margin-left: 2.5rem;
+  margin-left: 5rem;
   color: #bfc4d3;
   font-family: MicrosoftYaHei;
   font-size: 16px;
@@ -238,12 +238,22 @@ p > .dot {
 .signupButton {
   padding: 0 35px;
   cursor: pointer;
-  border: none;
+  border-color: #8e94a7;
+  border-width: 1px;
+  border-style: solid;
   border-radius: 15px;
+  color: #fff;
+  background-color: #fff;
 }
 
 .signupButton:hover {
   color: #fff;
+  background-color: #3e89ec;
+}
+
+.signupButton:active {
+  color: #fff;
+  border-color: #8e94a7;
   background-color: #3e89ec;
 }
 
