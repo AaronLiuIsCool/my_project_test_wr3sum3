@@ -3,7 +3,8 @@ import moment from 'moment';
 const JDBC_DATE_FORMAT = 'YYYY-MM-DD';
 
 function getDateString(date) {
-    const dateValue = moment(date);
+    // if no date given, we use current time
+    const dateValue = (date? moment(date) : moment())
     return dateValue.isValid() ? dateValue.format(JDBC_DATE_FORMAT) : undefined;
 }
 
@@ -18,8 +19,8 @@ export function adaptBasics(basics) {
         fullName: nameCn,
         city: city? city: "  ",
         country : country ? country : "  ",
-        email,
-        phoneNumber: phone
+        email : email ? email : " ",
+        phoneNumber: phone ? phone : " "
     };
 
     if (typeof linkedin === 'string' && linkedin.length > 0) {
@@ -46,10 +47,10 @@ export function adaptEducation(edu) {
     const data = {
         id,
         institution: schoolName,
-        major,
+        major: major ? major : "  ",
         city: city? city: "  ",
         country: country ? country : "  ",
-        degree,
+        degree: degree ? degree : "  ",
         startDate: getDateString(startDate),
         endDate: getDateString(graduateDate)
     };
@@ -204,6 +205,17 @@ export function resumeAdaptorForSDK(resume) {
     if (resume.certificate.data.name) {
         certificate = { ...resume.certificate, completed: true };
     }
+
+    console.log("test", {
+
+        language: 'zh',
+        basicInfo: adaptBasics(basic),
+        educations: adaptEducations(education),
+        workExperiences: adaptWorks(work),
+        projectExperiences: adaptProjects(project),
+        certificates: (certificate ? adaptCertificates(certificate) : []),
+        volunteerExperiences: [] // note: resumeSDK doesn't have any volunteer related results
+    });
 
     return {
         language: 'zh',
