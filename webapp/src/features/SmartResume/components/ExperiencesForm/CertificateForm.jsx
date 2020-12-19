@@ -172,7 +172,7 @@ const CertificateForm = ({
         <Form validated={validated} onSubmit={handleSubmit}>
           <Row className="flexie">
             <Col>
-              <h2 className="form_h2">{messages.enterNewExperience}</h2>
+              <h2 className="form_h2">{messages.enterNewCertificate}</h2>
             </Col>
             <div className="toggle-up-arrow" onClick={toggleShowSummary}>
               {data.id && <><img className="hide-on-hover" src={ArrowUp} alt="up-arrow"/><img className="display-on-hover" src={ArrowUpActive} alt="up-arrow-active"/></>}
