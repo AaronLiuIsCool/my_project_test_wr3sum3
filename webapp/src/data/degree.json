@@ -5,6 +5,11 @@
   {"id": 4, "data": "博士"},
   {"id": 5, "data": "Diploma"},
   {"id": 6, "data": "Associate Degree"},
+  {"id": 10, "data": "BCom."},
+  {"id": 11, "data": "BSc."},
+  {"id": 12, "data": "BEng."},
+  {"id": 13, "data": "MSc."},
+  {"id": 14, "data": "MEng."},
   {"id": 7, "data": "Bachelor Degree"},
   {"id": 8, "data": "Master Degree"},
   {"id": 9, "data": "Ph.D."}

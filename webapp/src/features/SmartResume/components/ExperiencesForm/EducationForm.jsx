@@ -22,7 +22,6 @@ import ArrowUp from '../../assets/arrow-up.png';
 import ArrowUpActive from '../../assets/arrow-up-active.png'; 
 
 import degreeOptions from 'data/degree.json';
-import majorOptions from 'data/major.json';
 import univOptions from 'data/university.json';
 import countryOptions from 'data/country.json';
 
@@ -138,8 +137,8 @@ const EducationForm = ({data, index, isLast = false, messages}) => {
     dispatch(actions.updateGraduateDate({value, index}));
   };
 
-  const handleMajorChange = (values) => {
-    const value = values.length === 0 ? null : values[0].data;
+  const handleMajorChange = (event) => {
+    const value = event.target.value;
     updateStatus(validateEducationEntry, status, setStatus, 'major', value);
     dispatch(actions.updateMajor({value, index}));
   };
@@ -267,11 +266,10 @@ const EducationForm = ({data, index, isLast = false, messages}) => {
 
           <Row>
             <Col>
-              <DropdownGroup
+              <InputGroup
                 label={messages.major}
                 id="education-major"
                 placeholder={messages.enterMajor}
-                options={majorOptions}
                 value={data.major}
                 onChange={handleMajorChange}
                 feedbackMessage={messages.entryIsInvalid}

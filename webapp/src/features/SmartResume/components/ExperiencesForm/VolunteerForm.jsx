@@ -261,9 +261,9 @@ const VolunteerForm = ({
           <Row>
             <Col lg="4">
               <InputGroup
-                label={messages.participateRole}
+                label={messages.roleName}
                 id="volunteer-name"
-                placeholder={messages.enterParticipateRole}
+                placeholder={messages.enterRole}
                 value={data.volunteerRole}
                 onChange={handleVolunteerRoleChange}
                 feedbackMessage={messages.entryIsInvalid}
