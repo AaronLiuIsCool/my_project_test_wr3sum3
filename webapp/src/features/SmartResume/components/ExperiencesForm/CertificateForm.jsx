@@ -7,7 +7,7 @@ import {GAEvent} from 'utils/GATracking';
 import SingleDatePicker from 'components/SingleDatePicker';
 import RadioButtonGroup from 'components/RadioButtonGroup';
 import Button from 'react-bootstrap/Button';
-import DropdownGroup from 'components/DropdownGroup';
+import InputGroup from 'components/InputGroup';
 
 import ArrowUp from '../../assets/arrow-up.png'; 
 import ArrowUpActive from '../../assets/arrow-up-active.png'; 
@@ -24,7 +24,6 @@ import {getLogger} from 'shell/logger';
 import {previewResume} from '../ResumePreview/resumeBuilder';
 import {updateRating} from '../../utils/resume';
 
-import certificateOptions from 'data/certificate.json';
 const logger = getLogger('CertificateForm');
 const resumeServices = new ResumeServices();
 const fields = [
@@ -88,8 +87,8 @@ const CertificateForm = ({
     updateRating();
   };
 
-  const handleCertificateChange = (values) => {
-    const value = values.length === 0 ? null : values[0].data;
+  const handleCertificateChange = (event) => {
+    const value = event.target.value;
     updateStatus(
       validateCertificateEntry,
       status,
@@ -180,11 +179,10 @@ const CertificateForm = ({
           </Row>
           <Row>
             <Col lg="4">
-              <DropdownGroup
+              <InputGroup
                 label={messages.certificateName}
                 id="certificate-name"
                 placeholder={messages.enterCertificateName}
-                options={certificateOptions}
                 value={data.certificateName}
                 onChange={handleCertificateChange}
                 feedbackMessage={messages.entryIsInvalid}

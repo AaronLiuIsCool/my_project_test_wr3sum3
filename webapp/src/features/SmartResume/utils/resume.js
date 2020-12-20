@@ -495,6 +495,14 @@ const supportedCountries = {
   英国: "uk",
   印度: "in",
   韩国: "kr",
+  China: 'cn-en',
+  Canada: "ca-en",
+  USA: "us-en",
+  Australia: "au-en",
+  Japan: "jp-en",
+  UK: "uk-en",
+  India: "in-en",
+  Korea: "kr-en",
 };
 
 export const updateCityOptions = (country, setter) => {

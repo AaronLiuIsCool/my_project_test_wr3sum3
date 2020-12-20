@@ -47,63 +47,14 @@ exports[`Certificate form It should match snapshot 1`] = `
             className="form-label"
             htmlFor="certificate-name"
           />
-          <div
-            className="rbt"
-            style={
-              Object {
-                "outline": "none",
-                "position": "relative",
-              }
-            }
-            tabIndex={-1}
-          >
-            <div
-              style={
-                Object {
-                  "display": "flex",
-                  "flex": 1,
-                  "height": "100%",
-                  "position": "relative",
-                }
-              }
-            >
-              <input
-                aria-autocomplete="both"
-                aria-expanded={false}
-                aria-haspopup="listbox"
-                autoComplete="off"
-                className="rbt-input-main form-control rbt-input"
-                onBlur={[Function]}
-                onChange={[Function]}
-                onClick={[Function]}
-                onFocus={[Function]}
-                onKeyDown={[Function]}
-                role="combobox"
-                type="text"
-                value=""
-              />
-              <input
-                aria-hidden={true}
-                className="rbt-input-hint"
-                readOnly={true}
-                style={
-                  Object {
-                    "backgroundColor": "transparent",
-                    "borderColor": "transparent",
-                    "boxShadow": "none",
-                    "color": "rgba(0, 0, 0, 0.35)",
-                    "left": 0,
-                    "pointerEvents": "none",
-                    "position": "absolute",
-                    "top": 0,
-                    "width": "100%",
-                  }
-                }
-                tabIndex={-1}
-                value=""
-              />
-            </div>
-          </div>
+          <input
+            className="form-control"
+            id="certificate-name"
+            onChange={[Function]}
+            placeholder=""
+            type="text"
+            value="test"
+          />
         </div>
       </div>
       <div

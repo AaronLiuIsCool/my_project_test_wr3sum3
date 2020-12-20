@@ -1,6 +1,5 @@
 import {
     validateDate,
-    validateString,
     validateNonEmptyString
 } from "utils/validator";
 
@@ -16,8 +15,6 @@ export function validateCertificateEntry(name, value, data) {
         case "certificateDescription":
             if (validateNonEmptyString(value)) {
                 return true;
-            } else if (validateString(value)) {
-                return undefined;
             } else {
                 return false;
             }
