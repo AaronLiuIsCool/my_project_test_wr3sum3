@@ -29,4 +29,16 @@ describe("test resume Builder related functionalities", () => {
       data: { ...resumeBuilder, base64: "new base64 string" },
     });
   });
+  
+  it("test updateResumeLanguage", () => {
+    const { resumeBuilder: updateResumeLanguage } = resumeReducer(initialState, {
+      type: "resume/updateResumeLanguage",
+      payload: {
+        language: "en",
+      },
+    });
+    expect(updateResumeLanguage).toEqual({
+      data: { ...resumeBuilder, language: "en" },
+    });
+  });
 });

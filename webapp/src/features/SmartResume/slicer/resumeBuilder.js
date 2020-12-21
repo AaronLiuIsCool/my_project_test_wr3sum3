@@ -1,6 +1,7 @@
 export const resumeBuilder = {
   color: "#3e89ec",
   base64: "",
+  language: "zh"
 };
 
 const initialState = {
@@ -19,10 +20,13 @@ const reducers = {
   updateResumeBase64Str: (state, action) => {
     updateField(state, "base64", action.payload.value);
   },
+  updateResumeLanguage: (state, action) => {
+    updateField(state, "language", action.payload.language);
+  },
 };
 
 const selectors = {
-  selectresumeBuilder: ({ resume }) => resume.resumeBuilder,
+  selectResumeBuilder: ({ resume }) => resume.resumeBuilder,
 };
 
 export default {

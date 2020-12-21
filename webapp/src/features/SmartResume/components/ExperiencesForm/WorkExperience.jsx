@@ -6,11 +6,11 @@ import { useI8n } from 'shell/i18n';
 
 import WorkForm from './WorkForm';
 import Step from '../Step';
-import { actions, workSelectors } from '../../slicer';
+import { actions, workSelectors, resumeBuilderSelectors } from '../../slicer';
 
-const getForms = (WorkData, messages) =>
+const getForms = (WorkData, messages, resumeLanguage) =>
 	WorkData.map((Work, index) => (
-		<WorkForm workData={WorkData} data={Work} index={index} isLast={index === Work.length} messages={messages} key={`Work-${index}`} />
+		<WorkForm workData={WorkData} data={Work} index={index} isLast={index === Work.length} messages={messages} key={`Work-${index}`} resumeLanguage={resumeLanguage}/>
 	));
 
 const WorkExperience = () => {
@@ -22,6 +22,7 @@ const WorkExperience = () => {
 	])
 	const dispatch = useDispatch();
 	const messages = useI8n();
+	const { language:resumeLanguage } = useSelector(resumeBuilderSelectors.selectResumeBuilder).data;
 	return (
 		<Step
 			showAddButton={showAddButton}
@@ -32,7 +33,7 @@ const WorkExperience = () => {
 			addMore={true}
 			addMoreMessage={messages.addNewExperience}
 			handleAddMore={() => dispatch(actions.addNewWork())}>
-			{getForms(Work.data, messages)}
+			{getForms(Work.data, messages, resumeLanguage)}
 		</Step>
 	);
 };

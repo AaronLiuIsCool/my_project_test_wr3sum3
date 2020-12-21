@@ -5,17 +5,18 @@ import { useI8n } from 'shell/i18n';
 
 import CertificateForm from './CertificateForm';
 import Step from '../Step';
-import { actions, certificateSelectors } from '../../slicer';
+import { actions, certificateSelectors, resumeBuilderSelectors } from '../../slicer';
 
-const getForms = (CertificateData, messages) =>
+const getForms = (CertificateData, messages, resumeLanguage) =>
 	CertificateData.map((Certificate, index) => (
-		<CertificateForm certData={CertificateData} data={Certificate} index={index} isLast={index === Certificate.length} messages={messages} key={`Certificate-${index}`} />
+		<CertificateForm certData={CertificateData} data={Certificate} index={index} isLast={index === Certificate.length} messages={messages} key={`Certificate-${index}`} resumeLanguage={resumeLanguage} />
 	));
 
 const CertificateExperience = () => {
 	const Certificate = useSelector(certificateSelectors.selectCertificate);
 	const dispatch = useDispatch();
 	const messages = useI8n();
+	const { language:resumeLanguage } = useSelector(resumeBuilderSelectors.selectResumeBuilder).data;
 	const showAddButton = useMemo(() => {
 		return Certificate.data.every(item => item.id)
 	}, [
@@ -32,7 +33,7 @@ const CertificateExperience = () => {
       addMoreMessage={messages.addNewCertificate}
       handleAddMore={() => dispatch(actions.addNewCertificate())}
     >
-      {getForms(Certificate.data, messages)}
+      {getForms(Certificate.data, messages, resumeLanguage)}
     </Step>
   );
 };

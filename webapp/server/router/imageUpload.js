@@ -38,7 +38,6 @@ router.post("/upload", function (req, res) {
         success: true,
         url: `http://${S3_BUCKET_NAME}.s3.${S3_BUCKET_REGION}.amazonaws.com/${fileName}`,
       };
-      console.log("s3 put response", response)
       return res.status(200).json(response);
     }
   });

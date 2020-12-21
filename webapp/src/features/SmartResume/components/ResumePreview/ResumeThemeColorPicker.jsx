@@ -5,7 +5,7 @@ import { previewResume } from './resumeBuilder';
 import styles from '../../styles/ResumePreview.module.css';
 
 
-const ResumeThemeColorPicker = ({ setIsThemeColorModalOpen, messages }) => {
+const ResumeThemeColorPicker = ({ setIsThemeColorModalOpen, resumeLanguage }) => {
 	const dispatch = useDispatch();
 	const COLOR_BLUE = '#3e89ec';
 	const COLOR_ORANGE = '#ec663e';
@@ -16,7 +16,7 @@ const ResumeThemeColorPicker = ({ setIsThemeColorModalOpen, messages }) => {
 	const handleColorPicked = (color) => {
 		dispatch(actions.updateColor({ color }));
 		setIsThemeColorModalOpen(false);
-		previewResume(messages.RPreview);
+		previewResume(resumeLanguage);
 	};
 
 	return (

@@ -38,6 +38,7 @@ const CertificateForm = ({
   index,
   isLast = false,
   messages,
+  resumeLanguage,
   certData = [],
 }) => {
   const resumeId = useSelector(selectId);
@@ -51,7 +52,7 @@ const CertificateForm = ({
 
   const save = async () => {
     GAEvent('Resume Edit', 'Save certificate form'); // call GA on save
-    previewResume(messages.RPreview);
+    previewResume(resumeLanguage);
     let id = data.id;
     try {
       const responseJson =
