@@ -6,6 +6,7 @@ import ResumeServices from 'shell/services/ResumeServices';
 import JobServices from 'shell/services/JobsServices'
 import styles from '../../styles/Assistant.module.css';
 import DropdownGroup from './Dropdown/DropdownGroup';
+import LanguageToggle from './LanguageToggle';
 
 const resumeServices = new ResumeServices();
 const jobServices = new JobServices();
@@ -26,20 +27,22 @@ const WrittenAssistant = ({ trigger, context }) => {
     const [suggestions, setSuggestions] = useState([]);
 
     const loaded = useRef(false);
-    const getIndustries = async () => {
+    const getIndustries = async (en = '') => {
         const response = await resumeServices.getWrittenAssistant(
             trigger,
-            'industries'
+            `industries${en}`
         );
         setIndustries(response);
+        return response
     };
 
-    const getTitles = async () => {
+    const getTitles = async (en = '') => {
         const response = await resumeServices.getWrittenAssistant(
             trigger,
-            'titles'
+            `titles${en}`
         );
         setTitles(response);
+        return response
     };
 
     const getSuggestions = async (industry, title) => {
@@ -59,7 +62,11 @@ const WrittenAssistant = ({ trigger, context }) => {
       }
     }, [industries, titles]) // eslint-disable-line
 
-
+    const updateLanguage = async (lang) => {
+        const defaultIndustry = await getIndustries(lang);
+        const defaultTitles = await getTitles(lang);
+        getSuggestions(defaultIndustry[0], defaultTitles[defaultIndustry[0]][0]);
+    }
     const handleTipSelect = (tip) => {
         switch (trigger) {
             case 'work':
@@ -151,6 +158,7 @@ const WrittenAssistant = ({ trigger, context }) => {
             <div className="tips-container">
                 {renderTips(suggestions, handleTipSelect)}
             </div>
+            <LanguageToggle updateLanguage={updateLanguage}/>
         </div>
     );
 };

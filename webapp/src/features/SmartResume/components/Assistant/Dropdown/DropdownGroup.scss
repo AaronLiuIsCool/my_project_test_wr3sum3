@@ -7,8 +7,11 @@
       width: 64px;
     }
   }
+  .dropdown-1 {
+    flex: 2;
+  }
   .dropdown-2 {
-    flex: 1;
+    flex: 3;
     .selected-option {
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;
