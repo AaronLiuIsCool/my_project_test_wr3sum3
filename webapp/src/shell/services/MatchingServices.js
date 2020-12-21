@@ -37,7 +37,13 @@ export default class MatchingServices extends BaseServices {
   }
 
   async searchJobs(query, country, city, pageNumber) {
-    const params = `country=${country}&city=${city}&term=${query}&page=${pageNumber}&pageSize=${MAX_SIZE_PER_PAGE}`;
+    let params = `term=${query}&page=${pageNumber}&pageSize=${MAX_SIZE_PER_PAGE}`;
+    if(city) {
+      params = `${params}&city=${city}`;
+    }
+    if(country) {
+      params = `${params}&country=${country}`;
+    }
     const url = `v1/matching/jobs/paging-search?${params}`;
     try {
       return await this.get(url);
