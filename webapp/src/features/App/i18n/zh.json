@@ -8,7 +8,7 @@
   "language_toggle_en": "English",
   "createResume": "创建简历",
   "createNewResume": "创建一份全新简历",
-  "chooseLanguage": "请选择简历语言",
+  "chooseLanguage": "在简历预览区，可选择中文或英文版式",
   "resumeUpload": "我有简历了，我要上传",
   "resumeUploadSupportType": "支持PDF/Word 文档，文件最大支持20MB",
   "uploadYourResume": "从本地上传",
@@ -40,6 +40,7 @@
     "perparingResume": "生成中..",
     "downLoadResume": "下载简历",
     "linkedIn": "领英链接",
-    "weblink": "项目集链接"
+    "weblink": "项目集链接",
+    "createResume": "开始创建"
   }
 }
