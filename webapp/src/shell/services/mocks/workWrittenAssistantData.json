@@ -8,6 +8,21 @@
     "IT通信",
     "化学食品"
   ],
+  "industriesEN": [
+    "Banking",
+    "Engineering",
+    "Lab tech",
+    "IT & Data",
+    "Projects"
+  ],
+  
+  "titlesEN": {
+    "Banking": ["Commercial Banking", "Credit Analyst"],
+    "Engineering": ["Civil Eng.", "Project Eng."],
+    "Lab tech": ["Lab tech-chemical"],
+    "IT & Data": ["Data Scientist"],
+    "Projects": ["Civil Eng.", "Computer Sci."]
+  },
 
   "titles": {
     "调研运营": ["用户运营", "新媒体运营", "销售专员"],

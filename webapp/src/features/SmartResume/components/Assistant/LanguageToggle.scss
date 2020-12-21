@@ -1,0 +1,22 @@
+.toggle-container {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  border-radius: 21px;
+  padding: 10px 0;
+  background-color: #007af8;
+  .language-option {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: bold;
+    width: 60px;
+    text-align: center;
+    color: #fff;
+    &:hover {
+      color: #98c4f1;
+      cursor: pointer;
+      // color: #007af8;
+    }
+  }
+
+}
