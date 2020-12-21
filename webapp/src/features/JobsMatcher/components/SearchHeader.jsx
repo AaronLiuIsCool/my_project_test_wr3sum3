@@ -14,11 +14,11 @@ const SearchHeader = ({ onSearch, initial = {} }) => {
         },
         {
           "id": "1",
-          "data": "加拿大"
+          "data": "Canada"
         },
         {
           "id": "2",
-          "data": "美国"
+          "data": "USA"
         }
       ]
     const messages = useI8n();
