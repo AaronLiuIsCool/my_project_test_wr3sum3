@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { previewResume, wholePageCheck } from './ResumePreview/resumeBuilder';
 
 import { selectLanguage, selectUserId } from 'features/App/slicer';
-import { actions, basicSelectors, educationSelectors, workSelectors, projectSelectors, volunteerSelectors, certificateSelectors } from 'features/SmartResume/slicer';
+import { actions, basicSelectors, educationSelectors, workSelectors, projectSelectors, volunteerSelectors, certificateSelectors, resumeBuilderSelectors } from 'features/SmartResume/slicer';
 import { I8nContext } from 'shell/i18n';
 import AccountServices from 'shell/services/AccountServices';
 import ResumeServices from 'shell/services/ResumeServices';
@@ -73,6 +73,7 @@ const SmartResume = ({ useObserver = false, resumeId }) => {
     const userId = useSelector(selectUserId);
     const language = useSelector(selectLanguage);
     const messages = language === 'zh' ? zh : en;
+    const { language:resumeLanguage } = useSelector(resumeBuilderSelectors.selectResumeBuilder).data;
     
     
     const afterLoading = useRef(false)
@@ -84,13 +85,13 @@ const SmartResume = ({ useObserver = false, resumeId }) => {
     const certificate = useSelector(certificateSelectors.selectCertificate);
     
     const handleFormatRating = () => {
-        const layoutRating = generateLayoutRating(wholePageCheck(messages.RPreview), messages)
+        const layoutRating = generateLayoutRating(wholePageCheck(resumeLanguage), messages)
         dispatch(actions.updateLayoutRating(layoutRating))
     }
     
     const handleBasicFormRating = async ({ avatar, linkedin, weblink }, completed) => {
         const basicRating = generateBasicFormRating({ avatar, linkedin, weblink, messages }, completed)
-        // const layoutRating = generateLayoutRating(wholePageCheck(messages.RPreview), messages)
+        // const layoutRating = generateLayoutRating(wholePageCheck(resumeLanguage), messages)
         // dispatch(actions.updateLayoutRating(layoutRating))
         dispatch(actions.updateBasicInfoRating(basicRating))
         
@@ -196,19 +197,16 @@ const SmartResume = ({ useObserver = false, resumeId }) => {
         };
     })
     
-    
     useEffect(() => {
         const updatePreview = async () => {
             await Promise.all([
                 getResume(dispatch, resumeId),
                 getAccountInfoAndSetResumeName(dispatch, userId, resumeId)
             ]);
-            previewResume(messages.RPreview);
+            previewResume(resumeLanguage);
             afterLoading.current = true
         }
         updatePreview();
-
-        
         return () => {
           dispatch(
             actions.toggleAssistant({
@@ -219,8 +217,6 @@ const SmartResume = ({ useObserver = false, resumeId }) => {
         };
         
     }, []); // eslint-disable-line
-
-    
     
     return (
         <I8nContext.Provider value={messages}>

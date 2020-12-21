@@ -44,7 +44,7 @@ const fields = [
   'projectCity',
   'projectCountry',
 ];
-const ProjectForm = ({data, index, isLast = false, messages, projectData}) => {
+const ProjectForm = ({data, index, isLast = false, messages, projectData, resumeLanguage}) => {
   const trigger = useSelector(assistantSelectors.selectTrigger);
   const showAssistant = useSelector(assistantSelectors.selectShow);
   const resumeId = useSelector(selectId);
@@ -67,7 +67,7 @@ const ProjectForm = ({data, index, isLast = false, messages, projectData}) => {
   };
   const [cityOptions, setCityOptions] = useState([]);
   const save = async () => {
-    previewResume(messages.RPreview);
+    previewResume(resumeLanguage);
     let id = data.id;
     try {
       const responseJson =

@@ -48,7 +48,7 @@ const fields = [
   'highestAward',
   'otherAward',
 ];
-const EducationForm = ({data, index, isLast = false, messages}) => {
+const EducationForm = ({data, index, isLast = false, messages, resumeLanguage}) => {
   const [showSummary, setShowSummary] = useState(false);
   const didMount = useRef(false);
   const resumeId = useSelector(selectId);
@@ -71,7 +71,7 @@ const EducationForm = ({data, index, isLast = false, messages}) => {
     setShowSummary(!showSummary);
   };
   const save = async () => {
-    previewResume(messages.RPreview);
+    previewResume(resumeLanguage);
     let id = data.id;
     try {
       const responseJson =

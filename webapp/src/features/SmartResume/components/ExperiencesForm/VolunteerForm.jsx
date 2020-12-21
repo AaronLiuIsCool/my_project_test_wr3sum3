@@ -53,6 +53,7 @@ const VolunteerForm = ({
   isLast = false,
   messages,
   volunteerData,
+  resumeLanguage
 }) => {
   const trigger = useSelector(assistantSelectors.selectTrigger);
   const showAssistant = useSelector(assistantSelectors.selectShow);
@@ -92,7 +93,7 @@ const VolunteerForm = ({
   const dispatch = useDispatch();
   const [cityOptions, setCityOptions] = useState([]);
   const save = async () => {
-    previewResume(messages.RPreview);
+    previewResume(resumeLanguage);
     let id = data.id;
     try {
       const responseJson =

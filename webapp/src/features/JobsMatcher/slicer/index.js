@@ -8,7 +8,6 @@ const jobsMatcherSlicers = createSlice({
   reducers: {
     addBookmark: (state, action) => {
       const jobUUID = action.payload;
-      console.log(jobUUID);
       if (!jobUUID) {
         return;
       }

@@ -38,7 +38,7 @@ const fields = [
     'country'
 ];
 
-const BasicForm = ({ data, photoReference, completed, messages }) => {
+const BasicForm = ({ data, photoReference, completed, messages, resumeLanguage }) => {
 	const [showSummary, setShowSummary] = useState(false);
 	const resumeId = useSelector(selectId);
   const [validated, setValidated] = useState(false);
@@ -63,7 +63,7 @@ const BasicForm = ({ data, photoReference, completed, messages }) => {
     setShowSummary(!showSummary);
   };
 	const save = async () => {
-		previewResume(messages.RPreview);
+		previewResume(resumeLanguage);
 		let id = data.id;
 		try {
 			const responseJson =  data.id === undefined ? 
@@ -153,7 +153,7 @@ const BasicForm = ({ data, photoReference, completed, messages }) => {
       ) : (
         <Form validated={validated} onSubmit={handleSubmit}>
           <Row className="flexie">
-            <AvatarUpload photoReference={photoReference} />
+            <AvatarUpload photoReference={photoReference} resumeLanguage={resumeLanguage}/>
             <div className="toggle-up-arrow" onClick={toggleShowSummary}>
               {completed && <><img className="hide-on-hover" src={ArrowUp} alt="up-arrow"/><img className="display-on-hover" src={ArrowUpActive} alt="up-arrow-active"/></>}
             </div>

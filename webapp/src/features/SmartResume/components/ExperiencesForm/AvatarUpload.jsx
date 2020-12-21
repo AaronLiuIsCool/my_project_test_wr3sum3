@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 
 import { useI8n } from 'shell/i18n';
 
@@ -6,13 +7,12 @@ import AvatarEdit from 'components/AvatarEdit';
 import { previewResume } from '../ResumePreview/resumeBuilder';
 
 import styles from '../../styles/AvatarUpload.module.css';
-import { useDispatch } from 'react-redux';
 import { actions } from 'features/SmartResume/slicer';
 import PhotoUploadIcon from '../../assets/photoupload.svg';
 import CloseHoverIcon from '../../assets/close_hover.svg';
 import CloseRegularIcon from '../../assets/close_regular.svg';
 
-const AvatarUpload = ({photoReference}) => {
+const AvatarUpload = ({photoReference, resumeLanguage}) => {
 	const messages = useI8n();
 	const [modalOpen, setModalOpen] = useState(false);
 	const dispatch = useDispatch();
@@ -37,10 +37,10 @@ const AvatarUpload = ({photoReference}) => {
 			toDataUrl(photoReference.url, setAvatar);
 			if (avatar){
 				dispatch(actions.updateAvatar({ value: avatar }));
-				previewResume(messages.RPreview, true);
+				previewResume(resumeLanguage);
 			}
 		}
-	}, [photoReference, avatar, dispatch, messages.RPreview]);
+	}, [photoReference, avatar, dispatch, messages.RPreview, resumeLanguage]);
 	
 	return (
 		<div className={styles.avatarContainer}>

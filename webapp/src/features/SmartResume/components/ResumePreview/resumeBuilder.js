@@ -6,6 +6,56 @@ import * as Constants from "./Constants";
 import store from "store";
 import { actions } from "../../slicer";
 
+// language strings
+const messagePR = {
+  "en": {
+    "githubLink": "Github",
+    "educationBackground": "Education Background",
+    "workExperience": "Work Experience",
+    "projectExperience": "Project Experience",
+    "studentWorkAndVolunteer": "Volunteer Experience",
+    "certificateAndAward": "Certifications & Awards",
+    "awards": "获得荣誉",
+    "certificate": "Certifications",
+    "validForever": "Valid Forever",
+    "expiredAt": "",
+    "current": "Current",
+    "editThemeColor": "编辑主题色",
+    "smartTranslation": "智能翻译",
+    "translationEN": "English",
+    "translationCN": "中文版式",
+    "oneClickWholePage": "一键整页",
+    "downloadResume": "下载简历",
+    "perparingResume": "生成中..",
+    "downLoadResume": "下载简历",
+    "linkedIn": "LinkedIn",
+    "weblink": "Portfolio"
+  },
+  "zh": {
+    "githubLink": "Github链接",
+    "educationBackground": "教育背景",
+    "workExperience": "工作经历",
+    "projectExperience": "项目经历",
+    "studentWorkAndVolunteer": "志愿服务",
+    "certificateAndAward": "技能证书 & 获得荣誉",
+    "awards": "获得荣誉",
+    "certificate": "技能证书",
+    "validForever": "永久有效",
+    "expiredAt": "到期",
+    "current": "现今",
+    "editThemeColor": "编辑主题色",
+    "smartTranslation": "智能翻译",
+    "translationEN": "English",
+    "translationCN": "中文版式",
+    "oneClickWholePage": "一键整页",
+    "downloadResume": "下载简历",
+    "perparingResume": "生成中..",
+    "downLoadResume": "下载简历",
+    "linkedIn": "领英链接",
+    "weblink": "项目集链接"
+  }
+}
+
 // global input data
 let resumeData = null;
 let messages = null;
@@ -253,19 +303,21 @@ const _updateInlineList = (inputString, leftStart) => {
 }
 
 const _prepareHeader = (basicData, messages) => {
-  // build image
-  const img = {
-    type: "img",
-    y: startY - Constants.imageHeight / 2,
-    x: Constants.startX,
-    width: Constants.imageWidth,
-    height: Constants.imageHeight,
-    src: basicData.avatar,
-    format: "PNG",
-    page: currentPage,
-  };
-  currentXPos += Constants.imageWidth + Constants.defaultPaddingRight * 2;
-  data.push(img);
+  if (basicData.avatar.length > 10) {
+    // build image
+    const img = {
+      type: "img",
+      y: startY - Constants.imageHeight / 2,
+      x: Constants.startX,
+      width: Constants.imageWidth,
+      height: Constants.imageHeight,
+      src: basicData.avatar,
+      format: "PNG",
+      page: currentPage,
+    };
+    currentXPos += Constants.imageWidth + Constants.defaultPaddingRight * 2;
+    data.push(img);
+  }
 
   // build line 1
   const title = {
@@ -283,7 +335,11 @@ const _prepareHeader = (basicData, messages) => {
 
   // Second line: email + Phone
   _updateCurrentYPos(headingLineHeight / 2);
-  currentXPos = Constants.startX + Constants.imageWidth + Constants.defaultPaddingRight * 2;
+  currentXPos = Constants.startX;
+  // 如果有头像 则保留相应x 空间
+  if (basicData.avatar.length > 10) {
+    currentXPos += Constants.imageWidth + Constants.defaultPaddingRight * 2;
+  }
 
   if (basicData.email || basicData.phone || basicData.linkedin) {
     data.push({
@@ -825,18 +881,18 @@ const buildResume = () => {
   });
 };
 
-export const downloadPDF = (messagePR) => {
+export const downloadPDF = (lang = 'zh') => {
   resumeData = store.getState().resume;
   primaryColor = resumeData?.resumeBuilder?.data?.color;
-  messages = messagePR;
+  messages = messagePR[lang];
   buildResume();
   doc.save(`${resumeData?.alias}.pdf`);
 };
 
-export const previewResume = (messagePR) => {
+export const previewResume = (lang = 'zh') => {
   resumeData = store.getState().resume;
   primaryColor = resumeData.resumeBuilder.data.color;
-  messages = messagePR;
+  messages = messagePR[lang];
   buildResume();
   let base64Data;
   const buildBase64Str = async () => {
@@ -851,15 +907,15 @@ export const previewResume = (messagePR) => {
 };
 
 
-export const adjustToWholePage = (messagePR) => {
+export const adjustToWholePage = (lang = 'zh') => {
   resumeData = store.getState().resume;
-  messages = messagePR;
+  messages = messagePR[lang];
   adjustToWholePageHelper();
 };
 
-export const wholePageCheck = (messagePR) => {
+export const wholePageCheck = (lang = 'zh') => {
   resumeData = store.getState().resume;
-  messages = messagePR;
+  messages = messagePR[lang];
   prepareData(resumeData, messages);
   return data;
 };

@@ -1,14 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useI8n } from 'shell/i18n';
-
-import { selectResume, selectValidatedResume, resumeBuilderSelectors } from './../../slicer/';
-import { selectUserId } from 'features/App/slicer';
-
-import { getLogger } from 'shell/logger';
-import ResumeServices from 'shell/services/ResumeServices';
-import AccountServices from 'shell/services/AccountServices';
-import AppServices from 'shell/services/AppServices';
+import { actions } from '../../slicer';
+import { selectResume, resumeBuilderSelectors } from 'features/SmartResume/slicer';
 
 import ResumeTips from './ResumeTips';
 import ResumeThemeColorPicker from './ResumeThemeColorPicker';
@@ -16,25 +10,36 @@ import { downloadPDF, adjustToWholePage } from './resumeBuilder';
 
 import styles from '../../styles/ResumePreview.module.css';
 import DownloadIcon from '../../assets/download_white.svg';
-import { resumeAdaptor } from '../../utils/servicesAdaptor';
-import { flatten, reconstruct } from '../../utils/resume';
+// Note: 简历翻译功能 需要的 暂时保留
+// import { getLogger } from 'shell/logger';
+// import ResumeServices from 'shell/services/ResumeServices';
+// import AccountServices from 'shell/services/AccountServices';
+// import AppServices from 'shell/services/AppServices';
+// import { resumeAdaptor } from '../../utils/servicesAdaptor';
+// import { flatten, reconstruct } from '../../utils/resume';
+// import { selectUserId } from 'features/App/slicer';
+// import { selectValidatedResume } from './../../slicer/';
 
 import { Document, Page, pdfjs } from 'react-pdf';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
-const logger = getLogger('SmartResume');
-const accountServices = new AccountServices();
-const resumeServices = new ResumeServices();
-const appServices = new AppServices();
+// Note: 简历翻译功能 需要的 暂时保留
+// const logger = getLogger('SmartResume');
+// const accountServices = new AccountServices();
+// const resumeServices = new ResumeServices();
+// const appServices = new AppServices();
 
 const ResumePreview = ({ resumeName }) => {
-	const messages = useI8n();
+	// Note: 简历翻译功能 需要的 暂时保留
+	// const userId = useSelector(selectUserId);
+	// const validatedResume = useSelector(selectValidatedResume);
 
-	const userId = useSelector(selectUserId);
+	const messages = useI8n();
+	const dispatch = useDispatch();
 	const resume = useSelector(selectResume);
-	const validatedResume = useSelector(selectValidatedResume);
-	const resumeBuilder = useSelector(resumeBuilderSelectors.selectresumeBuilder);
+	const resumeBuilder = useSelector(resumeBuilderSelectors.selectResumeBuilder);
 	const color = resumeBuilder.data.color;
+	const resumeLanguage = resumeBuilder.data.language;
 
 	const [resumeData, setResumeData] = useState(resume.resumeBuilder.data.base64);
 	const [isResumeTipsModalOpen, setIsResumeTipsModalOpen] = useState(false);
@@ -46,31 +51,37 @@ const ResumePreview = ({ resumeName }) => {
 		setResumeData(resume.resumeBuilder.data.base64);
 	}, [resume]);
 	const toggleThemeColorModal = () => {
-        setIsThemeColorModalOpen(!isThemeColorModalOpen)
-    }
-    
-	const handleTranslate = async () => {
-		try {
-			const parsedResume = flatten(resumeAdaptor(validatedResume));
-			const translations = await appServices.translate(Object.values(parsedResume));
-			Object.keys(parsedResume).forEach((key, index) => {
-				parsedResume[key] = translations[index];
-			});
-			const translatedResume = reconstruct(parsedResume);
-			const data = await resumeServices.createResume(translatedResume);
-			if (data.success === false) {
-				logger.error(data.message);
-				return;
-			}
-			const resumeId = data.id;
-			const resumeName = `translated-${resumeId}`;
-			// todo: Need a better way to handle translated resume name
-			window.open(`${resumeId}`, '_blank');
-			accountServices.addResume(userId, resumeId, resumeName);
-		} catch (exception) {
-			logger.error(exception);
-		}
-	};
+    setIsThemeColorModalOpen(!isThemeColorModalOpen)
+	}
+	
+	const handleLanguageChange = () => {
+		dispatch(actions.updateResumeLanguage({language: resumeLanguage === 'zh' ? 'en' : 'zh'}));
+
+	}
+		
+	// Note: 暂时不提供简历翻译功能
+	// const handleTranslate = async () => {
+	// 	try {
+	// 		const parsedResume = flatten(resumeAdaptor(validatedResume));
+	// 		const translations = await appServices.translate(Object.values(parsedResume));
+	// 		Object.keys(parsedResume).forEach((key, index) => {
+	// 			parsedResume[key] = translations[index];
+	// 		});
+	// 		const translatedResume = reconstruct(parsedResume);
+	// 		const data = await resumeServices.createResume(translatedResume);
+	// 		if (data.success === false) {
+	// 			logger.error(data.message);
+	// 			return;
+	// 		}
+	// 		const resumeId = data.id;
+	// 		const resumeName = `translated-${resumeId}`;
+	// 		// todo: Need a better way to handle translated resume name
+	// 		window.open(`${resumeId}`, '_blank');
+	// 		accountServices.addResume(userId, resumeId, resumeName);
+	// 	} catch (exception) {
+	// 		logger.error(exception);
+	// 	}
+	// };
 
 	function onDocumentLoadSuccess(pdf) {
     setNumOfPagesList(Array.from(Array(pdf.numPages), (v, i) => i + 1));
@@ -96,9 +107,9 @@ const ResumePreview = ({ resumeName }) => {
 					<button className={styles.whiteBtn} onClick={() => toggleThemeColorModal()}>
 						{messages.RPreview.editThemeColor} <span className={styles.colorSquare} style={{ backgroundColor: color }}></span>
 					</button>
-					<button onClick={handleTranslate}>{messages.RPreview.smartTranslation}</button>
-					<button onClick={() => adjustToWholePage(messages.RPreview)}>{messages.RPreview.oneClickWholePage}</button>
-					<button onClick={() => downloadPDF(messages.RPreview, resumeName)}>
+					<button onClick={handleLanguageChange}>{resumeLanguage === "en" ? messages.RPreview.translationCN : messages.RPreview.translationEN}</button>
+					<button onClick={() => adjustToWholePage(resumeLanguage)}>{messages.RPreview.oneClickWholePage}</button>
+					<button onClick={() => downloadPDF(resumeLanguage)}>
 						<img src={DownloadIcon} alt='download' /> {messages.RPreview.downloadResume}
 					</button>
 					<button className={styles.circle} onClick={resumeTipsOpenHandler}>
@@ -107,7 +118,7 @@ const ResumePreview = ({ resumeName }) => {
 				</div>
 			</div>
 			{isResumeTipsModalOpen && <ResumeTips />}
-			{isThemeColorModalOpen && <ResumeThemeColorPicker setIsThemeColorModalOpen={setIsThemeColorModalOpen} messages={messages}/>}
+			{isThemeColorModalOpen && <ResumeThemeColorPicker setIsThemeColorModalOpen={setIsThemeColorModalOpen} resumeLanguage={resumeLanguage}/>}
 		</div>
 	);
 };

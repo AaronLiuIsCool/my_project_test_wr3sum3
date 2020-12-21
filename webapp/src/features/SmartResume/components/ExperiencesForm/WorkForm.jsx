@@ -47,7 +47,7 @@ const fields = [
   'workDescription',
 ];
 
-const WorkForm = ({data, index, isLast = false, messages, workData}) => {
+const WorkForm = ({data, index, isLast = false, messages, workData, resumeLanguage}) => {
   const trigger = useSelector(assistantSelectors.selectTrigger);
   const showAssistant = useSelector(assistantSelectors.selectShow);
   const resumeId = useSelector(selectId);
@@ -70,7 +70,7 @@ const WorkForm = ({data, index, isLast = false, messages, workData}) => {
   };
   const save = async () => {
     GAEvent('Resume Edit', 'Save work form'); // call GA on save
-    previewResume(messages.RPreview);
+    previewResume(resumeLanguage);
     let id = data.id;
     try {
       const responseJson =
