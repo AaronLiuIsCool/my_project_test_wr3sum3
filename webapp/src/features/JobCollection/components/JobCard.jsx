@@ -3,15 +3,18 @@ import './JobCard.scss';
 import { Button } from 'react-bootstrap';
 import { useI8n } from 'shell/i18n';
 
-const JobCard = ({ applied, title, url, company, date, location, id }) => {
+import MatchingServices from 'shell/services/MatchingServices';
+const matchingServices = new MatchingServices();
+
+const JobCard = ({ applied, title, url, company, date, location, jobUuid, resumeId, removeBookmark }) => {
     const messages = useI8n();
 
-    const handleRemove = (event) => {
-        // const { id } = event.currentTarget.dataset;
-    };
+    const handleRemove = async (event) => {
+        const response = await matchingServices.unbookmarkJob(resumeId, jobUuid);
 
-    const handleApply = (event) => {
-        // const { id } = event.currentTarget.dataset;
+        if (response?.success === true) {
+            removeBookmark(jobUuid);
+        }
     };
 
     return (
@@ -44,17 +47,16 @@ const JobCard = ({ applied, title, url, company, date, location, id }) => {
                 <div className="right">
                     {!applied && (
                         <Button
-                            data-id={id}
+                            data-id={jobUuid}
                             className="apply-btn"
                             href={url}
-                            onClick={handleApply}
                         >
                             {messages['applyJob']}
                         </Button>
                     )}
                 </div>
             </div>
-            <div data-id={id} className="remove" onClick={handleRemove}>
+            <div data-id={jobUuid} className="remove" onClick={handleRemove}>
                 <img
                     width="14"
                     src={require('../asset/icons8-delete-bin@3x.png')}

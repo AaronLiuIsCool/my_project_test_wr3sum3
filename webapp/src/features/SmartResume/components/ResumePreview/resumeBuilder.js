@@ -84,7 +84,7 @@ let primaryColor = Constants.c_blue;
 // helper function, 计算右侧padding
 const getRightPadding = (content, numOfPadding = 1) => {
   if (!content) {
-    return;
+    return 0;
   }
   // regex for alphabets only 
   const alphabetRegex = /^[A-Za-z0-9\s]*$/;
