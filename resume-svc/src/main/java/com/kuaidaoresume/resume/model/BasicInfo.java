@@ -26,28 +26,28 @@ public class BasicInfo implements ResumeContainable {
     private Long id;
 
     @NotNull
-    @Column(length = 50)
+    @Column(length = 256)
     private String fullName;
 
-    @Column(length = 20)
+    @Column(length = 256)
     private String alias;
 
     @NotNull
-    @Column(length = 60)
+    @Column(length = 256)
     private String country;
     private String province;
 
     @NotNull
-    @Column(length = 100)
+    @Column(length = 256)
     private String city;
 
     @NotNull
     @Email
-    @Column(length = 100)
+    @Column(length = 256)
     private String email;
 
     @NotNull
-    @Column(length = 20)
+    @Column(length = 50)
     private String phoneNumber;
 
     @OneToMany(mappedBy = "basicInfo", cascade = CascadeType.ALL, orphanRemoval = true)

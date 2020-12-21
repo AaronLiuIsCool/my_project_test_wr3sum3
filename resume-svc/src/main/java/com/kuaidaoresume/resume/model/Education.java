@@ -23,23 +23,23 @@ public class Education implements ResumeContainable {
     private Long id;
 
     @NotNull
-    @Column(length = 60)
+    @Column(length = 256)
     private String country;
 
     @NotNull
-    @Column(length = 100)
+    @Column(length = 256)
     private String city;
 
     @NotNull
-    @Column(length = 50)
+    @Column(length = 500)
     private String institution;
 
     @NotNull
-    @Column(length = 50)
+    @Column(length = 256)
     private String major;
 
     @NotNull
-    @Column(length = 20)
+    @Column(length = 256)
     private String degree;
 
     @NotNull
@@ -47,7 +47,7 @@ public class Education implements ResumeContainable {
 
     private LocalDate endDate;
 
-    @Column(length = 4)
+    @Column(length = 10)
     private String gpa;
 
     @OneToMany(mappedBy = "education", cascade = CascadeType.ALL, orphanRemoval = true)
