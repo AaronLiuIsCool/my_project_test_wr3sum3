@@ -117,8 +117,8 @@ const ResumerStarter = () => {
 					<p className={styles.optionTitle}>{messages.createNewResume}</p>
 					<p className={styles.optionDescription}>{messages.chooseLanguage}</p>
 					<div className={styles.buttonWrapper}>
-						<Button onClick={createNewResumeFromBeginning} className={styles.button}>{messages.language_toggle_zh}</Button>
-						<Button onClick={createNewResumeFromBeginning} className={styles.button}>{messages.language_toggle_en}</Button>
+						<Button onClick={createNewResumeFromBeginning} className={styles.button}>{messages.createResume}</Button>
+						{/* <Button onClick={createNewResumeFromBeginning} className={styles.button}>{messages.language_toggle_en}</Button> */}
 					</div>
 				</div>
 				<div className={styles.option}>
