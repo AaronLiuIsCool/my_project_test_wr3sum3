@@ -16,7 +16,7 @@ export function adaptBasics(basics) {
     const { id, nameCn, email, phone, city, linkedin, weblink, country } = basics.data;
     const data = {
         id,
-        fullName: nameCn ? nameCn: "   ",
+        fullName: nameCn,
         city: city? city: "  ",
         country : country ? country : "  ",
         email : email ? email : " ",
@@ -93,11 +93,11 @@ export function adaptWork(work) {
 
     const data = {
         id,
-        role: workName ? workName : "  ",
+        role: workName,
         organization: workCompanyName ? workCompanyName : "  ",
         city: workCity ? workCity : "  ",
         country:  workCountry ? workCountry : "  ",
-        description: workDescription ? workDescription : "  ",
+        description: workDescription,
         startDate: getDateString(workStartDate),
         endDate: getDateString(workEndDate)
     }
@@ -119,11 +119,11 @@ export function adaptProject(project) {
 
     const data = {
         id,
-        role: projectRole ? projectRole : "  ",
+        role: projectRole,
         organization: projectCompanyName ? projectCompanyName : "  ",
         city: projectCity ? projectCity : "  ",
         country: projectCountry ? projectCountry : "  ",
-        description: projectDescription ? projectDescription : "  ",
+        description: projectDescription,
         startDate: getDateString(projectStartDate),
         endDate: getDateString(projectEndDate)
     };
@@ -165,12 +165,12 @@ export function adaptVolunteer(volunteer) {
     const data = {
         id,
         role: volunteerRole,
-        organization: volunteerCompanyName,
+        organization: volunteerCompanyName ? volunteerCompanyName : "  ",
         startDate: getDateString(volunteerStartDate),
         endDate: getDateString(volunteerEndDate),
         description: volunteerDescription,
-        city: volunteerCity,
-        country: volunteerCountry
+        city: volunteerCity ? volunteerCity : "  ",
+        country: volunteerCountry ? volunteerCountry : "  "
     };
     return data;
 }
@@ -206,7 +206,18 @@ export function resumeAdaptorForSDK(resume) {
         certificate = { ...resume.certificate, completed: true };
     }
 
-    const result = {
+    console.log("test", {
+
+        language: 'zh',
+        basicInfo: adaptBasics(basic),
+        educations: adaptEducations(education),
+        workExperiences: adaptWorks(work),
+        projectExperiences: adaptProjects(project),
+        certificates: (certificate ? adaptCertificates(certificate) : []),
+        volunteerExperiences: [] // note: resumeSDK doesn't have any volunteer related results
+    });
+
+    return {
         language: 'zh',
         basicInfo: adaptBasics(basic),
         educations: adaptEducations(education),
@@ -215,10 +226,4 @@ export function resumeAdaptorForSDK(resume) {
         certificates: (certificate ? adaptCertificates(certificate) : []),
         volunteerExperiences: [] // note: resumeSDK doesn't have any volunteer related results
     };
-
-    if (!education.schoolName){
-        delete result['educations'];
-    }
-
-    return result;
 }

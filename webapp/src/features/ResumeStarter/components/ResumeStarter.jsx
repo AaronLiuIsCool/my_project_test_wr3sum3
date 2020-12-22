@@ -89,18 +89,9 @@ const ResumerStarter = () => {
 	});
 
 	const handleSubmit = async (file) => {
-		// remove "data:application/pdf;base64," from pdf base64 string
-		// or remove "formats-officedocument.wordprocessingml.document;base64," from word
+		// remove "data:application/pdf;base64," from base64 string
 		const base64Str = await toBase64(file);
-		let sliceLength = 0;
-		if (file.name.includes('.pdf')){
-			sliceLength = 28;
-		}
-		else{
-			sliceLength = 56;
-		}
-		const data = { base64: base64Str.slice(sliceLength), fileName: file.name };
-
+		const data = { base64: base64Str.slice(28), fileName: file.name };
 		const response = await appServices.resumeSDKUpload(data);
 		if (response?.status?.message === "success") {
 			await updateInfo(response.data);

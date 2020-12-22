@@ -169,7 +169,7 @@ const messages = {
     oneClickWholePage: '一键整页',
     downloadResume: '下载简历',
     perparingResume: '生成中..',
-    downloadResume: '下载简历',
+    downLoadResume: '下载简历',
     linkedIn: '领英链接',
     weblink: '项目集链接',
   },

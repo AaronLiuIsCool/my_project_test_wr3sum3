@@ -38,10 +38,10 @@ const DetailHeader = ({ resumeId, data }) => {
         if (!jobUuid) {
             return;
         }
-        console.log("resumeId, jobUuid", resumeId, jobUuid)
+
         const response = bookmarked ? 
             await matchingServices.unbookmarkJob(resumeId, jobUuid) :
-            await matchingServices.bookmarkJob(resumeId, jobUuid);
+            await matchingServices.bookmarkJob(resumeId, jobUuid);;
 
         if (response?.success === true) {
             dispatch(bookmarked ? 
