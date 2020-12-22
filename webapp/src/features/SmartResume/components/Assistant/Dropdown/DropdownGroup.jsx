@@ -8,7 +8,7 @@ const DropdownGroup = ({ industries, titles, onSelect, messages }) => {
     onSelect(industry, titles[industry][0]);
   };
   const handleSearch = (title) => {
-    onSelect(industry, title);
+    onSelect(industry || industries[0], title);
   };
   return (
     <div className="suggestion-dropdown">
