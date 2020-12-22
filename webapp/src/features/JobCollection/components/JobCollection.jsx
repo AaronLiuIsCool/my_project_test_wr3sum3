@@ -55,7 +55,12 @@ const getAllResumeIds = async (userId) => {
 const getAllBookmarkJobs = async (resumeIds) => {
     const bookmarkJobCalls = resumeIds.map(async (resumeId) => {
         const responseJson = await matchingServices.findBookMarkJobs(resumeId);
-        return responseJson?.jobList?.jobs;
+        const results = responseJson?.jobList?.jobs;
+        results.map(result => {
+            result['resumeId'] = resumeId;
+            return result;
+        })
+        return results;
     });
     const results = (await Promise.all(bookmarkJobCalls)).reduce((acc, cur) => {
         return acc.concat(cur);
@@ -87,15 +92,14 @@ const JobCollection = () => {
     const [chosenValue, setChosenValue] = useState(options[0]);
 
     ///let chosenValue = options[0];
-const OnSelect = (eventKey, event) =>{ // user can change the "default value"
-    setChosenValue(eventKey)
-    jobsToBeDisplayed.sort((a, b) => (
-        chosenValue === null || chosenValue === 0  ?  new Date(b.postDate).getTime() - new Date(a.postDate).getTime() :
-        new Date(a.postDate).getTime() - new Date(b.postDate).getTime()
-        ))
-    setJobsToBeDisplayed(jobsToBeDisplayed)
-    console.log(jobsToBeDisplayed)
-}
+    const OnSelect = (eventKey, event) =>{ // user can change the "default value"
+        setChosenValue(eventKey)
+        jobsToBeDisplayed.sort((a, b) => (
+            chosenValue === null || chosenValue === 0  ?  new Date(b.postDate).getTime() - new Date(a.postDate).getTime() :
+            new Date(a.postDate).getTime() - new Date(b.postDate).getTime()
+            ))
+        setJobsToBeDisplayed(jobsToBeDisplayed)
+    }
 
     const applyFilter = (bookmark) => {
         if (bookmark) {
@@ -120,6 +124,10 @@ const OnSelect = (eventKey, event) =>{ // user can change the "default value"
         });
         // eslint-disable-next-line
     }, []);
+
+    const removeBookmark = jobUuid => {
+        setJobsToBeDisplayed(jobsToBeDisplayed.filter(job=>job.jobUuid !== jobUuid))
+    }
 
     return (
         <I8nContext.Provider value={messages}>
@@ -165,15 +173,17 @@ const OnSelect = (eventKey, event) =>{ // user can change the "default value"
                 {jobsToBeDisplayed.map((job, index) => (
                         <JobCard
                             key={job.jobUuid + index}
-                            id={job.jobUuid}
+                            jobUuid={job.jobUuid}
                             applied={false}
                             title={job.title}
                             url={job.url}
                             company={job.companyName}
+                            resumeId={job.resumeId}
                             date={moment(new Date(job.postDate)).format(
                                 JDBC_DATE_FORMAT
                             )}
                             location={formatLocation(job.location)}
+                            removeBookmark={removeBookmark}
                         ></JobCard>
                     ))}
                 </div>
