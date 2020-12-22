@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
 @Data
@@ -22,7 +21,7 @@ public class Certificate implements ResumeContainable {
     private Long id;
 
     @NotNull
-    @Column(length = 50)
+    @Column(length = 500)
     private String name;
 
     private LocalDate issueDate;

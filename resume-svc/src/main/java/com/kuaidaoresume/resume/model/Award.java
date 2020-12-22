@@ -9,7 +9,6 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 @Data
 @NoArgsConstructor
@@ -22,7 +21,7 @@ public class Award {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotNull
-    @Column(length = 50)
+    @Column(length = 500)
     private String name;
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

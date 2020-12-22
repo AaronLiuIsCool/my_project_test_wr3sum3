@@ -15,16 +15,18 @@ nav {
   justify-content: space-between;
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
-}
-.left {
-  padding-left: 1.875rem;
+  margin: 0 auto;
+  max-width: 1180px;
 }
 
 .right {
   display: flex;
-  padding-right: 2.5rem;
+  align-items: center;
 }
 .right > a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-left: 5rem;
   color: #bfc4d3;
   font-family: MicrosoftYaHei;
@@ -54,7 +56,13 @@ nav {
   height: 2px;
   background-color: #3e89ec;
 }
-
+header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1;
+}
 .banner {
   background-image: url('../assets/bg-image.png');
   height: 50rem;
@@ -64,6 +72,7 @@ nav {
   border-bottom-left-radius: 50% 14%;
   border-bottom-right-radius: 50% 14%;
   position: relative;
+  padding-top: 82px;
 }
 .banner h1 {
   font-family: MicrosoftYaHei;
@@ -395,6 +404,14 @@ p.action-item {
   margin: 140px auto 0;
 }
 @media screen and (max-width: 767px) {
+  .right > a {
+    margin-left: 0;
+    margin-right: 0.25rem;
+    text-align: center;
+  }
+  .left {
+    padding-left: 20px;
+  }
   .bnanner-container {
     width: 100%;
     position: absolute;
@@ -550,6 +567,7 @@ p.action-item {
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
       position: relative;
+      margin-top: 82px;
   }
   .banner-left {
       width: 100%;

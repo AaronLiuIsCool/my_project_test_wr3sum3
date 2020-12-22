@@ -28,7 +28,7 @@ public class Resume {
     private String id;
 
     @NotNull
-    @Column(length = 2)
+    @Column(length = 50)
     private String language;
 
     @Column(name = "created_at", nullable = false, updatable = false)
