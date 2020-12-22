@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useI8n } from 'shell/i18n';
 import { actions } from '../../slicer';
@@ -6,7 +6,7 @@ import { selectResume, resumeBuilderSelectors } from 'features/SmartResume/slice
 
 import ResumeTips from './ResumeTips';
 import ResumeThemeColorPicker from './ResumeThemeColorPicker';
-import { previewResume, downloadPDF, adjustToWholePage } from './resumeBuilder';
+import { downloadPDF, adjustToWholePage } from './resumeBuilder';
 
 import styles from '../../styles/ResumePreview.module.css';
 import DownloadIcon from '../../assets/download_white.svg';
@@ -29,7 +29,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 // const resumeServices = new ResumeServices();
 // const appServices = new AppServices();
 
-const ResumePreview = () => {
+const ResumePreview = ({ resumeName }) => {
 	// Note: 简历翻译功能 需要的 暂时保留
 	// const userId = useSelector(selectUserId);
 	// const validatedResume = useSelector(selectValidatedResume);
@@ -46,7 +46,6 @@ const ResumePreview = () => {
 	const [resumeTipsSymbol, setResumeTipsSymbol] = useState("?");
 	const [isThemeColorModalOpen, setIsThemeColorModalOpen] = useState(false);
 	const [numOfPagesList, setNumOfPagesList] = useState([]);
-	const translateButton = useRef();
 
 	useEffect(() => {
 		setResumeData(resume.resumeBuilder.data.base64);
@@ -56,13 +55,8 @@ const ResumePreview = () => {
 	}
 	
 	const handleLanguageChange = () => {
-		if (translateButton.current){
-			translateButton.current.setAttribute('disabled', 'disabled');
-			const toggleLanguage = (resumeLanguage === 'zh' ? 'en' : 'zh');
-			previewResume(toggleLanguage);
-			dispatch(actions.updateResumeLanguage({language: toggleLanguage}));
-			translateButton.current.removeAttribute('disabled');
-		}
+		dispatch(actions.updateResumeLanguage({language: resumeLanguage === 'zh' ? 'en' : 'zh'}));
+
 	}
 		
 	// Note: 暂时不提供简历翻译功能
@@ -113,7 +107,7 @@ const ResumePreview = () => {
 					<button className={styles.whiteBtn} onClick={() => toggleThemeColorModal()}>
 						{messages.RPreview.editThemeColor} <span className={styles.colorSquare} style={{ backgroundColor: color }}></span>
 					</button>
-					<button ref={translateButton} onClick={handleLanguageChange}>{resumeLanguage === "en" ? messages.RPreview.translationEN : messages.RPreview.translationCN}</button>
+					<button onClick={handleLanguageChange}>{resumeLanguage === "en" ? messages.RPreview.translationCN : messages.RPreview.translationEN}</button>
 					<button onClick={() => adjustToWholePage(resumeLanguage)}>{messages.RPreview.oneClickWholePage}</button>
 					<button onClick={() => downloadPDF(resumeLanguage)}>
 						<img src={DownloadIcon} alt='download' /> {messages.RPreview.downloadResume}

@@ -25,8 +25,9 @@ const RPmessages = {
     "editThemeColor": "编辑主题色",
     "smartTranslation": "智能翻译",
     "oneClickWholePage": "一键整页",
-    "perparingResume": "生成中..",
     "downloadResume": "下载简历",
+    "perparingResume": "生成中..",
+    "downLoadResume": "下载简历",
     "linkedIn": "领英链接",
     "weblink": "项目集链接"
   }

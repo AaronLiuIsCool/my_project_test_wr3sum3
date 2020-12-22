@@ -25,8 +25,9 @@ const messagePR = {
     "translationEN": "English",
     "translationCN": "中文版式",
     "oneClickWholePage": "一键整页",
-    "perparingResume": "生成中..",
     "downloadResume": "下载简历",
+    "perparingResume": "生成中..",
+    "downLoadResume": "下载简历",
     "linkedIn": "LinkedIn",
     "weblink": "Portfolio"
   },
@@ -47,8 +48,9 @@ const messagePR = {
     "translationEN": "English",
     "translationCN": "中文版式",
     "oneClickWholePage": "一键整页",
-    "perparingResume": "生成中..",
     "downloadResume": "下载简历",
+    "perparingResume": "生成中..",
+    "downLoadResume": "下载简历",
     "linkedIn": "领英链接",
     "weblink": "项目集链接"
   }
@@ -82,7 +84,7 @@ let primaryColor = Constants.c_blue;
 // helper function, 计算右侧padding
 const getRightPadding = (content, numOfPadding = 1) => {
   if (!content) {
-    return 0;
+    return;
   }
   // regex for alphabets only 
   const alphabetRegex = /^[A-Za-z0-9\s]*$/;

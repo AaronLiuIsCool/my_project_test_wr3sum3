@@ -41,7 +41,7 @@ const DetailHeader = ({ resumeId, data }) => {
 
         const response = bookmarked ? 
             await matchingServices.unbookmarkJob(resumeId, jobUuid) :
-            await matchingServices.bookmarkJob(resumeId, jobUuid);
+            await matchingServices.bookmarkJob(resumeId, jobUuid);;
 
         if (response?.success === true) {
             dispatch(bookmarked ? 
