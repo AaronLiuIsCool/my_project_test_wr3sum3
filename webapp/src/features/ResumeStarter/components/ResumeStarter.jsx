@@ -97,7 +97,7 @@ const ResumerStarter = () => {
 			sliceLength = 28;
 		}
 		else{
-			sliceLength = 56;
+			sliceLength = 7 +  base64Str.indexOf("base64,");
 		}
 		const data = { base64: base64Str.slice(sliceLength), fileName: file.name };
 
