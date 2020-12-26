@@ -15,6 +15,7 @@ import com.kuaidaoresume.web.service.WeChatService;
 import com.kuaidaoresume.web.view.Constant;
 import com.kuaidaoresume.web.view.PageFactory;
 import com.kuaidaoresume.web.view.WeChatCallBackPage;
+import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
@@ -79,6 +80,7 @@ public class WeChatCallbackController {
                 switch (wechatResponse.getInt(WECHAT_ERROR_CODE)) { // TODO: need to support multi language
                     case 40163:
                         weChatCallBackPage.setErrorMsg("微信确认码被使用, 请重试...");
+                        break;
                     default:
                         weChatCallBackPage.setErrorMsg("微信服务异常, 请稍后重试...");
                         break;
@@ -89,13 +91,26 @@ public class WeChatCallbackController {
                 AccountDto account = null;
 
                 // check if we have account with this open id
-                GenericAccountResponse accountResponse = accountClient.getAccountByOpenId(AuthConstant.AUTHORIZATION_WWW_SERVICE, openId);
-                if (accountResponse != null) {
-                    if (accountResponse.isSuccess()) {
-                        account = accountResponse.getAccount();
-                    } else {
-                        logger.error("Wechat account get failed", accountResponse.getMessage());
+                GenericAccountResponse accountResponse;
+                try {
+                    accountResponse = accountClient.getAccountByOpenId(AuthConstant.AUTHORIZATION_WWW_SERVICE, openId);
+                    if (accountResponse != null) {
+                        if (accountResponse.isSuccess()) {
+                            account = accountResponse.getAccount();
+                        } else {
+                            helperService.logError(logger, accountResponse.getMessage());
+                        }
                     }
+                } catch (FeignException e) {
+                    if (e.status() == HttpServletResponse.SC_NOT_FOUND) {
+                        logger.debug("No Account associated to the WeChat account found", e, e.getMessage());
+                    } else {
+                        helperService.logException(logger, e, String.format("accountClient.getAccountByOpenId() failed with openId %s", openId));
+                        throw e;
+                    }
+                } catch (Exception e) {
+                    helperService.logException(logger, e, String.format("accountClient.getAccountByOpenId() failed with openId %s", openId));
+                    throw e;
                 }
 
                 if (account == null) {
