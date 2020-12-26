@@ -17,7 +17,7 @@ const messagePR = {
     "certificateAndAward": "Certifications & Awards",
     "awards": "获得荣誉",
     "certificate": "Certifications",
-    "validForever": "Valid Forever",
+    "validForever": "No expiration",
     "expiredAt": "",
     "current": "Current",
     "editThemeColor": "编辑主题色",
@@ -54,6 +54,9 @@ const messagePR = {
   }
 }
 
+// regex for alphabets only 
+const alphabetRegex = /^[A-Za-z0-9\s.]*$/;
+
 // global input data
 let resumeData = null;
 let messages = null;
@@ -79,13 +82,24 @@ let currentYPos = startY;
 
 let primaryColor = Constants.c_blue;
 
+const adjustGetTextWidth = (content) => {
+  // 因为自带function doc.getTextWidth(content) 无法正确检测英文字符长度
+  // 所以当内容含有英文的时候 把结构认为加长120%
+  let factor = 1;
+  let extra = 0;
+  if (alphabetRegex.test(content)) {
+    factor = 1.1;
+    extra = 3;
+  }
+  return doc.getTextWidth(content) * factor + extra;
+}
+
+
 // helper function, 计算右侧padding
 const getRightPadding = (content, numOfPadding = 1) => {
   if (!content) {
     return 0;
   }
-  // regex for alphabets only 
-  const alphabetRegex = /^[A-Za-z0-9\s]*$/;
 
   // 在当前字体下 getTextWidth(text) 
   // 计算中文长度和英文长度会有偏差 
@@ -98,7 +112,7 @@ const getRightPadding = (content, numOfPadding = 1) => {
 }
 
 // 一键整页
-const adjustToWholePageHelper = () => {
+const adjustToWholePageHelper = (lang, messages) => {
   // 如果简历没有preview 则无法整页
   if (data.length === 0) {
     return;
@@ -121,7 +135,7 @@ const adjustToWholePageHelper = () => {
     (accumulateY >= pageHeight * 0.9 && accumulateY <= pageHeight) ||
     (accumulateY >= pageHeight * 1.87 && accumulateY <= pageHeight * 2)
   ) {
-    previewResume(messages);
+    previewResume(lang);
     return;
   } else if (accumulateY > pageHeight * 2) {
     // 超过2页
@@ -140,8 +154,8 @@ const adjustToWholePageHelper = () => {
       scaleFactor *= 1.05;
     }
     // recursion 重复进行
-    buildResume();
-    adjustToWholePageHelper();
+    buildResume(messages);
+    adjustToWholePageHelper(lang, messages);
   }
 };
 
@@ -366,18 +380,18 @@ const _prepareHeader = (basicData, messages) => {
   doc.setFontSize(Constants.h3FontSize);
   currentXPos += getRightPadding(`${basicData.city}  ${basicData.phone}  ${basicData.email}`, 2);
   data.push(contact);
-
-  const link = {
-    type: "link",
-    y: currentYPos,
-    x: currentXPos,
-    content: basicData.linkedin ? messages.linkedIn : "",
-    url: basicData.linkedin,
-    page: currentPage,
-  };
-  data.push(link);
-
-  currentXPos += getRightPadding(messages.linkedIn, 2);
+  if (basicData.linkedin) {
+    const link = {
+      type: "link",
+      y: currentYPos,
+      x: currentXPos,
+      content: basicData.linkedin ? messages.linkedIn : "",
+      url: basicData.linkedin,
+      page: currentPage,
+    };
+    data.push(link);
+    currentXPos += getRightPadding(messages.linkedIn, 2);
+  }
 
   const link2 = {
     type: "link",
@@ -415,14 +429,13 @@ const _prepareEducation = (educationData, messages) => {
 
     // draw each education line
     educationData.forEach((education) => {
-      const educationTitleStr = `${education.degree}   ${education.schoolName}   ${education.country}`;
       data.push({
-        type: "list",
+        type: "h3",
         color: primaryColor,
         fontSize: h2FontSize,
         bold: true,
         y: currentYPos,
-        content: educationTitleStr,
+        content: education.degree,
         page: currentPage,
       });
 
@@ -431,11 +444,11 @@ const _prepareEducation = (educationData, messages) => {
 
       // shift x position
       doc.setFontSize(h2FontSize);
-      let currentXPos = Constants.startX + doc.getTextWidth(educationTitleStr) + Constants.defaultPaddingRight * 2;
+      let currentXPos = Constants.startX + adjustGetTextWidth(education.degree) + Constants.defaultPaddingRight;
       doc.setFontSize(pFontSize);
 
       data.push({
-        type: "list",
+        type: "h3",
         color: Constants.c_black,
         y: currentYPos,
         x: currentXPos,
@@ -456,8 +469,19 @@ const _prepareEducation = (educationData, messages) => {
         alignment: "right",
         page: currentPage,
       });
+      _updateCurrentYPos(paragraphLineHeight * 0.9);
 
-      _updateCurrentYPos(paragraphLineHeight);
+      // build second line
+      const educationTitleLine2 = `${education.schoolName}   ${education.city}   ${education.country}`;
+      data.push({
+        type: "h3",
+        color: Constants.c_black,
+        y: currentYPos,
+        content: educationTitleLine2,
+        page: currentPage,
+      });
+
+      _updateCurrentYPos(paragraphLineHeight * 1.2);
     });
   }
 };
@@ -495,24 +519,6 @@ const _prepareWork = (workData, messages) => {
       });
     }
 
-    // company name
-    if (work.workCompanyName) {
-      doc.setFontSize(h2FontSize);
-      currentXPos =
-        Constants.startX +
-        (work.workName
-          ? getRightPadding(work.workName) + 0.5
-          : 0);
-      data.push({
-        type: "h3",
-        y: currentYPos,
-        x: currentXPos,
-        content: `${work.workCompanyName}   ${work.workCity
-          }   ${work.workCountry}`,
-        page: currentPage,
-      });
-    }
-
     // date + location
     if (
       work.workStartDate ||
@@ -532,7 +538,24 @@ const _prepareWork = (workData, messages) => {
         page: currentPage,
       });
     }
+
+    // company name
+    if (work.workCompanyName) {
+      _updateCurrentYPos(headingLineHeight);
+
+      doc.setFontSize(h2FontSize);
+      data.push({
+        type: "h3",
+        y: currentYPos,
+        x: Constants.startX,
+        content: `${work.workCompanyName}   ${work.workCity
+          }   ${work.workCountry}`,
+        page: currentPage,
+      });
+    }
+
     _updateCurrentYPos(h1Padding);
+
     // render work details
     work.workDescription && _updateDetails(work.workDescription);
   });
@@ -540,7 +563,9 @@ const _prepareWork = (workData, messages) => {
 };
 
 const _prepareProject = (projectData, messages) => {
-  _updateCurrentYPos(h1Padding);
+  if (projectData[0]?.projectRole){
+    _updateCurrentYPos(h1Padding);
+  }
   // draw project title
   if (projectData.length > 0 && projectData[0].projectRole) {
     data.push({
@@ -566,22 +591,7 @@ const _prepareProject = (projectData, messages) => {
       // draw project detail title line
       data.push({ type: "h2", y: currentYPos, content: project.projectRole });
     }
-    // project company name
-    if (project.projectCompanyName) {
-      doc.setFontSize(h2FontSize);
-      currentXPos =
-        Constants.startX +
-        (project.projectRole
-          ? getRightPadding(project.projectRole)
-          : 0);
-      data.push({
-        type: "h3",
-        y: currentYPos,
-        x: currentXPos,
-        content: `${project.projectCompanyName}   ${project.projectCity}   ${project.projectCountry}`,
-        page: currentPage,
-      });
-    }
+    
     // date + location
     if (
       project.projectStartDate ||
@@ -603,7 +613,24 @@ const _prepareProject = (projectData, messages) => {
         page: currentPage,
       });
     }
-    _updateCurrentYPos(h1Padding);
+
+    // project company name
+    if (project.projectCompanyName) {
+      _updateCurrentYPos(headingLineHeight);
+      doc.setFontSize(h2FontSize);
+      currentXPos =
+        Constants.startX;
+      data.push({
+        type: "h3",
+        y: currentYPos,
+        x: currentXPos,
+        content: `${project.projectCompanyName}   ${project.projectCity}   ${project.projectCountry}`,
+        page: currentPage,
+      });
+    }
+    if (projectData[0]?.projectRole){
+      _updateCurrentYPos(h1Padding);
+    }
 
     // render project details
     project.projectDescription && _updateDetails(project.projectDescription);
@@ -646,23 +673,6 @@ const _prepareVolunteer = (volunteerData, messages) => {
       });
     }
 
-    // volunteer company name
-    if (volunteer.volunteerRole) {
-      doc.setFontSize(h2FontSize);
-      currentXPos =
-        Constants.startX +
-        (volunteer.volunteerCompanyName
-          ? getRightPadding(volunteer.volunteerCompanyName)
-          : 0);
-      data.push({
-        type: "h3",
-        y: currentYPos,
-        x: currentXPos,
-        content: `${volunteer.volunteerRole}   ${volunteer.volunteerCity}   ${volunteer.volunteerCountry}`,
-        page: currentPage,
-      });
-    }
-
     // date + location
     if (
       volunteer.volunteerStartDate ||
@@ -684,6 +694,22 @@ const _prepareVolunteer = (volunteerData, messages) => {
         page: currentPage,
       });
     }
+    // volunteer company name
+    if (volunteer.volunteerRole) {
+      _updateCurrentYPos(headingLineHeight);
+      doc.setFontSize(h2FontSize);
+      currentXPos =
+        Constants.startX;
+      data.push({
+        type: "h3",
+        y: currentYPos,
+        x: currentXPos,
+        content: `${volunteer.volunteerRole}   ${volunteer.volunteerCity}   ${volunteer.volunteerCountry}`,
+        page: currentPage,
+      });
+    }
+
+
     _updateCurrentYPos(h1Padding);
 
     // render volunteer details
@@ -766,7 +792,7 @@ const _prepareAwardAndCertificate = (educationData, certificateData, messages) =
       let certificateStr = "";
       certificateData.forEach((certificate) => {
         if (!certificate.validCertificateFlag) {
-          certificateStr += ` *  ${certificate.certificateName} ${certificate.certificateEndDate ? certificate.certificateEndDate + messages.expiredAt : ""}`;
+          certificateStr += ` *  ${certificate.certificateName} ${certificate.certificateEndDate ? certificate.certificateEndDate.slice(0,7) + messages.expiredAt : ""}`;
         }
         else {
           certificateStr += ` *  ${certificate.certificateName} ${messages.validForever}`;
@@ -805,7 +831,7 @@ const drawText = ({
   }
 };
 
-const buildResume = () => {
+const buildResume = (messages) => {
   prepareData(resumeData, messages);
   // 如果最后一行是换页 则移除该数据
   if (data[data.length - 1].type === "pageBreak") {
@@ -840,7 +866,7 @@ const buildResume = () => {
         break;
       case "h3":
         // apply h3 style
-        d.color = Constants.c_grey;
+        d.color = d.color ? d.color : Constants.c_grey;
         d.fontSize = Constants.h3FontSize;
         drawText(d);
         break;
@@ -850,7 +876,7 @@ const buildResume = () => {
         doc.textWithLink(d.content, d.x, d.y, { url: d.url });
         // text underline
         doc.setDrawColor(d.color);
-        doc.line(d.x, d.y, d.x + doc.getTextWidth(d.content), d.y);
+        doc.line(d.x, d.y + 1, d.x + doc.getTextWidth(d.content), d.y + 1);
         break;
       case "list":
         d.color = d.color ? d.color : Constants.c_black;
@@ -883,7 +909,7 @@ export const downloadPDF = (lang = 'zh') => {
   resumeData = store.getState().resume;
   primaryColor = resumeData?.resumeBuilder?.data?.color;
   messages = messagePR[lang];
-  buildResume();
+  buildResume(messages);
   doc.save(`${resumeData?.alias}.pdf`);
 };
 
@@ -891,7 +917,7 @@ export const previewResume = (lang = 'zh') => {
   resumeData = store.getState().resume;
   primaryColor = resumeData.resumeBuilder.data.color;
   messages = messagePR[lang];
-  buildResume();
+  buildResume(messages);
   let base64Data;
   const buildBase64Str = async () => {
     new Promise((resolve, reject) => {
@@ -908,7 +934,7 @@ export const previewResume = (lang = 'zh') => {
 export const adjustToWholePage = (lang = 'zh') => {
   resumeData = store.getState().resume;
   messages = messagePR[lang];
-  adjustToWholePageHelper();
+  adjustToWholePageHelper(lang, messages);
 };
 
 export const wholePageCheck = (lang = 'zh') => {
