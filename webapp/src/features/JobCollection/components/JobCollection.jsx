@@ -127,6 +127,11 @@ const JobCollection = () => {
 
     const removeBookmark = jobUuid => {
         setJobsToBeDisplayed(jobsToBeDisplayed.filter(job=>job.jobUuid !== jobUuid))
+        bookmarkedJobs.forEach((job) => {
+            if (job === jobUuid) {
+                bookmarkedJobs.delete(job);
+            }
+          });
     }
 
     return (
