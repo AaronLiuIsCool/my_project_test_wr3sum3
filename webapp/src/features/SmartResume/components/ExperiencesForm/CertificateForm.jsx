@@ -146,6 +146,7 @@ const CertificateForm = ({
     if (id) {
       await resumeServices.removeCertificate(id, resumeId);
       updateRating();
+      previewResume(resumeLanguage);
     }
   };
   useEffect(() => {
