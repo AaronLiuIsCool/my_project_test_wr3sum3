@@ -69,7 +69,7 @@ const SearchHeader = ({ onSearch, initial = {} }) => {
                     <DropdownGroup
                         label={messages["search_city_label"]} id="searchCity"
                         placeholder={messages["search_city_label"]}
-                        options={cityOptions}
+                        options={cityOptions[country] || []}
                         value={city} onChange={handleCityChange}
                     />
                 </Col>
