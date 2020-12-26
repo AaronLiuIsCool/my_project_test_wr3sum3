@@ -115,6 +115,7 @@ const JobCollection = () => {
                 getAllBookmarkJobs(res).then((allBookmarkJobs) => {
                     allBookmarkJobs.forEach((aJob) => (jobStore[aJob.jobUuid] = aJob))
                     allBookmarkJobs.forEach((aJob) => (bookmarkedJobs.add(aJob.jobUuid)))
+                    console.log("JOBSSSS", Array.from(bookmarkedJobs).map(id => jobStore[id]).length)
                     setJobsToBeDisplayed(Array.from(bookmarkedJobs).map(id => jobStore[id]));
                 });
                 getAllTailorJobs(res).then((allTailorJobs) => {
@@ -126,6 +127,7 @@ const JobCollection = () => {
     }, []);
 
     const removeBookmark = jobUuid => {
+        console.log("delete", jobsToBeDisplayed.filter(job=>job.jobUuid !== jobUuid).length)
         setJobsToBeDisplayed(jobsToBeDisplayed.filter(job=>job.jobUuid !== jobUuid))
     }
 

@@ -4,7 +4,7 @@ const JDBC_DATE_FORMAT = 'YYYY-MM-DD';
 
 function getDateString(date) {
     // if no date given, we use current time
-    const dateValue = (date? moment(date) : moment())
+    const dateValue = (date? moment(date) : moment());
     return dateValue.isValid() ? dateValue.format(JDBC_DATE_FORMAT) : undefined;
 }
 
