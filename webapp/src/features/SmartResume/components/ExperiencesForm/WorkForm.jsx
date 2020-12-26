@@ -180,6 +180,7 @@ const WorkForm = ({data, index, isLast = false, messages, workData, resumeLangua
     if (id) {
       await resumeServices.removeWork(id, resumeId);
       updateRating();
+      previewResume(resumeLanguage);
     }
   };
   useEffect(() => {

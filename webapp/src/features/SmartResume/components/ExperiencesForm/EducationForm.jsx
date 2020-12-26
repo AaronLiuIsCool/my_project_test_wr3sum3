@@ -167,6 +167,7 @@ const EducationForm = ({data, index, isLast = false, messages, resumeLanguage}) 
     if (id) {
       await resumeServices.removeEducation(id, resumeId);
       updateRating();
+      previewResume(resumeLanguage);
     }
   };
   useEffect(() => {
