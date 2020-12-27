@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Dropdown from './Dropdown';
 import './DropdownGroup.scss';
 const DropdownGroup = ({ industries, titles, onSelect, messages }) => {
@@ -10,6 +10,9 @@ const DropdownGroup = ({ industries, titles, onSelect, messages }) => {
   const handleSearch = (title) => {
     onSelect(industry || industries[0], title);
   };
+  useEffect(() => {
+    setIndustry('')
+  }, [industries])
   return (
     <div className="suggestion-dropdown">
       <Dropdown
