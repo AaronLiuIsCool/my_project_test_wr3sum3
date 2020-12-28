@@ -9,19 +9,31 @@
     "化学食品"
   ],
   "industriesEN": [
+    "Accounting", 
     "Banking",
+    "Consulting",
     "Engineering",
+    "HR Industry",
     "Lab tech",
     "IT & Data",
-    "Projects"
+    "Projects",
+    "Marketing",
+    "Finance",
+    "Volunteer"
   ],
   
   "titlesEN": {
-    "Banking": ["Commercial Banking", "Credit Analyst"],
-    "Engineering": ["Civil Eng.", "Project Eng."],
-    "Lab tech": ["Lab tech-chemical"],
-    "IT & Data": ["Data Scientist"],
-    "Projects": ["Civil Eng.", "Computer Sci."]
+    "Accounting": ["Audit/Assurance", "Bookkeeper", "Tax"],
+    "Banking": ["Commercial Banking", "Credit Analyst", "Fraud Analyst", "Financial Service Rep"],
+    "Consulting": ["Business Tech", "Management"],
+    "Engineering": ["Chemical Eng.", "Civil Designer", "Civil Eng.", "Mechanical Designer", "Mechanical Eng.", "Electrical Designer", "Electrical Eng.", "Field Technician", "Environmental Eng.", "Materials Eng.", "Project Eng."],
+    "HR Industry": ["HR Generalist", "Recruiter"],
+    "Lab tech": ["Lab tech-chemical", "Lab tech-bio", "Lab tech-materials", "Lab environmental"],
+    "IT & Data": ["SDE", "Data Analyst", "Data Scientist", "Business Intelligence"],
+    "Projects": ["Chemical Eng.", "Civil Eng.", "Bio-Eng.", "Environmental Eng.", "Computer Sci.", "Marketing"],
+    "Marketing": ["Marketing Associate", "Graphic Designer", "Digital Marketing"],
+    "Finance": ["Risk Analyst", "Operation Analyst", "M&A Analyst", "Compliance Ana.", "Budget Analyst", "Corporate Finance", "Credit Underwriter", "Equity Research"],
+    "Volunteer": ["Director / Lead", "President & VP"]
   },
 
   "titles": {
