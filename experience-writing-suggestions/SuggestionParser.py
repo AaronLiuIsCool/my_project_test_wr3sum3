@@ -21,17 +21,20 @@ class SuggestionParser:
             else:
                 return str(val)
 
+        def normalize_string_val(val):
+            return val.replace("\'", "\\'").strip()
+
         for row in rows:
             if row[0]:
-                industry = row[0].strip()
+                industry = normalize_string_val(row[0])
             if row[1]:
-                position = row[1].strip()
-            sample_sentence = row[2].strip()
-            keywords = ','.join(filter(None, map(convert_number_to_text, row[3:])))
+                position = normalize_string_val(row[1])
+            sample_sentence = normalize_string_val(row[2])
+            keywords = normalize_string_val(','.join(filter(None, map(convert_number_to_text, row[3:]))))
             statement = f'''INSERT INTO `suggestion` (`industry`, `position_title`, `texts`, `suggestion_keywords`) VALUES (
-                '{industry}', 
-                '{position}', 
-                '{sample_sentence}', 
+                '{industry}',
+                '{position}',
+                '{sample_sentence}',
                 '{keywords}'
             );\n'''
             statements.append(statement)
@@ -42,5 +45,5 @@ class SuggestionParser:
 
 
 if __name__ == "__main__":
-    parser = SuggestionParser('suggestions/suggestions_en_v1.xlsx')
-    parser.generate_sql_script('../job-svc/src/main/resources/db/migration/V2__populate_suggestions_en_v1.sql')
+    parser = SuggestionParser('suggestions/suggestions_cn_v2.xlsx')
+    parser.generate_sql_script('../job-svc/src/main/resources/db/migration/V5__populate_suggestions_cn_v2.sql')
