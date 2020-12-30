@@ -70,7 +70,7 @@ let scaleFactor = 1; // default scale factor
 // some scaled variables
 let headingLineHeight = Constants.headingLineHeight;
 let paragraphLineHeight = Constants.paragraphLineHeight;
-let h1Padding = Constants.h1Padding;
+let sectionPaddingFixed = Constants.sectionPaddingFixed;
 let pFontSize = Constants.pFontSize;
 let h2FontSize = Constants.h2FontSize;
 let startY = Constants.pdfTopPadding;
@@ -248,10 +248,16 @@ const _updateDetails = (inputDescription) => {
     for (let i = 0; i < wrappedContent.length; i++) {
       // 如果是段落显示 并且是第一行 手动加入 "-" 
       if (i === 0) {
-        wrappedContent[i] = "■ " + wrappedContent[i];
+        data.push({
+          type: "bullet",
+          y: currentYPos - 0.5,
+          content: "■ ",
+          page: currentPage,
+        });
+        wrappedContent[i] = "   " + wrappedContent[i];
       } else {
         // manually adjust the padding left
-        wrappedContent[i] = "  " + wrappedContent[i];
+        wrappedContent[i] = "   " + wrappedContent[i];
       }
     }
 
@@ -271,6 +277,7 @@ const _updateDetails = (inputDescription) => {
       _updateCurrentYPos(paragraphLineHeight);
 
     });
+    _updateCurrentYPos(paragraphLineHeight * 0.2);
   });
 }
 
@@ -361,7 +368,7 @@ const _prepareHeader = (basicData, messages) => {
       color: "#f2f4f9",
       page: currentPage,
     });
-    _updateCurrentYPos((headingLineHeight * 2) / 3);
+    _updateCurrentYPos((Constants.headingLineHeight * 2) / 3);
   }
 
   // add some padding left
@@ -411,14 +418,14 @@ const _prepareEducation = (educationData, messages) => {
     (educationData.length > 0 &&
       educationData[0].schoolName)
   ) {
-    _updateCurrentYPos(h1Padding * 2);
+    _updateCurrentYPos(sectionPaddingFixed * 2);
     data.push({
       type: "h1",
       y: currentYPos,
       content: messages.educationBackground,
       page: currentPage,
     });
-    _updateCurrentYPos(h1Padding);
+    _updateCurrentYPos(paragraphLineHeight/2);
     data.push({
       type: "underline",
       y: currentYPos,
@@ -487,7 +494,9 @@ const _prepareEducation = (educationData, messages) => {
 };
 
 const _prepareWork = (workData, messages) => {
-  _updateCurrentYPos(h1Padding);
+  if (workData[0]?.workName) {
+    _updateCurrentYPos(sectionPaddingFixed);
+  }
   // draw work title
   if (workData.length > 0 && workData[0].workName) {
     data.push({
@@ -496,19 +505,18 @@ const _prepareWork = (workData, messages) => {
       content: messages.workExperience,
       page: currentPage,
     });
-    _updateCurrentYPos(h1Padding);
+    _updateCurrentYPos(paragraphLineHeight/2);
     data.push({
       type: "underline",
       y: currentYPos,
       color: Constants.c_grey,
       page: currentPage,
     });
-    _updateCurrentYPos(h1Padding * 1.5);
+    _updateCurrentYPos(paragraphLineHeight);
   }
 
   // deal with work 
   workData.forEach((work) => {
-    _updateCurrentYPos(h1Padding * 0.5);
     // draw work detail title line
     if (work.workName) {
       data.push({
@@ -554,8 +562,7 @@ const _prepareWork = (workData, messages) => {
       });
     }
 
-    _updateCurrentYPos(h1Padding);
-
+    _updateCurrentYPos(paragraphLineHeight * 0.5);
     // render work details
     work.workDescription && _updateDetails(work.workDescription);
   });
@@ -563,8 +570,8 @@ const _prepareWork = (workData, messages) => {
 };
 
 const _prepareProject = (projectData, messages) => {
-  if (projectData[0]?.projectRole){
-    _updateCurrentYPos(h1Padding);
+  if (projectData[0]?.projectRole) {
+    _updateCurrentYPos(sectionPaddingFixed);
   }
   // draw project title
   if (projectData.length > 0 && projectData[0].projectRole) {
@@ -574,24 +581,22 @@ const _prepareProject = (projectData, messages) => {
       content: messages.projectExperience,
       page: currentPage,
     });
-    _updateCurrentYPos(h1Padding);
+    _updateCurrentYPos(paragraphLineHeight/2);
     data.push({
       type: "underline",
       y: currentYPos,
       color: Constants.c_grey,
       page: currentPage,
     });
-    _updateCurrentYPos(h1Padding * 1.5);
+    _updateCurrentYPos(paragraphLineHeight);
   }
 
   // deal with project
   projectData.forEach((project) => {
-    _updateCurrentYPos(h1Padding * 0.5);
     if (project.projectRole) {
       // draw project detail title line
       data.push({ type: "h2", y: currentYPos, content: project.projectRole });
     }
-    
     // date + location
     if (
       project.projectStartDate ||
@@ -628,8 +633,8 @@ const _prepareProject = (projectData, messages) => {
         page: currentPage,
       });
     }
-    if (projectData[0]?.projectRole){
-      _updateCurrentYPos(h1Padding);
+    if (projectData[0]?.projectRole) {
+      _updateCurrentYPos(paragraphLineHeight * 0.5);
     }
 
     // render project details
@@ -638,7 +643,10 @@ const _prepareProject = (projectData, messages) => {
 };
 
 const _prepareVolunteer = (volunteerData, messages) => {
-  _updateCurrentYPos(h1Padding);
+
+  if (volunteerData[0]?.volunteerRole) {
+    _updateCurrentYPos(sectionPaddingFixed);
+  }
 
   // draw Volunteer title
   if (
@@ -651,18 +659,17 @@ const _prepareVolunteer = (volunteerData, messages) => {
       content: messages.studentWorkAndVolunteer,
       page: currentPage,
     });
-    _updateCurrentYPos(h1Padding);
+    _updateCurrentYPos(paragraphLineHeight/2);
     data.push({
       type: "underline",
       y: currentYPos,
       color: Constants.c_grey,
       page: currentPage,
     });
-    _updateCurrentYPos(h1Padding * 1.5);
+    _updateCurrentYPos(paragraphLineHeight);
   }
 
   volunteerData.forEach((volunteer) => {
-    _updateCurrentYPos(h1Padding * 0.5);
     if (volunteer.volunteerCompanyName) {
       // draw volunteer detail title line
       data.push({
@@ -709,8 +716,7 @@ const _prepareVolunteer = (volunteerData, messages) => {
       });
     }
 
-
-    _updateCurrentYPos(h1Padding);
+    _updateCurrentYPos(paragraphLineHeight * 0.5);
 
     // render volunteer details
     volunteer.volunteerDescription &&
@@ -743,14 +749,14 @@ const _prepareAwardAndCertificate = (educationData, certificateData, messages) =
     (certificateData.length > 0 &&
       certificateData[0].certificateName)
   ) {
-    _updateCurrentYPos(h1Padding);
+    _updateCurrentYPos(paragraphLineHeight/2);
     data.push({
       type: "h1",
       y: currentYPos,
       content: messages.certificateAndAward,
       page: currentPage,
     });
-    _updateCurrentYPos(h1Padding);
+    _updateCurrentYPos(paragraphLineHeight/2);
     data.push({
       type: "underline",
       y: currentYPos,
@@ -792,7 +798,7 @@ const _prepareAwardAndCertificate = (educationData, certificateData, messages) =
       let certificateStr = "";
       certificateData.forEach((certificate) => {
         if (!certificate.validCertificateFlag) {
-          certificateStr += ` *  ${certificate.certificateName} ${certificate.certificateEndDate ? certificate.certificateEndDate.slice(0,7) + messages.expiredAt : ""}`;
+          certificateStr += ` *  ${certificate.certificateName} ${certificate.certificateEndDate ? certificate.certificateEndDate.slice(0, 7) + messages.expiredAt : ""}`;
         }
         else {
           certificateStr += ` *  ${certificate.certificateName} ${messages.validForever}`;
@@ -892,11 +898,18 @@ const buildResume = (messages) => {
       case "pageBreak":
         doc.addPage("a4");
         break;
+      case "bullet":
+        d.color = Constants.c_black;
+        d.fontSize = pFontSize * 0.6;
+        d.x = Constants.startX;
+        drawText(d);
+        break;
       case "background":
         doc.setDrawColor(d.color);
         doc.setFillColor(d.color);
         // http://raw.githack.com/MrRio/jsPDF/master/docs/jsPDF.html#roundedRect
-        const height = headingLineHeight;
+        // const height = headingLineHeight;
+        const height = Constants.headingLineHeight;
         doc.roundedRect(d.x, d.y, Constants.endX - d.x, height, 4, 4, "FD");
         break;
       default:

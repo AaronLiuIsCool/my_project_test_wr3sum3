@@ -50,7 +50,7 @@ exports[`Item It should match snapshot 1`] = `
           </svg>
         </a>
         <button
-          className="link btn btn-link"
+          className="delete btn btn-link"
           disabled={false}
           onClick={[Function]}
           type="button"
@@ -58,23 +58,11 @@ exports[`Item It should match snapshot 1`] = `
           <svg
             className="svg"
           >
-            download.svg
+            delete.svg
           </svg>
+           
         </button>
       </div>
-      <button
-        className="delete btn btn-link"
-        disabled={false}
-        onClick={[Function]}
-        type="button"
-      >
-        <svg
-          className="svg"
-        >
-          delete.svg
-        </svg>
-         
-      </button>
     </div>
   </div>
   <a

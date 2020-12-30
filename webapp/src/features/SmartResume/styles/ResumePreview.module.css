@@ -43,7 +43,7 @@
   bottom: 0;
 }
 
-.widgetContainer div {
+.widgetContainer>div {
   max-width: 720px;
   margin: 0 auto;
   justify-content: space-between;
@@ -264,6 +264,8 @@
   background-color: #ffffff;
   color: #333;
 }
+
+/* language toggle style */
 
 @media only screen and (max-width: 1440px) {
   .container {

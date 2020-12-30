@@ -30,11 +30,27 @@ exports[`Resume Preview Snapshot test Snapshot with no data match 1`] = `
           }
         />
       </button>
-      <button
-        onClick={[Function]}
+      <div
+        className=" toggle-container active"
+        style={
+          Object {
+            "position": "relative",
+          }
+        }
       >
-        智能翻译
-      </button>
+        <div
+          className="language-option active"
+          onClick={[Function]}
+        >
+          中文
+        </div>
+        <div
+          className="language-option false"
+          onClick={[Function]}
+        >
+          EN
+        </div>
+      </div>
       <button
         onClick={[Function]}
       >

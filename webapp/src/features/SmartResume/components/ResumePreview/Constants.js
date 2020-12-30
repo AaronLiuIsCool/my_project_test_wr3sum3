@@ -5,7 +5,7 @@ export const c_grey = "#8e94a7";
 
 // size
 export const pdfPageWidth = 210; // width of A4 in mm
-var pdfPageHeight = 320; // Height of A4 in mm
+export const pdfPageHeight = 326; // Height of A4 in mm
 export const pdfTopPadding = 20;
 export const pdfLeftPadding = 15;
 export const titleFontSize = 19;
@@ -24,5 +24,5 @@ export const startY = pdfTopPadding + 5;
 export const endY = pdfPageHeight - pdfTopPadding;
 export const startX = pdfLeftPadding;
 export const endX = pdfPageWidth - pdfLeftPadding;
-export const h1Padding = headingLineHeight / 2;
+export const sectionPaddingFixed = headingLineHeight / 2;
 export const defaultPaddingRight = 2;

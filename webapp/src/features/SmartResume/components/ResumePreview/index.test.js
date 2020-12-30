@@ -25,7 +25,7 @@ describe('Resume Preview Container', () => {
       <ResumePreviewWithProvider data={{}} messages={{}} />
     );
     expect(wrapper.find('#displayPDF').length).toEqual(1);
-    expect(wrapper.find('#widgetsContainer button').length).toEqual(5);
+    expect(wrapper.find('#widgetsContainer button').length).toEqual(4);
   });
 
 });
