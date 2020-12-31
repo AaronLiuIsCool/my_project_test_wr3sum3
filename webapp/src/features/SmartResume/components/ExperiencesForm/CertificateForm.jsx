@@ -227,7 +227,6 @@ const CertificateForm = ({
                   id="certificate-end-date"
                   placeholder={messages.yymmdd}
                   value={data.certificateEndDate}
-                  
                   displayFormat={messages.dateDisplayFormat}
                   onDateChange={handleCertificateEndDateChange}
                   feedbackMessage={messages.entryIsInvalid}

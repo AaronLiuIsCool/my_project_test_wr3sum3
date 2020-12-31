@@ -25,7 +25,7 @@ a.action {
 
 .itemContainer {
   width: 235px;
-  height: 300px;
+  height: 260px;
   border-radius: 8px;
   box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.1);
   background-color: #ffffff;
@@ -33,9 +33,11 @@ a.action {
   margin-bottom: 40px;
   padding: 20px;
 }
+
 .itemContainer {
   margin-right: 20px;
 }
+
 .itemContainer:nth-child(4n) {
   margin-right: 0;
 }
@@ -70,23 +72,28 @@ a.action {
   outline: none;
   border-bottom: 2px solid transparent;
 }
+
 .name:focus {
   border-bottom: 2px solid #007af8;
 }
+
 .aliasContainer {
   margin-top: 6px;
   display: flex;
   align-items: center;
 }
+
 .edit {
   margin-left: 10px;
   width: 20px;
   display: none;
   cursor: pointer;
 }
+
 .aliasContainer:hover .edit {
   display: block;
 }
+
 .time {
   margin-top: 20px;
   font-size: 14px;
@@ -110,12 +117,15 @@ a.action {
   color: #3e89ec;
   padding: 0;
 }
+
 .link:nth-child(2n+1) {
   margin-right: 20px;
 }
+
 .link:nth-child(3), .link:nth-child(4) {
   margin-top: 18px;
 }
+
 .link:hover {
   text-decoration: none;
 }
@@ -128,6 +138,7 @@ a.action {
   display: flex;
   align-items: center;
 }
+
 .delete:hover {
   text-decoration: none;
 }

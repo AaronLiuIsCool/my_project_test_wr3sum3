@@ -16,9 +16,8 @@
   &.active::before {
     transform: translateX(0%);
   }
-  position: absolute;
-  right: 20px;
-  bottom: 20px;
+  z-index: 1;
+  background-color: #fff;
   border-radius: 21px;
   box-shadow: 0 1px 2px 1px #e3e3e3;
   padding: 10px 0;

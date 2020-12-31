@@ -38,8 +38,8 @@ export function validateWorkEntry(name, value, data) {
         case "workEndDate":
             if(!data?.currentWorkFlag) {
                 return true;
-                
             }
+            
             return typeof value === "string" && validateDate(value);
         default:
             return true;

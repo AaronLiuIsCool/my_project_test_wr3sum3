@@ -5,33 +5,47 @@
     "金融保险",
     "战略咨询",
     "审计税务",
-    "IT通信",
-    "化学食品"
+    "IT数据",
+    "化学食品",
+    "制造施工"
   ],
   "industriesEN": [
+    "Accounting", 
     "Banking",
+    "Consulting",
     "Engineering",
+    "HR Industry",
     "Lab tech",
     "IT & Data",
-    "Projects"
+    "Projects",
+    "Marketing",
+    "Finance",
+    "Volunteer"
   ],
   
   "titlesEN": {
-    "Banking": ["Commercial Banking", "Credit Analyst"],
-    "Engineering": ["Civil Eng.", "Project Eng."],
-    "Lab tech": ["Lab tech-chemical"],
-    "IT & Data": ["Data Scientist"],
-    "Projects": ["Civil Eng.", "Computer Sci."]
+    "Accounting": ["Audit/Assurance", "Bookkeeper", "Tax"],
+    "Banking": ["Commercial Banking", "Credit Analyst", "Fraud Analyst", "Financial Service Rep"],
+    "Consulting": ["Business Tech", "Management"],
+    "Engineering": ["Chemical Eng.", "Civil Designer", "Civil Eng.", "Mechanical Designer", "Mechanical Eng.", "Electrical Designer", "Electrical Eng.", "Field Technician", "Environmental Eng.", "Materials Eng.", "Project Eng."],
+    "HR Industry": ["HR Generalist", "Recruiter"],
+    "Lab tech": ["Lab tech-chemical", "Lab tech-bio", "Lab tech-materials", "Lab environmental"],
+    "IT & Data": ["SDE", "Data Analyst", "Data Scientist", "Business Intelligence"],
+    "Projects": ["Chemical Eng.", "Civil Eng.", "Bio-Eng.", "Environmental Eng.", "Computer Sci.", "Marketing"],
+    "Marketing": ["Marketing Associate", "Graphic Designer", "Digital Marketing"],
+    "Finance": ["Risk Analyst", "Operation Analyst", "M&A Analyst", "Compliance Ana.", "Budget Analyst", "Corporate Finance", "Credit Underwriter", "Equity Research"],
+    "Volunteer": ["Director / Lead", "President & VP"]
   },
 
   "titles": {
     "调研运营": ["用户运营", "新媒体运营", "销售专员"],
-    "银行投行": ["战投分析", "风控分析", "商业分析"],
+    "银行投行": ["战投分析", "风控分析", "合规分析", "商业分析"],
     "金融保险": ["产品设计", "量化分析", "战投管理"],
     "战略咨询": ["战略咨询", "IT咨询", "供应链咨询"],
     "审计税务": ["审计专员", "税务专员"],
-    "IT通信": ["数据工程师"],
-    "化学食品": ["食品安全", "研究助理", "医药代表"]
+    "IT数据": ["开发工程师", "运维工程师", "硬件工程师", "商业分析师", "项目经理", "产品经理", "数据工程师"],
+    "化学食品": ["食品安全", "研究助理", "医药代表"],
+    "制造施工": ["机械工程师", "土木工程师","造价师", "监理工程师"]
   },
 
   "suggestions": [

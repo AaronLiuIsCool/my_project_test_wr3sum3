@@ -158,7 +158,7 @@ const WrittenAssistant = ({ trigger, context }) => {
             <div className="tips-container">
                 {renderTips(suggestions, handleTipSelect)}
             </div>
-            <LanguageToggle updateLanguage={updateLanguage}/>
+            <LanguageToggle updateLanguage={updateLanguage} style={{position:"absolute", bottom: "20px", right: "20px"}}/>
         </div>
     );
 };
