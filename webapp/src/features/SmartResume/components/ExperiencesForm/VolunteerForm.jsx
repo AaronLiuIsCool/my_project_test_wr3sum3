@@ -79,6 +79,7 @@ const VolunteerForm = ({
     if (id) {
       await resumeServices.removeVolunteer(id, resumeId);
       updateRating();
+      previewResume(resumeLanguage);
     }
   };
   useEffect(() => {

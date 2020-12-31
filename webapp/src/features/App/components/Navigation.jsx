@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory, withRouter, Link } from 'react-router-dom';
+import { useHistory, withRouter, Link, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import { Navbar, Nav } from 'react-bootstrap';
@@ -25,7 +25,8 @@ const Navigation = ({ location }) => {
     const history = useHistory();
     const language = useSelector(selectLanguage);
     const messages = useI8n();
-    
+    const {pathname} = useLocation()
+
     useEffect(() => {
         const shouldShowNav = ROUTES.some(({path}) => path === location.pathname);
         if (showNav !== shouldShowNav) {
@@ -34,6 +35,11 @@ const Navigation = ({ location }) => {
     }, [showNav, location]);
 
     if (!showNav) {
+        const regex = /(resume)\/\w+/
+        if(pathname.match(regex)) {
+           return <div className={styles.closeButton} 
+                onClick={() => history.push('/')} />
+        }
         return (
             <div className={styles.closeButton} 
                 onClick={() => history.goBack()} />

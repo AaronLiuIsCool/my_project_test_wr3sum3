@@ -202,6 +202,7 @@ const ProjectForm = ({data, index, isLast = false, messages, projectData, resume
     if (id) {
       await resumeServices.removeProject(id, resumeId);
       updateRating();
+      previewResume(resumeLanguage);
     }
   };
   useEffect(() => {
