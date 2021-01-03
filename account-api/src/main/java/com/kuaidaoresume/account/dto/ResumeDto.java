@@ -16,6 +16,7 @@ import java.time.Instant;
 public class ResumeDto {
     @NotBlank
     private String resumeId;
+    private String language;
     private String alias;
     private String thumbnailUri;
     private Instant createdAt;

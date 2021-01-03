@@ -94,8 +94,10 @@ public class AccountServiceTest {
         String resumeId = "aUuid";
         String originalAlias = "oldAlias";
         String originalUri = "oldUri";
+        String originalLanguage = "en";
         Resume toBeUpdated = Resume.builder()
             .id(resumeId)
+            .language(originalLanguage)
             .alias(originalAlias)
             .thumbnailUri(originalUri)
             .build();
@@ -110,9 +112,11 @@ public class AccountServiceTest {
         toBeUpdated.setAccount(account);
         anotherResume.setAccount(account);
 
+        String updatedLanguage = "cn";
         String updatedAlias = "newAlias";
         String updatedUri = "newUri";
         ResumeDto toUpdate = ResumeDto.builder()
+            .language(updatedLanguage)
             .alias(updatedAlias)
             .thumbnailUri(updatedUri)
             .build();
@@ -126,6 +130,7 @@ public class AccountServiceTest {
         assertThat(notUpdated.getThumbnailUri()).isEqualTo(originalUri);
 
         Resume updated = resumes.get(1);
+        assertThat(updated.getLanguage()).isEqualTo(updatedLanguage);
         assertThat(updated.getAlias()).isEqualTo(updatedAlias);
         assertThat(updated.getThumbnailUri()).isEqualTo(updatedUri);
     }
