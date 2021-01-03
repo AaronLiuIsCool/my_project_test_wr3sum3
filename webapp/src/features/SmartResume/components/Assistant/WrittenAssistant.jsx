@@ -116,6 +116,7 @@ const WrittenAssistant = ({ trigger, context }) => {
             let offsets = [];
             if (keywords.length > 0) {
                 for (let i = 0; i < keywords.length; i++) {
+                    if(keywords[i] === '') continue
                     const regex = new RegExp(keywords[i], 'g');
                     html = html.replace(regex, function (match) {
                         return `<span class="hightlight-blue">${match}</span>`;

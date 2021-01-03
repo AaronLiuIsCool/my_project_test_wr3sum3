@@ -55,13 +55,14 @@ export default class JobsServices extends BaseServices {
       suggestions: []
     };
     try {
-      const data = await this.get(`v1/get_suggestions_by_industry_position?industry=${encodeURIComponent(industry)}&limit=50&offset=0&position=${title}`);
+      const data = await this.get(`v1/get_suggestions_by_industry_position?industry=${encodeURIComponent(industry)}&limit=50&offset=0&position=${encodeURIComponent(title)}`);
       if (data.success !== false) {
         resObj.suggestions = data.suggestions;
       }
     } catch (error) {
       logger.error(error);
     } finally {
+      console.log(resObj)
       return resObj;
     }
   }
