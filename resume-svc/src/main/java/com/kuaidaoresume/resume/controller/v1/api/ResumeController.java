@@ -105,6 +105,24 @@ public class ResumeController {
     }
 
     @Authorize(value = {
+            AuthConstant.AUTHORIZATION_WWW_SERVICE,
+            AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
+            AuthConstant.AUTHORIZATION_SUPPORT_USER,
+            AuthConstant.AUTHORIZATION_SUPERPOWERS_SERVICE
+    })
+    @PutMapping("/resumes/{id}/language")
+    public ResponseEntity<EntityModel<PersistedResumeDto>> saveLanguage(
+            @PathVariable String id,
+            @RequestParam @NotNull String value) {
+
+        return resumeService.saveResumeLanguage(id, value)
+                .map(resume -> modelMapper.map(resume, PersistedResumeDto.class))
+                .map(resumeAssembler::toModel)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @Authorize(value = {
         AuthConstant.AUTHORIZATION_WWW_SERVICE,
         AuthConstant.AUTHORIZATION_AUTHENTICATED_USER,
         AuthConstant.AUTHORIZATION_SUPPORT_USER,
