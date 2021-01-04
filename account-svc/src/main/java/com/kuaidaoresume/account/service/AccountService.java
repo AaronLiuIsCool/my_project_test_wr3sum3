@@ -539,6 +539,11 @@ public class AccountService {
             return resourceNotFoundException;
         });
 
+        String language = resumeDto.getLanguage();
+        if (!StringUtils.isEmpty(language)) {
+            toUpdate.setLanguage(language);
+        }
+
         String alias = resumeDto.getAlias();
         if (!StringUtils.isEmpty(alias)) {
             toUpdate.setAlias(alias);

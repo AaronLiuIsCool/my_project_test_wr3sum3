@@ -4,8 +4,6 @@ import com.kuaidaoresume.account.TestConfig;
 import com.kuaidaoresume.account.client.AccountClient;
 import com.kuaidaoresume.account.dto.*;
 import com.kuaidaoresume.account.model.Account;
-import com.kuaidaoresume.account.repo.AccountRepo;
-import com.kuaidaoresume.account.repo.AccountSecretRepo;
 import com.kuaidaoresume.common.api.BaseResponse;
 import com.kuaidaoresume.common.api.ResultCode;
 import com.kuaidaoresume.common.auth.AuthConstant;
@@ -14,8 +12,6 @@ import com.kuaidaoresume.mail.client.MailClient;
 import com.kuaidaoresume.mail.dto.EmailRequest;
 import feign.FeignException;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -51,24 +47,10 @@ public class AccountControllerTest {
     @MockBean
     MailClient mailClient;
 
-    @Autowired
-    AccountRepo accountRepo;
-
-    @Autowired
-    AccountSecretRepo accountSecretRepo;
-
     private Account newAccount;
 
     @Rule
     public ExpectedException exceptionRule = ExpectedException.none();
-
-    @Before
-    public void setUp() {
-        // sanity check
-        accountRepo.deleteAll();
-        // clear CURRENT_USER_HEADER for testing
-        TestConfig.TEST_USER_ID = null;
-    }
 
     @Test
     public void testChangeEmail() {
@@ -118,10 +100,5 @@ public class AccountControllerTest {
         log.info(baseResponse.toString());
         assertThat(baseResponse.isSuccess()).isFalse();
         assertThat(baseResponse.getCode()).isEqualTo(ResultCode.NOT_FOUND);
-    }
-
-    @After
-    public void destroy() {
-        accountRepo.deleteAll();
     }
 }

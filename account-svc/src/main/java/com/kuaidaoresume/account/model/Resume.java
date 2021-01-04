@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.time.Instant;
 
 @Data
@@ -19,6 +18,9 @@ public class Resume {
 
     @Id
     private String id;
+
+    @Column(length = 50)
+    private String language;
 
     @Column(length = 50)
     private String alias;

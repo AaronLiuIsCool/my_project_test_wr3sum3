@@ -57,12 +57,25 @@
           <artifactId>mail-api</artifactId>
           <version>1.0.0</version>
       </dependency>
+      <dependency>
+        <groupId>org.flywaydb</groupId>
+        <artifactId>flyway-core</artifactId>
+      </dependency>
     </dependencies>
     <build>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <configuration>
+                    <url>jdbc:mysql://kuaidaoresume-account.cm27uwrvuert.ca-central-1.rds.amazonaws.com:3306/kuaidaoresume-account</url>
+                    <user>root</user>
+                    <password>~Youkn0wit)-acc0unt</password>
+                </configuration>
             </plugin>
         </plugins>
     </build>
