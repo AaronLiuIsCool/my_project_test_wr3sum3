@@ -344,6 +344,15 @@ public class ResumeServiceImpl implements ResumeService {
         });
     }
 
+    @CacheEvict(cacheNames = "resumes", key = "#resumeId")
+    @Override
+    public Optional<Resume> saveResumeLanguage(String resumeId, String language) {
+        return resumeRepository.findById(resumeId).map(resume -> {
+            resume.setLanguage(language);
+            return resumeRepository.save(resume);
+        });
+    }
+
     private <T extends Experience> void extractKeywordsFromExperience(Set<String> keywords, Collection<T> experiences) {
         experiences.forEach(experience -> {
             keywords.addAll(keywordMatcher.getMatches(experience.getDescription()));

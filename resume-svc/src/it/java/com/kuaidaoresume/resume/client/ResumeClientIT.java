@@ -356,6 +356,25 @@ public class ResumeClientIT {
             resumeClient.savePhotoReference(AuthConstant.AUTHORIZATION_AUTHENTICATED_USER, "not-existed-resume-id", photoReference));
         assertTrue(exception.getMessage().startsWith("status 404"));
     }
+
+    @Test
+    @Order(9)
+    public void test_saveLanguage() {
+        String language = "cn";
+        ResponseEntity<EntityModel<PersistedResumeDto>> responseEntity =
+                resumeClient.saveLanguage(AuthConstant.AUTHORIZATION_AUTHENTICATED_USER, resumeId, language);
+        assertThat(responseEntity.getStatusCode(), is(OK));
+        assertThat(responseEntity.getBody().getContent().getLanguage(), is(language));
+    }
+
+    @Test
+    @Order(10)
+    public void test_saveLanguageToResumeNotExisted() {
+        String language = "cn";
+        FeignException exception = assertThrows(FeignException.class, () ->
+                resumeClient.saveLanguage(AuthConstant.AUTHORIZATION_AUTHENTICATED_USER, "not-existed-resume-id", language));
+        assertTrue(exception.getMessage().startsWith("status 404"));
+    }
 }
 
 

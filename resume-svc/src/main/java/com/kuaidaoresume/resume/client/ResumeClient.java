@@ -233,4 +233,9 @@ public interface ResumeClient {
     ResponseEntity<EntityModel<PersistedResumeDto>> savePhotoReference(
         @RequestHeader(AuthConstant.AUTHORIZATION_HEADER) String auth, @PathVariable String id,
         @RequestParam @NotNull String value);
+
+    @PutMapping("/resumes/{id}/language")
+    ResponseEntity<EntityModel<PersistedResumeDto>> saveLanguage(
+            @RequestHeader(AuthConstant.AUTHORIZATION_HEADER) String auth, @PathVariable String id,
+            @RequestParam @NotNull String value);
 }
