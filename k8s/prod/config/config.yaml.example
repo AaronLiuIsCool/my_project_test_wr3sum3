@@ -18,19 +18,17 @@ data:
   AWS_ACCESS_SECRET: <PROD_ACCESS_SECRET>
   RECAPTCHA_PUBLIC: test-recaptcha-public
   RECAPTCHA_PRIVATE: test-recaptcha-private
-  ACCOUNT_DATASOURCE_URL: TBD
-  ACCOUNT_DATASOURCE_USERNAME: prod_root_name
-  ACCOUNT_DATASOURCE_PASSWORD: pw_tbd
-  RESUME_DATASOURCE_URL: TBD
-  RESUME_DATASOURCE_USERNAME: prod_root_name
-  RESUME_DATASOURCE_PASSWORD: pw_tbd
-  JOB_DATASOURCE_URL: TBD
-  JOB_DATASOURCE_USERNAME: prod_root_name
-  JOB_DATASOURCE_PASSWORD: pw_tbd
-  MATCHING_DATASOURCE_URL: mongodb+srv://prod:<password_ask_aaron>@kuaidaoresume-prod-us-w.kxcvj.mongodb.net
-  MATCHING_DATASOURCE_USERNAME: prod_root_name
-  MATCHING_DATASOURCE_PASSWORD: pw_tbd
-  MOCK_JOB_FETCH: set_during_deployment
+  ACCOUNT_DATASOURCE_URL: jdbc:mysql://kdr-prod.ceklsmm2uasm.us-west-2.rds.amazonaws.com:3306/kuaidaoresume-account?useUnicode=true&characterEncoding=utf-8
+  ACCOUNT_DATASOURCE_USERNAME: admin
+  ACCOUNT_DATASOURCE_PASSWORD: <ask_spencer>
+  RESUME_DATASOURCE_URL: jdbc:mysql://kdr-prod.ceklsmm2uasm.us-west-2.rds.amazonaws.com:3306/kuaidaoresume-resume?useUnicode=true&characterEncoding=utf-8
+  RESUME_DATASOURCE_USERNAME: admin
+  RESUME_DATASOURCE_PASSWORD: <ask_spencer>
+  JOB_DATASOURCE_URL: jdbc:mysql://kdr-prod.ceklsmm2uasm.us-west-2.rds.amazonaws.com:3306/kuaidaoresume-resume?useUnicode=true&characterEncoding=utf-8
+  JOB_DATASOURCE_USERNAME: admin
+  JOB_DATASOURCE_PASSWORD: <ask_spencer>
+  MATCHING_DATASOURCE_URL: mongodb+srv://prod:<password_ask_spencer>@kuaidaoresume-prod-us-w.kxcvj.mongodb.net
+  MOCK_JOB_FETCH: False
   JOB_FETCH_EVERY_SECS: 864000
   RESUME_CACHING_MAXIMUM_SIZE: 50000
   MATCHING_CACHING_MAXIMUM_SIZE: 100000
@@ -38,5 +36,5 @@ data:
   JOB_CACHE_POLICY_EVICTION: LRU
   JOB_SEARCH_CACHE_POLICY_MAXSIZE: PER_NODE
   JOB_SEARCH_CACHE_POLICY_EVICTION: LFU
-  RESUMESDK_UID=<123456>
-  RESUMESDK_PWD=<very_secure_password>
+  RESUMESDK_UID: <123456>
+  RESUMESDK_PWD: <very_secure_password>

@@ -233,3 +233,93 @@ HOST='app.uat.smartresume.careers'
 ```
 - Run `sudo REACT_APP_ENV=UAT yarn start`
 - Go to `http://app.uat.smartresume.careers/` or `http://app.uat.smartresume.careers:3000/` if your port is 3000
+
+## AWS Production environments
+#### Create EKS cluster:
+1. `cd k8s/prod/config`
+
+1. create EKS cluster using cluster-us-west-2.yaml
+   ```
+   eksctl create cluster -f cluster-us-west-2.yaml
+   ``` 
+
+Note: This is an one time process and has been done in AWS us-west-2 region.
+
+#### Create EKS and RDS security groups:
+1. assign eks cluster VPC id to local var
+   ```shell
+   VPCID=$(aws eks describe-cluster --name kdr-prod \
+   --region us-west-2 \
+   --query "cluster.resourcesVpcConfig.vpcId" \
+   --output text)
+   ```
+   
+1. create the RDS access security group 
+   ```shell
+   RDSSG=$(aws ec2 create-security-group --group-name RDSAccessSG \
+   --description "Security group to apply to apps that need access to RDS" \
+   --vpc-id $VPCID \
+   --query "GroupId" \
+   --output text)
+   ```
+    
+1. add outbound rule to the RDS access security group
+   ```shell
+   aws ec2 authorize-security-group-egress --group-id $RDSSG \
+   --protocol tcp \
+   --cidr 0.0.0.0/0
+   ```
+   
+1. follow the [instructions](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_SettingUp.html#CHAP_SettingUp.SecurityGroup) to provide access to your DB instance in VPC by creating another security group.
+ 
+1. assign eks cluster security group id to local var
+   ```shell
+   CLUSTERSG=$(aws eks describe-cluster --name kdr-prod \
+   --query "cluster.resourcesVpcConfig.clusterSecurityGroupId" \
+   --output text)
+   ```
+
+1. enable pod ENIs
+   ```
+   kubectl set env daemonset -n kube-system aws-node ENABLE_POD_ENI=true
+   ```
+   
+1. disable TCP early demux
+   ```
+   kubectl edit daemonset aws-node -n kube-system
+   ```
+   Under the initContainer section, change the value for DISABLE_TCP_EARLY_DEMUX from `false` to `true`.
+   
+1. follow the [instructions](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/UsingWithRDS.IAMDBAuth.IAMPolicy.html) to create an IAM policy for IAM database access 
+
+1. create service account config
+   1. 
+      ```
+      cd k8s/prod/config
+      ```
+   
+   1.
+      ```
+      eksctl create iamserviceaccount --config-file=serviceaccount-us-west-2.yaml
+      ```
+   
+1. apply SecurityGroupPolicy to eks cluster
+   1. assign eks cluster security group id
+      ```shell
+      CLUSTERSG=$(aws eks describe-cluster --name kdr-prod \
+      --query "cluster.resourcesVpcConfig.clusterSecurityGroupId" \
+      --output text)
+      ```
+     
+   1. print security group ids and add to security-group-policy-us-west-2.yaml
+      ```shell
+      echo $CLUSTERSG $RDSSG
+      ```
+   
+   1. 
+      ```
+      kubectl apply -f security-group-policy-us-west-2.yaml
+      ``` 
+
+Note: This is an one time process and has been done in AWS us-west-2 region.
+
