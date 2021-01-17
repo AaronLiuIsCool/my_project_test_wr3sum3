@@ -1,7 +1,5 @@
 # application.yml
 spring:
-  profiles:
-    active: dev
   application:
     name: matching-service
   data:

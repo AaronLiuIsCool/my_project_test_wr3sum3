@@ -1,4 +1,6 @@
 spring:
+  profiles:
+    active: dev
   thymeleaf:
     cache: false # Disable template caching for local development
 

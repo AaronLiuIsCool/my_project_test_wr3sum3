@@ -165,10 +165,6 @@
                 <groupId>org.flywaydb</groupId>
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>6.5.6</version>
-                <configuration>
-                    <url>jdbc:mysql://localhost:3306/kuaidao_resume</url>
-                    <user>root</user>
-                </configuration>
             </plugin>
         </plugins>
     </build>

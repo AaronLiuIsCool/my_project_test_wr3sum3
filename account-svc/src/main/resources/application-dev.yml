@@ -1,4 +1,6 @@
 spring:
+  profiles:
+    active: dev
   datasource:
     url: jdbc:mysql://kuaidaoresume-account.cm27uwrvuert.ca-central-1.rds.amazonaws.com:3306/kuaidaoresume-account?useUnicode=true&characterEncoding=utf-8
     username: root
