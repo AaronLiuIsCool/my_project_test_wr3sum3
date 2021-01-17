@@ -142,7 +142,7 @@ public class WeChatCallbackController {
                     helperService.trackEventAsync(account.getId(), "login");
                     helperService.syncUserAsync(account.getId());
 
-                    String scheme = envConfig.getInternalApex().equals(EnvConstant.ENV_PROD) ? "https" : "http";
+                    String scheme = envConfig.getScheme();
                     String url = HelperService.buildUrl(scheme, "app." + envConfig.getExternalApex());
                     return "redirect:" + url;
                 }

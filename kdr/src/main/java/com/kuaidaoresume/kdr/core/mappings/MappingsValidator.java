@@ -63,8 +63,8 @@ public class MappingsValidator {
         throw new KdrException("Empty destination for mapping " + mapping);
       }
       if (!destination.matches(".+://.+")) {
-        String scheme = envConfig.getInternalApex().equals(EnvConstant.ENV_PROD) ? "https://" : "http://";
-        destination = scheme + destination;
+        String scheme = envConfig.getScheme();
+        destination = scheme + "://" + destination;
       }
       destination = removeEnd(destination, "/");
       correctedHosts.add(destination);

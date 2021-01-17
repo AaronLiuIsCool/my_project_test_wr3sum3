@@ -461,7 +461,7 @@ public class AccountService {
         String path = String.format(pathFormat, token);
         URI link = null;
         try {
-            String scheme = envConfig.getInternalApex().equals(EnvConstant.ENV_PROD) ? "https" : "http";
+            String scheme = envConfig.getScheme();
             link = new URI(scheme, "www." + envConfig.getExternalApex(), path, null);
         } catch (URISyntaxException ex) {
             String errMsg = "Could not create activation url";

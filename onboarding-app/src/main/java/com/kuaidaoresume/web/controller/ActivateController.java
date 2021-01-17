@@ -177,7 +177,7 @@ public class ActivateController {
         String destination = null;
         if (account.isSupport()) {
             // TODO: CRM page for internall support
-            String scheme = envConfig.getInternalApex().equals(EnvConstant.ENV_PROD) ? "https" : "http";
+            String scheme = envConfig.getScheme();
             destination = helperService.buildUrl(scheme, "support." + envConfig.getExternalApex());
         }
         else {
