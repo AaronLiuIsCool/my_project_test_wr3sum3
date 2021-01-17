@@ -1,5 +1,6 @@
 package com.kuaidaoresume.kdr.core.mappings;
 
+import com.kuaidaoresume.common.env.EnvConstant;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import com.kuaidaoresume.common.env.EnvConfig;
 import com.kuaidaoresume.common.services.Service;
@@ -45,7 +46,8 @@ public class ProgrammaticMappingsProvider extends MappingsProvider {
       mapping.setName(subDomain + "_route");
       mapping.setHost(subDomain + "." + envConfig.getExternalApex());
       // No security on backend right now TODO Aaron Liu
-      String dest = "http://" + service.getBackendDomain();
+      String scheme = envConfig.getScheme();
+      String dest = scheme + "://" + service.getBackendDomain();
       mapping.setDestinations(Arrays.asList(dest));
       mappings.add(mapping);
     }

@@ -1,17 +1,23 @@
 package com.kuaidaoresume.kdr.core.mappings;
 
-import com.kuaidaoresume.common.services.ServiceDirectory;
+import com.kuaidaoresume.common.env.EnvConfig;
+import com.kuaidaoresume.common.env.EnvConstant;
 import com.kuaidaoresume.kdr.config.MappingProperties;
 import com.kuaidaoresume.kdr.exceptions.KdrException;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.stream.Collectors.toSet;
-import static org.apache.commons.lang3.StringUtils.*;
+import static org.apache.commons.lang3.StringUtils.isBlank;
+import static org.apache.commons.lang3.StringUtils.removeEnd;
 import static org.springframework.util.CollectionUtils.isEmpty;
 
 public class MappingsValidator {
+
+  @Autowired
+  private EnvConfig envConfig;
 
   public void validate(List<MappingProperties> mappings) {
     if (!isEmpty(mappings)) {
@@ -57,7 +63,8 @@ public class MappingsValidator {
         throw new KdrException("Empty destination for mapping " + mapping);
       }
       if (!destination.matches(".+://.+")) {
-        destination = "http://" + destination;
+        String scheme = envConfig.getScheme();
+        destination = scheme + "://" + destination;
       }
       destination = removeEnd(destination, "/");
       correctedHosts.add(destination);

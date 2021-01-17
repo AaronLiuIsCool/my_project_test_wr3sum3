@@ -6,6 +6,7 @@ import com.kuaidaoresume.account.dto.WechatAccountDto;
 import com.kuaidaoresume.account.dto.ResumeDto;
 import com.kuaidaoresume.account.model.Resume;
 import com.kuaidaoresume.account.repo.ResumeRepo;
+import com.kuaidaoresume.common.env.EnvConstant;
 import com.kuaidaoresume.common.error.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -460,7 +461,8 @@ public class AccountService {
         String path = String.format(pathFormat, token);
         URI link = null;
         try {
-            link = new URI("http", "www." + envConfig.getExternalApex(), path, null);
+            String scheme = envConfig.getScheme();
+            link = new URI(scheme, "www." + envConfig.getExternalApex(), path, null);
         } catch (URISyntaxException ex) {
             String errMsg = "Could not create activation url";
             if (!activateOrConfirm) {

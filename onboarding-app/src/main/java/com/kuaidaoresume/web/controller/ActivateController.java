@@ -3,6 +3,7 @@ package com.kuaidaoresume.web.controller;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.github.structlog4j.ILogger;
 import com.github.structlog4j.SLoggerFactory;
+import com.kuaidaoresume.common.env.EnvConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -176,7 +177,8 @@ public class ActivateController {
         String destination = null;
         if (account.isSupport()) {
             // TODO: CRM page for internall support
-            destination = helperService.buildUrl("http", "support." + envConfig.getExternalApex());
+            String scheme = envConfig.getScheme();
+            destination = helperService.buildUrl(scheme, "support." + envConfig.getExternalApex());
         }
         else {
             model.addAttribute(Constant.ATTRIBUTE_NAME_PAGE, pageFactory.buildCompletionPage());
