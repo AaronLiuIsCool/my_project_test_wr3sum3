@@ -9,6 +9,7 @@ import com.kuaidaoresume.account.dto.WechatAccountDto;
 import com.kuaidaoresume.common.auth.AuthConstant;
 import com.kuaidaoresume.common.auth.Sessions;
 import com.kuaidaoresume.common.env.EnvConfig;
+import com.kuaidaoresume.common.env.EnvConstant;
 import com.kuaidaoresume.web.props.AppProps;
 import com.kuaidaoresume.web.service.HelperService;
 import com.kuaidaoresume.web.service.WeChatService;
@@ -141,7 +142,8 @@ public class WeChatCallbackController {
                     helperService.trackEventAsync(account.getId(), "login");
                     helperService.syncUserAsync(account.getId());
 
-                    String url = HelperService.buildUrl("http", "app." + envConfig.getExternalApex());
+                    String scheme = envConfig.getInternalApex().equals(EnvConstant.ENV_PROD) ? "https" : "http";
+                    String url = HelperService.buildUrl(scheme, "app." + envConfig.getExternalApex());
                     return "redirect:" + url;
                 }
             }
