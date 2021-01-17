@@ -2,6 +2,7 @@ package com.kuaidaoresume.web.controller;
 
 import com.github.structlog4j.ILogger;
 import com.github.structlog4j.SLoggerFactory;
+import com.kuaidaoresume.common.env.EnvConstant;
 import com.kuaidaoresume.web.service.WeChatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -65,14 +66,15 @@ public class LoginController {
 
         LoginPage loginPage = pageFactory.buildLoginPage();
 
-        String wechatCallbackUrl = HelperService.buildUrl("http", "www." + envConfig.getExternalApex() + "/wechat-callback");
+        String scheme = envConfig.getInternalApex().equals(EnvConstant.ENV_PROD) ? "https" : "http";
+        String wechatCallbackUrl = HelperService.buildUrl(scheme, "www." + envConfig.getExternalApex() + "/wechat-callback");
         loginPage.setWechatLoginUrl(wechatCallbackUrl);
         loginPage.setWechatAppId(WeChatService.WECHAT_APP_ID);
         loginPage.setReturnTo(returnTo); // for GET
 
         // if logged in - go away
         if (!StringUtils.isEmpty(AuthContext.getAuthz()) && !AuthConstant.AUTHORIZATION_ANONYMOUS_WEB.equals(AuthContext.getAuthz())) {
-            String url = HelperService.buildUrl("http", "app." + envConfig.getExternalApex());
+            String url = HelperService.buildUrl(scheme, "app." + envConfig.getExternalApex());
             return "redirect:" + url;
         }
 
@@ -108,16 +110,11 @@ public class LoginController {
                 helperService.trackEventAsync(account.getId(), "login");
                 helperService.syncUserAsync(account.getId());
 
-                String scheme  = "https";
-                if (envConfig.isDebug()) {
-                    scheme = "http";
-                }
-
                 if (StringUtils.isEmpty(returnTo)) {
                     returnTo = HelperService.buildUrl(scheme, "app." + envConfig.getExternalApex());
                 } else {
                     if (!returnTo.startsWith("http")) {
-                        returnTo = "http://" + returnTo;
+                        returnTo = scheme + "://" + returnTo;
                     }
                     // sanitize
                     if (!isValidSub(returnTo)) {

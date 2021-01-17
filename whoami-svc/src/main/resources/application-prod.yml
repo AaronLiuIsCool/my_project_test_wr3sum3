@@ -1,2 +1,6 @@
+spring:
+  profiles:
+    active: prod
+
 logging:
   config: /etc/kuaidaoresume/logback-spring.xml
