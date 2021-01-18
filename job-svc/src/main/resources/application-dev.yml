@@ -1,6 +1,8 @@
 spring:
+  profiles:
+    active: dev
   datasource:
-    url: jdbc:mysql://kuaidaoresume-job.cm27uwrvuert.ca-central-1.rds.amazonaws.com:3306/kuaidaoresume-job?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC
+    url: jdbc:mysql://kuaidaoresume-job.cm27uwrvuert.ca-central-1.rds.amazonaws.com:3306/kuaidaoresume_job?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC
     username: root
     password: ~Youkn0wit)-j0b
   jpa:

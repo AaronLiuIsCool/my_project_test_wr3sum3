@@ -1,8 +1,6 @@
 # application.yml
 
 spring:
-  profiles:
-    active: dev
   application:
     name: www-service
 
