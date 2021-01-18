@@ -46,8 +46,7 @@ public class ProgrammaticMappingsProvider extends MappingsProvider {
       mapping.setName(subDomain + "_route");
       mapping.setHost(subDomain + "." + envConfig.getExternalApex());
       // No security on backend right now TODO Aaron Liu
-      String scheme = envConfig.getScheme();
-      String dest = scheme + "://" + service.getBackendDomain();
+      String dest = "http://" + service.getBackendDomain();
       mapping.setDestinations(Arrays.asList(dest));
       mappings.add(mapping);
     }

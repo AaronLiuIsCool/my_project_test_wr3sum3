@@ -112,7 +112,10 @@ public class AuthRequestInterceptor implements PreForwardRequestInterceptor {
       if (SecurityConstant.SEC_PUBLIC != service.getSecurity()) {
         log.info("Anonymous user want to access secure service, redirect to login");
         // send to login
-        String scheme = envConfig.getScheme();
+        String scheme = "https";
+        if (envConfig.isDebug()) {
+          scheme = "http";
+        }
 
         int port = data.getOriginRequest().getServerPort();
 
