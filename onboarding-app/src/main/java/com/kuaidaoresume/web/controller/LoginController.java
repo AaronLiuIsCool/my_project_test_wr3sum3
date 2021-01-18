@@ -66,7 +66,8 @@ public class LoginController {
 
         LoginPage loginPage = pageFactory.buildLoginPage();
 
-        String wechatCallbackUrl = HelperService.buildUrl("http", "www." + envConfig.getExternalApex() + "/wechat-callback");
+        String scheme = envConfig.getScheme();
+        String wechatCallbackUrl = HelperService.buildUrl(scheme, "www." + envConfig.getExternalApex() + "/wechat-callback");
         loginPage.setWechatLoginUrl(wechatCallbackUrl);
         loginPage.setWechatAppId(WeChatService.WECHAT_APP_ID);
         loginPage.setReturnTo(returnTo); // for GET
