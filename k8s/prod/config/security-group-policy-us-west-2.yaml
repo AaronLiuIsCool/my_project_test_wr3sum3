@@ -1,0 +1,12 @@
+apiVersion: vpcresources.k8s.aws/v1beta1
+kind: SecurityGroupPolicy
+metadata:
+  name: security-group-policy-us-west-2
+spec:
+  serviceAccountSelector:
+    matchLabels:
+      role: backend
+  securityGroups:
+    groupIds:
+      - sg-071bc58dac00beec8
+      - sg-07add59d2a8d3f70f
