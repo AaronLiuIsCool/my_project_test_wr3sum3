@@ -177,8 +177,7 @@ public class ActivateController {
         String destination = null;
         if (account.isSupport()) {
             // TODO: CRM page for internall support
-            String scheme = envConfig.getScheme();
-            destination = helperService.buildUrl(scheme, "support." + envConfig.getExternalApex());
+            destination = helperService.buildUrl("http", "support." + envConfig.getExternalApex());
         }
         else {
             model.addAttribute(Constant.ATTRIBUTE_NAME_PAGE, pageFactory.buildCompletionPage());

@@ -31,7 +31,10 @@ public class NakedDomainFilter extends OncePerRequestFilter {
     if (envConfig.getExternalApex().equals(request.getServerName())) {
       // It's hitting naked domain - redirect to www
       log.info("hitting naked domain - redirect to www");
-      String scheme = envConfig.getScheme();
+      String scheme = "http";
+      if (!envConfig.isDebug()) {
+        scheme = "https";
+      }
       try {
         URI redirectUrl = new URI(scheme,
           null,

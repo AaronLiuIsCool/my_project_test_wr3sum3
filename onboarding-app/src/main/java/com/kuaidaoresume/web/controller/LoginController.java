@@ -66,15 +66,14 @@ public class LoginController {
 
         LoginPage loginPage = pageFactory.buildLoginPage();
 
-        String scheme = envConfig.getScheme();
-        String wechatCallbackUrl = HelperService.buildUrl(scheme, "www." + envConfig.getExternalApex() + "/wechat-callback");
+        String wechatCallbackUrl = HelperService.buildUrl("http", "www." + envConfig.getExternalApex() + "/wechat-callback");
         loginPage.setWechatLoginUrl(wechatCallbackUrl);
         loginPage.setWechatAppId(WeChatService.WECHAT_APP_ID);
         loginPage.setReturnTo(returnTo); // for GET
 
         // if logged in - go away
         if (!StringUtils.isEmpty(AuthContext.getAuthz()) && !AuthConstant.AUTHORIZATION_ANONYMOUS_WEB.equals(AuthContext.getAuthz())) {
-            String url = HelperService.buildUrl(scheme, "app." + envConfig.getExternalApex());
+            String url = HelperService.buildUrl("http", "app." + envConfig.getExternalApex());
             return "redirect:" + url;
         }
 
@@ -110,11 +109,16 @@ public class LoginController {
                 helperService.trackEventAsync(account.getId(), "login");
                 helperService.syncUserAsync(account.getId());
 
+                String scheme  = "https";
+                if (envConfig.isDebug()) {
+                    scheme = "http";
+                }
+
                 if (StringUtils.isEmpty(returnTo)) {
                     returnTo = HelperService.buildUrl(scheme, "app." + envConfig.getExternalApex());
                 } else {
                     if (!returnTo.startsWith("http")) {
-                        returnTo = scheme + "://" + returnTo;
+                        returnTo = "http://" + returnTo;
                     }
                     // sanitize
                     if (!isValidSub(returnTo)) {

@@ -16,9 +16,6 @@ import static org.springframework.util.CollectionUtils.isEmpty;
 
 public class MappingsValidator {
 
-  @Autowired
-  private EnvConfig envConfig;
-
   public void validate(List<MappingProperties> mappings) {
     if (!isEmpty(mappings)) {
       mappings.forEach(this::correctMapping);
@@ -63,8 +60,7 @@ public class MappingsValidator {
         throw new KdrException("Empty destination for mapping " + mapping);
       }
       if (!destination.matches(".+://.+")) {
-        String scheme = envConfig.getScheme();
-        destination = scheme + "://" + destination;
+        destination = "http://" + destination;
       }
       destination = removeEnd(destination, "/");
       correctedHosts.add(destination);
