@@ -15,7 +15,7 @@ const messagePR = {
     "projectExperience": "Project Experience",
     "studentWorkAndVolunteer": "Volunteer Experience",
     "certificateAndAward": "Certifications & Awards",
-    "awards": "获得荣誉",
+    "awards": "Awards",
     "certificate": "Certifications",
     "validForever": "No expiration",
     "expiredAt": "",
