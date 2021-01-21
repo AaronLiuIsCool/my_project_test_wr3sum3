@@ -4,19 +4,19 @@ import com.github.structlog4j.ILogger;
 import com.github.structlog4j.IToLog;
 import com.github.structlog4j.SLoggerFactory;
 import com.kuaidaoresume.common.env.EnvConfig;
-import com.kuaidaoresume.common.env.EnvConstant;
 import com.kuaidaoresume.mail.config.AppConfig;
 import com.kuaidaoresume.mail.dto.EmailRequest;
 import io.sentry.SentryClient;
 import io.sentry.context.Context;
-import javax.mail.internet.MimeMessage;
-import java.nio.charset.StandardCharsets;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.spring5.SpringTemplateEngine;
+
+import javax.mail.internet.MimeMessage;
+import java.nio.charset.StandardCharsets;
 
 
 @Service
@@ -81,7 +81,7 @@ public class MailSendService {
         helper.setTo(req.getTo());
         helper.setText(html, true);
         helper.setSubject(req.getSubject());
-        helper.setFrom(req.getFrom());
+        helper.setFrom(req.getFromEmail(), req.getFromName());
 
         return message;
     }

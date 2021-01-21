@@ -486,7 +486,8 @@ public class AccountService {
 
         EmailRequest emailRequest = EmailRequest.builder()
                 .to(email)
-                .from("amberlee@smartresume.careers")
+                .fromEmail("amberlee@smartresume.careers")
+                .fromName("Amber Lee")
                 .name(name)
                 .subject(subject)
                 .htmlBody(htmlBody)

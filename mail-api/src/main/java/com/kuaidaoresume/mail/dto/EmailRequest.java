@@ -21,7 +21,9 @@ public class EmailRequest {
     private String subject;
 
     @NotBlank(message = "Please provide an from")
-    private String from;
+    private String fromEmail;
+
+    private String fromName;
 
     @Builder.Default()
     private Map<String, Object> model = new HashMap<>();

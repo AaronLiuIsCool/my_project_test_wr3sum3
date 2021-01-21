@@ -1,7 +1,7 @@
 {
-  "login-url": "http://www.smartresume.careers/login",
+  "login-url": "https://www.smartresume.careers/login",
 
-  "logout-url": "http://www.smartresume.careers/logout",
+  "logout-url": "https://www.smartresume.careers/logout",
 
   "services-account-baseUrl": "account.smartresume.careers",
 
