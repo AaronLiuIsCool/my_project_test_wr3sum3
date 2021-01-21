@@ -142,11 +142,11 @@ Run ```kubectl apply -f test```
 ```http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/```
 
 ### 本地部署
-查询kdr pod名: 
+查询kdr pod名:
 ```kubectl get pods```
 ### Port forwarding
 ```kubectl port-forward kdr-svc-deployment-8584d9c74d-v92wt 80:80```
-sudo as you needed 
+sudo as you needed
 ### start switch host
 rest of them are same as docker-compose
 
@@ -155,7 +155,7 @@ rest of them are same as docker-compose
 ```kubectl get services```
 ```kubectl get deployments```
 
-### Clean up 
+### Clean up
 ```
 kubectl delete deployments --all
 kubectl delete services --all
@@ -180,10 +180,15 @@ Run ```kubectl get pods -o wide```
 Run ```kubectl get deployments```
 
 NOTE: Each time apply UAT k8s, please double check your k8s/uat/config folder's config.yaml.
-If you have questions, please ask in wechat group before apply -f config.
+If you have questions, please ask in Slack group[https://kuaidaoresume.slack.com/archives/C01EQ32RSG5] before apply -f config.
 
-Run Prod
-TBD
+## Run Prod On (AWS West 2)
+1. So far (Jan 19, 2020) UAT action pipeline is not isolated with PROD environment. A few steps need to manually run as local below.
+a. Check the release branch from master.
+b. Run ```mvn clean install -DskipTests=true```.
+c. Run ```export REACT_APP_ENV=production``` for web frontend env update to prod.
+d. Run ```docker-compose build && docker-compose push``` build docker image and push as usual (same as UAT)
+e. Rests are similiar as UAT env (either delete and apply, or re-apply all k8s/prod)
 
 ## Flyway
 Flyway is integrated with Spring Boot. To run migrations, follow these steps
@@ -193,7 +198,7 @@ Flyway is integrated with Spring Boot. To run migrations, follow these steps
 4. Make sure spring.jpa.hibernate.ddl-auto is set to either "validate" or "none"
 5. Start the application
 
-To run migration from maven cli: 
+To run migration from maven cli:
 `mvn flyway:migrate`
 
 ## Web UI
@@ -207,7 +212,7 @@ Add `127.0.0.1 app.kuaidaoresume-v2.local` to `/etc/hosts` or use smarthost
 2. `yarn`
 3. For develop build use `yarn start`
 
-Note: 
+Note:
 - run yarn start will try start the application on port 80 which if you have docker or k8s running for backend, you will not be able to get port 80 unless you change the backend or webapp to use a different port
 - You might need to run `sudo` to run on port 80
 
@@ -241,7 +246,7 @@ HOST='app.uat.smartresume.careers'
 1. create EKS cluster using cluster-us-west-2.yaml
    ```
    eksctl create cluster -f cluster-us-west-2.yaml
-   ``` 
+   ```
 
 Note: This is an one time process and has been done in AWS us-west-2 region.
 
@@ -253,8 +258,8 @@ Note: This is an one time process and has been done in AWS us-west-2 region.
    --query "cluster.resourcesVpcConfig.vpcId" \
    --output text)
    ```
-   
-1. create the RDS access security group 
+
+1. create the RDS access security group
    ```shell
    RDSSG=$(aws ec2 create-security-group --group-name RDSAccessSG \
    --description "Security group to apply to apps that need access to RDS" \
@@ -262,16 +267,16 @@ Note: This is an one time process and has been done in AWS us-west-2 region.
    --query "GroupId" \
    --output text)
    ```
-    
+
 1. add outbound rule to the RDS access security group
    ```shell
    aws ec2 authorize-security-group-egress --group-id $RDSSG \
    --protocol tcp \
    --cidr 0.0.0.0/0
    ```
-   
+
 1. follow the [instructions](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_SettingUp.html#CHAP_SettingUp.SecurityGroup) to provide access to your DB instance in VPC by creating another security group.
- 
+
 1. assign eks cluster security group id to local var
    ```shell
    CLUSTERSG=$(aws eks describe-cluster --name kdr-prod \
@@ -283,26 +288,26 @@ Note: This is an one time process and has been done in AWS us-west-2 region.
    ```
    kubectl set env daemonset -n kube-system aws-node ENABLE_POD_ENI=true
    ```
-   
+
 1. disable TCP early demux
    ```
    kubectl edit daemonset aws-node -n kube-system
    ```
    Under the initContainer section, change the value for DISABLE_TCP_EARLY_DEMUX from `false` to `true`.
-   
-1. follow the [instructions](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/UsingWithRDS.IAMDBAuth.IAMPolicy.html) to create an IAM policy for IAM database access 
+
+1. follow the [instructions](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/UsingWithRDS.IAMDBAuth.IAMPolicy.html) to create an IAM policy for IAM database access
 
 1. create service account config
-   1. 
+   1.
       ```
       cd k8s/prod/config
       ```
-   
+
    1.
       ```
       eksctl create iamserviceaccount --config-file=serviceaccount-us-west-2.yaml
       ```
-   
+
 1. apply SecurityGroupPolicy to eks cluster
    1. assign eks cluster security group id
       ```shell
@@ -310,16 +315,15 @@ Note: This is an one time process and has been done in AWS us-west-2 region.
       --query "cluster.resourcesVpcConfig.clusterSecurityGroupId" \
       --output text)
       ```
-     
+
    1. print security group ids and add to security-group-policy-us-west-2.yaml
       ```shell
       echo $CLUSTERSG $RDSSG
       ```
-   
-   1. 
+
+   1.
       ```
       kubectl apply -f security-group-policy-us-west-2.yaml
-      ``` 
+      ```
 
 Note: This is an one time process and has been done in AWS us-west-2 region.
-
