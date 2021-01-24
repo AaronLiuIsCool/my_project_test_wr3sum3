@@ -28,7 +28,7 @@ data:
   JOB_DATASOURCE_USERNAME: admin
   JOB_DATASOURCE_PASSWORD: <ask_spencer>
   MATCHING_DATASOURCE_URL: mongodb+srv://prod:<password_ask_spencer>@kuaidaoresume-prod-us-w.kxcvj.mongodb.net
-  MOCK_JOB_FETCH: False
+  MOCK_JOB_FETCH: ''
   JOB_FETCH_EVERY_SECS: 864000
   RESUME_CACHING_MAXIMUM_SIZE: 50000
   MATCHING_CACHING_MAXIMUM_SIZE: 100000

@@ -13,6 +13,8 @@ import logging
 import hashlib
 import itertools
 from sentry_sdk import capture_exception, init
+from LocationClassifier import *
+
 
 init(dsn=os.getenv('SENTRY_DSN', 'https://270864132b0845e4a9ae4f68f96c77c2@o434398.ingest.sentry.io/5391423'),
     traces_sample_rate=0.01
@@ -22,11 +24,12 @@ with open("mock_job_results.json") as mock_job_file:
     MOCK_JOB_RESULTS = json.load(mock_job_file)
 
 class JobFetcher:
-    def __init__(self, config, connection, channel):
+    def __init__(self, config, connection, channel, locationClassifier):
         self.config = config
         self.queryTemplate = '{} {} {}'
         self.connection = connection
         self.channel = channel
+        self.locationClassifier = locationClassifier
 
     def __del__(self):
         self.connection.close()
@@ -102,7 +105,7 @@ class JobFetcher:
         for job in jobs_results:
             if job is None:
                 continue
-            processedJob = self.callJobService(endpoint="http://job-service/v1/jobs/jobFetcher", payload=self.truncateIdAndDescription(job))
+            processedJob = self.callJobService(endpoint="http://job-service/v1/jobs/jobFetcher", payload=self.locationClassifier.updateJobLocation(self.truncateIdAndDescription(job)))
             if processedJob is None or processedJob.status_code != 200 or len(processedJob.content) == 0: #duplicate
                 continue
             self.enqueue(processedJob.json())  
@@ -140,6 +143,7 @@ def clearJobs():
         logging.info(e)
 
 def createJobFetcher():
+    locationClassifier = LocationClassifier()
     with open("./config.json", "r") as configFile:
         config = json.load(configFile)
 
@@ -154,7 +158,7 @@ def createJobFetcher():
 
             channel.queue_declare(queue=config["queue"]["name"])
 
-            j = JobFetcher(config, connection, channel)
+            j = JobFetcher(config, connection, channel, locationClassifier)
 
             return j
 
