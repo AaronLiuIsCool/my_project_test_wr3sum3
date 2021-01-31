@@ -16,5 +16,5 @@ kuaidaoresume:
   signing-secret: ${SIGNING_SECRET}
   email-service-endpoint: ${EMAIL_SERVICE_ENDPOINT:http://email-service:8080}
   account-service-endpoint: ${ACCOUNT_SERVICE_ENDPOINT:http://account-service:8080}
-  recaptcha-public: ${RECAPTCHA_PUBLIC}
-  recaptcha-private: ${RECAPTCHA_PRIVATE}
+  recaptcha-public: ${RECAPTCHA_PUBLIC:6LfZt9gZAAAAAFgdFyXfoQn7wMRd_9ynM5qIkKz3}
+  recaptcha-private: ${RECAPTCHA_PRIVATE:6LfZt9gZAAAAABo1mzJo-nypA5gLtVeuuFRsFzuR}

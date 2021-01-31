@@ -20,4 +20,6 @@ public class AppProps {
     private String recaptchaPublic;
     @NotNull
     private String signingSecret;
+    @NotNull
+    private String recaptchaPrivate;
 }
