@@ -21,7 +21,7 @@ jobs:
         docker login -u tengr -p EyesHigh2020!   
     - name: docker-compose build
       run: |
-        export REACT_APP_ENV=UAT
+        export REACT_APP_ENV=production
         docker-compose build --no-cache
     - name: docker-compose push
       run: |
