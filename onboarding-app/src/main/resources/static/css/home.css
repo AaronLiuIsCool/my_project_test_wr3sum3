@@ -66,8 +66,8 @@ header {
 .banner {
   background-image: url('../assets/bg-image.png');
   height: 50rem;
-  background-size: 100%;
-  background-position: -40% 0%;
+  background-size: cover;
+  background-position: -0% 0%;
   overflow: hidden;
   border-bottom-left-radius: 50% 14%;
   border-bottom-right-radius: 50% 14%;
@@ -620,9 +620,25 @@ p.action-item {
       padding-bottom: 0;
   }
 }
+.qrcode {
+  margin-top: 30px;
+}
+.qrcode p {
+  font-size: 20px;
+  font-weight: 600;
+  font-family: "微软雅黑";
+  margin-bottom: 0;
+  margin-top: 6px;
+}
 
 @media screen and (max-width: 1441px) {
   .svg1::after, .svg2::after, .svg3::after, .svg4::after {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 1339px) {
+  .qrcode {
     display: none;
   }
 }
