@@ -43,7 +43,7 @@ public class SecurityFilter extends OncePerRequestFilter {
       return;
     }
 
-    if (!envConfig.isDebug()) {
+    /*if (!envConfig.isDebug()) { TODO: QS - enable this after we get certifications
       // Check if secure
       boolean isSecure = request.isSecure();
       if (!isSecure) {
@@ -73,7 +73,7 @@ public class SecurityFilter extends OncePerRequestFilter {
       response.setHeader("X-Frame-Options", "DENY");
       // Cross-site scripting protection
       response.setHeader("X-XSS-Protection", "1; mode=block");
-    }
+    }*/
 
     filterChain.doFilter(request, response);
   }

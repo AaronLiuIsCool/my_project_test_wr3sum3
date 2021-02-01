@@ -48,7 +48,7 @@ public class EnvConfig {
                 .debug(true)
                 .externalApex("uat.smartresume.careers")
                 .internalApex(EnvConstant.ENV_UAT)
-                .scheme("http")
+                .scheme("https")
                 .build();
         map.put(EnvConstant.ENV_UAT, envConfig);
 
